@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg"
+    tools:context="cs496.yelpsearch.homeScreen"
+    android:weightSum="1">
+
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="match_parent"
+        android:layout_height="270dp"
+        app:srcCompat="@drawable/logo2"
+        android:layout_marginTop="53dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:paddingLeft="10dp"
+        android:id="@+id/btn_view"
+        android:layout_width="280dp"
+        android:layout_height="75dp"
+        android:layout_weight="0.13"
+        android:text="View local businesses"
+        android:textSize="16sp"
+        android:background="#ffffff"
+        android:drawableLeft="@mipmap/ic_list"
+        android:drawablePadding="-20dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/btn_search"
+        android:layout_alignLeft="@+id/btn_search"
+        android:layout_alignStart="@+id/btn_search" />
+
+    <Button
+        android:paddingLeft="10dp"
+        android:id="@+id/btn_search"
+        android:layout_width="280dp"
+        android:layout_height="75dp"
+        android:layout_weight="0.13"
+        android:text="Search local businesses"
+        android:drawableLeft="@mipmap/ic_search"
+        android:drawablePadding="-20dp"
+        android:textSize="16sp"
+        android:background="#ffffff"
+        android:layout_below="@+id/iv_logo"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
+
+

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="cs496.yelpsearch.YelpSearchResultActivity">
+
+    <TextView
+        android:id="@+id/tv_search_result_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:padding="16dp"
+        android:textColor="#000"
+        android:textSize="30sp"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_search_result_address"
+            android:layout_width="349dp"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:textSize="20dp"
+            android:drawableLeft="@mipmap/ic_place" />
+
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_search_result_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textSize="20dp"
+        android:drawableLeft="@mipmap/ic_phonenumber"
+        />
+
+    <TextView
+        android:id="@+id/tv_search_result_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textSize="20dp"
+        android:drawableLeft="@mipmap/ic_ratings" />
+
+    <TextView
+        android:id="@+id/tv_search_result_url"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textSize="20dp"/>
+
+
+</LinearLayout>

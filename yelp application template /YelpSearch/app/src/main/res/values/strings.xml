@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Buzzi</string>
+    <string name="loading_error_message">Woops.  We couldn\'t complete your search.  Check your internet connection and try again.</string>
+    <string name="action_share">Share repo</string>
+    <string name="action_view_repo">View this repo on Yelp</string>
+    <string name="share_chooser_title">Pick an app to share this repo</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="pref_location_key">pref_location</string>
+    <string name="pref_location_title">Set Location</string>
+    <string name="pref_location_default"></string>
+
+</resources>
