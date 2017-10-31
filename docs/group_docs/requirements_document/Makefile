@@ -1,4 +1,4 @@
-LATEX 	= latex -shell-escape
+LATEX 	= pdflatex -shell-escape
 BIBTEX 	= bibtex
 DVIPS 	= dvips
 DVIPDF 	= dvipdft
@@ -41,6 +41,7 @@ showps: $(PSF)
 all: pdf
 
 clean:
-	rm -f *.pdf *.ps *.dvi *.out *.log *.aux *.bbl *.blg *.pyg *.synctex.gz
+	rm -f *.dvi *.out *.log *.aux *.bbl *.blg *.pyg *.synctex.gz
+	rm -f ihc_requirements_document.pdf
 
 .PHONY: all show clean ps pdf showps
