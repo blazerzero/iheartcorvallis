@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/Users/beerad/cs496/final-project-yelpsearch/YelpSearch/app/build/intermediates/res/merged/debug/layout-v17/preference_dropdown_material.xml",
+        "source": "/Users/beerad/.android/build-cache/2ebf815d663727117c4d833ea09f169fca355d31/output/res/layout-v17/preference_dropdown_material.xml"
+    },
+    {
+        "merged": "/Users/beerad/cs496/final-project-yelpsearch/YelpSearch/app/build/intermediates/res/merged/debug/layout-v17/preference_category_material.xml",
+        "source": "/Users/beerad/.android/build-cache/2ebf815d663727117c4d833ea09f169fca355d31/output/res/layout-v17/preference_category_material.xml"
+    },
+    {
+        "merged": "/Users/beerad/cs496/final-project-yelpsearch/YelpSearch/app/build/intermediates/res/merged/debug/layout-v17/preference_information_material.xml",
+        "source": "/Users/beerad/.android/build-cache/2ebf815d663727117c4d833ea09f169fca355d31/output/res/layout-v17/preference_information_material.xml"
+    },
+    {
+        "merged": "/Users/beerad/cs496/final-project-yelpsearch/YelpSearch/app/build/intermediates/res/merged/debug/layout-v17/preference_material.xml",
+        "source": "/Users/beerad/.android/build-cache/2ebf815d663727117c4d833ea09f169fca355d31/output/res/layout-v17/preference_material.xml"
+    }
+]

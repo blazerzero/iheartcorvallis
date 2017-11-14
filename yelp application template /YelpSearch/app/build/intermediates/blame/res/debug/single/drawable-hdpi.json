@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/Users/beerad/cs496/final-project-yelpsearch/YelpSearch/app/build/intermediates/res/merged/debug/drawable-hdpi/ic_action_settings.png",
+        "source": "/Users/beerad/cs496/final-project-yelpsearch/YelpSearch/app/src/main/res/drawable-hdpi/ic_action_settings.png"
+    },
+    {
+        "merged": "/Users/beerad/cs496/final-project-yelpsearch/YelpSearch/app/build/intermediates/res/merged/debug/drawable-hdpi/ic_action_share.png",
+        "source": "/Users/beerad/cs496/final-project-yelpsearch/YelpSearch/app/src/main/res/drawable-hdpi/ic_action_share.png"
+    },
+    {
+        "merged": "/Users/beerad/cs496/final-project-yelpsearch/YelpSearch/app/build/intermediates/res/merged/debug/drawable-hdpi/ic_star_border_black_36dp.png",
+        "source": "/Users/beerad/cs496/final-project-yelpsearch/YelpSearch/app/build/generated/res/pngs/debug/drawable-hdpi/ic_star_border_black_36dp.png"
+    }
+]
