@@ -69,14 +69,21 @@
 			Although all three options definitely can come in handy in this program, we will be using Semantic UI along with the Android Studio IDE. Although Android's default languages are Java and XML, you can edit the XML file corresponding to each code file to recognize JavaScript as the language for that file. Using Android Studio will allow us to easily test our app, and Semantic UI will allow us to implement a clean interface without resorting to the stock Android style.
 			~\cite{SemanticUI_JS}
 		
-	\section{User Experience Design}
+	\section{Administrator Access}
 		\subsection{Overview}
+			The Corvallis Community Relations (CCR) office is in charge of what content gets added to the app. They approve all the events in the app, and they have sole authority to modify or remove any content in the app. Because they are the only ones that can do this, they need to have an exclusive platform on which they can do this.
 		\subsection{Criteria}
-		\subsection{Choice 1: }
-		\subsection{Choice 2: }
-		\subsection{Choice 3: }
+			Our clients (the CCR office) needs to be able to add, modify, and remove events and all related information about the event from the database of events. They also need to be able to do this with the prizes available in the app. On top of this, they need to be able to edit users' information if necessary.
+		\subsection{Choice 1: Web Interface to Edit Content}
+			One way to handle this is to create a desktop/web interface that allows them to edit in-app content. They would be able to go to a webpage that gives them access to the user information database(s), the event database, and the prize database, and the site would provide them with fields for adding and modifying information, as well as the option to delete information from a particular database.
+		\subsection{Choice 2: Direct Access to Databases}
+			Another way to give our clients administrative access to the app is to give them direct access to the databases. They would be able to directly make changes to fields in the databases, and instead of us creating a platform on which they could make changes, the database interface itself would provide all of these features to our clients.
+		\subsection{Choice 3: Special Administrative Login Within App}
+			One more route would be to create a special login within the I Heart Corvallis app itself. Instead of logging in as a regular student or permanent resident user, our clients would have a separate login form that would allow them to essentially enter the back end of the app. We would create an interface for this admin account type as well, and it would structurally look similar to the rest of the app, but we would implement pages, buttons, and quick links to allow the CCR office to make changes to the app on their mobile device. Changes made would directly affect the databases and would allow for quick content modification and quick resolution of any problems users could be having with their content or account.
 		\subsection{Discussing the Choices}
+			Both the web interface and the in-app administrative login would require a special log-in form exclusively for our clients. Both options are feasible, but the web interface would require making a separate website on top of the app, whereas the special administrative login within the app would just require a bit more work on the app itself. Giving our clients direct access to the databases could work, but our clients do not have very much technical experience, so it could be a more complicated option for them. The special in-app interface would allow everything regarding management of the app to stay within the app instead of having to create an external service.
 		\subsection{Conclusion}
+			Though all three options would be viable, we are going to implement the special in-app administrative login for our clients to edit app info. It would allow us to focus on a single end product instead of building both a mobile and web interface for the app, and it would be the simplest option for our clients, as they do not have a lot of technical experience. Therefore, they need a simple way to edit content within the application, and an in-app administrative login would be the simplest solution.
 		
 	\bibliography{ihc_tech_review}
 	\bibliographystyle{IEEEtran}
