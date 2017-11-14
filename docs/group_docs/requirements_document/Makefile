@@ -1,0 +1,47 @@
+LATEX 	= pdflatex -shell-escape
+BIBTEX 	= bibtex
+DVIPS 	= dvips
+DVIPDF 	= dvipdft
+XDVI	= xdvi -gamma 4
+GH 		= gv
+
+EXAMPLES	= $(wildcard *.c)
+SRC	  := $(shell egrep -l '^[^%]*\\begin\{document\}' *.tex)
+TRG 		= $(SRC:%.tex=%.dvi)
+PSF 		= $(SRC:%.tex=%.ps)
+PDF 		= $(SRC:%.tex=%.pdf)
+
+pdf: $(PDF)
+
+ps: $(PSF)
+
+$(TRG): %.dvi: %.tex $(EXAMPLES)
+	#use pygments to include source code
+	#pygmentize -f latex -o __${EXAMPLES}.tex ${EXAMPLES}
+
+	$(LATEX) $<
+	$(BIBTEX) $(<:%.tex=%)
+	$(LATEX) $<
+	$(LATEX) $<
+	#rm __${SRC}.tex
+	#remove pygmentized output to avoid cluttering up directory
+
+$(PSF):%.ps: %.dvi
+	$(DVIPS) -R -Poutline -t letter $< -o $@
+
+$(PDF): %.pdf: %.ps
+	ps2pdf $<
+
+show: $(TRG)
+	@for i in $(TRG) ; do $(XDVI) $$i & done
+
+showps: $(PSF)
+	@for i in $(PSF) ; do $(GH) $$i & done
+
+all: pdf
+
+clean:
+	rm -f *.dvi *.out *.log *.aux *.bbl *.blg *.pyg *.synctex.gz
+	rm -f ihc_requirements_document.pdf
+
+.PHONY: all show clean ps pdf showps

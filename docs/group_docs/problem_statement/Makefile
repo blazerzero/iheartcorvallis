@@ -23,7 +23,7 @@ $(TRG): %.dvi: %.tex $(EXAMPLES)
 	$(BIBTEX) $(<:%.tex=%)
 	$(LATEX) $<
 	$(LATEX) $<
-	#rm __${SRC}.tex	
+	#rm __${SRC}.tex
 	#remove pygmentized output to avoid cluttering up directory
 
 $(PSF):%.ps: %.dvi
@@ -41,6 +41,6 @@ showps: $(PSF)
 all: pdf
 
 clean:
-	rm -f *.pdf *.ps *.dvi *.out *.log *.aux *.bbl *.blg *.pyg
+	rm -f *.pdf *.ps *.dvi *.out *.log *.aux *.bbl *.blg *.pyg *.synctex.gz
 
 .PHONY: all show clean ps pdf showps

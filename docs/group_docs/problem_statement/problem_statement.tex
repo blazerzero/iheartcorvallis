@@ -1,0 +1,84 @@
+\documentclass[draftclsnofoot, onecolumn, 10pt, compsoc]{IEEEtran}
+
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[top=0.75in, bottom=0.75in, left=0.75in, right=0.75in]{geometry}
+
+\title{\textbf{I Heart Corvallis - Mobile Application\\Problem Statement}\\Capstone I\\Fall 2017}
+
+\author{Omeed Habibelahian\\Bradley Imai\\Dylan Tomlinson}
+
+\begin{document}
+	\maketitle
+	\begin{abstract}
+		This document details the "I Heart Corvallis" mobile application, which will be used to get students and other 
+		community members more involved in various events, meetings, and projects. In many cases, students choose 
+		not to get involved in community activities because they do not feel connected to the Corvallis community. "I Heart 
+		Corvallis" will aim to solve that problem by giving students and community members an incentive to get involved by 
+		rewarding them for how much they contribute to the community. The final product should consist of an application 
+		available for both Android and iOS that lists the various community events, projects, and meetings being put on by 
+		different organizations, authenticates the user, successfully tracks the events they engage in, and provides rewards 
+		for completing enough community activities.
+	\end{abstract}
+	\newpage
+	
+	\section{The Problem}
+		A current problem that the Corvallis Community Relations office is facing is that college students are not getting 
+		involved with the Corvallis community. There may be several reasons for this problem. One reason could be that 
+		students are not interested enough to get involved in activities around the community, or they might not think the 
+		events are worth attending. Students often do not feel a sense of belonging or responsibility to our community, and 
+		this is largely because students are only here for a short period of time, so they mostly identify with being a part of the 
+		OSU community rather than the Corvallis community as a whole. Another reason could be that they are not aware of 
+		opportunities available to them. These activities may not be advertised well enough for students to easily find them.
+	
+	\section{The Solution}
+		We plan to tackle this problem by creating the "I Heart Corvallis" mobile app. I Heart Corvallis is inspired by the Bend 
+		Visitor and Convention Bureau's app "Bend Ale Trail," which gives users a virtual "passport" containing various 
+		breweries in Bend. Users of the Bend Ale Trail app get a stamp for every brewery they visit and win prizes for going to 
+		enough breweries. The app also provides a map of the breweries, as well as tour information, lodging and taxi 
+		information, and information about other events going on in town. \\ \\
+		I Heart Corvallis will be available for both Android and iOS and aims to 
+		inform members of the Corvallis community, both students and others, about various initiatives and resources around 
+		the community, as well as get community members more involved with community projects, events, and meetings by 
+		giving them an incentive to do so. \\ \\			
+		The application will essentially be a passport for students. They will receive stamps for helping out with service 
+		projects, attending city council meetings, attending workshops, and attending other community activities, and will be 
+		rewarded for accumulating enough stamps. The rewards will work in tiers; as you gain more stamps, you become 
+		eligible for better rewards. \\ \\			
+		To help students be more aware of community events, the application will also utilize the Google Maps API to show 
+		where events and various community resources can be found. The app will also include a separate page that will 
+		provide additional information about the city of Corvallis, such as links to website in the community and information 
+		about our office and the initiative. \\ \\			
+		Functionally, the app will display the user's "passport" (the events they have attended and any stamps they have 
+		collected). Whenever the user attends an event, they will earn a stamp. Depending on which event the user attends 
+		and completes, the number of stamps awarded to them will vary. For example, volunteering at a blood drive or big 
+		community event will give you more stamps than walking up Bald Hill. Once the user accumulates enough stamps, 
+		they will win a reward. In order to claim a reward the user will have to visit the Corvallis Community Relations office 
+		and show our clients the stamps they have collected. \\ \\			
+		Users will be required to either log in or create an account to use the app. Their passport will be saved to their account 
+		so that if they log out, their progress is not lost. OSU students will log in with their ONID username and password, and 
+		other users will need to create a username and password.\\ \\			
+		In order to confirm that the user actually attended this activity, there will be a code specific to each event that will be 
+		distributed by the host at the end of the event, and the users will input the code to acquire that stamp. For location-
+		based events, such as walking up Bald Hill, there will be a flyer or sign put up at the location that will specify for users 
+		of the I Heart Corvallis application to check-in on their phones to acquire the stamp. \\ \\			
+		Only the Corvallis Community Relations office will be able to add and edit events in the passport, as they will review 
+		and approve every event prior to adding it to the app. If someone has an event they would like to add to the app, they 
+		must go to the Corvallis Community Relations office to get approval, and even then, the Corvallis Community 
+		Relations office maintains sole authority to add the event to the app.
+	
+	\section{Performance Metrics}
+		Upon completion of the project, the above features will be fully implemented into the application, students will be able 
+		to view their passport, earn stamps, and view the community resources available to them without the app crashing. 
+		The stamp system will successfully add the appropriate stamps into each user's passport, and the Corvallis 
+		Community Relations office will have the ability to add and remove events into the database without crashes or 
+		overflows. \\ \\
+		The application will also be designed for longevity. The Corvallis Community Relations office does not have much 
+		technical prowess available to them. Therefore, we need to ensure that this app will continue to allow users to view 
+		their passport, successfully earn stamps for attending events, and view resources available to them in the community 
+		after our departure. We will also need to ensure that the app will allow non-technical clients, like the Corvallis 
+		Community Relations office, to add and edit events, as well as navigate the back end of the app.
+	
+\end{document}
+	
