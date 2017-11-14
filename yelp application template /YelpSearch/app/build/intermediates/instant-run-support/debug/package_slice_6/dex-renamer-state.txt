@@ -1,0 +1,4 @@
+#Wed Jun 14 20:21:58 PDT 2017
+base.0=/Users/beerad/cs496/final-project-yelpsearch/YelpSearch/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_6
+renamed.0=classes.dex
+file.0=/Users/beerad/cs496/final-project-yelpsearch/YelpSearch/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_6/classes.dex

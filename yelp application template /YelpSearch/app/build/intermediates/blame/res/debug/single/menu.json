@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/beerad/cs496/final-project-yelpsearch/YelpSearch/app/build/intermediates/res/merged/debug/menu/main.xml",
+        "source": "/Users/beerad/cs496/final-project-yelpsearch/YelpSearch/app/src/main/res/menu/main.xml"
+    },
+    {
+        "merged": "/Users/beerad/cs496/final-project-yelpsearch/YelpSearch/app/build/intermediates/res/merged/debug/menu/search_result_detail.xml",
+        "source": "/Users/beerad/cs496/final-project-yelpsearch/YelpSearch/app/src/main/res/menu/search_result_detail.xml"
+    }
+]

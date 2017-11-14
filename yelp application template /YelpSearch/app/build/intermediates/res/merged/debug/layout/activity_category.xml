@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="cs496.yelpsearch.CategoryActivity"
+    android:orientation="vertical">
+
+        <Button
+            android:paddingLeft="85dp"
+            android:id="@+id/button_food"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.25"
+            android:background="#B0E0E6"
+            android:textSize="20sp"
+            android:drawableLeft="@mipmap/ic_food"
+            android:drawablePadding="-65dp"
+            android:text="Restaurants" />
+
+        <Button
+            android:paddingLeft="85dp"
+            android:id="@+id/button_gas"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.25"
+            android:background="#FFDAB9"
+            android:textSize="20sp"
+            android:drawableLeft="@mipmap/ic_gas"
+            android:drawablePadding="-65dp"
+            android:text="Gas Stations" />
+
+        <Button
+            android:paddingLeft="85dp"
+            android:id="@+id/button_grocery"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.25"
+            android:background="#FF99FF"
+            android:textSize="20sp"
+            android:drawableLeft="@mipmap/ic_cart"
+            android:drawablePadding="-65dp"
+            android:text="Grocery Stores" />
+
+        <Button
+            android:paddingLeft="85dp"
+            android:id="@+id/button_bars"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.25"
+            android:background="#FF6666"
+            android:textSize="20sp"
+            android:drawableLeft="@mipmap/ic_bar"
+            android:drawablePadding="-65dp"
+            android:text="Bars" />
+
+</LinearLayout>
