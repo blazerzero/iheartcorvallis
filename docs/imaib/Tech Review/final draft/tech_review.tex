@@ -1,0 +1,192 @@
+\documentclass[onecolumn, draftclsnofoot,10pt, compsoc]{IEEEtran}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{setspace}
+
+\usepackage{geometry}
+\geometry{textheight=9.5in, textwidth=7in}
+
+%% Useful packages
+\usepackage{cite}
+
+
+% 1. Fill in these details
+\def \CapstoneTeamName{		I Heart Corvallis}
+\def \CapstoneTeamNumber{		14}
+\def \GroupMemberOne{			Bradley Imai}
+\def \GroupMemberTwo{			Omeed Habibelahian}
+\def \GroupMemberThree{			Dylan Tomlinson}
+\def \CapstoneProjectName{		I Heart Corvallis}
+\def \CapstoneSponsorCompany{	}
+\def \CapstoneSponsorPerson{		Lyndi-Rae Elisabeth Petty}
+
+% 2. Uncomment the appropriate line below so that the document type works
+\def \DocType{		%Problem Statement
+				%Requirements Document
+				Technology Review
+				%Design Document
+				%Progress Report
+				}
+			
+\newcommand{\NameSigPair}[1]{\par
+\makebox[2.75in][r]{#1} \hfil 	\makebox[3.25in]{\makebox[2.25in]{\hrulefill} \hfill		\makebox[.75in]{\hrulefill}}
+\par\vspace{-12pt} \textit{\tiny\noindent
+\makebox[2.75in]{} \hfil		\makebox[3.25in]{\makebox[2.25in][r]{Signature} \hfill	\makebox[.75in][r]{Date}}}}
+% 3. If the document is not to be signed, uncomment the RENEWcommand below
+%\renewcommand{\NameSigPair}[1]{#1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\begin{titlepage}
+    \pagenumbering{gobble}
+    \begin{singlespace}
+    	\includegraphics[height=4cm]{coe_v_spot1}
+        \hfill 
+        % 4. If you have a logo, use this includegraphics command to put it on the coversheet.
+        %\includegraphics[height=4cm]{CompanyLogo}   
+        \par\vspace{.2in}
+        \centering
+        \scshape{
+            \huge CS Capstone \DocType \par
+            {\large\today}\par
+            \vspace{.5in}
+            \textbf{\Huge\CapstoneProjectName}\par
+            \vfill
+            {\large Prepared for}\par
+            \Huge \CapstoneSponsorCompany\par
+            \vspace{5pt}
+            {\Large\NameSigPair{\CapstoneSponsorPerson}\par}
+            {\large Prepared by }\par
+            Group\CapstoneTeamNumber\par
+            % 5. comment out the line below this one if you do not wish to name your team
+            \CapstoneTeamName\par 
+            \vspace{5pt}
+            {\Large
+                \NameSigPair{\GroupMemberOne}\par
+                %\NameSigPair{\GroupMemberTwo}\par
+                %\NameSigPair{\GroupMemberThree}\par
+            }
+            \vspace{20pt}
+        }
+        \begin{abstract}
+        % 6. Fill in your abstract    
+        	This document takes a closer look at the technologies that will be carried out into the I Heart Corvallis Mobile application. Social media integration, user action verification (geolocation) and event display will be the three topics discussed. Each topic will be broken down into three potential options which are all compared and contrasted. Lastly, we will determine which implementation will be used in our application. 
+        \end{abstract}     
+    \end{singlespace}
+\end{titlepage}
+\newpage
+\pagenumbering{arabic}
+\tableofcontents
+% 7. uncomment this (if applicable). Consider adding a page break.
+%\listoffigures
+%\listoftables
+\clearpage
+
+% 8. now you write!
+\section{Social Media Integration}
+\subsection{Overview}
+Integrating a social media aspect such as twitter and Instagram photos from an event into our application will allow the user to view what others have done at those particular events and also entice them into exploring them. Having tweets and photos posted on that specific event will be crucial to keeping that event’s page organized. 
+
+\subsection{Criteria}
+One of the main features to this application is to allow the users to post and also view others’ experiences from that event. Each event’s information page will list photos and tweets from the most recent posted. By giving each event a specific hashtag, users will be able to upload their photos and tweets to the correct events. On the back end, we will implement a filter that searches for specific locations and event hashtags so that the user can easily navigate and view others’ posts. 
+
+\subsection{Potential Choices}
+\subsubsection{Instagram API}
+Instagram's API will allow us to post Instagram photos or a photostream on our mobile application from any personal account. This feature will also create a gallery of images that will automatically update as new pictures are added.The process of implementing these features into our application will first start off by setting up the library, followed by obtaining the web API keys, configuring the login page, building the API output, and lastly dumping the data out. \cite{InstaAPI}
+
+\subsubsection{Twitter API}
+Twitter Kit SDK will allow us to display Twitter content onto our mobile application. Below will be a list of kits we can used to implement into our application. 
+\begin{itemize}
+
+\item TwitterCore - Let users log in with Twitter via Single Sign-On. Make authenticated requests to the Twitter API to load Tweets, users, search results, and other Twitter content.\cite{TSDK}   
+\item TweetUI - Embed media-forward or compact Tweet views into your views and list views to show users information that is relevant to your app. Let users share Tweets discovered via your app.\cite{TSDK}
+\item TweetComposer - Let users compose new Tweets as part of your app or share content discovered via your app.\cite{TSDK} 
+
+\end{itemize}
+
+For our feature, we will most likely be incorporating the TweetUI kit in order to display content into our application. Within TweetUI we will be using the tweetView and CompactTweetView to render our tweets. The Tweets will be requested through the Tweet API or TweetUtils which will cache recent requests. From there we will be able to display the correct content to our application. \cite{Tweetshow} 
+
+\subsubsection{Facebook API}
+Facebook provides its own SDK to integrate with our Android application. There are three different APIs that perform different functions. We will need to first get an Access token to access those APIs. Reviewing the developer's page on access tokens, we will be using the user access token and page access token. These functionalities will be provided below.
+
+\begin{itemize}
+
+\item User access token - this kind of access token is needed any time the app calls an API to read, modify or write a specific person's Facebook data on their behalf. \cite{Faccess}
+\item Page Access Token -  This token is very similar to the User access token however, it provides permission to APIs that read, write or modify the data belonging to a Facebook Page.\cite{Faccess}
+
+\end{itemize}
+
+To obtain a page access token, we will first obtain the user access token and get the manage pages permissions. Once that is achieved, we will get the page access token or the Graph API which will allow us to make API calls on those pages.\\  
+
+\subsection{Discussion}
+All three of these APIs can be implemented into our application. The features that these APIs provide are all very similar, however the information that they display is a little different. Facebook's API seems to be the middleman of Instagram and Twitter. It will be able to display photos and status of users, where Instagram only posts photos, and Twitter only postes statuses.\\ 
+
+\subsection{Conclusion}
+While all three APIs provide great features to our application, we will first be implementing Instagram's API. By providing a feed of photos in each event, other users could be encouraged to attend that event.  
+
+
+
+\section{User action - verification (Geolocation)}
+\subsection{Overview}
+Retrieving the geolocation (current location) for our application is a critical tool to our mobile application. By obtaining a user's current location, we will allow the user to see various events that are happening around them. After reviewing a few potential choices, I came up with the Google Map’s API, Cordova-Plugin-Geolocation API, and Android Location API.  
+
+\subsection{Criteria}
+The user will be able to turn on their location services which will allow them to view the events that are happening around them. By clicking on an event, the user will be prompted if they would like directions to that event. If so, this feature will direct the user to their event in the fastest way. 
+
+\subsection{Potential Choices}
+\subsubsection{Google Map API}
+Google Map’s API is a useful tool for retrieving the current location of an individual. Provided on the Google Maps API website is a tutorial on how to display the geographic location of a user or device on Google Maps using the browser's HTML5 Geolocation feature along with the Google Maps JavaScript API. This website also provides example code and comments on how it works, making this a very useful tool. Both Android and iOS Google Maps APIs require the app to prompt the user for consent to use their location services.\cite{GMaps}
+
+\subsubsection{Cordova - Plugin - Geolocation API}
+This API provides the location information of any device in the form of its latitude and longitude. According to Cordova's website, “Common sources of location information include Global Position System (GPS) and location inferred from network signals such as IP address, WiFi, and Bluetooth MAC addresses.” A quick note is that the API is based on the W3C geolocation API specification and only executes on devices that don’t already provide an implementation.\cite{cordova}
+
+\subsubsection{Android Location API}
+Within the Android API, you can call android.location.LocationListener. There are three main components of the API. The Location class gives geographic location, including the latitude and longitude. LocationManager provides access to the system location services. And lastly, LocationListener is used for receiving notifications from the LocationManager when the location has changed.\cite{Andriodlocal} 
+
+\subsection{Discussion}
+All three APIs can be incorporated into our Android application. They all can retrieve the location of a mobile device. Cordova, on the other hand, can retrieve a few more features such as the IP address, WiFi, and Bluetooth MAC addresses. These features are interesting but not what we are looking for. Android Locations API has a built function within Android Studio making it very simple to implement a function to retrieve the location. However, according to the Android developer's page, it recommend to use the Google Location Service API.\\
+
+\subsection{Conclusion}
+Even though all three location service APIs work for our application, we will be using the Google Location Services API. The Google Play Services provides a more powerful, high-level framework that automatically handles location providers, user movement, and location accuracy. It also handles location update schedule based on power consumption parameters we provide. In most cases, you'll get better battery performance, as well as more appropriate accuracy, by using the Location Services API.\\
+
+
+
+\section{Event Data Display}
+\subsection{Overview}
+This application will also serve as a platform to highlight useful resources around Corvallis. By implementing two maps into our application we will be able to fulfill this requirement. The first map will showcase notable establishments which consist of activities and entertainment, grocery stores, restaurants, shopping centers and city offices. The second map will display events approved by the Corvallis Community Relations office (CCR) which students will be able to accumulate stamps from. Having separate maps will allow the user to easily navigate to local events and useful establishments.  
+
+\subsection{Criteria}
+
+Students will be able to access two maps which display useful resources around Corvallis and events that are approved by the CCR. We will incorporate a sidebar on the first map (useful resources) that filters out establishments by type which will help students narrow down their searches. 
+
+\subsection{Potential Choices}
+\subsubsection{Google Map API}
+Google Maps API provides a feature called markers. A marker identifies a location on a map and can display a custom image of that location. According to the Google Maps marker developers page, “ markers are designed to be interactive. By default they receive ‘click’ events, so you can add an event listener to bring up an information window displaying custom information.” Another feature of this API allows the user to remove a marker from the map. Under the title, adding a Map with a marker on Googles website explains the process on how to implement markers or events on the map. The website provides sample code for us to implement into our application. \cite{GoogleMap}\\
+ 
+\subsubsection{MapBox}
+MapBox is very similar to Google Maps on displaying various icons on a map. However, you can customize every aspect of the map from the colors, hiding or showing specific layers, to choosing which information to present on the map, all while the users are interacting with the map. The only downside to MapBox is that there is a fee after so many views and requests to the API. \cite{Mapbox}\\
+
+\subsubsection{Microsoft Bing Map}
+The Microsoft Bing Maps platform provides many controls and service APIs for our application. A list of them will be provided below from their website.
+
+\begin{itemize}
+\item Bing Maps V8 Web Control - the latest Bing Maps JavaScript API. Combine the AJAX map control with the Bing Maps REST Services and the Bing Spatial Data Services to create powerful Web sites and mobile applications with the latest imagery and location functionality.\cite{bing}
+\item Bing Maps REST Services - perform tasks such as creating a map with pushpins, geocoding an address, retrieving imagery metadata or calculating a route.\cite{bing}
+\item Bing Maps WPF Control - The Bing Maps WPF Control SDK lets developers integrate Bing Maps into rich Windows Presentation Foundation (WPF) applications.\cite{bing}
+\end{itemize}
+
+In a nutshell, Bing Maps provides many API features and platforms that can be incorporated into our application. All of the API keys are also provided on their website for easy access. 
+
+\subsection{Discussion}
+Reviewing the three APIs, they all have their ups and downs. All three of the APIs provide a map in which we can modify to our own specifications. However, MapBox has a fee after so many requests to its API of which is a huge downfall. On the other hand, Google Maps and Bing's API are very promising for the features they provide. Implementing Bing's API may be a challenge, on the other hand, Google Maps API seems very reasonable as it provides example code and good explanations on how to apply it to our application. 
+\subsection{Conclusion}
+Although all three APIs provide great features, we will be using Google Maps API as our source to display events to our application. The Google Developers manual for this API provides detailed information on how to implement their code into our application. 
+ 
+
+\clearpage
+\bibliography{techreview}
+\bibliographystyle{IEEEtran}
+
+
+
+\end{document}
