@@ -5,6 +5,8 @@ DVIPDF 	= dvipdft
 XDVI	= xdvi -gamma 4
 GH 		= gv
 
+BUILDDIR = /usr/local/apps/tex_live/current/bin/x86_64-linux
+
 EXAMPLES	= $(wildcard *.c)
 SRC	  := $(shell egrep -l '^[^%]*\\begin\{document\}' *.tex)
 TRG 		= $(SRC:%.tex=%.dvi)
@@ -19,15 +21,15 @@ $(TRG): %.dvi: %.tex $(EXAMPLES)
 	#use pygments to include source code
 	#pygmentize -f latex -o __${EXAMPLES}.tex ${EXAMPLES}
 
-	$(LATEX) $<
-	$(BIBTEX) $(<:%.tex=%)
-	$(LATEX) $<
-	$(LATEX) $<
+	$(BUILDDIR)/$(LATEX) $<
+	$(BUILDDIR)/$(BIBTEX) $(<:%.tex=%)
+	$(BUILDDIR)/$(LATEX) $<
+	$(BUILDDIR)/$(LATEX) $<
 	#rm __${SRC}.tex
 	#remove pygmentized output to avoid cluttering up directory
 
 $(PSF):%.ps: %.dvi
-	$(DVIPS) -R -Poutline -t letter $< -o $@
+	$(BUILDDIR)/$(DVIPS) -R -Poutline -t letter $< -o $@
 
 $(PDF): %.pdf: %.ps
 	ps2pdf $<
@@ -41,6 +43,6 @@ showps: $(PSF)
 all: pdf
 
 clean:
-	rm -f *.pdf *.ps *.dvi *.out *.log *.aux *.bbl *.blg *.pyg *.synctex.gz
+	rm -f *.ps *.dvi *.out *.log *.aux *.bbl *.blg *.pyg *.synctex.gz
 
 .PHONY: all show clean ps pdf showps

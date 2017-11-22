@@ -1,0 +1,29 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}Data Storage and Handling}{3}
+\contentsline {subsection}{\numberline {1.1}Overview}{3}
+\contentsline {subsection}{\numberline {1.2}Criteria}{3}
+\contentsline {subsection}{\numberline {1.3}Choices}{3}
+\contentsline {subsubsection}{\numberline {1.3.1}\textbf {MySQL}}{3}
+\contentsline {subsubsection}{\numberline {1.3.2}\textbf {MongoDB}}{3}
+\contentsline {subsubsection}{\numberline {1.3.3}\textbf {PostgreSQL}}{3}
+\contentsline {subsection}{\numberline {1.4}Discussing the Choices}{3}
+\contentsline {subsection}{\numberline {1.5}Conclusion}{4}
+\contentsline {section}{\numberline {2}UI Design Architectures}{4}
+\contentsline {subsection}{\numberline {2.1}Overview}{4}
+\contentsline {subsection}{\numberline {2.2}Criteria}{4}
+\contentsline {subsection}{\numberline {2.3}Choices}{4}
+\contentsline {subsubsection}{\numberline {2.3.1}\textbf {Android SDK}}{4}
+\contentsline {subsubsection}{\numberline {2.3.2}\textbf {Apache Cordova}}{4}
+\contentsline {subsubsection}{\numberline {2.3.3}\textbf {Semantic UI}}{5}
+\contentsline {subsection}{\numberline {2.4}Discussing the Choices}{5}
+\contentsline {subsection}{\numberline {2.5}Conclusion}{5}
+\contentsline {section}{\numberline {3}Administrative Access}{5}
+\contentsline {subsection}{\numberline {3.1}Overview}{5}
+\contentsline {subsection}{\numberline {3.2}Criteria}{5}
+\contentsline {subsection}{\numberline {3.3}Choices}{5}
+\contentsline {subsubsection}{\numberline {3.3.1}\textbf {Web Interface to Edit Content}}{5}
+\contentsline {subsubsection}{\numberline {3.3.2}\textbf {Direct Access to Databases}}{6}
+\contentsline {subsubsection}{\numberline {3.3.3}\textbf {Special Administrative Login Within App}}{6}
+\contentsline {subsection}{\numberline {3.4}Discussing the Choices}{6}
+\contentsline {subsection}{\numberline {3.5}Conclusion}{6}
+\contentsline {section}{References}{6}
