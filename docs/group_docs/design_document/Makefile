@@ -23,8 +23,8 @@ $(TRG): %.dvi: %.tex $(EXAMPLES)
 
 	$(BUILDDIR)/$(LATEX) $<
 	#$(BUILDDIR)/$(BIBTEX) $(<:%.tex=%)
-	#$(BUILDDIR)/$(LATEX) $<
-	#$(BUILDDIR)/$(LATEX) $<
+	$(BUILDDIR)/$(LATEX) $<
+	$(BUILDDIR)/$(LATEX) $<
 	#rm __${SRC}.tex
 	#remove pygmentized output to avoid cluttering up directory
 
