@@ -1,0 +1,114 @@
+\documentclass[onecolumn, draftclsnofoot,10pt, compsoc]{IEEEtran}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{setspace}
+
+\usepackage{geometry}
+\geometry{textheight=9.5in, textwidth=7in}
+
+% 1. Fill in these details
+\def \CapstoneTeamName{		We Heart Corvallis}
+\def \CapstoneTeamNumber{		14}
+\def \GroupMemberOne{			Dylan Tomlinson}
+
+\def \CapstoneProjectName{		I Heart Corvallis}
+\def \CapstoneSponsorCompany{	Corvallis Community Relations}
+\def \CapstoneSponsorPerson{		Lyndi-Rae Elisabeth Petty}
+
+% 2. Uncomment the appropriate line below so that the document type works
+\def \DocType{		Problem Statement
+				%Requirements Document
+				%Technology Review
+				%Design Document
+				%Progress Report
+				}
+			
+\newcommand{\NameSigPair}[1]{\par
+\makebox[2.75in][r]{#1} \hfil 	\makebox[3.25in]{\makebox[2.25in]{\hrulefill} \hfill		\makebox[.75in]{\hrulefill}}
+\par\vspace{-12pt} \textit{\tiny\noindent
+\makebox[2.75in]{} \hfil		\makebox[3.25in]{\makebox[2.25in][r]{Signature} \hfill	\makebox[.75in][r]{Date}}}}
+% 3. If the document is not to be signed, uncomment the RENEWcommand below
+\renewcommand{\NameSigPair}[1]{#1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\begin{titlepage}
+    \pagenumbering{gobble}
+    \begin{singlespace}
+    	% \includegraphics[height=4cm]{coe_v_spot1}
+        \hfill 
+        % 4. If you have a logo, use this includegraphics command to put it on the coversheet.
+        %\includegraphics[height=4cm]{CompanyLogo}   
+        \par\vspace{.2in}
+        \centering
+        \scshape{
+            \huge CS Capstone \DocType \par
+            {\large\today}\par
+            \vspace{.5in}
+            \textbf{\Huge\CapstoneProjectName}\par
+            \vfill
+            {\large Prepared for}\par
+            \Huge \CapstoneSponsorCompany\par
+            \vspace{5pt}
+            {\Large\NameSigPair{\CapstoneSponsorPerson}\par}
+            {\large Prepared by }\par
+            Group\CapstoneTeamNumber\par
+            % 5. comment out the line below this one if you do not wish to name your team
+            \CapstoneTeamName\par 
+            \vspace{5pt}
+            {\Large
+                \NameSigPair{\GroupMemberOne}\par
+            %    \NameSigPair{\GroupMemberTwo}\par
+            %   \NameSigPair{\GroupMemberThree}\par
+            }
+            \vspace{20pt}
+        }
+        \begin{abstract}
+        % 6. Fill in your abstract    
+            The purpose of this document is to define the problem that Team 14 will be attempting to solve throughout the
+            next three terms of Senior Design. This document also contains a proposed solution for the problem that
+            is defined. This document also has a list of performance metrics that will be used to determine the
+            success of the project.
+        \end{abstract}     
+    \end{singlespace}
+\end{titlepage}
+\newpage
+\pagenumbering{arabic}
+\tableofcontents
+% 7. uncomment this (if applicable). Consider adding a page break.
+%\listoffigures
+%\listoftables
+\clearpage
+
+% 8. now you write!
+\section{Definition of Problem}
+
+A current problem that the Office of Student Life (aka Corvallis Community Relations) is facing is that not enough
+students are involving themselves with the Corvallis community. There may be several reasons for this problem.
+One of them could be because students simply do not know about these events that are happening, or they just don't
+have enough information about the events, such as the times or places they occur. Another reason could be that
+students do not have a good enough reason to go to these events, they may not think that these events will benefit them.
+
+\section{Proposed Solution}
+Our solution is to create an application that will help advertise and give incentive for civic engagement among the
+students of Corvallis. This application will be available on Android and iOS platforms to ensure the majority of students can make use of the application.
+The application is intended to be used as a passport for the user. Information about local events will be posted on the application,
+and the user can decide whether or not to attend this event. If the user does attend the event, they collect a
+sort of stamp on their application. When a certain number of stamps are claimed, the user will receive a reward. This gives an incentive for the user to go to more events, which solves on of the stated problems.
+Another benefit of this is that users will have the ability to see information about events and their locations. This will help users to be more informed,
+about what goes on in the Corvallis community and will hopefully increase turnouts for these events. This also solves another of the problems
+listed above.
+
+\section{Performance Metrics}
+\begin{itemize}
+    \item A down-loadable application for  both Android and iOS that launches.
+    \item GPS tracking to ensure users get stamps for the events they attend.
+    \item A reward system that will give users rewards based on the events the events they attend.
+    \item A system that allows our client to easily add and remove events, including information about the events, location, etc.
+    \item A system that allows users to create a profile that includes basic information about them, a photo, etc.
+    \item A system that will allow users to view events in the coming weeks or months, allowing them to select certain events and add them to their calendar.
+    \item Ensure that the application can allocate at least 50 users at once.
+    \item A database that is able to hold/release information on at least 50 user accounts
+\end{itemize}
+
+\end{document}
