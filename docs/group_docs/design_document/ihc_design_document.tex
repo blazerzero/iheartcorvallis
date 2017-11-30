@@ -24,7 +24,7 @@
 		\subsection{Scope}
 			In this project, we will be producing the "I Heart Corvallis" mobile application. The app will showcase events happening around the Corvallis community, such as city council meetings, service and volunteer projects, and other community activities. It will also act as a passport for users to show that they have attended these activities. The app will give the user stamps upon completion or verification of attendance for each activity and will offer rewards to the user for accumulating enough stamps. On top of this, the application will showcase other resources available to community members. \\ \\
 			The application will be available for Android devices and aims to inform members of the Corvallis community, both students and others, about various initiatives and resources around the community, as well as get community members more involved with community projects, events, and meetings by giving them an incentive to do so. \\ \\
-			Another goal of the app is to help students be more aware of community events. To accomplish this, the application will utilize the Google Maps API to show where events and various community resources can be found. The app will also include a separate page that will provide additional information about the city of Corvallis, such as links to website in the community and information about the Corvallis Community Relations (CCR) office and the initiative.
+			Another goal of the app is to help students be more aware of community events. To accomplish this, the application will utilize the Google Maps API to show where events and various community resources can be found. The app will also include a separate page that will provide additional information about the city of Corvallis, such as links to websites in the community and information about the Corvallis Community Relations (CCR) office and the initiative.
 		\subsection{Purpose}
 			This document will define the design specifications of the "I Heart Corvallis" mobile application. It defines key design decisions that we will be utilizing to implement the requirements for the application throughout the scope of this project. It explains the concerns and desires that the CCR office has in regards to the app, attributes related to various elements of the app and various design constraints we face in the development of the app.
 		\subsection{Intended Audience}
@@ -39,16 +39,17 @@
 			\item \textbf{CCR:} Corvallis Community Relations, a subset of the Office of Student Life. The Corvallis Community Relations office is the leader of the I Heart Corvallis initiative and the client for this project.
 			\item \textbf{XML:} A software- and hardware-independent tool for storing and transporting data.
 			\item \textbf{Database:} A structured set of data held in a computer, especially one that is accessible in various ways.
-			\item \textbf{Java:}
 			\item \textbf{JavaScript:} A programming language that is commonly used in web development.
-			\item \textbf{Android Studio:} The official integrated development environment (IDE) for software development on Google's Android operating system, built on JetBrain's IntelliJ IDEA software and designed specifically for Android development
+			\item \textbf{jQuery:} A fast, small, and feature-rich JavaScript library that makes HTML document traversal and manipulation, event handling, and animation much simpler.
+			\item \textbf{Android Studio:} The official integrated development environment (IDE) for software development on Google's Android operating system, built on JetBrain's IntelliJ IDEA software and designed specifically for Android development.
 			\item \textbf{Stamp:} In-app verification that the user has attended a particular community activity. Some activies will be worth more stamps than others.
-			\item \textbf{MySQL:} An open-source relational database management system based on Structured Query Language (SQL)
+			\item \textbf{MySQL:} An open-source relational database management system based on Structured Query Language (SQL).
 		\end{itemize}
+			~\cite{jQuery}
 		
 	\section{Conceptual Model for Software Design Descriptions}
 		\subsection{Software Design in Context}
-			The I Heart Corvallis application is a subset of the I Heart Corvallis initiative, spearheaded by the CCR. The initiative?s goal is to enhance OSU students' sense of belonging to the Corvallis community and cultivate students' commitment to the common good. The application is intended to be a mobile extension of the initiative, and below we will showcase how we plan to design this application to best suit the interests of the CCR office and the I Heart Corvallis initiative.
+			The I Heart Corvallis application is a subset of the I Heart Corvallis initiative, spearheaded by the CCR. The initiative's goal is to enhance OSU students' sense of belonging to the Corvallis community and cultivate students' commitment to the common good. The application is intended to be a mobile extension of the initiative, and below we will showcase how we plan to design this application to best suit the interests of the CCR office and the I Heart Corvallis initiative.
 
 		\subsection{Influences on the Preparation of this Document}
 			The preparation of the software design document is driven by the Requirements Document, which states the specific requirements for the project to be completed. Also, the time constraint placed on the project by the Capstone courses has an effect on how exactly we will design and implement the application, as we may have to find simpler solutions for some aspects of the app to complete it within our allotted timeframe.
@@ -60,16 +61,18 @@
 			\subsubsection{Our Client's Concerns}
 				The CCR office requires that the database system used in the app can efficiently store, modify, and remove entries from the database. The database needs to be secure enough that only they can modify its contents, and it needs to be fast enough that changes made to the database are nearly immediately reflected in the app.
 			\subsubsection{MySQL}
-				MySQL is an open-source relational database management system written in C and C++. It works on many different system platforms, such as Linux, macOS, Windows, FreeBSD, and OpenBSD. Developers can also use PHP to enable access to MySQL databases in Android applications. MySQL is used in many well-known websites, like Facebook, Twitter, Flickr, and YouTube.
+				MySQL is an open-source relational database management system written in C and C++. It works on many different system platforms, such as Linux, macOS, Windows, FreeBSD, and OpenBSD. Developers can also use PHP to enable access to MySQL databases in Android applications. MySQL is used in many well-known websites, like Facebook, Twitter, Flickr, and YouTube. To access our MySQL databases in our application, we will code parts of the app in PHP.
 				~\cite{MySQL}
 			\subsubsection{Design Rationale}
 				When researching database systems, we found MySQL, MongoDB, and PostgreSQL to all be viable options. However, we decided to use MySQL for our database implementation. MySQL provides great security features and is fast, which is vital to our application due to the constant communication between the user and the database. PostgreSQL is a good option but may be more powerful than necessary for this application, and it is not quite as fast as MySQL. MongoDB has some great features, but we have tried implementing MongoDB as a database management system for a website in the past and spent weeks trying to set it up. We were never able to successfully implement MongoDB into our website and ended up switching to MySQL anyway.
+			\subsubsection{Connections to Other Parts of the Application}
+				How application data is stored and handled is central to the functionality of the app, since all of the events' information will be stored in a database and referenced in different sections of the app. The app's geolocation functionality will use the user's current location to show and direct them to events near them, and that implementation will need access to the information stored in the event database. On top of this, the in-app map that shows the locations of all the events also needs access to the information in the event database.
 				~\cite{MySQL}
 				~\cite{MySQL_vs_Postgres}
 
 		\subsection{UI Design Architecture}
 			\subsubsection{Overview}
-				The user interface is going to be a major part of the application, as people will not use the app if it does not look visually appealing. The app also has to be easy to use so users continue using the app. Because of this, it?s critical to choose a UI architecture that makes navigating the app as simple and visually clean as possible.
+				The user interface is going to be a major part of the application, as people will not use the app if it does not look visually appealing. The app also has to be easy to use so users continue using the app. Because of this, it's critical to choose a UI architecture that makes navigating the app as simple and visually clean as possible.
 			\subsubsection{Our Client's Concerns}
 				The CCR office requires that the user interface architecture we use is modifiable enough that the interface can be made to resemble other Oregon State University applications where necessary.
 			\subsubsection{Semantic UI}
@@ -95,7 +98,7 @@
 			\subsubsection{Our Client's Concerns}
 				The CCR office requires that the users of the application have a guaranteed level of security for their account credentials.
 			\subsubsection{PBKDF2}
-				Password-Based Key Derivation Function 2, or PBKDF2, is a hash function aimed at reducing an encrypted password?s vulnerability to brute force attacks. It was originally written in 2000, but is still recommended for password hashing by RFC 8018 in 2017. PBKDF2 applies a psuedorandom function to derive keys, and the length of the derived key is essentially unbounded.
+				Password-Based Key Derivation Function 2, or PBKDF2, is a hash function aimed at reducing an encrypted password's vulnerability to brute force attacks. It was originally written in 2000, but is still recommended for password hashing by RFC 8018 in 2017. PBKDF2 applies a psuedorandom function to derive keys, and the length of the derived key is essentially unbounded.
 				~\cite{PBKDF2}
 				~\cite{PBKDF2_More}
 			\subsubsection{Design Rationale}
@@ -108,7 +111,7 @@
 			\subsubsection{Our Client's Concerns}
 				The CCR office is requiring that this application be available on a variety of Android devices. They are also requiring that the visual quality of the user interface remains consistent across these devices.
 			\subsubsection{Semantic UI}
-				Semantic UI is a HTML5-based framework that is powered by jQuery. It is used for developing Android applications, as well as websites. It focuses on using semantics-based commands, which makes its syntax very easy to understand. Semantic UI uses the HTML5 and CSS3 programming languages.
+				Semantic UI is a HTML5-based framework that is powered by jQuery. It is used for developing Android applications, as well as websites. It focuses on using semantics-based commands, which makes its syntax very easy to understand. Semantic UI uses the HTML5 and CSS3 programming languages, and we would utilize JavaScript as well since it integrates well with HTML and CSS.
 				~\cite{Semantic_UI}
 				~\cite{Semantic_UI2}
 			\subsubsection{Design Rationale}
@@ -131,7 +134,7 @@
 			\subsubsection{Our Client's Concerns}
 				The CCR office desires that users can post about their experiences at an event and view other users' experiences from that event. They would like the app to filter photos in such a way that photos are only presented for the event they correspond to.
 			\subsubsection{Instagram API}
-				\textbf{INSERT DEFINITION/EXPLANATION HERE}
+				Instagram's API will allow us to post Instagram photos or a photo stream on our mobile application from any personal account. This API will also create a gallery of images that will automatically update as new pictures are added. The process of implementing these features into our application will first start off by setting up the library, followed by obtaining the web API keys, configuring the login page, building the API output, and lastly dumping the data out. To implement Instagram's API into our application, we will code in JavaSCript and jQuery.
 				~\cite{InstaAPI}
 			\subsubsection{Design Rationale}
 				The potential choices we chose for this feature were Instagram API, Twitter API, and Facebook API. While all three APIs provide great features to our application, we will first be implementing Instagram's API. By providing a feed of photos in each event filtered by location and relevant hashtags, other users could be encouraged to attend that event.
@@ -141,12 +144,14 @@
 				Retrieving the geolocation (current location) for our application is a critical tool to our mobile application. By obtaining a user's current location, we will allow the user to see various events that are happening around them, and the app will be able to prove that they have actually attended an event, providing an added layer of security. 
 			\subsubsection{Our Client's Concerns}
 				The CCR office desires that the app can retrieve a user's geolocation to show them and direct them to events near them, as well as authenticate a user's location to prove that they are at a particular event before giving them a stamp.
-			\subsubsection{Google Location Services API}
-				\textbf{INSERT DEFINITION/EXPLANATION HERE}
+			\subsubsection{Google Maps Geolocation API}
+				The Google Maps Geolocation API is a useful tool for retrieving the current location of an individual. Provided on the Google Maps Geolocation API website is a tutorial on how to display the geographic location of a user or device on Google Maps using the browser's HTML5 Geolocation feature along with the Google Maps JavaScript API. This website also provides example code and comments on how it works, making this a very useful tool. Both Android and iOS Google Maps APIs require the app to prompt the user for consent to use their location services.
 				~\cite{GMaps}
 			\subsubsection{Design Rationale}
-				The potential choices we chose for this feature were Google Maps API, Cordova - Plugin - Geolocation API, and Android Location API. Even though all three location service APIs work for our application, we will be using the Google Location Services API. The Google Play Services provides a more powerful, high-level framework that automatically handles location providers, user movement, and location accuracy. It also handles location update schedule based on power consumption parameters we provide. In most cases, you will get better battery performance, as well as more appropriate accuracy, by using the Location Services API.
+				The potential choices we chose for this feature were Google Maps Geolocation API, Cordova - Plugin - Geolocation API, and Android Location API. Even though all three location service APIs work for our application, we will be using the Google Maps Geolocation API. It provides a more powerful, high-level framework that automatically handles location providers, user movement, and location accuracy. It also handles location update schedule based on power consumption parameters we provide. In most cases, you will get better battery performance, as well as more appropriate accuracy, by using the Google Maps Geolocation API.
 				~\cite{GMaps}
+			\subsubsection{Connections to Other Parts of the Application}
+				The application's geolocation implementation will need access to the event database to properly display the events near the user's current location, so it's important that these two parts of the app can efficiently communicate with each other.
 				
 		\subsection{Event Display}
 			\subsubsection{Overview}
@@ -154,11 +159,13 @@
 			\subsubsection{Our Client's Concerns}
 				The CCR office would like to include a previously created Google Map that pins various establishments around Corvallis, as well as implement another map that displays the locations of the events that are listed in the application. 
 			\subsubsection{Google Maps API}
-				Google Maps API provides a feature called Markers. A Marker identifies a location on a map and can display a custom image of that location. According to the Google Maps Marker developers page, Markers are designed to be interactive. By default they receive click events, so you can add an event listener to bring up an information window displaying custom information. Another feature of this API allows the user to remove a Marker from the map. Google's website explains the process on how to implement Markers or events on the map and provides sample code for us to implement into our application.
+				Google Maps API provides a feature called Markers. A Marker identifies a location on a map and can display a custom image of that location. According to the Google Maps Marker developers page, "Markers are designed to be interactive. By default they receive 'click' events, so you can add an event listener to bring up an information window displaying custom information." Another feature of this API allows the user to remove a Marker from the map. Google's website explains the process on how to implement Markers or events on the map and provides sample code for us to implement into our application. We will utilize JavaScript to implement this API.
 				~\cite{GoogleMap}
 			\subsubsection{Design Rationale}
-				The potential choices we chose for this feature were Google Maps API, MapBox, and Microsoft Bing Map. Although all three APIs provide great features, we will be using Google Maps API as our source to display events to our application. The Google Developers manual for this API provides detailed information on how to implement their code into our application.
+				The potential choices we chose for this feature were Google Maps API, MapBox, and Microsoft Bing Map. Although all three APIs provide great features, we will be using Google Maps API as our source to display events to our application. The Google Developer Manual for this API provides detailed information on how to implement their code into our application.
 				~\cite{GoogleMap}
+			\subsubsection{Connections to Other Parts of the Application}
+				Like the geolocation implementation, the event map will need access to the event database to properly display the locations and details of events around town. Therefore, it's crucial that these two pieces of the application can easily communicate with each other.
 				
 	\bibliography{ihc_design_document}
 	\bibliographystyle{IEEEtran}
