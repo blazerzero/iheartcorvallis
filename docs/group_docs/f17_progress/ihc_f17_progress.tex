@@ -1,0 +1,152 @@
+\documentclass[draftclsnofoot, onecolumn, 10pt, compsoc]{IEEEtran}
+
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage[top=0.75in, bottom=0.75in, left=0.75in, right=0.75in]{geometry}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstdefinestyle{php}
+{
+   frame=tb,
+   language=PHP,
+   aboveskip=3mm,
+   belowskip=3mm,
+   showstringspaces=false,
+   columns=flexible,
+   basicstyle={\small\ttfamily},
+   numbers=none,
+   numberstyle=\tiny\color{gray},
+   keywordstyle=\color{blue},
+   commentstyle=\color{dkgreen},
+   stringstyle=\color{mauve},
+   breaklines=true,
+   breakatwhitespace=true,
+   tabsize=3
+}
+
+\lstdefinestyle{c++}
+{
+   frame=tb,
+   language=C++,
+   aboveskip=3mm,
+   belowskip=3mm,
+   showstringspaces=false,
+   columns=flexible,
+   basicstyle={\small\ttfamily},
+   numbers=none,
+   numberstyle=\tiny\color{gray},
+   keywordstyle=\color{blue},
+   commentstyle=\color{dkgreen},
+   stringstyle=\color{mauve},
+   breaklines=true,
+   breakatwhitespace=true,
+   tabsize=3
+}
+
+\title{\textbf{I Heart Corvallis - Mobile Application
+               \\Fall 2017 Progress Report}
+               \\Capstone I
+               \\Fall 2017}
+
+\author{Omeed Habibelahian\\Bradley Imai\\Dylan Tomlinson}
+
+\begin{document}
+   \maketitle
+   \begin{abstract}
+      This document takes a look back at the work we have done on the I Heart Corvallis mobile application this past term. It recaps the purposes and goals of the application, explains where we are currently on the project, and describes problems we have faced so far, how they impeded our progess on the project, and how we solved those problems. It also highlights several useful pieces of code we encountered throughout the research process and provides a retrospective of the past 10 weeks, looking back at the positives that happened each week, any changes we need to implement in our project, and what we will do to succesfully make those changes.
+   \end{abstract}
+   \newpage
+
+   \tableofcontents
+   \newpage
+
+   \section{Project Overview}
+   In this project, we will be producing the "I Heart Corvallis" mobile application. The app will showcase events happening around the Corvallis community, such as city council meetings, service and volunteer projects, and other community activities. It will also act as a passport for users to show that they have attended these activities. The app will give the user stamps upon completion or verification of attendance for each activity and will offer rewards to the user for accumulating enough stamps. On top of this, the application will showcase other resources available to community members. \\ \\
+   The application will be available for Android devices and aims to inform members of the Corvallis community, both students and others, about various initiatives and resources around the community, as well as get community members more involved with community projects, events, and meetings by giving them an incentive to do so. \\ \\
+   Another goal of the app is to help students be more aware of community events. To accomplish this, the application will utilize the Google Maps API to show where events and various community resources can be found. The app will also include a separate page that will provide additional information about the city of Corvallis, such as links to websites in the community and information about the Corvallis Community Relations (CCR) office and the initiative.
+   \section{Current Status}
+   Currently, we have just finished designing our application and conducting the proper research on different aspects of the app. We have defined the important pieces of our application in our Tech Review documents and our Design Document. In these documents we also decided on which technologies, APIs, systems, and implementations we will use to create the best version of this application that we can. Now that we have completed designing the app, over Winter Break we will begin the implementation and creation of the application.
+   \section{Problems We've Encountered}
+   \section{Relevant Code}
+      \subsection{MySQL}
+      The following code snippet shows how to grab information from a database and print that information to the screen. Code like this will come in handy when we're grabbing information from our databases and presenting them in the application.
+      \begin{lstlisting}[style=php]
+<?php
+$servername = "localhost";
+$username = "username";
+$password = "password";
+$dbname = "myDB";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+   die("Connection failed: " . $conn->connect_error);
+}
+
+$sql = "SELECT id, firstname, lastname FROM MyGuests";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+   // output data of each row
+   while($row = $result->fetch_assoc()) {
+      echo "id: " . $row["id"]. " - Name: " . $row["firstname"]. " " . $row["lastname"]. "<br>";
+   }
+} else {
+   echo "0 results";
+}
+$conn->close();
+?>
+      \end{lstlisting}
+      ~\cite{MySQL}
+      \subsection{Instagram API}
+      % INSERT A PIECE OF CODE FROM INSTAGRAM API
+      ~\cite{InstaAPI}
+      \subsection{Google Maps Geolocation API}
+      % INSERT A PIECE OF CODE FROM GOOGLE MAPS GEOLOCATION API
+      ~\cite{GMaps_Geo}
+      \subsection{Adding a Marker to a Google Map}
+      The following code snippet shows how to use the Google Maps JavaScript API to initalize a Google Map centered at Uluru, Australia and place a marker on that location. Code like this will come in handy when placing events on the Google Map we plan to integrate into the application.
+      \begin{lstlisting}[style=c++]
+function initMap() {
+   var myLatLng = {lat: -25.363, lng: 131.044};
+
+   var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 4,
+      center: myLatLng
+   });
+
+   var marker = new google.maps.Marker({
+      position: myLatLng,
+      map: map,
+      title: 'Hello World!'
+   });
+}
+      \end{lstlisting}
+      ~\cite{GMaps_Marker}
+   \section{Retrospective}
+      \begin{tabular}{|p{0.1\linewidth}|p{0.3\linewidth}|p{0.3\linewidth}|p{0.3\linewidth}|}
+         \hline
+         Week \# & Positives & Deltas & Actions \\ \hline
+         1 & & & \\ \hline
+         2 & & & \\ \hline
+         3 & & & \\ \hline
+         4 & & & \\ \hline
+         5 & & & \\ \hline
+         6 & & & \\ \hline
+         7 & & & \\ \hline
+         8 & & & \\ \hline
+         9 & & & \\ \hline
+         10 & & & \\ \hline
+      \end{tabular}
+
+   \bibliography{ihc_f17_progress}
+   \bibliographystyle{IEEEtran}
+
+\end{document}
