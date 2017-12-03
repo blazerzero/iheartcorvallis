@@ -7,7 +7,6 @@ GH 		= gv
 
 BUILDDIR = /usr/local/apps/tex_live/current/bin/x86_64-linux
 
-
 EXAMPLES	= $(wildcard *.c)
 SRC	  := $(shell egrep -l '^[^%]*\\begin\{document\}' *.tex)
 TRG 		= $(SRC:%.tex=%.dvi)

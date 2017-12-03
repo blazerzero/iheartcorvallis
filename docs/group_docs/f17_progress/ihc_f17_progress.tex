@@ -6,6 +6,7 @@
 \usepackage{listings}
 \usepackage[top=0.75in, bottom=0.75in, left=0.75in, right=0.75in]{geometry}
 \usepackage{color}
+\usepackage{longtable}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
@@ -59,7 +60,7 @@
 \begin{document}
    \maketitle
    \begin{abstract}
-      This document takes a look back at the work we have done on the I Heart Corvallis mobile application this past term. It recaps the purposes and goals of the application, explains where we are currently on the project, and describes problems we have faced so far, how they impeded our progess on the project, and how we solved those problems. It also highlights several useful pieces of code we encountered throughout the research process and provides a retrospective of the past 10 weeks, looking back at the positives that happened each week, any changes we need to implement in our project, and what we will do to succesfully make those changes.
+      This document takes a look back at the work we have done on the I Heart Corvallis mobile application this past term. It recaps the purposes and goals of the application, explains where we are currently on the project, and describes problems we have faced so far, how they impeded our progress on the project, and how we solved those problems. It also highlights several useful pieces of code we encountered throughout the research process and provides a retrospective of the past 10 weeks, looking back at the positives that happened each week, any changes we need to implement in our project, and what we will do to successfully make those changes.
    \end{abstract}
    \newpage
 
@@ -70,12 +71,16 @@
    In this project, we will be producing the "I Heart Corvallis" mobile application. The app will showcase events happening around the Corvallis community, such as city council meetings, service and volunteer projects, and other community activities. It will also act as a passport for users to show that they have attended these activities. The app will give the user stamps upon completion or verification of attendance for each activity and will offer rewards to the user for accumulating enough stamps. On top of this, the application will showcase other resources available to community members. \\ \\
    The application will be available for Android devices and aims to inform members of the Corvallis community, both students and others, about various initiatives and resources around the community, as well as get community members more involved with community projects, events, and meetings by giving them an incentive to do so. \\ \\
    Another goal of the app is to help students be more aware of community events. To accomplish this, the application will utilize the Google Maps API to show where events and various community resources can be found. The app will also include a separate page that will provide additional information about the city of Corvallis, such as links to websites in the community and information about the Corvallis Community Relations (CCR) office and the initiative.
+
    \section{Current Status}
    Currently, we have just finished designing our application and conducting the proper research on different aspects of the app. We have defined the important pieces of our application in our Tech Review documents and our Design Document. In these documents we also decided on which technologies, APIs, systems, and implementations we will use to create the best version of this application that we can. Now that we have completed designing the app, over Winter Break we will begin the implementation and creation of the application.
+
    \section{Problems We've Encountered}
+   The CCR office does not possess a lot of technical prowess, so it has been a bit of challenge figuring out what exactly they are picturing as a final product. We had to spend time at the beginning of the term trying to see what they want out of the app and what features they desired, and we had to set some expectations for them regarding what is and is not feasible in the timeframe we have for this project. We had to inform them that building two separate versions of the app, one for Android and one for iOS, could be a stretch given our timeframe, so we made the iOS version of the app a stretch goal.
+
    \section{Relevant Code}
       \subsection{MySQL}
-      The following code snippet shows how to grab information from a database and print that information to the screen. Code like this will come in handy when we're grabbing information from our databases and presenting them in the application.
+      The following code snippet shows how to grab information from a database and print that information to the screen. In this example, the database contains names. Code like this will come in handy when we're grabbing information from our databases and presenting them in the application.
       \begin{lstlisting}[style=php]
 <?php
 $servername = "localhost";
@@ -105,14 +110,49 @@ $conn->close();
 ?>
       \end{lstlisting}
       ~\cite{MySQL}
-      \subsection{Instagram API}
-      % INSERT A PIECE OF CODE FROM INSTAGRAM API
-      ~\cite{InstaAPI}
-      \subsection{Google Maps Geolocation API}
-      % INSERT A PIECE OF CODE FROM GOOGLE MAPS GEOLOCATION API
+      \subsection{Initializing a Geolocation Request}
+      The following piece of code shows an example of the structure of a Geolocation request body built using the Google Maps Geolocation API.
+      \begin{lstlisting}[style=c++]
+{
+   "homeMobileCountryCode": 310,
+   "homeMobileNetworkCode": 410,
+   "radioType": "gsm",
+   "carrier": "Vodafone",
+   "considerIp": "true",
+   "cellTowers": [
+      {  // GSM Cell Tower
+         "cellId": 42,
+         "locationAreaCode": 415,
+         "mobileCountryCode": 310,
+         "mobileNetworkCode": 410,
+         "age": 0,
+         "signalStrength": -60,
+         "timingAdvance": 15
+      },
+      {  // WCDMA Cell Tower
+         "cellId": 21532831,
+         "locationAreaCode": 2862,
+         "mobileCountryCode": 214,
+         "mobileNetworkCode": 7
+      }
+   ],
+   "wifiAccessPoints": [      // This array must contain two or more WiFi access points objects. The macAddress field is required, and all other fields of the object are optional.
+      {
+         "macAddress": "00:25:9c:cf:1c:ac",
+         "signalStrength": -43,
+         "signalToNoiseRatio": 0
+      },
+      {
+         "macAddress": "00:25:9c:cf:1c:ad",
+         "signalStrength": -55,
+         "signalToNoiseRatio": 0
+      }
+   ]
+}
+      \end{lstlisting}
       ~\cite{GMaps_Geo}
       \subsection{Adding a Marker to a Google Map}
-      The following code snippet shows how to use the Google Maps JavaScript API to initalize a Google Map centered at Uluru, Australia and place a marker on that location. Code like this will come in handy when placing events on the Google Map we plan to integrate into the application.
+      The following code snippet shows how to use the Google Maps JavaScript API to initalize a Google Map centered at a particular location and place a marker on that location. In this case, the location used is Uluru, Australia. Code like this will come in handy when placing events on the Google Map we plan to integrate into the application.
       \begin{lstlisting}[style=c++]
 function initMap() {
    var myLatLng = {lat: -25.363, lng: 131.044};
@@ -130,21 +170,136 @@ function initMap() {
 }
       \end{lstlisting}
       ~\cite{GMaps_Marker}
+
    \section{Retrospective}
-      \begin{tabular}{|p{0.1\linewidth}|p{0.3\linewidth}|p{0.3\linewidth}|p{0.3\linewidth}|}
+      \begin{longtable}{|p{0.1\linewidth}|p{0.3\linewidth}|p{0.3\linewidth}|p{0.3\linewidth}|}
          \hline
          Week \# & Positives & Deltas & Actions \\ \hline
-         1 & & & \\ \hline
-         2 & & & \\ \hline
-         3 & & & \\ \hline
-         4 & & & \\ \hline
-         5 & & & \\ \hline
-         6 & & & \\ \hline
-         7 & & & \\ \hline
-         8 & & & \\ \hline
-         9 & & & \\ \hline
-         10 & & & \\ \hline
-      \end{tabular}
+         1
+         &
+         \begin{itemize}
+            \item Bradley got into contact with our client for the first time.
+         \end{itemize}
+         & -
+         & - \\ \hline
+
+         2
+         &
+         \begin{itemize}
+            \item Our group met for the first time.
+            \item We contacted our client and set up a first meeting date.
+            \item We made sure that we had LaTeX working correctly and that we understood how to use it.
+            \item We started working on our problem statement.
+         \end{itemize}
+         & -
+         & - \\ \hline
+
+         3
+         &
+         \begin{itemize}
+            \item We completed the rough draft of our Problem Statement.
+            \item We set up our group GitHub repository for app files and class documents.
+            \item We met with our client for the first time.
+            \item We researched cross-platform implementation software options.
+         \end{itemize}
+         &
+         \begin{itemize}
+            \item We had a set weekly meeting time with our client for Fall term. We need to do the same for Winter term.
+         \end{itemize}
+         &
+         \begin{itemize}
+            \item Once Winter term starts, we will talk to our client to decide on the best time to meet with them weekly to discuss progress on the application.
+         \end{itemize} \\ \hline
+
+         4
+         &
+         \begin{itemize}
+            \item We completed the final draft of our Problem Statement. Prior to turning it in, we had it reviewed by our client, Kirsten, and the Writing Center in the library.
+         \end{itemize}
+         & -
+         & - \\ \hline
+
+         5
+         &
+         \begin{itemize}
+            \item We showed our client some concepts for different parts of of the application and noted her thoughts on the concepts.
+            \item We completed the rough draft of the Requirements Document.
+            \item We changed the iOS version app from a primary goal to a stretch goal.
+         \end{itemize}
+         &
+         \begin{itemize}
+            \item Throughout the application implementation process, we need to be able to show our client actual working parts of the app instead of just concepts.
+         \end{itemize}
+         &
+         \begin{itemize}
+            \item We plan to take care of this by beginning the implementation of the app over Winter Break.
+         \end{itemize} \\ \hline
+
+         6
+         &
+         \begin{itemize}
+            \item We completed the final draft of the Requirements Document.
+            \item We attended the first of two focus groups being held by the CCR office.
+         \end{itemize}
+         &
+         \begin{itemize}
+            \item The Requirements Document will need to be changed if we make any changes to the project throughout the implementation process.
+         \end{itemize}
+         &
+         \begin{itemize}
+            \item If any of the requirements change at some point in the next two terms, we will go back through the Requirements and make any necessary changes.
+         \end{itemize} \\ \hline
+
+         7
+         &
+         \begin{itemize}
+            \item We met with our client and reflected on the feedback we received about the application from the first focus group.
+         \end{itemize}
+         &
+         \begin{itemize}
+            \item We will need to receive feedback from the second focus group.
+         \end{itemize}
+         &
+         \begin{itemize}
+            \item Our client has the notes from that second focus group, so we will need to reach out to her and have her send those to us so we can reference and consider them when implementing the app.
+         \end{itemize} \\ \hline
+
+         8
+         &
+         \begin{itemize}
+            \item We completed the rough draft of our Tech Review documents.
+         \end{itemize}
+         & -
+         & - \\ \hline
+
+         9
+         &
+         \begin{itemize}
+            \item We completed the final draft of our Tech Review documents.
+         \end{itemize}
+         &
+         \begin{itemize}
+            \item We will need to make any necessary changes to the Tech Review throughout the next two terms based on how the implementation process goes and if we make changes to our architectures choices.
+         \end{itemize}
+         &
+         \begin{itemize}
+            \item We will begin implementation of the app over Winter Break, and if we discover any complications due to which technologies we initally chose in our Tech Review documents, we may choose a different architectural choice, and this change will be reflected in future versions of our Tech Review documents.
+         \end{itemize} \\ \hline
+
+         10
+         &
+         \begin{itemize}
+            \item We completed our Design Document.
+         \end{itemize}
+         &
+         \begin{itemize}
+            \item We will need to reflect any changes that get made to our Tech Review over the next two terms in the Design Document.
+         \end{itemize}
+         &
+         \begin{itemize}
+            \item We will begin implementation of the app over Winter Break, and if we discover any complications due to which technologies we initally chose in our Tech Review documents, we may choose a different architectural choice, and this change will be reflected in future versions of both our Tech Review documents and our Design Document.
+         \end{itemize} \\ \hline
+      \end{longtable}
 
    \bibliography{ihc_f17_progress}
    \bibliographystyle{IEEEtran}
