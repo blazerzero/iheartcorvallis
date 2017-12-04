@@ -7,17 +7,17 @@ GH 		= gv
 
 BUILDDIR = /usr/local/apps/tex_live/current/bin/x86_64-linux
 
-HWNAME = ihc_f17_progress
-TAR = $(HWNAME).tar.bz2
-TARFILES = $(HWNAME).tex $(HWNAME).bib $(HWNAME).pdf IEEEtran.cls Makefile
-
 EXAMPLES	= $(wildcard *.c)
 SRC	  := $(shell egrep -l '^[^%]*\\begin\{document\}' *.tex)
 TRG 		= $(SRC:%.tex=%.dvi)
 PSF 		= $(SRC:%.tex=%.ps)
 PDF 		= $(SRC:%.tex=%.pdf)
 
-all: pdf $(TAR) clean
+HWNAME = ihc_f17_progress
+TAR = $(HWNAME).tar.bz2
+TARFILES = $(HWNAME).tex $(HWNAME).bib $(HWNAME).pdf IEEEtran.cls Makefile
+
+all: pdf clean $(TAR)
 
 pdf: $(PDF)
 
@@ -64,11 +64,26 @@ show: $(TRG)
 showps: $(PSF)
 	@for i in $(PSF) ; do $(GH) $$i & done
 
-$(TAR): tar -cjf $(HWNAME).tar.bz2 $(TARFILES)
-
-#tar: tar -cjf $(HWNAME).tar.bz2 $(TARFILES)
+$(TAR):
+	if [ -f $(HWNAME).tex ] ; \
+	then \
+		tar -cjf $(HWNAME).tar.bz2 $(TARFILES) ; \
+		>&2 echo " " ; \
+		>&2 echo "***************************************" ; \
+		>&2 echo "* Successfully created .tar.bz2 file. *" ; \
+		>&2 echo "***************************************" ; \
+		>&2 echo " " ; \
+	fi ;
+	if [ ! -f $(HWNAME).tex ] ; \
+	then \
+		>&2 echo " " ; \
+		>&2 echo "********************************************************" ; \
+		>&2 echo "* Change value of HWNAME to the name of your TeX file! *" ; \
+		>&2 echo "********************************************************" ; \
+		>&2 echo " " ; \
+	fi ;
 
 clean:
-	rm -f *.ps *.dvi *.out *.log *.aux *.bbl *.blg *.pyg *.synctex.gz *.toc
+	rm -f *.ps *.dvi *.out *.log *.aux *.bbl *.blg *.pyg *.synctex.gz *.toc *.bz2
 
 .PHONY: all show clean ps pdf showps
