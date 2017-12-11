@@ -1,0 +1,115 @@
+/*@import url('https://fonts.googleapis.com/css?family=Open+Sans')*/
+
+body {overflow: hidden}
+
+.heart.icon.ihc {color: #dc4405}
+.sidebar.icon.ihc {
+   color: white;
+   padding-right: 1em;
+}
+.home.icon.ihc {color: white}
+.travel.icon.ihc {color: white}
+.calendar.icon.ihc {color: white}
+.ordered.list.icon.ihc {color: white}
+.info.icon.ihc {color: white}
+.setting.icon.ihc {color: white}
+
+.alignleft {float: left}
+.alignright {float: right}
+
+#home {padding-right: 1.5em}
+
+#sidebar-menu {
+   position: fixed;
+   width: 0;
+   height: 100%;
+   z-index: 1;
+   overflow-x: hidden;
+   transition: 0.5s;
+   font-size: 4em;
+}
+
+.header.ui.small {font-size: 5em}
+.header.ui.medium {font-size: 6em}
+.header.ui.large {font-size: 10em}
+
+.item.sidebar {
+   height: 16.666%;
+   display: inline-block;
+   vertical-align: middle;
+}
+
+.ihclogo {
+   padding-top: 1.5em;
+   padding-bottom: 0.5em;
+   font-size: 10em;
+   color: white;
+   background-color: black;
+}
+
+.navbar {
+   list-style-type: none;
+   margin-top: 0.5em;
+   margin-bottom: 0.5em;
+   padding-left: 2.5em;
+   padding-right: 2.5em;
+   font-size: 0.5em;
+   overflow: hidden;
+}
+
+.pusher {
+   height: 100%;
+   background-color: #dc4405;
+   overflow: auto;
+}
+.app-header {background-color: black}
+.quicklinks {padding: 2em}
+
+.ui.card.quick {
+   width: 95.5%;
+   margin: 2em;
+   padding: 1em;
+}
+
+.ui.cards.quick {
+   width: 98%;
+   margin: 1.5em;
+}
+
+.card.small.quick {
+   background-color: white;
+   display: inline-block;
+   width: 48.15%;
+}
+
+.progress {
+   color: red;
+   font-size: 5em;
+   padding-top: 0.5em;
+   padding-bottom: 0.5em;
+}
+
+.go-to-passport {
+   color: black;
+   font-size: 4em;
+   padding-top: 0.5em;
+   padding-bottom: 0.2em;
+}
+
+ul li {
+    float: left;
+    margin: 0.5em;
+    color: white;
+    font-size: 1.5em;
+}
+ul li a {
+    display: block;
+    color: #e5e5e5;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+
+}
+ul li a:hover {
+    background-color: #778899;
+}
