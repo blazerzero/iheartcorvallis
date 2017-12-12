@@ -16,9 +16,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        b1 = (Button)findViewById(R.id.button);
+        /*b1 = (Button)findViewById(R.id.button);*/
 
-        view.loadUrl("file:///android_asset/index.html");
+        view.loadUrl("../../assets/index.html");
         setContentView(view);
     }
 }
