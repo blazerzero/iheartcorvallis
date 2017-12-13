@@ -11,7 +11,7 @@
 $(document).ready(function() {
    $("#sidebar-button").click(function(e) {
       e.stopPropagation();
-      $("#sidebar-menu").width("50%");
+      $("#sidebar-menu").width("60%");
    });
    $(".pusher,#closebutton").click(function(e) {
       $('#sidebar-menu').width(0);
@@ -21,30 +21,34 @@ $(document).ready(function() {
 </script>
 <body>
    <div class="ui inverted vertical menu" id="sidebar-menu">
-      <a class="item" id="closebutton">
+      <a class="item sidebar" id="closebutton">
          <right><i class="remove icon"></i></right>
       </a>
       <a class="item sidebar" id="closebutton" href="javascript:void(0)">
          <left><i class="home icon ihc"></i></left>
-         Home
+         Dashboard
       </a>
-      <a class="item sidebar" href="javascript:void(0)">
+      <a class="item sidebar" href="passport.html">
          <left><i class="travel icon ihc"></i></left>
          Passport
       </a>
-      <a class="item sidebar" href="javascript:void(0)">
+      <a class="item sidebar" href="events.html">
          <left><i class="calendar icon ihc"></i></left>
          Events
       </a>
-      <a class="item sidebar" href="javascript:void(0)">
+      <a class="item sidebar" href="leaderboard.html">
          <left><i class="ordered list icon ihc"></i></left>
          Leaderboard
       </a>
-      <a class="item sidebar" href="javascript:void(0)">
+      <a class="item sidebar" href="resources.html">
          <left><i class="info icon ihc"></i></left>
          Resources
       </a>
-      <a class="item sidebar" href="javascript:void(0)">
+      <a class="item sidebar" href="about.html">
+         <left><i class="info icon ihc"></i></left>
+         About Us
+      </a>
+      <a class="item sidebar" href="settings.html">
          <left><i class="setting icon ihc"></i></left>
          Settings
       </a>
@@ -64,14 +68,14 @@ $(document).ready(function() {
                   <div class="alignleft" id="sidebar-button">
                      <i class="sidebar icon ihc"></i>
                   </div>
-                  <div id="home"><center><strong>Home</strong></center></div>
+                  <div id="home"><center><strong>Dashboard</strong></center></div>
                </div>
                <br>
             </div>
          </div>
       </div>
       <div class="quicklinks">
-         <a class="ui card quick" style="background-color:#c9ae5d" href="javascript:void(0)">
+         <a class="ui card quick" style="background-color:#c9ae5d" href="events.html">
             <div class="content">
                <div class="header ui large">EVENTS</div>
                <div class="progress">Only 4 events from silver!</div>
@@ -82,14 +86,14 @@ $(document).ready(function() {
             </div>
          </a>
          <div class="ui cards quick">
-            <a class="card small quick" style="float:left" href="javascript:void(0)">
+            <a class="card small quick" style="float:left" href="passport.html">
                <div class="content">
                   <br><br>
                   <div class="header ui small">PASSPORT</div>
                   <br><br>
                </div>
             </a>
-            <a class="card small quick" style="float:right" href="javascript:void(0)">
+            <a class="card small quick" style="float:right" href="leaderboard.html">
                <div class="content">
                   <br><br>
                   <div class="header ui small">LEADERBOARD</div>
@@ -97,14 +101,14 @@ $(document).ready(function() {
                </div>
             </a>
          </div>
-         <a class="ui card quick" href="javascript:void(0)">
+         <a class="ui card quick" href="resources.html">
             <div class="content">
                <br>
                <div class="header ui medium"><center>RESOURCES</center></div>
                <br>
             </div>
          </a>
-         <a class="ui card quick" href="javascript:void(0)">
+         <a class="ui card quick" href="about.html">
             <div class="content">
                <br>
                <div class="header ui medium"><center>ABOUT US</center></div>

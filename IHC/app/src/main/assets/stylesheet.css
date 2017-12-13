@@ -26,23 +26,23 @@ body {overflow: hidden}
    z-index: 1;
    overflow-x: hidden;
    transition: 0.5s;
-   font-size: 4em;
+   font-size: 400%;
 }
 
-.header.ui.small {font-size: 5em}
-.header.ui.medium {font-size: 6em}
-.header.ui.large {font-size: 10em}
+.header.ui.small {font-size: 400%}
+.header.ui.medium {font-size: 500%}
+.header.ui.large {font-size: 900%}
 
 .item.sidebar {
-   height: 16.666%;
+   height: 12.5%;
    display: inline-block;
    vertical-align: middle;
 }
 
 .ihclogo {
-   padding-top: 1.5em;
-   padding-bottom: 0.5em;
-   font-size: 10em;
+   padding-top: 15%;
+   padding-bottom: 5%;
+   font-size: 1000%;
    color: white;
    background-color: black;
 }
@@ -53,7 +53,7 @@ body {overflow: hidden}
    margin-bottom: 0.5em;
    padding-left: 2.5em;
    padding-right: 2.5em;
-   font-size: 0.5em;
+   font-size: 50%;
    overflow: hidden;
 }
 
@@ -83,8 +83,8 @@ body {overflow: hidden}
 }
 
 .progress {
-   color: red;
-   font-size: 5em;
+   color: #cc0000;
+   font-size: 500%;
    padding-top: 0.5em;
    padding-bottom: 0.5em;
 }
