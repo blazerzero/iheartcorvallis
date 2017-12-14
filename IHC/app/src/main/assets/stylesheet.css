@@ -3,12 +3,17 @@
 body {overflow: hidden}
 body::-webkit-scrollbar {display: none}
 
-
 .heart.icon.ihc {color: #dc4405}
+.ui.icon.message.ihc {
+   background-color: black;
+   color: white;
+}
+.header.navbar {color: white}
 .sidebar.icon.ihc {
    color: white;
    padding-right: 100%;
    margin-left: 3vw;
+   display: inline-block;
 }
 
 .remove.icon.ihc {
@@ -21,13 +26,15 @@ body::-webkit-scrollbar {display: none}
 .ordered.list.icon.ihc {color: white}
 .info.icon.ihc {color: white}
 .setting.icon.ihc {color: white}
+.repeat.icon.ihc {font-size: 5em; padding-top: 0.35em}
 
 .alignleft {float: left}
 .alignright {float: right}
 
-#home {
-   padding-right: 20vw;
-   padding-left: 20vw;
+#pagename {
+   display: inline-block;
+   /*padding-right: 20vw;
+   padding-left: 30vw;*/
    color: white;
    font-size: 7vw;
 }
@@ -68,7 +75,7 @@ body::-webkit-scrollbar {display: none}
    overflow: hidden;
 }
 
-#app-body {padding: 2wv}
+#app-body {padding: 2vw}
 
 .pusher {
    height: 100%;
@@ -78,18 +85,15 @@ body::-webkit-scrollbar {display: none}
 .app-header {background-color: black}
 .quicklinks {padding: 2vw}
 
-.ui.card.quick {
-   width: 100vw;
-}
-
-.ui.cards.quick {
-   width: 100vw;
-}
-
+.ui.card.quick {width: 100vw}
+.ui.cards.quick {width: 100vw}
 .card.small.quick {
    background-color: white;
-   width: 45.65vw;
+   width: 47vw;
 }
+
+.card.small.quick.left {margin-right: 1vw}
+.card.small.quick.right {margin-left: 1vw}
 
 .progress {
    color: #cc0000;
@@ -102,6 +106,9 @@ body::-webkit-scrollbar {display: none}
    color: black;
    font-size: 4vw;
 }
+
+#event-name {font-size: 2em}
+#event-location {font-size: 1.5em}
 
 ul li {
     float: left;

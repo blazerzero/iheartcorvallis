@@ -24,31 +24,31 @@ $(document).ready(function() {
       <a class="item" id="closebutton">
          <right><i class="remove icon"></i></right>
       </a>
-      <a class="item sidebar" href="dashboard.html">
+      <a class="item sidebar" href="dashboard.php">
          <left><i class="home icon ihc"></i></left>
          Dashboard
       </a>
-      <a class="item sidebar" href="passport.html">
+      <a class="item sidebar" href="passport.php">
          <left><i class="travel icon ihc"></i></left>
          Passport
       </a>
-      <a class="item sidebar" id="closebutton" href="javascript:void(0)">
+      <a class="item sidebar" href="events.php">
          <left><i class="calendar icon ihc"></i></left>
          Events
       </a>
-      <a class="item sidebar" href="leaderboard.html">
+      <a class="item sidebar" id="closebutton">
          <left><i class="ordered list icon ihc"></i></left>
          Leaderboard
       </a>
-      <a class="item sidebar" href="resources.html">
+      <a class="item sidebar" href="resources.php">
          <left><i class="info icon ihc"></i></left>
          Resources
       </a>
-      <a class="item sidebar" href="about.html">
+      <a class="item sidebar" href="about.php">
          <left><i class="info icon ihc"></i></left>
          About Us
       </a>
-      <a class="item sidebar" href="settings.html">
+      <a class="item sidebar" href="settings.php">
          <left><i class="setting icon ihc"></i></left>
          Settings
       </a>
@@ -65,10 +65,13 @@ $(document).ready(function() {
             <div class="navbar">
                <br>
                <div>
-                  <div class="alignleft" id="sidebar-button">
+                  <!--<div id="sidebar-button">
                      <i class="sidebar icon ihc"></i>
+                  </div>-->
+                  <div id="pagename">
+                     <i class="sidebar icon ihc" id="sidebar-button"></i>
+                     <center><strong>Leaderboard</strong></center>
                   </div>
-                  <div id="home"><center><strong>Events</strong></center></div>
                </div>
                <br>
             </div>

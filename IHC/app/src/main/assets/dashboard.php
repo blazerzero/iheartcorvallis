@@ -24,76 +24,77 @@ $(document).ready(function() {
       <a class="item sidebar" id="closebutton">
          <right><i class="remove icon ihc"></i></right>
       </a>
-      <a class="item sidebar" id="closebutton" href="javascript:void(0)">
+      <a class="item sidebar" id="closebutton">
          <left><i class="home icon ihc"></i></left>
          Dashboard
       </a>
-      <a class="item sidebar" href="passport.html">
+      <a class="item sidebar" href="passport.php">
          <left><i class="travel icon ihc"></i></left>
          Passport
       </a>
-      <a class="item sidebar" href="events.html">
+      <a class="item sidebar" href="events.php">
          <left><i class="calendar icon ihc"></i></left>
          Events
       </a>
-      <a class="item sidebar" href="leaderboard.html">
+      <a class="item sidebar" href="leaderboard.php">
          <left><i class="ordered list icon ihc"></i></left>
          Leaderboard
       </a>
-      <a class="item sidebar" href="resources.html">
+      <a class="item sidebar" href="resources.php">
          <left><i class="info icon ihc"></i></left>
          Resources
       </a>
-      <a class="item sidebar" href="about.html">
+      <a class="item sidebar" href="about.php">
          <left><i class="info icon ihc"></i></left>
          About Us
       </a>
-      <a class="item sidebar" href="settings.html">
+      <a class="item sidebar" href="settings.php">
          <left><i class="setting icon ihc"></i></left>
          Settings
       </a>
    </div>
    <div class="pusher">
       <div class="app-header">
-         <!-- <div class="ihclogo"> -->
-            <center class="ihclogo">
-               <strong>I</strong>
-               <i class="heart icon ihc"></i>
-               <strong>CORVALLIS</strong>
-            </center>
+         <center class="ihclogo">
+            <strong>I</strong>
+            <i class="heart icon ihc"></i>
+            <strong>CORVALLIS</strong>
+         </center>
+         <br>
+         <div class="navbar">
             <br>
-            <div class="navbar">
-               <br>
-               <div>
-                  <div class="alignleft" id="sidebar-button">
-                     <i class="sidebar icon ihc"></i>
-                  </div>
-                  <div id="home"><center><strong>Dashboard</strong></center></div>
+            <div>
+               <!--<div id="sidebar-button">
+                  <i class="sidebar icon ihc"></i>
+               </div>-->
+               <div id="pagename">
+                  <i class="sidebar icon ihc" id="sidebar-button"></i>
+                  <center><strong>Dashboard</strong></center>
                </div>
-               <br>
             </div>
-         <!-- </div> -->
+            <br>
+         </div>
       </div>
       <div class="quicklinks" id="app-body">
-         <a class="ui card quick" style="background-color:#c9ae5d" href="events.html">
+         <a class="ui card quick" style="background-color:#c9ae5d" href="events.php">
             <div class="content">
                <div class="header ui large">EVENTS</div>
                <div class="progress">Only 4 events from silver!</div>
                <h1 class="go-to-passport">
-                  GO TO PASSPORT
+                  GO TO EVENT LIST
                   <i class="caret right icon"></i>
                </h1>
             </div>
          </a>
          <div class="ui cards quick">
-            <a class="card small quick" style="float:left" href="passport.html">
+            <a class="card small quick left" href="passport.php">
                <div class="content">
                   <br><br>
                   <div class="header ui small">PASSPORT</div>
                   <br><br>
                </div>
             </a>
-            <a class="card small quick" style="float:right" href="leaderboard.html">
+            <a class="card small quick right" href="leaderboard.php">
                <div class="content">
                   <br><br>
                   <div class="header ui small">LEADERBOARD</div>
@@ -101,14 +102,14 @@ $(document).ready(function() {
                </div>
             </a>
          </div>
-         <a class="ui card quick" href="resources.html">
+         <a class="ui card quick" href="resources.php">
             <div class="content">
                <br>
                <div class="header ui medium"><center>RESOURCES</center></div>
                <br>
             </div>
          </a>
-         <a class="ui card quick" href="about.html">
+         <a class="ui card quick" href="about.php">
             <div class="content">
                <br>
                <div class="header ui medium"><center>ABOUT US</center></div>
