@@ -7,18 +7,15 @@ import android.widget.*;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button b1;
-    EditText ed1;
-
-    private WebView view;
+    WebView view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /*b1 = (Button)findViewById(R.id.button);*/
 
-        view.loadUrl("../../assets/index.html");
+
+        view.loadUrl("file:///android_assets/index.html");
         setContentView(view);
     }
 }

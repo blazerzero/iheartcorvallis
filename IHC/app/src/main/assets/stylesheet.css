@@ -1,11 +1,19 @@
 /*@import url('https://fonts.googleapis.com/css?family=Open+Sans')*/
 
 body {overflow: hidden}
+body::-webkit-scrollbar {display: none}
+
 
 .heart.icon.ihc {color: #dc4405}
 .sidebar.icon.ihc {
    color: white;
-   padding-right: 1em;
+   padding-right: 100%;
+   margin-left: 3vw;
+}
+
+.remove.icon.ihc {
+   font-size: 200%;
+   margin-left: -2vw;
 }
 .home.icon.ihc {color: white}
 .travel.icon.ihc {color: white}
@@ -17,7 +25,12 @@ body {overflow: hidden}
 .alignleft {float: left}
 .alignright {float: right}
 
-#home {padding-right: 1.5em}
+#home {
+   padding-right: 20vw;
+   padding-left: 20vw;
+   color: white;
+   font-size: 7vw;
+}
 
 #sidebar-menu {
    position: fixed;
@@ -26,12 +39,12 @@ body {overflow: hidden}
    z-index: 1;
    overflow-x: hidden;
    transition: 0.5s;
-   font-size: 400%;
+   font-size: 5vw;
 }
 
-.header.ui.small {font-size: 400%}
-.header.ui.medium {font-size: 500%}
-.header.ui.large {font-size: 900%}
+.header.ui.small {font-size: 5.5vw}
+.header.ui.medium {font-size: 8vw}
+.header.ui.large {font-size: 10vw}
 
 .item.sidebar {
    height: 12.5%;
@@ -40,22 +53,22 @@ body {overflow: hidden}
 }
 
 .ihclogo {
-   padding-top: 15%;
-   padding-bottom: 5%;
-   font-size: 1000%;
+   padding-top: 10vw;
+   font-size: 12vw;
    color: white;
    background-color: black;
 }
 
 .navbar {
    list-style-type: none;
-   margin-top: 0.5em;
-   margin-bottom: 0.5em;
-   padding-left: 2.5em;
-   padding-right: 2.5em;
-   font-size: 50%;
+   margin-bottom: 0.5vw;
+   padding-left: 2.5vw;
+   padding-right: 2.5vw;
+   font-size: 5vw;
    overflow: hidden;
 }
+
+#app-body {padding: 2wv}
 
 .pusher {
    height: 100%;
@@ -63,37 +76,31 @@ body {overflow: hidden}
    overflow: auto;
 }
 .app-header {background-color: black}
-.quicklinks {padding: 2em}
+.quicklinks {padding: 2vw}
 
 .ui.card.quick {
-   width: 95.5%;
-   margin: 2em;
-   padding: 1em;
+   width: 100vw;
 }
 
 .ui.cards.quick {
-   width: 98%;
-   margin: 1.5em;
+   width: 100vw;
 }
 
 .card.small.quick {
    background-color: white;
-   display: inline-block;
-   width: 48.15%;
+   width: 45.65vw;
 }
 
 .progress {
    color: #cc0000;
-   font-size: 500%;
-   padding-top: 0.5em;
-   padding-bottom: 0.5em;
+   font-size: 5vw;
+   padding-top: 0.5vw;
+   padding-bottom: 0.5vw;
 }
 
 .go-to-passport {
    color: black;
-   font-size: 4em;
-   padding-top: 0.5em;
-   padding-bottom: 0.2em;
+   font-size: 4vw;
 }
 
 ul li {
