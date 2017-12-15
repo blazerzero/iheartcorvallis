@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-   <title>Home</title>
+   <title>Dashboard</title>
    <link type="text/css" rel="stylesheet" href="./Semantic-UI-CSS-master/semantic.css"/>
    <link type="text/css" rel="stylesheet" href="./stylesheet.css"/>
    <script type="text/javascript" src="../../../../node_modules/jquery/dist/jquery.min.js"></script>
@@ -60,19 +60,13 @@ $(document).ready(function() {
             <i class="heart icon ihc"></i>
             <strong>CORVALLIS</strong>
          </center>
-         <br>
          <div class="navbar">
-            <br>
-            <div>
-               <!--<div id="sidebar-button">
-                  <i class="sidebar icon ihc"></i>
-               </div>-->
+            <br><br>
                <div id="pagename">
                   <i class="sidebar icon ihc" id="sidebar-button"></i>
                   <center><strong>Dashboard</strong></center>
                </div>
-            </div>
-            <br>
+            <br><br>
          </div>
       </div>
       <div class="quicklinks" id="app-body">

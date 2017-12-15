@@ -4,18 +4,6 @@ body {overflow: hidden}
 body::-webkit-scrollbar {display: none}
 
 .heart.icon.ihc {color: #dc4405}
-.ui.icon.message.ihc {
-   background-color: black;
-   color: white;
-}
-.header.navbar {color: white}
-.sidebar.icon.ihc {
-   color: white;
-   padding-right: 100%;
-   margin-left: 3vw;
-   display: inline-block;
-}
-
 .remove.icon.ihc {
    font-size: 200%;
    margin-left: -2vw;
@@ -27,16 +15,34 @@ body::-webkit-scrollbar {display: none}
 .info.icon.ihc {color: white}
 .setting.icon.ihc {color: white}
 .repeat.icon.ihc {font-size: 5em; padding-top: 0.35em}
+.sidebar.icon.ihc {
+   color: white;
+   padding-right: 100%;
+   margin-left: 1.5vw;
+   display: inline-block;
+   /*border-style: solid;
+   border-color: red;*/
+   padding-top: 2vw;
+   float: left;
+   overflow: hidden;
+   width: 10px;
+}
+
+.ui.icon.message.ihc {
+   background-color: black;
+   color: white;
+}
+.header.navbar {color: white}
 
 .alignleft {float: left}
 .alignright {float: right}
 
 #pagename {
    display: inline-block;
-   /*padding-right: 20vw;
-   padding-left: 30vw;*/
    color: white;
    font-size: 7vw;
+   /*border-style: solid;
+   border-color: green;*/
 }
 
 #sidebar-menu {
@@ -71,7 +77,6 @@ body::-webkit-scrollbar {display: none}
    margin-bottom: 0.5vw;
    padding-left: 2.5vw;
    padding-right: 2.5vw;
-   font-size: 5vw;
    overflow: hidden;
 }
 

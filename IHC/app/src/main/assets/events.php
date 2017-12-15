@@ -1,7 +1,7 @@
-<!-- <!DOCTYPE html> -->
+<!DOCTYPE html>
 <html>
 <head>
-   <title>Home</title>
+   <title>Events</title>
    <link type="text/css" rel="stylesheet" href="./Semantic-UI-CSS-master/semantic.css"/>
    <link type="text/css" rel="stylesheet" href="./stylesheet.css"/>
    <script type="text/javascript" src="../../../../node_modules/jquery/dist/jquery.min.js"></script>
@@ -21,8 +21,8 @@ $(document).ready(function() {
 </script>
 <body>
    <div class="ui inverted vertical menu" id="sidebar-menu">
-      <a class="item" id="closebutton">
-         <right><i class="remove icon"></i></right>
+      <a class="item sidebar" id="closebutton">
+         <right><i class="remove icon ihc"></i></right>
       </a>
       <a class="item sidebar" href="dashboard.php">
          <left><i class="home icon ihc"></i></left>
@@ -55,40 +55,24 @@ $(document).ready(function() {
    </div>
    <div class="pusher">
       <div class="app-header">
-         <div class="ihclogo">
-            <center>
-               <strong>I</strong>
-               <i class="heart icon ihc"></i>
-               <strong>CORVALLIS</strong>
-            </center>
-            <br>
-            <div class="navbar">
-               <br>
-               <div>
-                  <!--<div id="sidebar-button">
-                     <i class="sidebar icon ihc"></i>
-                  </div>-->
-                  <div id="pagename">
-                     <i class="sidebar icon ihc" id="sidebar-button"></i>
-                     <center><strong>Events</strong></center>
-                  </div>
+         <center class="ihclogo">
+            <strong>I</strong>
+            <i class="heart icon ihc"></i>
+            <strong>CORVALLIS</strong>
+         </center>
+         <div class="navbar">
+            <br><br>
+               <div id="pagename">
+                  <i class="sidebar icon ihc" id="sidebar-button"></i>
+                  <center><strong>Events</strong></center>
                </div>
-               <br>
-            </div>
+            <br><br>
          </div>
       </div>
       <div class="eventlist">
-         <?php for ($i = 0; $i < 10 ; $i++) { ?>
-            <div class="ui icon message">
-               <left><i class="repeat icon ihc"></i></left>
-               <right>
-                  <div class="content" style="padding:10%">
-                     <div class="header" id="event-name">WALK UP BALD HILL</div>
-                     <p id="event-location">Bald Hill Natural Area</p>
-                  </div>
-               </right>
-            </div>
-         <?php } ?>
+         <?php for ($i = 0; $i < 10; $i++) {
+            print '<p>Hello World!</p>';
+         } ?>
       </div>
    </div>
 </body>
