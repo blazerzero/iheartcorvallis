@@ -1,10 +1,22 @@
 <!DOCTYPE html>
+
+<?php include "./onidlogin.php" ?>
+<?php include "./reslogin.php" ?>
+
+<?php
+if (checkStudentAuth(true) == "") {
+   header("Location: ./index.html");
+   exit();
+}
+
+else {
+?>
 <html>
 <head>
    <title>Dashboard</title>
    <link type="text/css" rel="stylesheet" href="./Semantic-UI-CSS-master/semantic.css"/>
    <link type="text/css" rel="stylesheet" href="./stylesheet.css"/>
-   <script type="text/javascript" src="../../../../node_modules/jquery/dist/jquery.min.js"></script>
+   <script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
 </head>
 <script>
 
@@ -80,21 +92,25 @@ $(document).ready(function() {
                </h1>
             </div>
          </a>
-         <div class="ui cards quick">
-            <a class="card small quick left" href="passport.php">
-               <div class="content">
-                  <br><br>
-                  <div class="header ui small">PASSPORT</div>
-                  <br><br>
-               </div>
-            </a>
-            <a class="card small quick right" href="leaderboard.php">
-               <div class="content">
-                  <br><br>
-                  <div class="header ui small">LEADERBOARD</div>
-                  <br><br>
-               </div>
-            </a>
+         <div class="ui two column grid">
+            <div class="column">
+               <a class="ui fluid card" href="passport.php">
+                  <div class="content">
+                     <br>
+                     <div class="header ui small">PASSPORT</div>
+                     <br>
+                  </div>
+               </a>
+            </div>
+            <div class="column">
+               <a class="ui fluid card" href="leaderboard.php">
+                  <div class="content">
+                     <br>
+                     <div class="header ui small">LEADERBOARD</div>
+                     <br>
+                  </div>
+               </a>
+            </div>
          </div>
          <a class="ui card quick" href="resources.php">
             <div class="content">
@@ -114,3 +130,5 @@ $(document).ready(function() {
    </div>
 </body>
 </html>
+
+<?php } ?>

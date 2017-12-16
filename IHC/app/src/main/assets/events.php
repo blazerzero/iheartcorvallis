@@ -1,10 +1,23 @@
 <!DOCTYPE html>
+
+<?php include "./onidlogin.php" ?>
+<?php include "./reslogin.php" ?>
+
+<?php
+if (checkStudentAuth(true) == "") {
+   header("Location: ./index.html");
+   exit();
+}
+
+else {
+?>
+
 <html>
 <head>
    <title>Events</title>
    <link type="text/css" rel="stylesheet" href="./Semantic-UI-CSS-master/semantic.css"/>
    <link type="text/css" rel="stylesheet" href="./stylesheet.css"/>
-   <script type="text/javascript" src="../../../../node_modules/jquery/dist/jquery.min.js"></script>
+   <script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
 </head>
 <script>
 
@@ -70,10 +83,25 @@ $(document).ready(function() {
          </div>
       </div>
       <div class="eventlist">
-         <?php for ($i = 0; $i < 10; $i++) {
-            print '<p>Hello World!</p>';
-         } ?>
+         <?php for ($i = 1; $i <= 10; $i++) { ?>
+            <div class="ui icon message ihc">
+               <?php if ($i <= 3) { ?>
+                  <i class="repeat icon ihc"></i>
+               <?php } else { ?>
+                  <div id="event-date">
+                     <center><h1>DEC</h1></center>
+                     <center><h1><?php echo $i + 20 ?></h1></center>
+                  </div>
+               <?php } ?>
+               <div class="content" id="event-info">
+                  <div class="header" id="event-name">EXAMPLE EVENT #<?php echo $i ?></div>
+                  <p id="event-location">Example Location #<?php echo $i ?></p>
+               </div>
+            </div>
+         <?php } ?>
       </div>
    </div>
 </body>
 </html>
+
+<?php } ?>

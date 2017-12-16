@@ -1,10 +1,23 @@
 <!DOCTYPE html>
+
+<?php include "./onidlogin.php" ?>
+<?php include "./reslogin.php" ?>
+
+<?php
+if (checkStudentAuth(true) == "") {
+   header("Location: ./index.html");
+   exit();
+}
+
+else {
+?>
+
 <html>
 <head>
    <title>Settings</title>
    <link type="text/css" rel="stylesheet" href="./Semantic-UI-CSS-master/semantic.css"/>
    <link type="text/css" rel="stylesheet" href="./stylesheet.css"/>
-   <script type="text/javascript" src="../../../../node_modules/jquery/dist/jquery.min.js"></script>
+   <script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
 </head>
 <script>
 
@@ -69,6 +82,13 @@ $(document).ready(function() {
             <br><br>
          </div>
       </div>
+      <div id="app-body">
+         <a href="logout.php">
+            <button class="fluid ui red button" id="logout-button">Logout</button>
+         </a>
+      </div>
    </div>
 </body>
 </html>
+
+<?php } ?>

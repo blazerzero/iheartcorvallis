@@ -1,8 +1,14 @@
 /*@import url('https://fonts.googleapis.com/css?family=Open+Sans')*/
 
+/* Scrolling */
 body {overflow: hidden}
 body::-webkit-scrollbar {display: none}
 
+/* Alignment */
+.alignleft {float: left}
+.alignright {float: right}
+
+/* Icons */
 .heart.icon.ihc {color: #dc4405}
 .remove.icon.ihc {
    font-size: 200%;
@@ -14,36 +20,30 @@ body::-webkit-scrollbar {display: none}
 .ordered.list.icon.ihc {color: white}
 .info.icon.ihc {color: white}
 .setting.icon.ihc {color: white}
-.repeat.icon.ihc {font-size: 5em; padding-top: 0.35em}
+.repeat.icon.ihc {
+   font-size: 5em;
+   color: black;
+   margin-left: 2vw;
+}
 .sidebar.icon.ihc {
    color: white;
    padding-right: 100%;
    margin-left: 1.5vw;
    display: inline-block;
-   /*border-style: solid;
-   border-color: red;*/
    padding-top: 2vw;
    float: left;
    overflow: hidden;
    width: 10px;
 }
 
-.ui.icon.message.ihc {
-   background-color: black;
-   color: white;
-}
-.header.navbar {color: white}
-
-.alignleft {float: left}
-.alignright {float: right}
-
-#pagename {
+/* Sidebar */
+.item.sidebar {
+   height: 12.5%;
    display: inline-block;
-   color: white;
-   font-size: 7vw;
-   /*border-style: solid;
-   border-color: green;*/
+   vertical-align: middle;
 }
+
+.header.navbar {color: white}
 
 #sidebar-menu {
    position: fixed;
@@ -59,12 +59,23 @@ body::-webkit-scrollbar {display: none}
 .header.ui.medium {font-size: 8vw}
 .header.ui.large {font-size: 10vw}
 
-.item.sidebar {
-   height: 12.5%;
-   display: inline-block;
-   vertical-align: middle;
+/* General App */
+.pusher {
+   height: 100%;
+   background-color: #dc4405;
+   overflow: auto;
 }
 
+.index {
+   height: 100%;
+   background-color: black;
+   overflow: auto;
+}
+
+/* Page Header */
+.app-header {background-color: black}
+
+/* IHC Logo */
 .ihclogo {
    padding-top: 10vw;
    font-size: 12vw;
@@ -72,6 +83,7 @@ body::-webkit-scrollbar {display: none}
    background-color: black;
 }
 
+/* Navigation Bar */
 .navbar {
    list-style-type: none;
    margin-bottom: 0.5vw;
@@ -80,40 +92,54 @@ body::-webkit-scrollbar {display: none}
    overflow: hidden;
 }
 
+#pagename {
+   display: inline-block;
+   color: white;
+   font-size: 7vw;
+}
+
+/* App Body */
 #app-body {padding: 2vw}
 
-.pusher {
-   height: 100%;
-   background-color: #dc4405;
-   overflow: auto;
+/* Log In/Sign Up Buttons */
+.massive.ui.button.index {
+   padding-left: 30vw;
+   padding-right: 30vw;
+   font-size: 6vw;
 }
-.app-header {background-color: black}
+
+/* Dashboard Quick Links */
 .quicklinks {padding: 2vw}
-
-.ui.card.quick {width: 100vw}
-.ui.cards.quick {width: 100vw}
-.card.small.quick {
-   background-color: white;
-   width: 47vw;
-}
-
-.card.small.quick.left {margin-right: 1vw}
-.card.small.quick.right {margin-left: 1vw}
-
-.progress {
+.quicklinks .ui.card.quick .content .progress {
    color: #cc0000;
    font-size: 5vw;
    padding-top: 0.5vw;
    padding-bottom: 0.5vw;
 }
-
+.ui.card.quick {width: 100vw}
 .go-to-passport {
    color: black;
    font-size: 4vw;
 }
 
-#event-name {font-size: 2em}
-#event-location {font-size: 1.5em}
+/* Event List Display */
+.eventlist {padding: 1vw}
+.ui.icon.message.ihc {
+   margin-bottom: 1vw;
+   margin-top: 1vw;
+   background-color: white;
+   font-size: 2vw;
+}
+#event-date {margin-right: 2.3vw}
+#event-info {padding-top: 0.9vw}
+#event-name {font-size: 3vw}
+#event-location {font-size: 2vw}
+
+/* Settings */
+#logout-button {
+   border-style: solid;
+   border-color: white;
+}
 
 ul li {
     float: left;
