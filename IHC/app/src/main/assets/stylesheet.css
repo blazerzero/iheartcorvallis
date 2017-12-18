@@ -146,10 +146,13 @@ overflow-y: hidden;
    background-color: white;
    font-size: 2vw;
 }
-#event-date {margin-right: 2.3vw}
+#event-date {
+   margin-right: 2.3vw;
+   font-size: 2.5em;
+}
 #event-info {padding-top: 0.9vw}
-#event-name {font-size: 4.5vw}
-#event-location {font-size: 3.5vw}
+#event-name {font-size: 2.5em}
+#event-location {font-size: 2em}
 
 /* Settings */
 #logout-button {

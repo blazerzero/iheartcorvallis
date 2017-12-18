@@ -88,8 +88,8 @@ $(document).ready(function() {
                   <i class="repeat icon ihc"></i>
                <?php } else { ?>
                   <div id="event-date">
-                     <center><h1>DEC</h1></center>
-                     <center><h1><?php echo $i + 20 ?></h1></center>
+                     <center>DEC</center>
+                     <center><?php echo $i + 20 ?></center>
                   </div>
                <?php } ?>
                <div class="content" id="event-info">
