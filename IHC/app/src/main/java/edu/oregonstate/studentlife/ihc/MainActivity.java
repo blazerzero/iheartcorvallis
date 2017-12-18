@@ -7,15 +7,26 @@ import android.widget.*;
 
 public class MainActivity extends AppCompatActivity {
 
-    WebView view;
+    private WebView webview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        webview = (WebView) findViewById(R.id.webView);
+        WebSettings websettings = webview.getSettings();
+        websettings.setJavaScriptEnabled(true);
+        webview.loadUrl("file:///android_asset/index.html");
+        webview.setWebViewClient(new WebViewClient());
+    }
 
-
-        view.loadUrl("file:///android_assets/index.html");
-        setContentView(view);
+    @Override
+    public void onBackPressed() {
+        if (webview.canGoBack()) {
+            webview.goBack();
+        }
+        else {
+            super.onBackPressed();
+        }
     }
 }
