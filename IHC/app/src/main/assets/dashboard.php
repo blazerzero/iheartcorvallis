@@ -11,6 +11,7 @@ if (checkStudentAuth(true) == "") {
 
 else {
 ?>
+
 <html>
 <head>
    <title>Dashboard</title>
@@ -73,10 +74,10 @@ $(document).ready(function() {
             <strong>CORVALLIS</strong>
          </center>
          <div class="navbar">
-               <div id="pagename">
-                  <i class="sidebar icon ihc" id="sidebar-button"></i>
-                  <center><strong>Dashboard</strong></center>
-               </div>
+            <div id="pagename">
+               <i class="sidebar icon ihc" id="sidebar-button"></i>
+               <center><strong>Dashboard</strong></center>
+            </div>
             <br><br>
          </div>
       </div>
@@ -92,20 +93,20 @@ $(document).ready(function() {
             </div>
          </a>
          <div class="ui two column grid">
-            <div class="column">
+            <div class="column dashboard">
                <a class="ui fluid card" href="passport.php">
                   <div class="content">
                      <br>
-                     <div class="header ui small">PASSPORT</div>
+                     <div class="header ui small"><center>PASSPORT</center></div>
                      <br>
                   </div>
                </a>
             </div>
-            <div class="column">
+            <div class="column dashboard">
                <a class="ui fluid card" href="leaderboard.php">
                   <div class="content">
                      <br>
-                     <div class="header ui small">LEADERBOARD</div>
+                     <div class="header ui small"><center>LEADERBOARD</center></div>
                      <br>
                   </div>
                </a>
@@ -120,9 +121,7 @@ $(document).ready(function() {
          </a>
          <a class="ui card quick" href="about.php">
             <div class="content">
-               <br>
                <div class="header ui medium"><center>ABOUT US</center></div>
-               <br>
             </div>
          </a>
       </div>

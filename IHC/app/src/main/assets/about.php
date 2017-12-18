@@ -74,11 +74,10 @@ $(document).ready(function() {
             <strong>CORVALLIS</strong>
          </center>
          <div class="navbar">
-            <br><br>
-               <div id="pagename">
-                  <i class="sidebar icon ihc" id="sidebar-button"></i>
-                  <center><strong>About Us</strong></center>
-               </div>
+            <div id="pagename">
+               <i class="sidebar icon ihc" id="sidebar-button"></i>
+               <center><strong>About Us</strong></center>
+            </div>
             <br><br>
          </div>
       </div>
