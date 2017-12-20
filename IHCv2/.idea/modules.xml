@@ -4,8 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/IHCv2.iml" filepath="$PROJECT_DIR$/IHCv2.iml" />
       <module fileurl="file://C:\Users\dylan\Documents\github\ihc\iheartcorvallis\IHCv2\IHCv2.iml" filepath="C:\Users\dylan\Documents\github\ihc\iheartcorvallis\IHCv2\IHCv2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/IHCv2.iml" filepath="$PROJECT_DIR$/IHCv2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://C:\Users\dylan\Documents\github\ihc\iheartcorvallis\IHCv2\app\app.iml" filepath="C:\Users\dylan\Documents\github\ihc\iheartcorvallis\IHCv2\app\app.iml" />
     </modules>

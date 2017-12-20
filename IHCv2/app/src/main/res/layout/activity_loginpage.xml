@@ -19,12 +19,11 @@
         android:layout_marginBottom="97dp" />
 
     <Button
-        android:id="@+id/btn_view"
+        android:id="@+id/btn_search"
         android:layout_width="280dp"
         android:layout_height="75dp"
-        android:layout_alignStart="@+id/btn_search"
-        android:layout_below="@+id/btn_search"
-        android:layout_marginTop="26dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="52dp"
         android:layout_weight="0.13"
         android:background="#ffffff"
         android:drawablePadding="-20dp"
@@ -33,17 +32,19 @@
         android:textSize="16sp" />
 
     <Button
-        android:id="@+id/btn_search"
+        android:paddingLeft="10dp"
+        android:id="@+id/btn_view"
         android:layout_width="280dp"
         android:layout_height="75dp"
-        android:layout_alignTop="@+id/iv_logo"
-        android:layout_centerHorizontal="true"
         android:layout_weight="0.13"
+        android:text="Resident Log In"
+        android:textSize="16sp"
         android:background="#ffffff"
         android:drawablePadding="-20dp"
-        android:paddingLeft="10dp"
-        android:text="Resident Log In"
-        android:textSize="16sp" />
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/btn_search"
+        android:layout_alignLeft="@+id/btn_search"
+        android:layout_alignStart="@+id/btn_search" />
 
 </RelativeLayout>
 

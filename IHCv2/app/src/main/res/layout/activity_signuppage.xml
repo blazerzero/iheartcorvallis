@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/bg"
-    tools:context="edu.oregonstate.studentlife.ihcv2.ResourcesActivity"
+    tools:context="edu.oregonstate.studentlife.ihcv2.SignupPageActivity"
     android:weightSum="1">
 
 
