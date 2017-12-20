@@ -1,3 +1,5 @@
+/* WELCOME SCREEN W/ LOG IN/SIGN UP BUTTONS */
+
 package edu.oregonstate.studentlife.ihcv2;
 
 import android.support.v7.app.AppCompatActivity;
