@@ -1,11 +1,13 @@
-/* WELCOME SCREEN W/ LOG IN/SIGN UP BUTTONS */
-
 package edu.oregonstate.studentlife.ihcv2;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
-public class LogoutActivity extends AppCompatActivity {
+/**
+ * Created by Omeed on 12/20/17.
+ */
+
+public class LogoutPageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

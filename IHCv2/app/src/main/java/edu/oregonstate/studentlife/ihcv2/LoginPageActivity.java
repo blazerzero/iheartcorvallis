@@ -1,14 +1,14 @@
 package edu.oregonstate.studentlife.ihcv2;
 
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 /**
- * Created by dylan on 12/20/2017.
+ * Created by Omeed on 12/20/17.
  */
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+public class LoginPageActivity extends AppCompatActivity {
 
-public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
