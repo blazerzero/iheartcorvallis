@@ -1,7 +1,0 @@
-#Mon Oct 16 14:27:18 PDT 2017
-base.0=/Users/beerad/cs496/final-project-yelpsearch/YelpSearch/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_070a9417a690973406a97d2954ea35a1f015ee2b
-renamed.1=classes.dex
-renamed.0=classes2.dex
-file.1=/Users/beerad/cs496/final-project-yelpsearch/YelpSearch/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_6d2e6638129fc7f144baf9f19ee41174aed3092e/classes.dex
-base.1=/Users/beerad/cs496/final-project-yelpsearch/YelpSearch/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_6d2e6638129fc7f144baf9f19ee41174aed3092e
-file.0=/Users/beerad/cs496/final-project-yelpsearch/YelpSearch/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_070a9417a690973406a97d2954ea35a1f015ee2b/classes.dex
