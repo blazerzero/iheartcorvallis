@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         websettings.setJavaScriptEnabled(true);
         webview.loadUrl("file:///android_asset/index.html");
         webview.setWebViewClient(new WebViewClient());
+        webview.setScrollBarStyle(webview.SCROLLBARS_OUTSIDE_OVERLAY);
     }
 
     @Override

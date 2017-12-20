@@ -74,11 +74,10 @@ $(document).ready(function() {
             <strong>CORVALLIS</strong>
          </center>
          <div class="navbar">
-            <br><br>
-               <div id="pagename">
-                  <i class="sidebar icon ihc" id="sidebar-button"></i>
-                  <center><strong>Events</strong></center>
-               </div>
+            <div id="pagename">
+               <i class="sidebar icon ihc" id="sidebar-button"></i>
+               <center><strong>Events</strong></center>
+            </div>
             <br><br>
          </div>
       </div>
@@ -89,8 +88,8 @@ $(document).ready(function() {
                   <i class="repeat icon ihc"></i>
                <?php } else { ?>
                   <div id="event-date">
-                     <center><h1>DEC</h1></center>
-                     <center><h1><?php echo $i + 20 ?></h1></center>
+                     <center>DEC</center>
+                     <center><?php echo $i + 20 ?></center>
                   </div>
                <?php } ?>
                <div class="content" id="event-info">

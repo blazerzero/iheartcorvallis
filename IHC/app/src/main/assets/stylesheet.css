@@ -1,8 +1,15 @@
 /*@import url('https://fonts.googleapis.com/css?family=Open+Sans')*/
 
 /* Scrolling */
-body {overflow-y: hidden}
-body::-webkit-scrollbar {display: none}
+html, body {
+   max-width: 100%;
+   overflow-x: hidden;
+}
+.pusher {overflow: hidden}
+.pusher::-webkit-scrollbar {display: none}
+
+overflow: auto;
+overflow-y: hidden;
 
 /* Alignment */
 .alignleft {float: left}
@@ -33,7 +40,15 @@ body::-webkit-scrollbar {display: none}
    padding-top: 2vw;
    float: left;
    overflow: hidden;
-   width: 10px;
+   font-size: 8vw;
+}
+
+/* Index */
+.index-msg {
+   font-size: 8vw;
+   padding: 2vw;
+   font-style: bold;
+   line-height: 150%;
 }
 
 /* Sidebar */
@@ -53,10 +68,11 @@ body::-webkit-scrollbar {display: none}
    overflow-x: hidden;
    transition: 0.5s;
    font-size: 5vw;
+   margin-left: -3vw;
 }
 
-.header.ui.small {font-size: 5.5vw}
-.header.ui.medium {font-size: 8vw}
+.header.ui.small {font-size: 5vw}
+.header.ui.medium {font-size: 7.5vw}
 .header.ui.large {font-size: 10vw}
 
 /* General App */
@@ -66,11 +82,11 @@ body::-webkit-scrollbar {display: none}
    overflow: auto;
 }
 
-.index {
+/* .index {
    height: 100%;
    background-color: black;
    overflow: auto;
-}
+} */
 
 /* Page Header */
 .app-header {background-color: black}
@@ -130,10 +146,13 @@ body::-webkit-scrollbar {display: none}
    background-color: white;
    font-size: 2vw;
 }
-#event-date {margin-right: 2.3vw}
+#event-date {
+   margin-right: 2.3vw;
+   font-size: 2.5em;
+}
 #event-info {padding-top: 0.9vw}
-#event-name {font-size: 3vw}
-#event-location {font-size: 2vw}
+#event-name {font-size: 2.5em}
+#event-location {font-size: 2em}
 
 /* Settings */
 #logout-button {
