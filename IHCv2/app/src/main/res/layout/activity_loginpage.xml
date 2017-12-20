@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/bg"
-    tools:context="edu.oregonstate.studentlife.ihcv2.DashboardActivity"
+    tools:context="edu.oregonstate.studentlife.ihcv2.LoginPageActivity"
     android:weightSum="1">
 
     <ImageView
@@ -20,12 +20,25 @@
         android:layout_alignParentStart="true" />
 
     <Button
+        android:id="@+id/btn_search"
+        android:layout_width="280dp"
+        android:layout_height="75dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="52dp"
+        android:layout_weight="0.13"
+        android:background="#ffffff"
+        android:drawablePadding="-20dp"
+        android:paddingLeft="10dp"
+        android:text="Student Log In"
+        android:textSize="16sp" />
+
+    <Button
         android:paddingLeft="10dp"
         android:id="@+id/btn_view"
         android:layout_width="280dp"
         android:layout_height="75dp"
         android:layout_weight="0.13"
-        android:text="Student Log In"
+        android:text="Resident Log In"
         android:textSize="16sp"
         android:background="#ffffff"
         android:drawablePadding="-20dp"
@@ -33,29 +46,6 @@
         android:layout_below="@+id/btn_search"
         android:layout_alignLeft="@+id/btn_search"
         android:layout_alignStart="@+id/btn_search" />
-
-    <Button
-        android:id="@+id/btn_search"
-        android:layout_width="280dp"
-        android:layout_height="75dp"
-        android:layout_below="@+id/progressBar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="52dp"
-        android:layout_weight="0.13"
-        android:background="#ffffff"
-        android:drawablePadding="-20dp"
-        android:paddingLeft="10dp"
-        android:text="Resident Log In"
-        android:textSize="16sp" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="39dp" />
 
 </RelativeLayout>
 
