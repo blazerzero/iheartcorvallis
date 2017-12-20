@@ -3,7 +3,7 @@
 /* Scrolling */
 html, body {
    max-width: 100%;
-   overflow-x: hidden;
+   overflow: hidden;
 }
 .pusher {overflow: hidden}
 .pusher::-webkit-scrollbar {display: none}
@@ -132,6 +132,7 @@ overflow-y: hidden;
    padding-top: 0.5vw;
    padding-bottom: 0.5vw;
 }
+.ui.huge.button.ihc {background-color: white}
 .ui.card.quick {width: 100vw}
 .go-to-passport {
    color: black;

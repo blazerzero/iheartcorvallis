@@ -29,6 +29,9 @@ $(document).ready(function() {
    $(".pusher,#closebutton").click(function(e) {
       $('#sidebar-menu').width(0);
    });
+   $(".ui.two.column.grid").css({
+      'width': ($(".quicklinks").width());
+   });
 });
 
 </script>
@@ -92,9 +95,9 @@ $(document).ready(function() {
                </h1>
             </div>
          </a>
-         <div class="ui two column grid">
+         <!-- <div class="ui two column grid" style="width: 100vw; border-style:solid; border-color:green; padding-left: 3vw">
             <div class="column dashboard">
-               <a class="ui fluid card" href="passport.php">
+               <a class="ui fluid card" href="passport.php" style="width:60vw">
                   <div class="content">
                      <br>
                      <div class="header ui small"><center>PASSPORT</center></div>
@@ -111,6 +114,10 @@ $(document).ready(function() {
                   </div>
                </a>
             </div>
+         </div> -->
+         <div class="ui basic buttons">
+            <button class="ui huge button ihc" href="passport.php"><strong>PASSPORT</strong></button>
+            <button class="ui huge button ihc" href="leaderboard.php">LEADERBOARD</button>
          </div>
          <a class="ui card quick" href="resources.php">
             <div class="content">
