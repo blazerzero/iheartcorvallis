@@ -1,16 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/bg"
     tools:context="edu.oregonstate.studentlife.ihcv2.DashboardActivity"
-    android:weightSum="1">
+    android:orientation="vertical">
 
+    <Button
+        android:paddingLeft="85dp"
+        android:id="@+id/button_test1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.25"
+        android:background="#B0E0E6"
+        android:textSize="20sp"
+        android:drawablePadding="-65dp"
+        android:text="test1" />
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/button_test2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.25"
+        android:background="#FFDAB9"
+        android:drawablePadding="-65dp"
+        android:paddingLeft="85dp"
+        android:text="test2"
+        android:textSize="20sp" />
 
+    <Button
+        android:paddingLeft="85dp"
+        android:id="@+id/button_test3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.25"
+        android:background="#FF99FF"
+        android:textSize="20sp"
+        android:drawablePadding="-65dp"
+        android:text="test3" />
 
+    <Button
+        android:paddingLeft="85dp"
+        android:id="@+id/button_test4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.25"
+        android:background="#FF6666"
+        android:textSize="20sp"
+        android:drawablePadding="-65dp"
+        android:text="test4" />
+
+    <Button
+        android:paddingLeft="85dp"
+        android:id="@+id/button_test5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.25"
+        android:background="#4a89ef"
+        android:textSize="20sp"
+        android:drawablePadding="-65dp"
+        android:text="test5" />
+
+</LinearLayout>
