@@ -6,5 +6,5 @@ import android.support.v7.app.AppCompatActivity;
  * Created by Omeed on 12/20/17.
  */
 
-public class LeaderboardActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity {
 }
