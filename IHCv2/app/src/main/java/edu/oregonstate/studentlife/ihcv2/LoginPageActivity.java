@@ -17,7 +17,7 @@ public class LoginPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loginpage);
 
-            Button searchButton = (Button)findViewById(R.id.btn_search);
+            Button searchButton = (Button)findViewById(R.id.btn_student);
             searchButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -26,7 +26,7 @@ public class LoginPageActivity extends AppCompatActivity {
                 }
             });
 
-            Button viewButton = (Button)findViewById(R.id.btn_view);
+            Button viewButton = (Button)findViewById(R.id.btn_resident);
             viewButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -5,57 +5,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="edu.oregonstate.studentlife.ihcv2.DashboardActivity"
-    android:orientation="vertical">
+    android:weightSum="1">
 
     <Button
-        android:id="@+id/button_test1"
+        android:id="@+id/eventbtn"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.25"
+        android:layout_weight="0.2"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="EVENTS"
         android:background="#c9ae5d"
-        android:textSize="20sp"
-        android:drawablePadding="-65dp"
-        android:text="EVENTS"/>
+        android:textSize="25sp"/>
 
     <Button
-        android:id="@+id/button_test2"
+        android:id="@+id/passportbtn"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.25"
+        android:layout_weight="0.2"
         android:background="@drawable/button_border"
-        android:drawablePadding="-65dp"
         android:text="PASSPORT"
-        android:textSize="20sp" />
+        android:textSize="25sp" />
+
 
     <Button
-        android:id="@+id/button_test3"
+        android:id="@+id/leaderbtn"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.25"
+        android:layout_weight="0.2"
         android:background="@drawable/button_border"
-        android:textSize="20sp"
-        android:drawablePadding="-65dp"
+        android:textSize="25sp"
         android:text="LEADERBOARD" />
 
     <Button
-        android:id="@+id/button_test4"
+        android:id="@+id/resourcebtn"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.25"
+        android:layout_weight="0.2"
         android:background="@drawable/button_border"
-        android:textSize="20sp"
-        android:drawablePadding="-65dp"
+        android:textSize="25sp"
         android:text="RESOURCES" />
 
     <Button
-        android:id="@+id/button_test5"
+        android:id="@+id/aboutbtn"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.25"
+        android:layout_weight="0.2"
         android:background="@drawable/button_border"
-        android:textSize="20sp"
-        android:drawablePadding="-65dp"
-        android:text="SETTINGS" />
+        android:textSize="25sp"
+        android:text="ABOUT US" />
 
 </LinearLayout>

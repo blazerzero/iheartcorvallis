@@ -15,8 +15,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button searchButton = (Button)findViewById(R.id.btn_search);
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        Button loginButton = (Button)findViewById(R.id.btn_login);
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, LoginPageActivity.class);
@@ -24,11 +24,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button viewButton = (Button)findViewById(R.id.btn_view);
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        Button signupButton = (Button)findViewById(R.id.btn_signup);
+        signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoginPageActivity.class);
+                Intent intent = new Intent(MainActivity.this, SignupPageActivity.class);
                 startActivity(intent);
             }
         });
