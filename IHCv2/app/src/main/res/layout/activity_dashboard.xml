@@ -9,58 +9,53 @@
     android:orientation="vertical">
 
     <Button
-        android:paddingLeft="85dp"
         android:id="@+id/button_test1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.25"
-        android:background="#B0E0E6"
+        android:background="#c9ae5d"
         android:textSize="20sp"
         android:drawablePadding="-65dp"
-        android:text="test1" />
+        android:text="EVENTS"/>
 
     <Button
         android:id="@+id/button_test2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.25"
-        android:background="#FFDAB9"
+        android:background="@drawable/button_border"
         android:drawablePadding="-65dp"
-        android:paddingLeft="85dp"
-        android:text="test2"
+        android:text="PASSPORT"
         android:textSize="20sp" />
 
     <Button
-        android:paddingLeft="85dp"
         android:id="@+id/button_test3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.25"
-        android:background="#FF99FF"
+        android:background="@drawable/button_border"
         android:textSize="20sp"
         android:drawablePadding="-65dp"
-        android:text="test3" />
+        android:text="LEADERBOARD" />
 
     <Button
-        android:paddingLeft="85dp"
         android:id="@+id/button_test4"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.25"
-        android:background="#FF6666"
+        android:background="@drawable/button_border"
         android:textSize="20sp"
         android:drawablePadding="-65dp"
-        android:text="test4" />
+        android:text="RESOURCES" />
 
     <Button
-        android:paddingLeft="85dp"
         android:id="@+id/button_test5"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.25"
-        android:background="#4a89ef"
+        android:background="@drawable/button_border"
         android:textSize="20sp"
         android:drawablePadding="-65dp"
-        android:text="test5" />
+        android:text="SETTINGS" />
 
 </LinearLayout>
