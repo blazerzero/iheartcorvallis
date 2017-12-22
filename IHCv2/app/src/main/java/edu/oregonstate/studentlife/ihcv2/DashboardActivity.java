@@ -1,14 +1,16 @@
 package edu.oregonstate.studentlife.ihcv2;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import java.sql.*;
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 /**
  * Created by Omeed on 12/20/17.
@@ -22,13 +24,23 @@ public class DashboardActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-
-        Connection conn = null;
         try {
-            conn = DriverManager.getConnection("oniddb.cws.oregonstate.edu","habibelo-db","RcAbWdWDkpj7XNTL");
+            Connection conn = DriverManager.getConnection("oniddb.cws.oregonstate.edu","habibelo-db","RcAbWdWDkpj7XNTL");
         }
-        catch (SQLException e) {System.out.println(e);}
 
+        catch (SQLException e) {
+            AlertDialog errorAlert = new AlertDialog.Builder(DashboardActivity.this).create();
+            errorAlert.setTitle("Error " + e.getErrorCode());
+            errorAlert.setMessage(e.getMessage());
+            errorAlert.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            errorAlert.show();
+        }
 
         Button button1 = (Button)findViewById(R.id.eventbtn);
         button1.setOnClickListener(new View.OnClickListener() {
