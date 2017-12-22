@@ -8,8 +8,18 @@
     android:orientation="vertical"
     android:background="@drawable/bg"
     tools:context="edu.oregonstate.studentlife.ihcv2.LoginPageActivity"
-    android:weightSum="1"
-    android:gravity="center">
+    android:weightSum="1">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/AppTheme"
+        android:visibility="visible"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
 
     <!--<ImageView
         android:id="@+id/iv_logo"
@@ -23,28 +33,29 @@
         android:id="@+id/btn_student"
         android:layout_width="280dp"
         android:layout_height="75dp"
+        android:layout_above="@+id/btn_resident"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="27dp"
         android:layout_weight="0.13"
         android:background="#ffffff"
         android:drawablePadding="-20dp"
         android:paddingLeft="10dp"
-        android:text="Student Log In"
+        android:text="Student Login"
         android:textSize="16sp" />
 
     <Button
         android:id="@+id/btn_resident"
-        android:paddingLeft="10dp"
         android:layout_width="280dp"
         android:layout_height="75dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/btn_student"
+        android:layout_marginBottom="184dp"
         android:layout_weight="0.13"
-        android:text="Resident Log In"
-        android:textSize="16sp"
         android:background="#ffffff"
         android:drawablePadding="-20dp"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/btn_student"
-        android:layout_alignLeft="@+id/btn_student"
-        android:layout_alignStart="@+id/btn_student" />
+        android:paddingLeft="10dp"
+        android:text="Resident Login"
+        android:textSize="16sp" />
 
 </RelativeLayout>
 
