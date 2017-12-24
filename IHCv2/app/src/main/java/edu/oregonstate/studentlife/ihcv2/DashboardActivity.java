@@ -44,7 +44,7 @@ public class DashboardActivity extends AppCompatActivity
         });
 
 
-        /*Button button2 = (Button)findViewById(R.id.passportbtn);
+        Button button2 = (Button)findViewById(R.id.passportbtn);
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +78,7 @@ public class DashboardActivity extends AppCompatActivity
                 Intent intent = new Intent(DashboardActivity.this, AboutUsActivity.class);
                 startActivity(intent);
             }
-        });*/
+        });
     }
 
     @Override

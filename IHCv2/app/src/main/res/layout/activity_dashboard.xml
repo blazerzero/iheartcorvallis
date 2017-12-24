@@ -10,7 +10,8 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppBarOverlay">
+        android:theme="@style/AppBarOverlay"
+        android:id="@+id/appBarLayout">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/my_toolbar"
@@ -31,7 +32,78 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
+        android:layout_below="@+id/appBarLayout"
+        android:background="@color/colorPrimary"
         tools:openDrawer="start">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:background="@color/colorPrimary">
+
+            <Button
+                android:id="@+id/eventbtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="EVENTS"
+                android:textSize="20dp"
+                android:paddingTop="30dp"
+                android:paddingBottom="30dp"/>
+
+            <Button
+                android:id="@+id/passportbtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/eventbtn"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="PASSPORT"
+                android:textSize="20dp"
+                android:paddingTop="30dp"
+                android:paddingBottom="30dp"/>
+
+            <Button
+                android:id="@+id/leaderbtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/passportbtn"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="LEADERBOARD"
+                android:textSize="20dp"
+                android:paddingTop="30dp"
+                android:paddingBottom="30dp"/>
+
+            <Button
+                android:id="@+id/resourcebtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/leaderbtn"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="RESOURCES"
+                android:textSize="20dp"
+                android:paddingTop="30dp"
+                android:paddingBottom="30dp"/>
+
+            <Button
+                android:id="@+id/aboutbtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/resourcebtn"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="ABOUT US"
+                android:textSize="20dp"
+                android:paddingTop="30dp"
+                android:paddingBottom="30dp"/>
+
+        </RelativeLayout>
 
         <include
             layout="@layout/app_bar"
@@ -49,50 +121,4 @@
 
     </android.support.v4.widget.DrawerLayout>
 
-    <Button
-        android:id="@+id/eventbtn"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.2"
-        android:gravity="center_horizontal|center_vertical"
-        android:text="EVENTS"
-        android:background="#c9ae5d"
-        android:textSize="25sp"/>
-
-    <Button
-        android:id="@+id/passportbtn"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.2"
-        android:background="@drawable/button_border"
-        android:text="PASSPORT"
-        android:textSize="25sp" />
-
-
-    <Button
-        android:id="@+id/leaderbtn"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.2"
-        android:background="@drawable/button_border"
-        android:textSize="25sp"
-        android:text="LEADERBOARD" />
-
-    <Button
-        android:id="@+id/resourcebtn"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.2"
-        android:background="@drawable/button_border"
-        android:textSize="25sp"
-        android:text="RESOURCES" />
-
-    <Button
-        android:id="@+id/aboutbtn"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.2"
-        android:background="@drawable/button_border"
-        android:textSize="25sp"
-        android:text="ABOUT US" />
 </RelativeLayout>
