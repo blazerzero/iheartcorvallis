@@ -1,6 +1,20 @@
 <resources>
-    <string name="app_name">IHCv2</string>
+    <string name="app_name">I Heart Corvallis</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
+    <string-array name="drawer_pages">
+        <item>Dashboard</item>
+        <item>Events</item>
+        <item>Passport</item>
+        <item>Leaderboard</item>
+        <item>Resources</item>
+        <item>About Us</item>
+        <item>Settings</item>
+    </string-array>
+    <string name="title_activity_drawer">DrawerActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_dashboard">DashboardActivity</string>
 </resources>

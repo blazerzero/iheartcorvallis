@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/nav_dash"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Dashboard" />
+    <item
+        android:id="@+id/nav_events"
+        android:icon="@drawable/ic_next_week_black_24dp"
+        android:title="Events" />
+    <item
+        android:id="@+id/nav_passport"
+        android:icon="@drawable/ic_book_black_24dp"
+        android:title="Passport" />
+    <item
+        android:id="@+id/nav_leaderboard"
+        android:icon="@drawable/ic_format_list_numbered_black_24dp"
+        android:title="Leaderboard" />
+    <item
+        android:id="@+id/nav_resources"
+        android:icon="@drawable/ic_import_contacts_black_24dp"
+        android:title="Resources" />
+    <item
+        android:id="@+id/nav_about"
+        android:icon="@drawable/ic_info_outline_black_24dp"
+        android:title="About Us" />
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="Settings" />
+
+</menu>

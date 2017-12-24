@@ -1,74 +1,38 @@
 package edu.oregonstate.studentlife.ihcv2;
 
-import android.content.DialogInterface;
-import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.content.Intent;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.sql.*;
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
-
-/**
- * Created by Omeed on 12/20/17.
- */
-
-public class DashboardActivity extends AppCompatActivity {
-    private ListView mDrawerList;
-    private ArrayAdapter<String> mAdapter;
-    private ActionBarDrawerToggle mDrawerToggle;
-    private DrawerLayout mDrawerLayout;
-    private String mActivityTitle;
+public class DashboardActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
 
-        mDrawerList = (ListView)findViewById(R.id.navList);
-        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        mActivityTitle = getTitle().toString();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
-        addDrawerItems();
-        setupDrawer();
-
-
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
-        try {
-            Connection conn = DriverManager.getConnection("oniddb.cws.oregonstate.edu","habibelo-db","RcAbWdWDkpj7XNTL");
-        }
-
-        catch (SQLException e) {
-            AlertDialog errorAlert = new AlertDialog.Builder(DashboardActivity.this).create();
-            errorAlert.setTitle("Error " + e.getErrorCode());
-            errorAlert.setMessage(e.getMessage());
-            errorAlert.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            errorAlert.show();
-        }
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         Button button1 = (Button)findViewById(R.id.eventbtn);
         button1.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +44,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
 
-        Button button2 = (Button)findViewById(R.id.passportbtn);
+        /*Button button2 = (Button)findViewById(R.id.passportbtn);
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,63 +78,23 @@ public class DashboardActivity extends AppCompatActivity {
                 Intent intent = new Intent(DashboardActivity.this, AboutUsActivity.class);
                 startActivity(intent);
             }
-        });
-
-    }
-
-    private void addDrawerItems() {
-        String[] pageArray = {"Main", "Login", "Dashboard"};
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, pageArray);
-        mDrawerList.setAdapter(mAdapter);
-
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(DashboardActivity.this, "Time for an upgrade!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void setupDrawer() {
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.string.drawer_open, R.string.drawer_close) {
-
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle("Navigation!");
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                getSupportActionBar().setTitle(mActivityTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
-        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        });*/
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.dashboard, menu);
         return true;
     }
 
@@ -186,11 +110,39 @@ public class DashboardActivity extends AppCompatActivity {
             return true;
         }
 
-        // Activate the navigation drawer toggle
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_dash) {
+            onBackPressed();
+        } else if (id == R.id.nav_events) {
+            Intent intent = new Intent(DashboardActivity.this, EventsActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_passport) {
+            Intent intent = new Intent(DashboardActivity.this, PassportActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_leaderboard) {
+            Intent intent = new Intent(DashboardActivity.this, LeaderboardActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_resources) {
+            Intent intent = new Intent(DashboardActivity.this, ResourcesActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_about) {
+            Intent intent = new Intent(DashboardActivity.this, AboutUsActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_settings) {
+            Intent intent = new Intent(DashboardActivity.this, SettingsActivity.class);
+            startActivity(intent);
         }
 
-        return super.onOptionsItemSelected(item);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

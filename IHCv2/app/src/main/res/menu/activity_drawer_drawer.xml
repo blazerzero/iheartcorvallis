@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_dash"
+            android:title="Dashboard" />
+        <item
+            android:id="@+id/nav_events"
+            android:title="Events" />
+        <item
+            android:id="@+id/nav_passport"
+            android:title="Passport" />
+        <item
+            android:id="@+id/nav_leaderbrd"
+            android:title="Leaderboard" />
+        <item
+            android:id="@+id/nav_resources"
+            android:title="Resources" />
+        <item
+            android:id="@+id/nav_aboutus"
+            android:title="About Us" />
+        <item
+            android:id="@+id/nav_settings"
+            android:title="Settings" />
+    </group>
+
+</menu>

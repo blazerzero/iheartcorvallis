@@ -14,6 +14,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBYbpLA_XmLpBF31OVt91u1K3z2pAVyvrM" />
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop">
@@ -43,7 +44,9 @@
         </activity>
         <activity
             android:name=".DashboardActivity"
-            android:launchMode="singleTop">
+            android:label="Dashboard"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,6 +55,7 @@
         </activity>
         <activity
             android:name=".EventsActivity"
+            android:label="Events"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -61,6 +65,7 @@
         </activity>
         <activity
             android:name=".PassportActivity"
+            android:label="Passport"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -70,6 +75,7 @@
         </activity>
         <activity
             android:name=".LeaderboardActivity"
+            android:label="Leaderboard"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -79,6 +85,7 @@
         </activity>
         <activity
             android:name=".ResourcesActivity"
+            android:label="Resources"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -88,6 +95,7 @@
         </activity>
         <activity
             android:name=".AboutUsActivity"
+            android:label="About Us"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -97,6 +105,7 @@
         </activity>
         <activity
             android:name=".SettingsActivity"
+            android:label="Settings"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

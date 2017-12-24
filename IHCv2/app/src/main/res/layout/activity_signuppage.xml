@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/bg"
+    android:background="@color/colorPrimary"
     tools:context="edu.oregonstate.studentlife.ihcv2.SignupPageActivity"
     android:weightSum="1">
 
@@ -14,10 +14,10 @@
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/AppTheme"
         android:visibility="visible"
+        android:background="@color/colorPrimaryDark"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
 
