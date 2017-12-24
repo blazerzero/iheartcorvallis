@@ -17,7 +17,9 @@
 
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTop">
+            android:label="I Heart Corvallis"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,7 +28,9 @@
         </activity>
         <activity
             android:name=".LoginPageActivity"
-            android:launchMode="singleTop">
+            android:label="Log In"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,7 +39,9 @@
         </activity>
         <activity
             android:name=".SignupPageActivity"
-            android:launchMode="singleTop">
+            android:label="Sign Up"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,7 +52,7 @@
             android:name=".DashboardActivity"
             android:label="Dashboard"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,7 +62,8 @@
         <activity
             android:name=".EventsActivity"
             android:label="Events"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -66,7 +73,8 @@
         <activity
             android:name=".PassportActivity"
             android:label="Passport"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -76,7 +84,8 @@
         <activity
             android:name=".LeaderboardActivity"
             android:label="Leaderboard"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -86,7 +95,8 @@
         <activity
             android:name=".ResourcesActivity"
             android:label="Resources"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -96,7 +106,8 @@
         <activity
             android:name=".AboutUsActivity"
             android:label="About Us"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -106,7 +117,8 @@
         <activity
             android:name=".SettingsActivity"
             android:label="Settings"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -115,7 +127,8 @@
         </activity>
         <activity
             android:name=".LogoutPageActivity"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
