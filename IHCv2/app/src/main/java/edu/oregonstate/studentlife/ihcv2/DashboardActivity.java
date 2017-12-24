@@ -133,7 +133,7 @@ public class DashboardActivity extends AppCompatActivity
         } else if (id == R.id.nav_resources) {
             Intent intent = new Intent(DashboardActivity.this, ResourcesActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_about) {
+        } else if (id == R.id.nav_aboutus) {
             Intent intent = new Intent(DashboardActivity.this, AboutUsActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_settings) {
