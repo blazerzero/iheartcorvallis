@@ -37,90 +37,96 @@
         android:background="@color/colorPrimary"
         tools:openDrawer="start">
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            android:background="@color/colorPrimary">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/progIndicator"
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:background="#ffffff"
-                android:text="INDICATE PASSPORT PROGRESS HERE"
-                android:textSize="15dp"
-                android:textStyle="bold"
-                android:elevation="4dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textAlignment="center"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"/>
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:background="@color/colorPrimary">
 
-            <Button
-                android:id="@+id/eventbtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/progIndicator"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:text="EVENTS"
-                android:textSize="20dp"
-                android:paddingTop="30dp"
-                android:paddingBottom="30dp" />
+                <TextView
+                    android:id="@+id/progIndicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:background="#ffffff"
+                    android:text="INDICATE PASSPORT PROGRESS HERE"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:elevation="4dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textAlignment="center"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"/>
 
-            <Button
-                android:id="@+id/passportbtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/eventbtn"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:text="PASSPORT"
-                android:textSize="20dp"
-                android:paddingTop="30dp"
-                android:paddingBottom="30dp"/>
+                <Button
+                    android:id="@+id/eventbtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/progIndicator"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:text="EVENTS"
+                    android:textSize="20dp"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="30dp" />
 
-            <Button
-                android:id="@+id/leaderbtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/passportbtn"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:text="LEADERBOARD"
-                android:textSize="20dp"
-                android:paddingTop="30dp"
-                android:paddingBottom="30dp"/>
+                <Button
+                    android:id="@+id/passportbtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/eventbtn"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:text="PASSPORT"
+                    android:textSize="20dp"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="30dp"/>
 
-            <Button
-                android:id="@+id/resourcebtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/leaderbtn"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:text="RESOURCES"
-                android:textSize="20dp"
-                android:paddingTop="30dp"
-                android:paddingBottom="30dp"/>
+                <Button
+                    android:id="@+id/leaderbtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/passportbtn"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:text="LEADERBOARD"
+                    android:textSize="20dp"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="30dp"/>
 
-            <Button
-                android:id="@+id/aboutbtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/resourcebtn"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:text="ABOUT US"
-                android:textSize="20dp"
-                android:paddingTop="30dp"
-                android:paddingBottom="30dp"/>
+                <Button
+                    android:id="@+id/resourcebtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/leaderbtn"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:text="RESOURCES"
+                    android:textSize="20dp"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="30dp"/>
 
-        </RelativeLayout>
+                <Button
+                    android:id="@+id/aboutbtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/resourcebtn"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:text="ABOUT US"
+                    android:textSize="20dp"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="30dp"/>
+
+            </RelativeLayout>
+
+        </ScrollView>
 
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"
