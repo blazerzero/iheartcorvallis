@@ -88,6 +88,9 @@ public class AboutUsActivity extends AppCompatActivity
         } else if (id == R.id.nav_passport) {
             Intent intent = new Intent(AboutUsActivity.this, PassportActivity.class);
             startActivity(intent);
+        } else if (id == R.id.nav_prizes) {
+            Intent intent = new Intent(AboutUsActivity.this, PrizesActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_leaderboard) {
             Intent intent = new Intent(AboutUsActivity.this, LeaderboardActivity.class);
             startActivity(intent);

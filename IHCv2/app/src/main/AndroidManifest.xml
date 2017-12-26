@@ -82,6 +82,17 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".PrizesActivity"
+            android:label="Prizes"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".LeaderboardActivity"
             android:label="Leaderboard"
             android:launchMode="singleTop"

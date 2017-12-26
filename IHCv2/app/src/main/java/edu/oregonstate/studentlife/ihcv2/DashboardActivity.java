@@ -1,5 +1,7 @@
 package edu.oregonstate.studentlife.ihcv2;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,6 +16,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 import android.widget.Button;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -33,6 +38,18 @@ public class DashboardActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        TextView progIndicator = (TextView)findViewById(R.id.progIndicator);
+        int numStamps = 13;
+        progIndicator = initProgIndicator(numStamps, progIndicator);
+
+        progIndicator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashboardActivity.this, PrizesActivity.class);
+                startActivity(intent);
+            }
+        });
 
         Button button1 = (Button)findViewById(R.id.eventbtn);
         button1.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +98,37 @@ public class DashboardActivity extends AppCompatActivity
         });
     }
 
+    public TextView initProgIndicator(int numStamps, TextView progIndicator) {
+        String message;
+        int eventsToGo;
+        int progColor;
+        if (numStamps >= getResources().getInteger(R.integer.bronzeThreshold)
+                && numStamps < getResources().getInteger(R.integer.silverThreshold)) {
+            progColor = getResources().getColor(R.color.eventBronze);
+            eventsToGo = getResources().getInteger(R.integer.silverThreshold) - numStamps;
+            message = "Only " + eventsToGo + " events away from reaching silver status!\nCLICK HERE TO VIEW PRIZES";
+        }
+        else if (numStamps >= getResources().getInteger(R.integer.silverThreshold)
+                && numStamps < getResources().getInteger(R.integer.goldThreshold)) {
+            eventsToGo = getResources().getInteger(R.integer.goldThreshold) - numStamps;
+            progColor = getResources().getColor(R.color.eventSilver);
+            message = "Only " + eventsToGo + " events away from reaching gold status!\nCLICK HERE TO VIEW PRIZES";
+        }
+        else if (numStamps >= getResources().getInteger(R.integer.goldThreshold)) {
+            progColor = getResources().getColor(R.color.eventGold);
+            message = "Congratulations on achieving gold status!\nCLICK HERE TO VIEW PRIZES";
+        }
+        else {
+            eventsToGo = getResources().getInteger(R.integer.bronzeThreshold) - numStamps;
+            progColor = getResources().getColor(R.color.colorAccent);
+            message = "Only " + eventsToGo + " events away from reaching bronze status!\nCLICK HERE TO VIEW PRIZES";
+        }
+        progIndicator.setBackgroundColor(progColor);
+        progIndicator.setText(message);
+        progIndicator.setTextColor(getResources().getColor(R.color.maroon));
+        return progIndicator;
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -126,6 +174,9 @@ public class DashboardActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_passport) {
             Intent intent = new Intent(DashboardActivity.this, PassportActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_prizes) {
+            Intent intent = new Intent(DashboardActivity.this, PrizesActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_leaderboard) {
             Intent intent = new Intent(DashboardActivity.this, LeaderboardActivity.class);

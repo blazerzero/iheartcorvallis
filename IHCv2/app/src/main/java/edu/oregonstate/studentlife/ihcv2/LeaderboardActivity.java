@@ -80,6 +80,9 @@ public class LeaderboardActivity extends AppCompatActivity
         } else if (id == R.id.nav_passport) {
             Intent intent = new Intent(LeaderboardActivity.this, PassportActivity.class);
             startActivity(intent);
+        } else if (id == R.id.nav_prizes) {
+            Intent intent = new Intent(LeaderboardActivity.this, PrizesActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_leaderboard) {
             onBackPressed();
         } else if (id == R.id.nav_resources) {

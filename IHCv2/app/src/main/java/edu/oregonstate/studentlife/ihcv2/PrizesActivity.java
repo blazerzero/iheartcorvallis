@@ -1,5 +1,9 @@
 package edu.oregonstate.studentlife.ihcv2;
 
+/**
+ * Created by Omeed on 12/25/17.
+ */
+
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -18,16 +22,12 @@ import android.widget.Button;
 import android.widget.ListView;
 import java.sql.*;
 
-/**
- * Created by Omeed on 12/20/17.
- */
-
-public class EventsActivity extends AppCompatActivity
+public class PrizesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_events);
+        setContentView(R.layout.activity_prizes);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
@@ -80,27 +80,27 @@ public class EventsActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_dash) {
-            Intent intent = new Intent(EventsActivity.this, DashboardActivity.class);
+            Intent intent = new Intent(PrizesActivity.this, DashboardActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_events) {
-            onBackPressed();
+            Intent intent = new Intent(PrizesActivity.this, EventsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_passport) {
-            Intent intent = new Intent(EventsActivity.this, PassportActivity.class);
+            Intent intent = new Intent(PrizesActivity.this, PassportActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_prizes) {
-            Intent intent = new Intent(EventsActivity.this, PrizesActivity.class);
-            startActivity(intent);
+            onBackPressed();
         } else if (id == R.id.nav_leaderboard) {
-            Intent intent = new Intent(EventsActivity.this, LeaderboardActivity.class);
+            Intent intent = new Intent(PrizesActivity.this, LeaderboardActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_resources) {
-            Intent intent = new Intent(EventsActivity.this, ResourcesActivity.class);
+            Intent intent = new Intent(PrizesActivity.this, ResourcesActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_aboutus) {
-            Intent intent = new Intent(EventsActivity.this, AboutUsActivity.class);
+            Intent intent = new Intent(PrizesActivity.this, AboutUsActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_settings) {
-            Intent intent = new Intent(EventsActivity.this, SettingsActivity.class);
+            Intent intent = new Intent(PrizesActivity.this, SettingsActivity.class);
             startActivity(intent);
         }
 
