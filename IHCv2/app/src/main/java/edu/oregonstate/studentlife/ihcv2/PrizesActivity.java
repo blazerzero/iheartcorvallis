@@ -5,6 +5,8 @@ package edu.oregonstate.studentlife.ihcv2;
  */
 
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,7 +21,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import java.sql.*;
 
 public class PrizesActivity extends AppCompatActivity
@@ -39,6 +44,31 @@ public class PrizesActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        LinearLayout linearLayout1 = (LinearLayout) findViewById(R.id.goldPrizeList);
+        LinearLayout linearLayout2 = (LinearLayout) findViewById(R.id.silverPrizeList);
+        LinearLayout linearLayout3 = (LinearLayout) findViewById(R.id.bronzePrizeList);
+        for (int i = 1; i <= 3; i++) {
+            TextView textView = new TextView(this);
+            textView.setText("Gold Prize #" + i);
+            textView.setTextSize(getResources().getDimension(R.dimen.prize_listing));
+            textView.setTextColor(Color.BLACK);
+            linearLayout1.addView(textView);
+        }
+        for (int i = 1; i <= 3; i++) {
+            TextView textView = new TextView(this);
+            textView.setText("Silver Prize #" + i);
+            textView.setTextSize(getResources().getDimension(R.dimen.prize_listing));
+            textView.setTextColor(Color.BLACK);
+            linearLayout2.addView(textView);
+        }
+        for (int i = 1; i <= 3; i++) {
+            TextView textView = new TextView(this);
+            textView.setText("Bronze Prize #" + i);
+            textView.setTextSize(getResources().getDimension(R.dimen.prize_listing));
+            textView.setTextColor(Color.BLACK);
+            linearLayout3.addView(textView);
+        }
     }
 
     @Override

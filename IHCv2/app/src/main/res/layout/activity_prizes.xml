@@ -48,7 +48,88 @@
                 android:fitsSystemWindows="true"
                 android:background="@color/colorPrimary">
 
-                <!-- CONTENT GOES HERE -->
+                <RelativeLayout
+                    android:id="@+id/goldPrizes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/eventGold">
+
+                    <TextView
+                        android:id="@+id/goldPrizeName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="GOLD PRIZES"
+                        android:textSize="25dp"
+                        android:textStyle="bold"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryDark"/>
+
+                    <LinearLayout
+                        android:id="@+id/goldPrizeList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/goldPrizeName"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/silverPrizes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/eventSilver"
+                    android:layout_below="@+id/goldPrizes">
+
+                    <TextView
+                        android:id="@+id/silverPrizeName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="SILVER PRIZES"
+                        android:textSize="25dp"
+                        android:textStyle="bold"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryDark"/>
+
+                    <LinearLayout
+                        android:id="@+id/silverPrizeList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/silverPrizeName"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/bronzePrizes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/eventBronze"
+                    android:layout_below="@+id/silverPrizes">
+
+                    <TextView
+                        android:id="@+id/bronzePrizeName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="BRONZE PRIZES"
+                        android:textSize="25dp"
+                        android:textStyle="bold"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryDark"/>
+
+                    <LinearLayout
+                        android:id="@+id/bronzePrizeList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/bronzePrizeName"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+
+                </RelativeLayout>
 
             </RelativeLayout>
 

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -18,10 +19,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        /*ProgressBar spinner;
+        spinner = (ProgressBar)findViewById(R.id.progressBar);
+        spinner.setVisibility(View.VISIBLE);*/
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-
-        
 
         Button loginButton = (Button)findViewById(R.id.btn_login);
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -40,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //spinner.setVisibility(View.GONE);
     }
 
 
