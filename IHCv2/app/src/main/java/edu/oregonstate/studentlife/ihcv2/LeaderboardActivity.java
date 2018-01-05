@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.content.ContentProvider;
 
 public class LeaderboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{

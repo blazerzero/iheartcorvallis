@@ -1,5 +1,7 @@
 package edu.oregonstate.studentlife.ihcv2;
 
+import android.content.Context;
+import android.content.UriMatcher;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -17,8 +19,14 @@ import android.view.MenuItem;
 import android.content.Intent;
 import android.widget.Button;
 import android.widget.TextView;
+import android.content.ContentProvider;
+import android.database.sqlite.*;
+import android.support.v7.app.AlertDialog;
+import android.content.DialogInterface;
 
 import org.w3c.dom.Text;
+
+import java.io.IOException;
 
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -30,6 +38,15 @@ public class DashboardActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
+        /*JSONFunctions jsonFunctions = new JSONFunctions();
+
+        try {
+            String result = jsonFunctions.getJSONfromURL("http://oniddb.cws.oregonstate.edu");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -40,7 +57,7 @@ public class DashboardActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         TextView progIndicator = (TextView)findViewById(R.id.progIndicator);
-        int numStamps = 13;
+        int numStamps = 6;
         progIndicator = initProgIndicator(numStamps, progIndicator);
 
         progIndicator.setOnClickListener(new View.OnClickListener() {
@@ -106,12 +123,20 @@ public class DashboardActivity extends AppCompatActivity
                 && numStamps < getResources().getInteger(R.integer.silverThreshold)) {
             progColor = getResources().getColor(R.color.eventBronze);
             eventsToGo = getResources().getInteger(R.integer.silverThreshold) - numStamps;
-            message = "Only " + eventsToGo + " events away from reaching silver status!\nCLICK HERE TO VIEW PRIZES";
+            if (eventsToGo == 1) {
+                message = "Only " + eventsToGo + " event away from reaching silver status!\nCLICK HERE TO VIEW PRIZES";
+            }
+            else {
+                message = "Only " + eventsToGo + " events away from reaching silver status!\nCLICK HERE TO VIEW PRIZES";
+            }
         }
         else if (numStamps >= getResources().getInteger(R.integer.silverThreshold)
                 && numStamps < getResources().getInteger(R.integer.goldThreshold)) {
             eventsToGo = getResources().getInteger(R.integer.goldThreshold) - numStamps;
             progColor = getResources().getColor(R.color.eventSilver);
+            if (eventsToGo == 1) {
+                message = "Only " + eventsToGo + " event away from reaching gold status!\nCLICK HERE TO VIEW PRIZES";
+            }
             message = "Only " + eventsToGo + " events away from reaching gold status!\nCLICK HERE TO VIEW PRIZES";
         }
         else if (numStamps >= getResources().getInteger(R.integer.goldThreshold)) {
@@ -121,7 +146,12 @@ public class DashboardActivity extends AppCompatActivity
         else {
             eventsToGo = getResources().getInteger(R.integer.bronzeThreshold) - numStamps;
             progColor = getResources().getColor(R.color.colorAccent);
-            message = "Only " + eventsToGo + " events away from reaching bronze status!\nCLICK HERE TO VIEW PRIZES";
+            if (eventsToGo == 1) {
+                message = "Only " + eventsToGo + " event away from reaching bronze status!\nCLICK HERE TO VIEW PRIZES";
+            }
+            else {
+                message = "Only " + eventsToGo + " events away from reaching bronze status!\nCLICK HERE TO VIEW PRIZES";
+            }
         }
         progIndicator.setBackgroundColor(progColor);
         progIndicator.setText(message);
