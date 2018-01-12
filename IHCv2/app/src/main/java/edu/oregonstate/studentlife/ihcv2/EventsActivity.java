@@ -39,6 +39,16 @@ public class EventsActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Button button1 = (Button)findViewById(R.id.mapbtn);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EventsActivity.this, MapsActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override

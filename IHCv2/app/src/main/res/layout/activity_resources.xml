@@ -48,6 +48,17 @@
                 android:fitsSystemWindows="true"
                 android:background="@color/colorPrimary">
 
+                <Button
+                    android:id="@+id/mapbtn2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/resourcebtn"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:text="RESOURCE MAP"
+                    android:textSize="20dp"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="30dp"/>
                 <!-- CONTENT GOES HERE -->
 
             </RelativeLayout>
