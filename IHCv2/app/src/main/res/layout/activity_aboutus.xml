@@ -50,6 +50,38 @@
 
                 <!-- CONTENT GOES HERE -->
 
+             <RelativeLayout
+                android:id="@+id/aboutUs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                 android:paddingLeft="5dp"
+                 android:paddingRight="5dp"
+                android:background="@color/colorPrimary">
+
+                <TextView
+                    android:id="@+id/aboutUsHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="ABOUT US"
+                    android:textSize="25dp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:background="@color/colorAccent"
+                    android:textColor="@color/colorPrimaryDark"/>
+
+                 <LinearLayout
+                     android:id="@+id/aboutUsText"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_below="@+id/aboutUsHeader"
+                     android:padding="5dp"
+                     android:background="@color/colorAccent"
+                     android:orientation="vertical">
+
+                 </LinearLayout>
+
+             </RelativeLayout>
             </RelativeLayout>
 
         </ScrollView>

@@ -1,6 +1,7 @@
 package edu.oregonstate.studentlife.ihcv2;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,7 +16,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import java.sql.*;
 
 /**
@@ -39,6 +43,14 @@ public class AboutUsActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        LinearLayout linearLayout1 = (LinearLayout) findViewById(R.id.aboutUsText);
+
+            TextView textView = new TextView(this);
+            textView.setText("This is the application for the I Heart Corvallis Initiative. This initiative is focused on getting students more involved with their community");
+            textView.setTextSize(20);
+            textView.setTextColor(Color.BLACK);
+            linearLayout1.addView(textView);
     }
 
     @Override
