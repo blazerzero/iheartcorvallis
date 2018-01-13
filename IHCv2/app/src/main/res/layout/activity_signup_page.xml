@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:scrollbars="vertical"
     android:orientation="vertical"
-    android:background="@color/colorPrimary"
-    tools:context="edu.oregonstate.studentlife.ihcv2.SignupPageActivity"
-    android:weightSum="1">
+    android:background="@color/colorPrimary">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="4dp"
-        android:theme="@style/AppTheme"
-        android:visibility="visible"
-        android:background="@color/colorPrimaryDark"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        android:layout_height="wrap_content"
+        android:theme="@style/AppBarOverlay"
+        android:id="@+id/appBarLayout">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="4dp"
+            android:theme="@style/AppTheme"
+            android:visibility="visible"
+            android:background="@color/colorPrimaryDark"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    </android.support.design.widget.AppBarLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -31,7 +38,7 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:background="@color/colorPrimary"
-        tools:context="edu.oregonstate.studentlife.ihcv2.ResLoginActivity">
+        tools:context="edu.oregonstate.studentlife.ihcv2.SignupPageActivity">
 
         <!-- Login progress -->
         <ProgressBar
@@ -40,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <ScrollView
             android:id="@+id/login_form"
@@ -51,20 +58,8 @@
                 android:id="@+id/email_login_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@color/colorAccent">
-
-                <TextView
-                    android:id="@+id/studentlogin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/student_login_signup"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="30dp"
-                    android:textSize="20dp"
-                    android:textColor="@color/colorPrimaryDark"/>
+                android:background="@color/colorAccent"
+                android:orientation="vertical">
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -74,9 +69,9 @@
                         android:id="@+id/firstname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="First Name"
+                        android:hint="@string/prompt_firstname"
                         android:imeActionId="6"
-                        android:imeActionLabel="@string/action_sign_in_short"
+                        android:imeActionLabel="@string/action_create_account"
                         android:imeOptions="actionUnspecified"
                         android:inputType="textPassword"
                         android:maxLines="1"
@@ -92,9 +87,9 @@
                         android:id="@+id/lastname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Last Name"
+                        android:hint="@string/prompt_lastname"
                         android:imeActionId="6"
-                        android:imeActionLabel="@string/action_sign_in_short"
+                        android:imeActionLabel="@string/action_create_account"
                         android:imeOptions="actionUnspecified"
                         android:inputType="textPassword"
                         android:maxLines="1"
@@ -125,9 +120,9 @@
                         android:id="@+id/password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Password"
+                        android:hint="@string/prompt_password"
                         android:imeActionId="6"
-                        android:imeActionLabel="@string/action_sign_in_short"
+                        android:imeActionLabel="@string/action_create_account"
                         android:imeOptions="actionUnspecified"
                         android:inputType="textPassword"
                         android:maxLines="1"
@@ -141,13 +136,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="CREATE ACCOUNT"
+                    android:text="@string/action_create_account"
                     android:textStyle="bold" />
 
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
-
-
-
 </LinearLayout>

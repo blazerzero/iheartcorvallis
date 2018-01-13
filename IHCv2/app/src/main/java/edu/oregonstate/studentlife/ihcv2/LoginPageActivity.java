@@ -20,23 +20,30 @@ public class LoginPageActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
+        /*myToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
+        myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });*/
 
-            Button searchButton = (Button)findViewById(R.id.btn_student);
-            searchButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(LoginPageActivity.this, DashboardActivity.class);
-                    startActivity(intent);
-                }
-            });
+        Button searchButton = (Button)findViewById(R.id.btn_student);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginPageActivity.this, DashboardActivity.class);
+                startActivity(intent);
+            }
+        });
 
-            Button viewButton = (Button)findViewById(R.id.btn_resident);
-            viewButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(LoginPageActivity.this, ResLoginActivity.class);
-                    startActivity(intent);
-                }
-            });
+        Button viewButton = (Button)findViewById(R.id.btn_resident);
+        viewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginPageActivity.this, ResLoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

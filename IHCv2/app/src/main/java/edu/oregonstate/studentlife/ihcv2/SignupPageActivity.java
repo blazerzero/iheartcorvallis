@@ -3,34 +3,33 @@ package edu.oregonstate.studentlife.ihcv2;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.LoaderManager;
-import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.app.LoaderManager.LoaderCallbacks;
+
+import android.content.CursorLoader;
+import android.content.Loader;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.AsyncTask;
+
+import android.os.Build;
+import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +37,9 @@ import java.util.List;
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
- * Created by Omeed on 12/20/17.
+ * A login screen that offers login via email/password.
  */
-
-public class SignupPageActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class SignupPageActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -58,7 +56,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderManag
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private SignupPageActivity.UserLoginTask mAuthTask = null;
+    private UserLoginTask mAuthTask = null;
 
     // UI references.
     private EditText mFirstNameView;
@@ -71,22 +69,12 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderManag
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signuppage);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
-
-        TextView studentLogin = (TextView) findViewById(R.id.studentlogin);
-        studentLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SignupPageActivity.this, DashboardActivity.class);
-                startActivity(intent);
-            }
-        });
+        setContentView(R.layout.activity_signup_page);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
 
         mFirstNameView = (EditText) findViewById(R.id.firstname);
         mLastNameView = (EditText) findViewById(R.id.lastname);
-
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -96,21 +84,23 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderManag
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptCreateAccount();
+                    attemptLogin();
                     return true;
                 }
                 return false;
             }
         });
 
-        Button createAccountButton = (Button) findViewById(R.id.create_account_button);
-        createAccountButton.setOnClickListener(new View.OnClickListener() {
+        Button mEmailSignInButton = (Button) findViewById(R.id.create_account_button);
+        mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptCreateAccount();
+                attemptLogin();
             }
         });
 
+        mLoginFormView = findViewById(R.id.login_form);
+        mProgressView = findViewById(R.id.login_progress);
     }
 
     private void populateAutoComplete() {
@@ -156,7 +146,13 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderManag
         }
     }
 
-    private void attemptCreateAccount() {
+
+    /**
+     * Attempts to sign in or register the account specified by the login form.
+     * If there are form errors (invalid email, missing fields, etc.), the
+     * errors are presented and no actual login attempt is made.
+     */
+    private void attemptLogin() {
         if (mAuthTask != null) {
             return;
         }
@@ -217,11 +213,8 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderManag
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            View view = this.getCurrentFocus();
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             showProgress(true);
-            mAuthTask = new SignupPageActivity.UserLoginTask(email, password);
+            mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
         }
     }
@@ -277,7 +270,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderManag
         return new CursorLoader(this,
                 // Retrieve data rows for the device user's 'profile' contact.
                 Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), SignupPageActivity.ProfileQuery.PROJECTION,
+                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
 
                 // Select only email addresses.
                 ContactsContract.Contacts.Data.MIMETYPE +
@@ -294,7 +287,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderManag
         List<String> emails = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(SignupPageActivity.ProfileQuery.ADDRESS));
+            emails.add(cursor.getString(ProfileQuery.ADDRESS));
             cursor.moveToNext();
         }
 
@@ -384,5 +377,5 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderManag
             showProgress(false);
         }
     }
-
 }
+
