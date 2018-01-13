@@ -20,4 +20,20 @@
     <string name="title_activity_test">TESTActivity</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_resource_map">Map</string>
+    <string name="title_activity_res_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="student_login_signup">ARE YOU AN OSU STUDENT? TAP HERE TO LOG IN WITH YOUR ONID ACCOUNT</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid!</string>
+    <string name="error_no_account_email">Account not found!</string>
+    <string name="error_invalid_password">This password is too short!</string>
+    <string name="error_incorrect_password">Incorrect email/password combination!</string>
+    <string name="error_field_required">This field is required!</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
 </resources>

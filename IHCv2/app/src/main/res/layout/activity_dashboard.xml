@@ -74,7 +74,7 @@
                     android:text="EVENTS"
                     android:textSize="20dp"
                     android:paddingTop="30dp"
-                    android:paddingBottom="30dp" />
+                    android:paddingBottom="30dp"/>
 
                 <Button
                     android:id="@+id/passportbtn"
