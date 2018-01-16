@@ -173,9 +173,16 @@ public class ResLoginActivity extends AppCompatActivity implements LoaderCallbac
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
+            if (isEmailValid(email)) {
+                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                focusView = mPasswordView;
+                cancel = true;
+            }
+            else if (TextUtils.isEmpty(email)) {
+                mEmailView.setError(getString(R.string.error_invalid_email));
+                focusView = mEmailView;
+                cancel = true;
+            }
         }
 
         // Check for a valid email address.

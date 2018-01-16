@@ -32,7 +32,8 @@
     <string name="action_sign_in">Sign in</string>
     <string name="error_invalid_email">This email address is invalid!</string>
     <string name="error_no_account_email">Account not found!</string>
-    <string name="error_invalid_password">This password is too short!</string>
+    <string name="error_short_password">Your password must be at least 8 characters long and include at least 1 uppercase letter, 1 lowercase letter, and 1 number.</string>
+    <string name="error_invalid_password">Your password must include at least 1 uppercase letter, 1 lowercase letter, and 1 number.</string>
     <string name="error_incorrect_password">Incorrect email/password combination!</string>
     <string name="error_field_required">This field is required!</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email

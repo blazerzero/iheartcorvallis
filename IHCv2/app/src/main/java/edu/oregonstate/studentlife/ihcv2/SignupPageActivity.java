@@ -157,6 +157,10 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
             return;
         }
 
+        char ch;
+        boolean hasUppercase = false;
+        boolean hasLowercase = false;
+
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -170,18 +174,21 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
         boolean cancel = false;
         View focusView = null;
 
+        // Check for a valid first name.
         if (TextUtils.isEmpty(firstName)) {
             mFirstNameView.setError(getString(R.string.error_field_required));
             focusView = mFirstNameView;
             cancel = true;
         }
 
+        // Check for a valid last name.
         if (TextUtils.isEmpty(lastName)) {
             mLastNameView.setError(getString(R.string.error_field_required));
             focusView = mLastNameView;
             cancel = true;
         }
 
+        // Check if password field is empty.
         if (TextUtils.isEmpty(password)) {
             mPasswordView.setError(getString(R.string.error_field_required));
             focusView = mPasswordView;
@@ -189,7 +196,12 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
         }
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (!TextUtils.isEmpty(password) && password.length() < 7) {
+            mPasswordView.setError(getString(R.string.error_short_password));
+            focusView = mPasswordView;
+            cancel = true;
+        }
+        if (!isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -225,8 +237,32 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 7;
+        char ch;
+        boolean hasUppercase = false;
+        boolean hasLowercase = false;
+        boolean hasDigit = false;
+        for (int i = 0; i < password.length(); i++) {
+            ch = password.charAt(i);
+            if (Character.isUpperCase(ch)) {
+                hasUppercase = true;
+                break;
+            }
+        }
+        for (int i = 0; i < password.length(); i++) {
+            ch = password.charAt(i);
+            if (Character.isLowerCase(ch)) {
+                hasLowercase = true;
+                break;
+            }
+        }
+        for (int i = 0; i < password.length(); i++) {
+            ch = password.charAt(i);
+            if (Character.isDigit(ch)) {
+                hasDigit = true;
+                break;
+            }
+        }
+        return (hasUppercase && hasLowercase && hasDigit);
     }
 
     /**
