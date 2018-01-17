@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import java.sql.*;
 
 /**
@@ -39,6 +41,16 @@ public class ResourcesActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        TextView resourceMapBtn = (TextView)findViewById(R.id.mapbtn2);
+        resourceMapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ResourcesActivity.this, ResourceMapActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override

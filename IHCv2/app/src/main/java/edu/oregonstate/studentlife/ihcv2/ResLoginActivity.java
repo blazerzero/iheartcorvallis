@@ -3,6 +3,7 @@ package edu.oregonstate.studentlife.ihcv2;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -25,6 +26,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -39,7 +41,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class SignupPageActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class ResLoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -59,8 +61,6 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private EditText mFirstNameView;
-    private EditText mLastNameView;
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
@@ -69,12 +69,9 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup_page);
+        setContentView(R.layout.activity_res_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
-
-        mFirstNameView = (EditText) findViewById(R.id.firstname);
-        mLastNameView = (EditText) findViewById(R.id.lastname);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -91,7 +88,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.create_account_button);
+        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -157,38 +154,17 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
             return;
         }
 
-        char ch;
-        boolean hasUppercase = false;
-        boolean hasLowercase = false;
-
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String firstName = mFirstNameView.getText().toString();
-        String lastName = mLastNameView.getText().toString();
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid first name.
-        if (TextUtils.isEmpty(firstName)) {
-            mFirstNameView.setError(getString(R.string.error_field_required));
-            focusView = mFirstNameView;
-            cancel = true;
-        }
-
-        // Check for a valid last name.
-        if (TextUtils.isEmpty(lastName)) {
-            mLastNameView.setError(getString(R.string.error_field_required));
-            focusView = mLastNameView;
-            cancel = true;
-        }
-
-        // Check if password field is empty.
         if (TextUtils.isEmpty(password)) {
             mPasswordView.setError(getString(R.string.error_field_required));
             focusView = mPasswordView;
@@ -196,15 +172,17 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
         }
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && password.length() < 7) {
-            mPasswordView.setError(getString(R.string.error_short_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-        if (!isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
+        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+            if (isEmailValid(email)) {
+                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                focusView = mPasswordView;
+                cancel = true;
+            }
+            else if (TextUtils.isEmpty(email)) {
+                mEmailView.setError(getString(R.string.error_invalid_email));
+                focusView = mEmailView;
+                cancel = true;
+            }
         }
 
         // Check for a valid email address.
@@ -225,6 +203,9 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
+            View view = this.getCurrentFocus();
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
@@ -237,32 +218,8 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
     }
 
     private boolean isPasswordValid(String password) {
-        char ch;
-        boolean hasUppercase = false;
-        boolean hasLowercase = false;
-        boolean hasDigit = false;
-        for (int i = 0; i < password.length(); i++) {
-            ch = password.charAt(i);
-            if (Character.isUpperCase(ch)) {
-                hasUppercase = true;
-                break;
-            }
-        }
-        for (int i = 0; i < password.length(); i++) {
-            ch = password.charAt(i);
-            if (Character.isLowerCase(ch)) {
-                hasLowercase = true;
-                break;
-            }
-        }
-        for (int i = 0; i < password.length(); i++) {
-            ch = password.charAt(i);
-            if (Character.isDigit(ch)) {
-                hasDigit = true;
-                break;
-            }
-        }
-        return (hasUppercase && hasLowercase && hasDigit);
+        //TODO: Replace this with your own logic
+        return password.length() > 7;
     }
 
     /**
@@ -338,7 +295,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(SignupPageActivity.this,
+                new ArrayAdapter<>(ResLoginActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
@@ -399,7 +356,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
 
             if (success) {
                 finish();
-                Intent intent = new Intent(SignupPageActivity.this, DashboardActivity.class);
+                Intent intent = new Intent(ResLoginActivity.this, DashboardActivity.class);
                 startActivity(intent);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

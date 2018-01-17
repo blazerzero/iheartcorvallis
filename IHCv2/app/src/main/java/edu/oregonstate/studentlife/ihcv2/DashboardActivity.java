@@ -57,7 +57,7 @@ public class DashboardActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         TextView progIndicator = (TextView)findViewById(R.id.progIndicator);
-        int numStamps = 6;
+        int numStamps = 11;
         progIndicator = initProgIndicator(numStamps, progIndicator);
 
         progIndicator.setOnClickListener(new View.OnClickListener() {
