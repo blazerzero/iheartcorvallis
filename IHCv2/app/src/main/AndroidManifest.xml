@@ -28,6 +28,17 @@
             android:value="AIzaSyBYbpLA_XmLpBF31OVt91u1K3z2pAVyvrM" />
 
         <activity
+            android:name=".Splash"
+            android:label="I Heart Corvallis"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".MainActivity"
             android:label="I Heart Corvallis"
             android:launchMode="singleTop">
