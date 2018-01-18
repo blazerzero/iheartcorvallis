@@ -40,4 +40,14 @@
         completions."
     </string>
     <string name="title_activity_signup_page">Sign Up</string>
+
+    <string name="passport_table_header">Corvallis Passport</string>
+    <string name="passport_stamp1">Stamp 1</string>
+    <string name="passport_stamp2">Stamp 2</string>
+    <string name="passport_stamp3">Stamp 3</string>
+    <string name="passport_stamp4">Stamp 4</string>
+    <string name="passport_stamp5">Stamp 5</string>
+    <string name="passport_stamp6">Stamp 6</string>
+    <string name="passport_stamp7">Stamp 7</string>
+    <string name="passport_stamp8">Stamp 8</string>
 </resources>

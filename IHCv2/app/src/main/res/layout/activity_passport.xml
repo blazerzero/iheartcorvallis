@@ -38,19 +38,81 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
+            <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:fitsSystemWindows="true"
-                android:background="@color/colorPrimary">
+                android:stretchColumns="0,1">
 
-                <!-- CONTENT GOES HERE -->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="@string/passport_table_header"
+                        android:layout_span="2"
+                        android:padding="3dip"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryDark"/>
+                </TableRow>
 
-            </RelativeLayout>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+
+                        android:text="@string/passport_stamp1"
+                        android:gravity="center"
+                        android:paddingTop="50dp" />
+                    <TextView
+                        android:text="@string/passport_stamp2"
+                        android:gravity="center"
+                        android:paddingTop="50dp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+
+                        android:text="@string/passport_stamp3"
+                        android:gravity="center"
+                        android:paddingTop="50dp" />
+                    <TextView
+                        android:text="@string/passport_stamp4"
+                        android:gravity="center"
+                        android:paddingTop="50dp" />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+
+                        android:text="@string/passport_stamp5"
+                        android:gravity="center"
+                        android:paddingTop="50dp" />
+                    <TextView
+                        android:text="@string/passport_stamp6"
+                        android:gravity="center"
+                        android:paddingTop="50dp" />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+
+                        android:text="@string/passport_stamp7"
+                        android:gravity="center"
+                        android:paddingTop="50dp" />
+                    <TextView
+                        android:text="@string/passport_stamp8"
+                        android:gravity="center"
+                        android:paddingTop="50dp" />
+                </TableRow>
+
+            </TableLayout>
 
         </ScrollView>
 
