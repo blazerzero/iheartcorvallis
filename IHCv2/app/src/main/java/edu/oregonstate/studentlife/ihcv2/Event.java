@@ -34,9 +34,7 @@ public class Event extends AppCompatActivity {
         this.date = date;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name; }
 
     public void setLocation(String location) {
         this.location = location;

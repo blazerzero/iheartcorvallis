@@ -145,20 +145,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/mapbtn"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/event_page_gmapbtn_height"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
-            android:text="Press for Map"
-            android:textSize="20dp"/>
+            <Button
+                android:id="@+id/mapbtn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/event_page_gmapbtn_height"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:text="Press for Map"
+                android:textSize="20sp"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_event_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/mapbtn"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_event_list"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mapbtn"/>
 
         </RelativeLayout>
 

@@ -55,8 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:background="#ffffff"
-                    android:text="INDICATE PASSPORT PROGRESS HERE"
-                    android:textSize="15dp"
+                    android:textSize="15sp"
                     android:textStyle="bold"
                     android:elevation="4dp"
                     android:textColor="@color/colorPrimaryDark"
@@ -72,7 +71,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
                     android:text="EVENTS"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:paddingTop="30dp"
                     android:paddingBottom="30dp"/>
 
@@ -84,7 +83,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
                     android:text="PASSPORT"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:paddingTop="30dp"
                     android:paddingBottom="30dp"/>
 
@@ -96,7 +95,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
                     android:text="LEADERBOARD"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:paddingTop="30dp"
                     android:paddingBottom="30dp"/>
 
@@ -108,7 +107,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
                     android:text="RESOURCES"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:paddingTop="30dp"
                     android:paddingBottom="30dp"/>
 
@@ -120,7 +119,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
                     android:text="ABOUT US"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:paddingTop="30dp"
                     android:paddingBottom="30dp"/>
 

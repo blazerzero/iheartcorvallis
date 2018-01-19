@@ -43,6 +43,11 @@ public class EventsActivity extends AppCompatActivity
     private RecyclerView mEventListRecyclerView;
     private EventAdapter mEventAdapter;
 
+    private Event[] eventList = {
+            new Event("JAN\n18", "Beavers Mens Basketball vs. USC", "Gill Coliseum"),
+            new Event("JAN\n28", "60th Grammy Awards", "Madison Square Garden")
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +79,10 @@ public class EventsActivity extends AppCompatActivity
 
         mEventAdapter = new EventAdapter();
         mEventListRecyclerView.setAdapter(mEventAdapter);
+
+        for (Event event : eventList) {
+            mEventAdapter.addEvent(event);
+        }
 
     }
 
