@@ -164,8 +164,8 @@
             android:name=".ResourceMapActivity"
             android:label="@string/title_activity_resource_map" />
         <activity
-            android:name=".ResLoginActivity"
-            android:label="Resident Login"
+            android:name=".NonStudentLoginActivity"
+            android:label="Non-Student Login"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -4,13 +4,18 @@ package edu.oregonstate.studentlife.ihcv2;
 
 import android.content.Intent;
 
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
 import android.view.View;
 
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -22,10 +27,13 @@ public class MainActivity extends AppCompatActivity {
         /*ProgressBar spinner;
         spinner = (ProgressBar)findViewById(R.id.progressBar);
         spinner.setVisibility(View.VISIBLE);*/
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
+        /*Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);*/
 
-        Button loginButton = (Button)findViewById(R.id.btn_login);
+        ImageView iv = (ImageView) findViewById(R.id.iv_ihc);
+        TextView tv = (TextView) findViewById(R.id.tv_main_title);
+
+        Button loginButton = (Button) findViewById(R.id.btn_login);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button signupButton = (Button)findViewById(R.id.btn_signup);
+        Button signupButton = (Button) findViewById(R.id.btn_signup);
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,6 +50,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        overridePendingTransition(0,0);
+
+        Animation myanim = AnimationUtils.loadAnimation(this,R.anim.mytransition);
+        iv.startAnimation(myanim);
+        tv.startAnimation(myanim);
+        loginButton.startAnimation(myanim);
+        signupButton.startAnimation(myanim);
 
         //spinner.setVisibility(View.GONE);
     }

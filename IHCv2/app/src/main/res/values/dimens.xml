@@ -7,5 +7,6 @@
     <dimen name="prize_listing">7dp</dimen>
     <dimen name="event_item_height">80dp</dimen>
     <dimen name="event_page_gmapbtn_height">60dp</dimen>
-    <dimen name="event_date_width">100dp</dimen>
+    <dimen name="event_datetime_width">100dp</dimen>
+    <dimen name="event_elem_height">40dp</dimen>
 </resources>

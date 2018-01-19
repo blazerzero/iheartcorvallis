@@ -5,17 +5,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.content.Intent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URL;
+import org.w3c.dom.Text;
 
 /**
  * Created by Omeed on 12/20/17.
@@ -38,8 +34,8 @@ public class LoginPageActivity extends AppCompatActivity {
             }
         });*/
 
-        Button searchButton = (Button)findViewById(R.id.btn_student);
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        Button studentButton = (Button)findViewById(R.id.btn_student);
+        studentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginPageActivity.this, DashboardActivity.class);
@@ -47,13 +43,19 @@ public class LoginPageActivity extends AppCompatActivity {
             }
         });
 
-        Button viewButton = (Button)findViewById(R.id.btn_resident);
-        viewButton.setOnClickListener(new View.OnClickListener() {
+        Button nonStudentButton = (Button)findViewById(R.id.btn_non_student);
+        nonStudentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginPageActivity.this, ResLoginActivity.class);
+                Intent intent = new Intent(LoginPageActivity.this, NonStudentLoginActivity.class);
                 startActivity(intent);
             }
         });
+
+        overridePendingTransition(0,0);
+
+        Animation myanim = AnimationUtils.loadAnimation(this,R.anim.transition2);
+        studentButton.startAnimation(myanim);
+        nonStudentButton.startAnimation(myanim);
     }
 }

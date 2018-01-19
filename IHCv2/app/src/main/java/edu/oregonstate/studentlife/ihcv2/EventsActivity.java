@@ -44,8 +44,9 @@ public class EventsActivity extends AppCompatActivity
     private EventAdapter mEventAdapter;
 
     private Event[] eventList = {
-            new Event("JAN\n18", "Beavers Mens Basketball vs. USC", "Gill Coliseum"),
-            new Event("JAN\n28", "60th Grammy Awards", "Madison Square Garden")
+            new Event("JAN 20", "5:00PM", "Beavers Mens Basketball vs. USC", "Gill Coliseum"),
+            new Event("JAN 28", "4:30PM", "60th Grammy Awards", "Madison Square Garden"),
+            new Event("JAN 20", "7:00PM", "Blazers vs. Dallas", "Moda Center")
     };
 
     @Override
@@ -54,6 +55,8 @@ public class EventsActivity extends AppCompatActivity
         setContentView(R.layout.activity_events);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
+
+        overridePendingTransition(0,0);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

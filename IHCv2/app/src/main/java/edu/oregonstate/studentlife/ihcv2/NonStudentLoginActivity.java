@@ -25,6 +25,8 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -47,7 +49,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class ResLoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class NonStudentLoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -75,9 +77,12 @@ public class ResLoginActivity extends AppCompatActivity implements LoaderCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_res_login);
+        setContentView(R.layout.activity_non_student_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
+
+        overridePendingTransition(0,0);
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -104,6 +109,11 @@ public class ResLoginActivity extends AppCompatActivity implements LoaderCallbac
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        Animation myanim = AnimationUtils.loadAnimation(this, R.anim.transition2);
+        mLoginFormView.startAnimation(myanim);
+        mEmailView.startAnimation(myanim);
+        mPasswordView.startAnimation(myanim);
     }
 
     private void populateAutoComplete() {
@@ -322,7 +332,7 @@ public class ResLoginActivity extends AppCompatActivity implements LoaderCallbac
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(ResLoginActivity.this,
+                new ArrayAdapter<>(NonStudentLoginActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
@@ -383,7 +393,7 @@ public class ResLoginActivity extends AppCompatActivity implements LoaderCallbac
 
             if (success) {
                 finish();
-                Intent intent = new Intent(ResLoginActivity.this, DashboardActivity.class);
+                Intent intent = new Intent(NonStudentLoginActivity.this, DashboardActivity.class);
                 startActivity(intent);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
