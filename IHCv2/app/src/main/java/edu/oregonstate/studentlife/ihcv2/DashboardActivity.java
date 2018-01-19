@@ -38,15 +38,6 @@ public class DashboardActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
-        /*JSONFunctions jsonFunctions = new JSONFunctions();
-
-        try {
-            String result = jsonFunctions.getJSONfromURL("http://oniddb.cws.oregonstate.edu");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

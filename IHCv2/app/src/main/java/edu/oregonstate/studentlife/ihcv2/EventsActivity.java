@@ -8,6 +8,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.content.Intent;
 import android.view.Menu;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -24,8 +27,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.*;
 
 /**
@@ -34,11 +39,14 @@ import java.sql.*;
 
 public class EventsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private RecyclerView mEventListRecyclerView;
+    private EventAdapter mEventAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
@@ -51,14 +59,21 @@ public class EventsActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Button button1 = (Button)findViewById(R.id.mapbtn);
-        button1.setOnClickListener(new View.OnClickListener() {
+        Button mapLink = (Button)findViewById(R.id.mapbtn);
+        mapLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EventsActivity.this, MapsActivity.class);
                 startActivity(intent);
             }
         });
+
+        mEventListRecyclerView = (RecyclerView) findViewById(R.id.rv_event_list);
+        mEventListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mEventListRecyclerView.setHasFixedSize(true);
+
+        mEventAdapter = new EventAdapter();
+        mEventListRecyclerView.setAdapter(mEventAdapter);
 
     }
 
