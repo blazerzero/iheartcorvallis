@@ -50,4 +50,16 @@
     <string name="passport_stamp6">Stamp 6</string>
     <string name="passport_stamp7">Stamp 7</string>
     <string name="passport_stamp8">Stamp 8</string>
+
+    <string name="leaderboard_table_header">Leaderboard</string>
+    <string name="leaderboard_user_header">User</string>
+    <string name="leaderboard_score_header">Score</string>
+    <string name="leaderboard_spot1_name">Dylan Tomlinson</string>
+    <string name="leaderboard_spot1_score">9999</string>
+    <string name="leaderboard_spot2_name">Omeed Habibelahian</string>
+    <string name="leaderboard_spot2_score">9001</string>
+    <string name="leaderboard_spot3_name">Bradley Imai</string>
+    <string name="leaderboard_spot3_score">9001</string>
+
+
 </resources>
