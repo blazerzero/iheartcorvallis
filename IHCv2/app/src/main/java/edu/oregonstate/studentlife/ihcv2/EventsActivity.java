@@ -32,6 +32,8 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.sql.*;
+import java.util.Arrays;
+import java.util.Calendar;
 
 /**
  * Created by Omeed on 12/20/17.
@@ -44,9 +46,14 @@ public class EventsActivity extends AppCompatActivity
     private EventAdapter mEventAdapter;
 
     private Event[] eventList = {
-            new Event("JAN 20", "5:00PM", "Beavers Mens Basketball vs. USC", "Gill Coliseum"),
-            new Event("JAN 28", "4:30PM", "60th Grammy Awards", "Madison Square Garden"),
-            new Event("JAN 20", "7:00PM", "Blazers vs. Dallas", "Moda Center")
+            new Event("January", "20", "2018", "5:00PM", "OSU Men's Basketball vs. USC", "Gill Coliseum"),
+            new Event("January", "20", "2018","7:00PM", "Blazers vs. Dallas", "Moda Center"),
+            new Event("January", "24", "2018", "7:00PM", "Blazers vs. Minnesota", "Moda Center"),
+            new Event("January", "27", "2018", "5:00PM", "OSU Men's Basketball @ Oregon", "Matthew Knight Arena"),
+            new Event("January", "28", "2018", "4:30PM", "60th Grammy Awards", "Madison Square Garden"),
+            new Event("January", "31", "2018", "7:00PM", "Blazers vs. Chicago", "Moda Center"),
+            new Event("February", "8", "2018", "7:30PM", "OSU Men's Basketball vs. WSU", "Gill Coliseum"),
+            new Event("February", "10", "2018", "7:00PM", "OSU Men's Basketball vs. UW", "Gill Coliseum"),
     };
 
     @Override
@@ -83,10 +90,121 @@ public class EventsActivity extends AppCompatActivity
         mEventAdapter = new EventAdapter();
         mEventListRecyclerView.setAdapter(mEventAdapter);
 
+        //eventList = mergeSortEventList(eventList);
+
         for (Event event : eventList) {
             mEventAdapter.addEvent(event);
         }
 
+    }
+
+    public Event[] mergeSortEventList(Event[] eventList) {
+        int half_len;
+        Event[] sortedEventList;
+        switch (eventList.length) {
+            case 1: {
+                sortedEventList = eventList;
+                break;
+            }
+            default: {
+                half_len = eventList.length / 2;
+                Event[] lowEventList = Arrays.copyOfRange(eventList, 0, half_len - 1);
+                Event[] highEventList = Arrays.copyOfRange(eventList, half_len, eventList.length - 1);
+                lowEventList = mergeSortEventList(lowEventList);
+                highEventList = mergeSortEventList(highEventList);
+                sortedEventList = mergeLists(lowEventList, highEventList);
+;            }
+        }
+        return sortedEventList;
+    }
+
+    public Event[] mergeLists(Event[] lowEventList, Event[] highEventList) {
+        Event[] sortedEventList = new Event[lowEventList.length + highEventList.length];
+        int i = 0;
+        int j = 0;
+        int count = 0;
+        char[] time1 = new char[7];
+        char[] time2 = new char[7];
+        while (i < lowEventList.length && j < highEventList.length) {
+            if (Integer.parseInt(lowEventList[i].getYear()) == Integer.parseInt(highEventList[j].getYear())) {
+                if (monthValue(lowEventList[i].getMonth()) == monthValue(highEventList[j].getMonth())) {
+                    if (Integer.parseInt(lowEventList[i].getDay()) == Integer.parseInt(highEventList[j].getDay())) {
+                        lowEventList[i].getTime().getChars(lowEventList[i].getTime().length()-2, lowEventList[i].getTime().length(), time1, 0);
+                        highEventList[j].getTime().getChars(highEventList[i].getTime().length()-2, highEventList[i].getTime().length(), time2, 0);
+                        if (time1.equals("am") && time2.equals("pm")) {
+                            sortedEventList[count] = lowEventList[i];
+                            i++;
+                            count++;
+                        }
+                        else if (time1.equals("pm") && time2.equals("am")) {
+                            sortedEventList[count] = highEventList[j];
+                            j++;
+                            count++;
+                        }
+                    }
+                    else if (Integer.parseInt(lowEventList[i].getDay()) < Integer.parseInt(highEventList[j].getDay())) {
+                        sortedEventList[count] = lowEventList[i];
+                        i++;
+                        count++;
+                    }
+                    else {
+                        sortedEventList[count] = highEventList[j];
+                        j++;
+                        count++;
+                    }
+                }
+                else if (monthValue(lowEventList[i].getMonth()) < monthValue(highEventList[j].getMonth())) {
+                    sortedEventList[count] = lowEventList[i];
+                    i++;
+                    count++;
+                }
+                else {
+                    sortedEventList[count] = highEventList[j];
+                    j++;
+                    count++;
+                }
+            }
+            else if (Integer.parseInt(lowEventList[i].getYear()) < Integer.parseInt(highEventList[j].getYear())) {
+                sortedEventList[count] = lowEventList[i];
+                i++;
+                count++;
+            }
+            else {
+                sortedEventList[count] = highEventList[j];
+                j++;
+                count++;
+            }
+        }
+        if (i == lowEventList.length) {
+            while (j < highEventList.length) {
+                sortedEventList[count] = highEventList[j];
+                count++;
+            }
+        }
+        else if (j == highEventList.length) {
+            while (i < lowEventList.length) {
+                sortedEventList[count] = lowEventList[i];
+                count++;
+            }
+        }
+        return sortedEventList;
+    }
+
+    public int monthValue(String month) {
+        int value = 0;
+        if (month.equals("January")) value = Calendar.JANUARY + 1;
+        else if (month.equals("February")) value = Calendar.FEBRUARY + 1;
+        else if (month.equals("March")) value = Calendar.MARCH + 1;
+        else if (month.equals("April")) value = Calendar.APRIL + 1;
+        else if (month.equals("May")) value = Calendar.MAY + 1;
+        else if (month.equals("June")) value = Calendar.JUNE + 1;
+        else if (month.equals("July")) value = Calendar.JULY + 1;
+        else if (month.equals("August")) value = Calendar.AUGUST + 1;
+        else if (month.equals("September")) value = Calendar.SEPTEMBER + 1;
+        else if (month.equals("October")) value = Calendar.OCTOBER + 1;
+        else if (month.equals("November")) value = Calendar.NOVEMBER + 1;
+        else if (month.equals("December")) value = Calendar.DECEMBER + 1;
+        return value;
     }
 
     @Override

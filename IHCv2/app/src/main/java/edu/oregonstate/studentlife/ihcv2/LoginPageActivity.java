@@ -8,10 +8,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 /**
  * Created by Omeed on 12/20/17.
@@ -54,8 +50,13 @@ public class LoginPageActivity extends AppCompatActivity {
 
         overridePendingTransition(0,0);
 
-        Animation myanim = AnimationUtils.loadAnimation(this,R.anim.transition2);
+        Animation myanim = AnimationUtils.loadAnimation(this,R.anim.fade_in);
         studentButton.startAnimation(myanim);
         nonStudentButton.startAnimation(myanim);
+    }
+
+    public void onPause() {
+        super.onPause();
+        this.overridePendingTransition(0,0);
     }
 }

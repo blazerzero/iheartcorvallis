@@ -17,12 +17,12 @@
         android:background="@color/colorAccent">
 
         <LinearLayout
-            android:layout_width="@dimen/event_datetime_width"
+            android:layout_width="@dimen/event_monthday_width"
             android:layout_height="@dimen/event_item_height"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_event_date"
+                android:id="@+id/tv_event_month"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/event_elem_height"
                 android:paddingLeft="10dp"
@@ -34,11 +34,11 @@
                 android:lines="1"/>
 
             <TextView
-                android:id="@+id/tv_event_time"
+                android:id="@+id/tv_event_day"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/event_elem_height"
                 android:paddingLeft="10dp"
-                android:textSize="20sp"
+                android:textSize="25sp"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimaryDark"
                 android:textAlignment="center"
@@ -58,6 +58,7 @@
                 android:layout_height="@dimen/event_elem_height"
                 android:paddingLeft="10dp"
                 android:textSize="18sp"
+                android:textStyle="bold"
                 android:textColor="@color/colorPrimaryDark"
                 android:gravity="left|center_vertical"
                 android:lines="1"/>
@@ -67,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/event_elem_height"
                 android:paddingLeft="10dp"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColor="@color/colorPrimaryDark"
                 android:gravity="left|center_vertical"
                 android:lines="1"/>
@@ -78,7 +79,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:background="@android:color/darker_gray"/>
 
 </LinearLayout>

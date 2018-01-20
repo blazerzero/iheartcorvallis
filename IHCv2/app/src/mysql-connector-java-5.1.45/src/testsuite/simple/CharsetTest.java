@@ -346,7 +346,7 @@ public class CharsetTest extends BaseTestCase {
         assertEquals("java.lang.String", rset.getMetaData().getColumnClassName(3));
         assertEquals(Types.LONGVARCHAR, rset.getMetaData().getColumnType(3));
 
-        // These should be left as a blob, since it matches the exclusion regex
+        // These should be push_left as a blob, since it matches the exclusion regex
         assertTrue(bytesAreSame(rset.getBytes(4), outsideBmpBytes));
         assertEquals("[B", rset.getObject(4).getClass().getName());
         assertEquals("[B", rset.getMetaData().getColumnClassName(4));

@@ -108,6 +108,11 @@ public class DashboardActivity extends AppCompatActivity
         });
     }
 
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(0,0);
+    }
+
     public TextView initProgIndicator(int numStamps, TextView progIndicator) {
         String message;
         int eventsToGo;

@@ -110,10 +110,15 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        Animation myanim = AnimationUtils.loadAnimation(this, R.anim.transition2);
+        Animation myanim = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         mLoginFormView.startAnimation(myanim);
         mEmailView.startAnimation(myanim);
         mPasswordView.startAnimation(myanim);
+    }
+
+    public void onPause() {
+        super.onPause();
+        this.overridePendingTransition(R.anim.push_left,R.anim.push_right);
     }
 
     private void populateAutoComplete() {

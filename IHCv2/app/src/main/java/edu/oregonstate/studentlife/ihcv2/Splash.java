@@ -19,7 +19,7 @@ public class Splash extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         //tv = (TextView) findViewById(R.id.tv);
         iv = (ImageView) findViewById(R.id.iv);
-        Animation myanim = AnimationUtils.loadAnimation(this,R.anim.mytransition);
+        Animation myanim = AnimationUtils.loadAnimation(this,R.anim.fade_in);
         //tv.startAnimation(myanim);
         iv.startAnimation(myanim);
         final Intent i = new Intent(this,MainActivity.class);

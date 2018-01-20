@@ -46,22 +46,22 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
    class EventViewHolder extends RecyclerView.ViewHolder {
 
-       private TextView mEventDateTextView;
-       private TextView mEventTimeTextView;
+       private TextView mEventMonthTextView;
+       private TextView mEventDayTextView;
        private TextView mEventNameTextView;
        private TextView mEventLocationTextView;
 
        public EventViewHolder(View itemView) {
            super(itemView);
-           mEventDateTextView = (TextView) itemView.findViewById(R.id.tv_event_date);
-           mEventTimeTextView = (TextView) itemView.findViewById(R.id.tv_event_time);
+           mEventMonthTextView = (TextView) itemView.findViewById(R.id.tv_event_month);
+           mEventDayTextView = (TextView) itemView.findViewById(R.id.tv_event_day);
            mEventNameTextView = (TextView) itemView.findViewById(R.id.tv_event_name);
            mEventLocationTextView = (TextView) itemView.findViewById(R.id.tv_event_location);
        }
 
        void bind(Event event) {
-           mEventDateTextView.setText(event.getDate());
-           mEventTimeTextView.setText(event.getTime());
+           mEventMonthTextView.setText(event.getMonth().substring(0, 3).toUpperCase());
+           mEventDayTextView.setText(event.getDay());
            mEventNameTextView.setText(event.getName());
            mEventLocationTextView.setText(event.getLocation());
        }

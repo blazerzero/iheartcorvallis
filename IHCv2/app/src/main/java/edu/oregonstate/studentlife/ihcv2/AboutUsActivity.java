@@ -55,6 +55,11 @@ public class AboutUsActivity extends AppCompatActivity
             linearLayout1.addView(textView);
     }
 
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(0,0);
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -29,6 +29,10 @@ public class ResourceMapActivity extends FragmentActivity implements OnMapReadyC
         mapFragment.getMapAsync(this);
     }
 
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(0,0);
+    }
 
     /**
      * Manipulates the map once available.

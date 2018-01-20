@@ -72,7 +72,7 @@ import com.mysql.jdbc.profiler.ProfilerEventHandler;
  * </p>
  * 
  * <P>
- * For maximum portability, ResultSet columns within each row should be read in left-to-right order and each column should be read only once.
+ * For maximum portability, ResultSet columns within each row should be read in push_left-to-right order and each column should be read only once.
  * </p>
  * 
  * <P>
@@ -2101,7 +2101,7 @@ public class ResultSetImpl implements ResultSetInternalMethods {
                             getExceptionInterceptor());
                 }
 
-                // We're left with the case of 'round' to a date Java _can_ represent, which is '0001-01-01'.
+                // We're push_left with the case of 'round' to a date Java _can_ represent, which is '0001-01-01'.
                 return fastDateCreate(targetCalendar, 1, 1, 1);
 
             } else if (this.fields[columnIndex - 1].getMysqlType() == MysqlDefs.FIELD_TYPE_TIMESTAMP) {
@@ -5436,7 +5436,7 @@ public class ResultSetImpl implements ResultSetInternalMethods {
                                 SQLError.SQL_STATE_ILLEGAL_ARGUMENT, getExceptionInterceptor());
                     }
 
-                    // We're left with the case of 'round' to a time Java _can_ represent, which is '00:00:00'
+                    // We're push_left with the case of 'round' to a time Java _can_ represent, which is '00:00:00'
                     return fastTimeCreate(targetCalendar, 0, 0, 0);
                 }
 
@@ -5677,7 +5677,7 @@ public class ResultSetImpl implements ResultSetInternalMethods {
                             SQLError.SQL_STATE_ILLEGAL_ARGUMENT, getExceptionInterceptor());
                 }
 
-                // We're left with the case of 'round' to a date Java _can_ represent, which is '0001-01-01'.
+                // We're push_left with the case of 'round' to a date Java _can_ represent, which is '0001-01-01'.
                 return fastTimestampCreate(null, 1, 1, 1, 0, 0, 0, 0);
 
             } else if (this.fields[columnIndex - 1].getMysqlType() == MysqlDefs.FIELD_TYPE_YEAR) {

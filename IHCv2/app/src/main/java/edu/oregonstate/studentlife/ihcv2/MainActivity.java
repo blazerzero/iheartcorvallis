@@ -4,9 +4,7 @@ package edu.oregonstate.studentlife.ihcv2;
 
 import android.content.Intent;
 
-import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
 import android.view.View;
 
@@ -14,7 +12,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
@@ -53,13 +50,18 @@ public class MainActivity extends AppCompatActivity {
 
         overridePendingTransition(0,0);
 
-        Animation myanim = AnimationUtils.loadAnimation(this,R.anim.mytransition);
+        Animation myanim = AnimationUtils.loadAnimation(this,R.anim.fade_in);
         iv.startAnimation(myanim);
         tv.startAnimation(myanim);
         loginButton.startAnimation(myanim);
         signupButton.startAnimation(myanim);
 
         //spinner.setVisibility(View.GONE);
+    }
+
+    public void onPause() {
+        super.onPause();
+        this.overridePendingTransition(R.anim.push_left,R.anim.push_right);
     }
 
 

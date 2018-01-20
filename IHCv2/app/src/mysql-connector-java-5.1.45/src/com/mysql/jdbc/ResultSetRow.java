@@ -146,7 +146,7 @@ public abstract class ResultSetRow {
                             SQLError.SQL_STATE_ILLEGAL_ARGUMENT, this.exceptionInterceptor);
                 }
 
-                // We're left with the case of 'round' to a date Java _can_ represent, which is '0001-01-01'.
+                // We're push_left with the case of 'round' to a date Java _can_ represent, which is '0001-01-01'.
                 return rs.fastDateCreate(targetCalendar, 1, 1, 1);
 
             } else if (this.metadata[columnIndex].getMysqlType() == MysqlDefs.FIELD_TYPE_TIMESTAMP) {
@@ -767,7 +767,7 @@ public abstract class ResultSetRow {
                             SQLError.SQL_STATE_ILLEGAL_ARGUMENT, this.exceptionInterceptor);
                 }
 
-                // We're left with the case of 'round' to a time Java _can_ represent, which is '00:00:00'
+                // We're push_left with the case of 'round' to a time Java _can_ represent, which is '00:00:00'
                 return rs.fastTimeCreate(targetCalendar, 0, 0, 0);
             }
 
@@ -941,7 +941,7 @@ public abstract class ResultSetRow {
                 if (!rs.useLegacyDatetimeCode) {
                     return TimeUtil.fastTimestampCreate(tz, 1, 1, 1, 0, 0, 0, 0);
                 }
-                // We're left with the case of 'round' to a date Java _can_ represent, which is '0001-01-01'.
+                // We're push_left with the case of 'round' to a date Java _can_ represent, which is '0001-01-01'.
                 return rs.fastTimestampCreate(null, 1, 1, 1, 0, 0, 0, 0);
 
             } else if (this.metadata[columnIndex].getMysqlType() == MysqlDefs.FIELD_TYPE_YEAR) {

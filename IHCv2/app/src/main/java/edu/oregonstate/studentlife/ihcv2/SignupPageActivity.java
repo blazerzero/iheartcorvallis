@@ -116,13 +116,18 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        Animation myanim = AnimationUtils.loadAnimation(this, R.anim.transition2);
+        Animation myanim = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         mLoginFormView.startAnimation(myanim);
         mFirstNameField.startAnimation(myanim);
         mLastNameField.startAnimation(myanim);
         mEmailField.startAnimation(myanim);
         mPasswordField.startAnimation(myanim);
         mEmailSignInButton.startAnimation(myanim);
+    }
+
+    public void onPause() {
+        super.onPause();
+        this.overridePendingTransition(R.anim.push_left,R.anim.push_right);
     }
 
     private void populateAutoComplete() {

@@ -4111,7 +4111,7 @@ public class MysqlIO {
                 }
             }
 
-            int len = packetLen - HEADER_LENGTH; // payload length left
+            int len = packetLen - HEADER_LENGTH; // payload length push_left
             int splitSize = this.maxThreeBytes;
             int originalPacketPos = HEADER_LENGTH;
             byte[] origPacketBytes = packet.getByteBuffer();

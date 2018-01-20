@@ -8294,7 +8294,7 @@ public class ConnectionRegressionTest extends BaseTestCase {
             props.setProperty("useSSL", "false");
             sslConn = getConnectionWithProps(props);
             assertFalse(((MySQLConnection) sslConn).getUseSSL());
-            assertTrue(((MySQLConnection) sslConn).getVerifyServerCertificate()); // we left with default value here
+            assertTrue(((MySQLConnection) sslConn).getVerifyServerCertificate()); // we push_left with default value here
             assertFalse(((MySQLConnection) sslConn).getIO().isSSLEstablished());
 
             rset = sslConn.createStatement().executeQuery("SHOW STATUS LIKE 'ssl_cipher'");
@@ -8324,7 +8324,7 @@ public class ConnectionRegressionTest extends BaseTestCase {
             props.setProperty("trustCertificateKeyStorePassword", "password");
             sslConn = getConnectionWithProps(props);
             assertTrue(((MySQLConnection) sslConn).getUseSSL());
-            assertTrue(((MySQLConnection) sslConn).getVerifyServerCertificate()); // we left with default value here
+            assertTrue(((MySQLConnection) sslConn).getVerifyServerCertificate()); // we push_left with default value here
             assertTrue(((MySQLConnection) sslConn).getIO().isSSLEstablished());
 
             rset = sslConn.createStatement().executeQuery("SHOW STATUS LIKE 'ssl_cipher'");
