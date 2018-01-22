@@ -3,8 +3,9 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
-    <string name="action_islistview">List View</string>
-    <string mame="action_iscardview">Card View</string>
+    <string name="action_switch_view">Switch View</string>
+    <string name="action_switch_to_listview">Switch to List View</string>
+    <string name="action_switch_to_cardview">Switch to Card View</string>
     <string-array name="drawer_pages">
         <item>Dashboard</item>
         <item>Events</item>

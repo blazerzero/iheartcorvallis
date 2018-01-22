@@ -35,23 +35,28 @@ public class EventCardAdapter extends RecyclerView.Adapter<EventCardAdapter.Even
 
         private ImageView mEventImageView;
         private TextView mEventNameTextView;
-        private TextView mEventInfoTextView;
+        private TextView mEventDateTimeTextView;
+        private TextView mEventLocationTextView;
 
         public EventCardViewHolder(View itemView) {
             super(itemView);
             mEventImageView = (ImageView) itemView.findViewById(R.id.cv_event_imageview);
             mEventNameTextView = (TextView) itemView.findViewById(R.id.tv_event_name);
-            mEventInfoTextView = (TextView) itemView.findViewById(R.id.tv_event_cv_info);
+            mEventDateTimeTextView = (TextView) itemView.findViewById(R.id.tv_event_cv_datetime);
+            mEventLocationTextView = (TextView) itemView.findViewById(R.id.tv_event_location);
         }
 
         void bind(Event event) {
             mEventNameTextView.setText(event.getName());
             if (event.getMonth().length() <= 3) {
-                mEventInfoTextView.setText(event.getMonth() + " " + event.getDay() + ", " + event.getLocation());
+                mEventDateTimeTextView.setText(event.getMonth() + " " + event.getDay()
+                        + ", " + event.getYear() + " @ " + event.getTime());
             }
             else {
-                mEventInfoTextView.setText(event.getMonth().substring(0, 3) + ". " + event.getDay() + ", " + event.getLocation());
+                mEventDateTimeTextView.setText(event.getMonth().substring(0, 3)
+                        + ". " + event.getDay() + ", " + event.getYear() + " @ " + event.getTime());
             }
+            mEventLocationTextView.setText(event.getLocation());
         }
 
     }

@@ -46,14 +46,14 @@ public class EventsActivity extends AppCompatActivity
     static final int VIEW_MODE_GRIDVIEW = 1;
 
     private Event[] eventList = {
-            new Event("January", "20", "2018", "5:00PM", "OSU Men's Basketball vs. USC", "Gill Coliseum"),
-            new Event("January", "20", "2018","7:00PM", "Blazers vs. Dallas", "Moda Center"),
-            new Event("January", "24", "2018", "7:00PM", "Blazers vs. Minnesota", "Moda Center"),
-            new Event("January", "27", "2018", "5:00PM", "OSU Men's Basketball @ Oregon", "Matthew Knight Arena"),
-            new Event("January", "28", "2018", "4:30PM", "60th Grammy Awards", "Madison Square Garden"),
-            new Event("January", "31", "2018", "7:00PM", "Blazers vs. Chicago", "Moda Center"),
-            new Event("February", "8", "2018", "7:30PM", "OSU Men's Basketball vs. WSU", "Gill Coliseum"),
-            new Event("February", "10", "2018", "7:00PM", "OSU Men's Basketball vs. UW", "Gill Coliseum"),
+            new Event("January", "20", "2018", "5:00pm", "OSU Men's Basketball vs. USC", "Gill Coliseum"),
+            new Event("January", "20", "2018","7:00pm", "Blazers vs. Dallas", "Moda Center"),
+            new Event("January", "24", "2018", "7:00pm", "Blazers vs. Minnesota", "Moda Center"),
+            new Event("January", "27", "2018", "5:00pm", "OSU Men's Basketball @ Oregon", "Matthew Knight Arena"),
+            new Event("January", "28", "2018", "4:30pm", "60th Grammy Awards", "Madison Square Garden"),
+            new Event("January", "31", "2018", "7:00pm", "Blazers vs. Chicago", "Moda Center"),
+            new Event("February", "8", "2018", "7:30pm", "OSU Men's Basketball vs. WSU", "Gill Coliseum"),
+            new Event("February", "10", "2018", "7:00pm", "OSU Men's Basketball vs. UW", "Gill Coliseum"),
     };
 
     @Override
@@ -106,6 +106,11 @@ public class EventsActivity extends AppCompatActivity
             mEventCardAdapter.addEvent(event);
         }
 
+    }
+
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(0,0);
     }
 
     public Event[] mergeSortEventList(Event[] eventList) {
@@ -256,6 +261,13 @@ public class EventsActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.action_settings);
+        item.setTitle(R.string.action_switch_view);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

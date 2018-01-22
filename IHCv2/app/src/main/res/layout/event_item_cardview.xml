@@ -12,7 +12,7 @@
         android:id="@+id/event_card"
         android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="280dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         card_view:cardCornerRadius="4dp"
@@ -25,14 +25,14 @@
             <ImageView
                 android:id="@+id/cv_event_imageview"
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
+                android:layout_height="150dp"
                 android:src="@drawable/corvallis_aerial"
                 android:scaleType="fitXY"/>
 
             <TextView
                 android:id="@+id/tv_event_name"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/event_elem_height"
+                android:layout_height="@dimen/event_cv_elem_height"
                 android:layout_below="@+id/cv_event_imageview"
                 android:paddingLeft="10dp"
                 android:textSize="20sp"
@@ -42,13 +42,23 @@
                 android:lines="1"/>
 
             <TextView
-                android:id="@+id/tv_event_cv_info"
+                android:id="@+id/tv_event_cv_datetime"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/event_elem_height"
+                android:layout_height="@dimen/event_cv_elem_height"
                 android:layout_below="@+id/tv_event_name"
                 android:paddingLeft="10dp"
                 android:textSize="18sp"
-                android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="left|center_vertical"
+                android:lines="1"/>
+
+            <TextView
+                android:id="@+id/tv_event_location"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/event_cv_elem_height"
+                android:layout_below="@+id/tv_event_cv_datetime"
+                android:paddingLeft="10dp"
+                android:textSize="18sp"
                 android:textColor="@color/colorPrimaryDark"
                 android:gravity="left|center_vertical"
                 android:lines="1"/>
@@ -57,7 +67,7 @@
                 android:id="@+id/tv_event_learnmore"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/event_elem_height"
-                android:layout_below="@+id/tv_event_cv_info"
+                android:layout_below="@+id/tv_event_location"
                 android:paddingLeft="10dp"
                 android:text="LEARN MORE"
                 android:textSize="18sp"
