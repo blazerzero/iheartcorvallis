@@ -1,0 +1,68 @@
+package edu.oregonstate.studentlife.ihcv2;
+
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+
+/**
+ * Created by dylan on 1/21/2018.
+ */
+
+public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.LeaderboardViewHolder> {
+    private ArrayList<User> mUserAccounts;
+
+    public LeaderboardAdapter() {
+        mUserAccounts = new ArrayList<User>();
+    }
+
+    public void addUserToLeaderboard(User user) {
+        mUserAccounts.add(user);
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public int getItemCount() {
+        return mUserAccounts.size();
+    }
+
+    class LeaderboardViewHolder extends RecyclerView.ViewHolder {
+
+        //private ImageView mLeaderboardStampImageView;
+        private TextView mUserNameTextView;
+        private TextView mStampCountTextView;
+
+        public LeaderboardViewHolder(View itemView) {
+            super(itemView);
+            //mPassportStampImageView = (ImageView) itemView.findViewById(R.id.iv_passport_stamp);
+            mUserNameTextView = (TextView) itemView.findViewById(R.id.tv_user_name);
+            mStampCountTextView = (TextView) itemView.findViewById(R.id.tv_user_stamp_count);
+        }
+
+        void bind(User user) {
+            // set to grab username?
+            mUserNameTextView.setText(user.getUserName());
+            // set way to grab number of stamps
+            mStampCountTextView.setText(user.getStampCount());
+
+        }
+
+    }
+
+    @Override
+    public LeaderboardViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+        View view = inflater.inflate(R.layout.leaderboard_item, viewGroup, false);
+        LeaderboardViewHolder viewHolder = new LeaderboardViewHolder(view);
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(LeaderboardViewHolder holder, int position) {
+        User user = mUserAccounts.get(position);
+        holder.bind(user);
+    }
+}

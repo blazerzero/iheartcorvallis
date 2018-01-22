@@ -35,7 +35,7 @@
         android:layout_below="@+id/appBarLayout"
         android:background="@color/colorPrimary"
         tools:openDrawer="start">
-
+<!--
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -115,6 +115,11 @@
             </TableLayout>
 
         </ScrollView>
+-->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_leaderboard_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
 
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"
