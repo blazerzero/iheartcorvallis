@@ -12,11 +12,11 @@ import java.util.ArrayList;
  * Created by Omeed on 1/18/18.
  */
 
-public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
+public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventListViewHolder> {
 
    private ArrayList<Event> mEventList;
 
-   public EventAdapter() {
+   public EventListAdapter() {
        mEventList = new ArrayList<Event>();
    }
 
@@ -31,27 +31,27 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
    }
 
    @Override
-   public EventViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+   public EventListViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-       View view = inflater.inflate(R.layout.event_item, viewGroup, false);
-       EventViewHolder viewHolder = new EventViewHolder(view);
+       View view = inflater.inflate(R.layout.event_item_listview, viewGroup, false);
+       EventListViewHolder viewHolder = new EventListViewHolder(view);
        return viewHolder;
    }
 
    @Override
-   public void onBindViewHolder(EventViewHolder holder, int position) {
+   public void onBindViewHolder(EventListViewHolder holder, int position) {
        Event event = mEventList.get(position);
        holder.bind(event);
    }
 
-   class EventViewHolder extends RecyclerView.ViewHolder {
+   class EventListViewHolder extends RecyclerView.ViewHolder {
 
        private TextView mEventMonthTextView;
        private TextView mEventDayTextView;
        private TextView mEventNameTextView;
        private TextView mEventLocationTextView;
 
-       public EventViewHolder(View itemView) {
+       public EventListViewHolder(View itemView) {
            super(itemView);
            mEventMonthTextView = (TextView) itemView.findViewById(R.id.tv_event_month);
            mEventDayTextView = (TextView) itemView.findViewById(R.id.tv_event_day);

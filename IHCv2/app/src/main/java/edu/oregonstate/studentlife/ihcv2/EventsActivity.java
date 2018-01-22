@@ -1,13 +1,12 @@
 package edu.oregonstate.studentlife.ihcv2;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -15,23 +14,11 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.ViewStub;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.sql.*;
 import java.util.Arrays;
 import java.util.Calendar;
 
@@ -43,7 +30,20 @@ public class EventsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private RecyclerView mEventListRecyclerView;
-    private EventAdapter mEventAdapter;
+    private RecyclerView mEventCardRecyclerView;
+    private EventListAdapter mEventListAdapter;
+    private EventCardAdapter mEventCardAdapter;
+
+    private ViewStub stubGrid;
+    private ViewStub stubList;
+    private ListView listView;
+    private GridView gridView;
+    private ListViewAdapter listViewAdapter;
+    private GridViewAdapter gridViewAdapter;
+    private int currentViewMode = 0;
+
+    static final int VIEW_MODE_LISTVIEW = 0;
+    static final int VIEW_MODE_GRIDVIEW = 1;
 
     private Event[] eventList = {
             new Event("January", "20", "2018", "5:00PM", "OSU Men's Basketball vs. USC", "Gill Coliseum"),
@@ -87,13 +87,23 @@ public class EventsActivity extends AppCompatActivity
         mEventListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mEventListRecyclerView.setHasFixedSize(true);
 
-        mEventAdapter = new EventAdapter();
-        mEventListRecyclerView.setAdapter(mEventAdapter);
+        mEventListAdapter = new EventListAdapter();
+        mEventListRecyclerView.setAdapter(mEventListAdapter);
+
+        mEventCardRecyclerView = (RecyclerView) findViewById(R.id.rv_event_card);
+        mEventCardRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mEventCardRecyclerView.setHasFixedSize(true);
+
+        mEventCardAdapter = new EventCardAdapter();
+        mEventCardRecyclerView.setAdapter(mEventCardAdapter);
 
         //eventList = mergeSortEventList(eventList);
 
+        mEventCardRecyclerView.setVisibility(View.GONE);
+
         for (Event event : eventList) {
-            mEventAdapter.addEvent(event);
+            mEventListAdapter.addEvent(event);
+            mEventCardAdapter.addEvent(event);
         }
 
     }
@@ -230,11 +240,19 @@ public class EventsActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        //int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             return true;
+        }*/
+        if (mEventListRecyclerView.getVisibility() == View.VISIBLE && mEventCardRecyclerView.getVisibility() == View.GONE) {
+            mEventListRecyclerView.setVisibility(View.GONE);
+            mEventCardRecyclerView.setVisibility(View.VISIBLE);
+        }
+        else if (mEventListRecyclerView.getVisibility() == View.GONE && mEventCardRecyclerView.getVisibility() == View.VISIBLE) {
+            mEventCardRecyclerView.setVisibility(View.GONE);
+            mEventListRecyclerView.setVisibility(View.VISIBLE);
         }
 
         return super.onOptionsItemSelected(item);

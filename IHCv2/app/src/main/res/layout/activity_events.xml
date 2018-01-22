@@ -159,6 +159,27 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/mapbtn"/>
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_event_card"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mapbtn"/>
+            <!--<ViewStub
+                android:id="@+id/stub_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:inflatedId="@+id/showlayout"
+                android:layout="@layout/mylistviewevents"/>
+
+            <ViewStub
+                android:id="@+id/stub_grid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:inflatedId="@+id/showlayout"
+                android:layout="@layout/my_gridview"/>-->
+
         </RelativeLayout>
 
         <android.support.design.widget.NavigationView
