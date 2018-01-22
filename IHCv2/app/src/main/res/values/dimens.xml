@@ -9,4 +9,5 @@
     <dimen name="event_page_gmapbtn_height">60dp</dimen>
     <dimen name="event_monthday_width">60dp</dimen>
     <dimen name="event_elem_height">40dp</dimen>
+    <dimen name="passport_stamp_width">80dp</dimen>
 </resources>

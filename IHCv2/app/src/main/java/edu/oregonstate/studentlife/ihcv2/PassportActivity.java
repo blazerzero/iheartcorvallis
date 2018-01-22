@@ -9,6 +9,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,6 +18,15 @@ import android.view.MenuItem;
 
 public class PassportActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
+
+    private RecyclerView mPassportRecyclerView;
+    private PassportAdapter mPassportAdapter;
+
+    private Event[] completedEventList = {
+            new Event("January", "20", "2018", "5:00PM", "OSU Men's Basketball vs. USC", "Gill Coliseum"),
+            new Event("January", "20", "2018", "7:00PM", "Blazers vs. Dallas", "Moda Center")
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +44,17 @@ public class PassportActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        mPassportRecyclerView = (RecyclerView) findViewById(R.id.rv_passport_list);
+        mPassportRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mPassportRecyclerView.setHasFixedSize(true);
+
+        mPassportAdapter = new PassportAdapter();
+        mPassportRecyclerView.setAdapter(mPassportAdapter);
+
+        for (Event event : completedEventList) {
+            mPassportAdapter.addEventToPassport(event);
+        }
     }
 
     public void onPause() {
@@ -82,7 +104,7 @@ public class PassportActivity extends AppCompatActivity
             Intent intent = new Intent(PassportActivity.this, DashboardActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_events) {
-            Intent intent = new Intent(PassportActivity.this, PassportActivity.class);
+            Intent intent = new Intent(PassportActivity.this, EventsActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_passport) {
             onBackPressed();

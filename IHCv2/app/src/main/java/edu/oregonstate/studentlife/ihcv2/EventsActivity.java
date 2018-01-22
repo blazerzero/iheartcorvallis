@@ -101,6 +101,7 @@ public class EventsActivity extends AppCompatActivity
     public Event[] mergeSortEventList(Event[] eventList) {
         int half_len;
         Event[] sortedEventList;
+        Event tempEvent;
         switch (eventList.length) {
             case 1: {
                 sortedEventList = eventList;
@@ -108,12 +109,12 @@ public class EventsActivity extends AppCompatActivity
             }
             default: {
                 half_len = eventList.length / 2;
-                Event[] lowEventList = Arrays.copyOfRange(eventList, 0, half_len - 1);
+                Event[] lowEventList = Arrays.copyOfRange(eventList, 0, half_len-1);
                 Event[] highEventList = Arrays.copyOfRange(eventList, half_len, eventList.length - 1);
                 lowEventList = mergeSortEventList(lowEventList);
                 highEventList = mergeSortEventList(highEventList);
                 sortedEventList = mergeLists(lowEventList, highEventList);
-;            }
+            }
         }
         return sortedEventList;
     }
