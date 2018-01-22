@@ -19,9 +19,9 @@ public class Splash extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         //tv = (TextView) findViewById(R.id.tv);
         iv = (ImageView) findViewById(R.id.iv);
-        Animation myanim = AnimationUtils.loadAnimation(this,R.anim.fade_in);
-        //tv.startAnimation(myanim);
-        iv.startAnimation(myanim);
+        Animation fadeIn = AnimationUtils.loadAnimation(this,R.anim.fade_in);
+        //tv.startAnimation(fadeIn);
+        iv.startAnimation(fadeIn);
         final Intent i = new Intent(this,MainActivity.class);
         Thread timer = new Thread(){
             public void run (){

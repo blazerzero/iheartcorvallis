@@ -50,11 +50,11 @@ public class MainActivity extends AppCompatActivity {
 
         overridePendingTransition(0,0);
 
-        Animation myanim = AnimationUtils.loadAnimation(this,R.anim.fade_in);
-        iv.startAnimation(myanim);
-        tv.startAnimation(myanim);
-        loginButton.startAnimation(myanim);
-        signupButton.startAnimation(myanim);
+        Animation fadeIn = AnimationUtils.loadAnimation(this,R.anim.fade_in);
+        iv.startAnimation(fadeIn);
+        tv.startAnimation(fadeIn);
+        loginButton.startAnimation(fadeIn);
+        signupButton.startAnimation(fadeIn);
 
         //spinner.setVisibility(View.GONE);
     }
