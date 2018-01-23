@@ -25,7 +25,7 @@ public class LeaderboardActivity extends AppCompatActivity
 
     private User[] userList = {
             new User("Dylan Tomlinson", "15"),
-            new User("Omeed Habibilian", "13"),
+            new User("Omeed Habibelahian", "13"),
             new User("Bradley Imai", "13")
     };
 

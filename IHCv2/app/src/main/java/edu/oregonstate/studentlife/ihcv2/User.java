@@ -22,5 +22,4 @@ public class User extends AppCompatActivity {
     public String getStampCount() {return stampCount;}
 
     public void setStampCount(String stampCount){this.stampCount = stampCount;}
-
 }

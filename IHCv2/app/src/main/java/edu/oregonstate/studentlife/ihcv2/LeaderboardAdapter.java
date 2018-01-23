@@ -34,6 +34,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
         //private ImageView mLeaderboardStampImageView;
         private TextView mUserNameTextView;
         private TextView mStampCountTextView;
+        private Constants constants;
 
         public LeaderboardViewHolder(View itemView) {
             super(itemView);
