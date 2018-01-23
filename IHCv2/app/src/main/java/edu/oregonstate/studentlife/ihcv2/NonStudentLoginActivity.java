@@ -56,6 +56,7 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
+
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.

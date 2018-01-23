@@ -43,7 +43,7 @@
         completions."
     </string>
     <string name="title_activity_signup_page">Sign Up</string>
-    <string name="login_form">http://web.engr.oregonstate.edu/~habibelo/ihc_server/reslogin.php</string>
+    <string name="nonstudent_login_form">http://web.engr.oregonstate.edu/~habibelo/ihc_server/reslogin.php</string>
     <string name="passport_table_header">Corvallis Passport</string>
     <string name="passport_stamp1">Stamp 1</string>
     <string name="passport_stamp2">Stamp 2</string>
