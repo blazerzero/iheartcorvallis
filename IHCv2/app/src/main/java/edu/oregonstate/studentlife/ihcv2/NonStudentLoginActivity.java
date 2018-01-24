@@ -3,7 +3,9 @@ package edu.oregonstate.studentlife.ihcv2;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -34,15 +36,22 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.apache.http.client.HttpClient;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.StringJoiner;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -55,19 +64,20 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-
+    final static String IHC_LOGIN_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/non_student_login.php";
 
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
      */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
+    private static final String[] CREDENTIALS = new String[]{
+            "habibelo@oregonstate.com:Password123",
+            "imaib@oregonstate.edu:Password123",
+            "tomlinsd@oregonstate.edu:Password123"
     };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -172,9 +182,6 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
 
         // Reset errors.
         mEmailView.setError(null);
@@ -229,31 +236,88 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             showProgress(true);
-            /*mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);*/
-            String link = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/reslogin.php";
+
             try {
-                URL url = new URL(link);
+
+                NonStudentAuthProcess nsAuthProcess = new NonStudentAuthProcess(this);
+                nsAuthProcess.execute(email, password);
+                //Thread.sleep(3000);
+                //if (mLoginSuccessTextView.getText() == "LOGINSUCCESS") {
+                /*    Intent intent = new Intent(NonStudentLoginActivity.this, DashboardActivity.class);
+                    showProgress(false);
+                Toast.makeText(this, mLoginSuccessTextView.getText(), Toast.LENGTH_LONG).show();
+                startActivity(intent);*/
+                //}
+                //}
+                /*URL url = new URL(IHC_LOGIN_URL);
                 String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
                 data += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
+                Toast.makeText(this, data, Toast.LENGTH_LONG).show();   // THIS IS GETTING EXECUTED
                 URLConnection conn = url.openConnection();
+
                 OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
                 wr.write( data );
-                wr.flush();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
-                StringBuilder sb = new StringBuilder();
-                String line = null;
-                while ((line = reader.readLine()) != null) {
+                StringBuffer sb = new StringBuffer("");
+                String line = "";
+
+                while ((line = in.readLine()) != null) {
                     sb.append(line);
                     break;
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
+                in.close();
+                String receivedData = sb.toString();
+                Thread.sleep(1000);
+                Toast.makeText(this, receivedData, Toast.LENGTH_LONG).show();*/
+            } catch (Exception e) {}
         }
     }
+
+    private void onBackgroundTaskDataObtained(String result) {
+        if (result.equals("LOGINSUCCESS")) {
+            try {
+                Thread.sleep(3000);
+                Intent intent = new Intent(NonStudentLoginActivity.this, DashboardActivity.class);
+                startActivity(intent);
+            } catch (Exception e) {
+                Toast.makeText(this, "Exception" + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+        else {
+            mEmailView.setText("");
+            mPasswordView.setText("");
+            showProgress(false);
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            }
+            else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("Login Error");
+            builder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Try logging in again
+                }
+            });
+            if (result.equals("AUTHERROR")) {
+                builder.setMessage("Incorrect email/password combination.");
+            }
+            else if (result.equals("DUPACCOUNTERROR")) {
+                builder.setMessage("Unable to authenticate. More than one account exists with this email/password combination.");
+            }
+            else if (result.equals("SEARCHERROR")) {
+                builder.setMessage("Error searching for account.");
+            }
+            builder.setIcon(android.R.drawable.ic_dialog_alert);
+            builder.show();
+        }
+
+    }
+
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
@@ -355,63 +419,63 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
         int IS_PRIMARY = 1;
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    class NonStudentAuthProcess extends AsyncTask {
 
-        private final String mEmail;
-        private final String mPassword;
+        private Context context;
+        private String email;
+        private String password;
+        final static String IHC_NS_LOGIN_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/non_student_login.php";
 
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
+        public NonStudentAuthProcess(Context context) {
+            this.context = context;
+        }
+
+        protected void onPreExecute() {
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+        protected Object doInBackground(Object[] objects) {
+            email = (String) objects[0];
+            password = (String) objects[1];
 
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
+                URL url = new URL(IHC_NS_LOGIN_URL);
+                String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
+                data += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
+                //Toast.makeText(this, data, Toast.LENGTH_SHORT).show();
+                //this.loginSuccessTextView.setText(data);
+                Thread.sleep(1000);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+                conn.setRequestMethod("POST");
+                conn.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                wr.write( data );
+                wr.flush();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                StringBuffer sb = new StringBuffer("");
+                String line = null;
+
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                    break;
                 }
-            }
 
-            // TODO: register the new account here.
-            return true;
+                //Thread.sleep(1000);
+                //Toast.makeText(this, sb.toString(), Toast.LENGTH_LONG).show();
+                return sb.toString();
+            } catch (Exception e) { return new String("Exception: " + e.getMessage()); }
         }
 
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-                Intent intent = new Intent(NonStudentLoginActivity.this, DashboardActivity.class);
-                startActivity(intent);
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
 
         @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
+        protected void onPostExecute(Object result) {
+            String resultText = (String) result;
+            NonStudentLoginActivity.this.onBackgroundTaskDataObtained(resultText);
         }
     }
+
 }
 
