@@ -14,14 +14,16 @@ public class Event extends AppCompatActivity {
     private String month;
     private String day;
     private String year;
+    private String description;
 
-    public Event( String name, String location, String time, String month, String day, String year) {
+    public Event(String name, String location, String time, String month, String day, String year, String description) {
         this.name = name;
         this.location = location;
         this.time = time;
         this.month = month;
         this.day = day;
         this.year = year;
+        this.description = description;
     }
 
     public String getName() {
@@ -70,5 +72,13 @@ public class Event extends AppCompatActivity {
 
     public void setYear(String year) {
         this.year = year;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -31,8 +31,10 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.StringTokenizer;
 
 /**
@@ -46,28 +48,6 @@ public class EventsActivity extends AppCompatActivity
     private RecyclerView mEventCardRecyclerView;
     private EventListAdapter mEventListAdapter;
     private EventCardAdapter mEventCardAdapter;
-
-    /*private ViewStub stubGrid;
-    private ViewStub stubList;
-    private ListView listView;
-    private GridView gridView;
-    private ListViewAdapter listViewAdapter;
-    private GridViewAdapter gridViewAdapter;
-    private int currentViewMode = 0;
-
-    static final int VIEW_MODE_LISTVIEW = 0;
-    static final int VIEW_MODE_GRIDVIEW = 1;*/
-
-    private Event[] eventList = {
-            new Event("OSU Men's Basketball vs. USC", "Gill Coliseum", "5:00pm","January", "20", "2018"),
-            new Event("Blazers vs. Dallas", "Moda Center", "7:00pm", "January", "20", "2018"),
-            new Event("Blazers vs. Minnesota", "Moda Center", "7:00pm", "January", "24", "2018"),
-            new Event("OSU Men's Basketball @ Oregon", "Matthew Knight Arena", "5:00pm", "January", "27", "2018"),
-            new Event("60th Grammy Awards", "Madison Square Garden", "4:30pm","January", "28", "2018"),
-            new Event("Blazers vs. Chicago", "Moda Center", "7:00pm", "January", "31", "2018"),
-            new Event("OSU Men's Basketball vs. WSU", "Gill Coliseum", "7:30pm", "February", "8", "2018"),
-            new Event("OSU Men's Basketball vs. UW", "Gill Coliseum", "7:00pm", "February", "10", "2018"),
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +76,6 @@ public class EventsActivity extends AppCompatActivity
             }
         });
 
-        //new EventReceiver(this).execute();
-
         mEventListRecyclerView = (RecyclerView) findViewById(R.id.rv_event_list);
         mEventListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mEventListRecyclerView.setHasFixedSize(true);
@@ -116,10 +94,7 @@ public class EventsActivity extends AppCompatActivity
 
         mEventCardRecyclerView.setVisibility(View.GONE);
 
-        for (Event event : eventList) {
-            mEventListAdapter.addEvent(event);
-            mEventCardAdapter.addEvent(event);
-        }
+        new EventReceiver(this).execute();
 
     }
 
@@ -262,10 +237,6 @@ public class EventsActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         //int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        /*if (id == R.id.action_settings) {
-            return true;
-        }*/
         if (mEventListRecyclerView.getVisibility() == View.VISIBLE && mEventCardRecyclerView.getVisibility() == View.GONE) {
             mEventListRecyclerView.setVisibility(View.GONE);
             mEventCardRecyclerView.setVisibility(View.VISIBLE);
@@ -322,11 +293,46 @@ public class EventsActivity extends AppCompatActivity
     }
 
     private void onBackgroundTaskDataObtained(String result) {
-        StringTokenizer stJSON = new StringTokenizer(result, "**||**");
-        while (stJSON.hasMoreTokens()) {
-            String eventJSON = stJSON.nextToken();
-            Toast.makeText(this, eventJSON, Toast.LENGTH_LONG).show();
-            try { Thread.sleep(2000); } catch (Exception e) {}
+        StringTokenizer stFeed = new StringTokenizer(result, ";");
+        while (stFeed.hasMoreTokens()) {
+            String[] eventTokens = new String[4];
+            String eventJSON = stFeed.nextToken();
+            StringTokenizer stEvent = new StringTokenizer(eventJSON, "\\");
+            for (int i = 0; stEvent.hasMoreTokens(); i++) {
+                eventTokens[i] = stEvent.nextToken();
+            }
+            String eventName = eventTokens[0];
+            String eventLocation = eventTokens[1];
+            String eventDateAndTime = eventTokens[2];
+            String eventDescription = eventTokens[3];
+
+            StringTokenizer dateTimeTokenizer = new StringTokenizer(eventDateAndTime);
+            String eventYear = dateTimeTokenizer.nextToken("-");
+            String eventMonth = dateTimeTokenizer.nextToken("-");
+            String eventDay = dateTimeTokenizer.nextToken(" ");
+            String eventTime = dateTimeTokenizer.nextToken();
+
+            try {
+                SimpleDateFormat _24HourFormat = new SimpleDateFormat("HH:mm");
+                SimpleDateFormat _12HourFormat = new SimpleDateFormat("hh:mm a");
+                Date _24HourEventTime = _24HourFormat.parse(eventTime);
+                eventTime = _12HourFormat.format(_24HourEventTime).toString();
+                if (eventTime.charAt(0) == '0') {
+                    eventTime = eventTime.substring(1);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            eventDay = eventDay.substring(1);
+            if (eventDay.charAt(0) == '0') {
+                eventDay = eventDay.substring(1);
+            }
+
+            Event retrievedEvent = new Event(eventName, eventLocation, eventTime, eventMonth, eventDay, eventYear, eventDescription);
+
+            mEventListAdapter.addEvent(retrievedEvent);
+            mEventCardAdapter.addEvent(retrievedEvent);
         }
 
     }
@@ -361,7 +367,6 @@ public class EventsActivity extends AppCompatActivity
 
                 while ((line = reader.readLine()) != null) {
                     sb.append(line);
-                    sb.append("**||**");
                 }
 
                 return sb.toString();

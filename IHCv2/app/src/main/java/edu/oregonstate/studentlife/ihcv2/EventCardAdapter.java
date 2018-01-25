@@ -38,6 +38,9 @@ public class EventCardAdapter extends RecyclerView.Adapter<EventCardAdapter.Even
         private TextView mEventDateTimeTextView;
         private TextView mEventLocationTextView;
 
+        private String[] monthLongNames = {"January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"};
+
         public EventCardViewHolder(View itemView) {
             super(itemView);
             mEventImageView = (ImageView) itemView.findViewById(R.id.cv_event_imageview);
@@ -47,15 +50,10 @@ public class EventCardAdapter extends RecyclerView.Adapter<EventCardAdapter.Even
         }
 
         void bind(Event event) {
+            int monthInt = Integer.parseInt(event.getMonth()) - 1;
             mEventNameTextView.setText(event.getName());
-            if (event.getMonth().length() <= 3) {
-                mEventDateTimeTextView.setText(event.getMonth() + " " + event.getDay()
-                        + ", " + event.getYear() + " @ " + event.getTime());
-            }
-            else {
-                mEventDateTimeTextView.setText(event.getMonth().substring(0, 3)
-                        + ". " + event.getDay() + ", " + event.getYear() + " @ " + event.getTime());
-            }
+            mEventDateTimeTextView.setText(monthLongNames[monthInt] + " " + event.getDay() + ", "
+                    + event.getYear() + " @ " + event.getTime());
             mEventLocationTextView.setText(event.getLocation());
         }
 

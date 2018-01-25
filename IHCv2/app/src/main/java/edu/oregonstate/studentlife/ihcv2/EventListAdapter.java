@@ -51,6 +51,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
        private TextView mEventNameTextView;
        private TextView mEventLocationTextView;
 
+       private String[] monthShortNames = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
+
        public EventListViewHolder(View itemView) {
            super(itemView);
            mEventMonthTextView = (TextView) itemView.findViewById(R.id.tv_event_month);
@@ -60,7 +62,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
        }
 
        void bind(Event event) {
-           mEventMonthTextView.setText(event.getMonth().substring(0, 3).toUpperCase());
+           int monthInt = Integer.parseInt(event.getMonth()) - 1;
+           mEventMonthTextView.setText(monthShortNames[monthInt]);
            mEventDayTextView.setText(event.getDay());
            mEventNameTextView.setText(event.getName());
            mEventLocationTextView.setText(event.getLocation());

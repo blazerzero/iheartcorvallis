@@ -15,8 +15,13 @@
    $result = $mysqli->query("SELECT name, location, dateandtime, description, link1, link2, link3 FROM ihc_events");
    if ($result->num_rows > 0) {
       while ($row = $result->fetch_assoc()) {
-         $data = json_encode($row);
-         echo $data;
+         //$data = json_encode($row, JSON_PRETTY_PRINT);
+         //echo $data;
+         echo $row["name"] . "\\";
+         echo $row["location"] . "\\";
+         echo $row["dateandtime"] . "\\";
+         echo $row["description"] . "\\";
+         echo ";";
       }
    }
 
