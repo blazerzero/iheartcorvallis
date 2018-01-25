@@ -76,45 +76,52 @@
                     android:paddingBottom="15dp"
                     android:layout_marginBottom="15dp"/>
 
-                <android.support.design.widget.TextInputLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
 
-                    <EditText
-                        android:id="@+id/firstnamefield"
-                        android:layout_width="match_parent"
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint="@string/prompt_firstname"
-                        android:imeActionId="6"
-                        android:imeActionLabel="@string/action_create_account"
-                        android:imeOptions="actionUnspecified"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:singleLine="true">
+                        android:layout_weight="0.5">
+
+                        <EditText
+                            android:id="@+id/firstnamefield"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/prompt_firstname"
+                            android:imeActionId="6"
+                            android:imeOptions="actionUnspecified"
+                            android:inputType="textEmailAddress"
+                            android:singleLine="true">
+
+                         </EditText>
 
                         <requestFocus android:layout_width="wrap_content" />
 
-                     </EditText>
+                    </android.support.design.widget.TextInputLayout>
 
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/lastnamefield"
-                        android:layout_width="match_parent"
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint="@string/prompt_lastname"
-                        android:imeActionId="6"
-                        android:imeActionLabel="@string/action_create_account"
-                        android:imeOptions="actionUnspecified"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:singleLine="true" />
+                        android:layout_weight="0.5">
 
-                </android.support.design.widget.TextInputLayout>
+                        <EditText
+                            android:id="@+id/lastnamefield"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/prompt_lastname"
+                            android:imeActionId="6"
+                            android:imeOptions="actionUnspecified"
+                            android:inputType="textEmailAddress"
+                            android:maxLines="1"
+                            android:singleLine="true" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -126,6 +133,8 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/prompt_email"
                         android:inputType="textEmailAddress"
+                        android:imeActionId="6"
+                        android:imeOptions="actionUnspecified"
                         android:maxLines="1"
                         android:singleLine="true" />
 
@@ -142,7 +151,7 @@
                         android:hint="@string/prompt_password"
                         android:imeActionId="6"
                         android:imeActionLabel="@string/action_create_account"
-                        android:imeOptions="actionUnspecified"
+                        android:imeOptions="actionDone"
                         android:inputType="textPassword"
                         android:maxLines="1"
                         android:singleLine="true" />

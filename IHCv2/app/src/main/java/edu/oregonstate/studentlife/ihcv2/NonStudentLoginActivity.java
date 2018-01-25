@@ -64,7 +64,6 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-    final static String IHC_LOGIN_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/non_student_login.php";
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -238,39 +237,8 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
             showProgress(true);
 
             try {
-
                 NonStudentAuthProcess nsAuthProcess = new NonStudentAuthProcess(this);
                 nsAuthProcess.execute(email, password);
-                //Thread.sleep(3000);
-                //if (mLoginSuccessTextView.getText() == "LOGINSUCCESS") {
-                /*    Intent intent = new Intent(NonStudentLoginActivity.this, DashboardActivity.class);
-                    showProgress(false);
-                Toast.makeText(this, mLoginSuccessTextView.getText(), Toast.LENGTH_LONG).show();
-                startActivity(intent);*/
-                //}
-                //}
-                /*URL url = new URL(IHC_LOGIN_URL);
-                String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
-                data += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
-                Toast.makeText(this, data, Toast.LENGTH_LONG).show();   // THIS IS GETTING EXECUTED
-                URLConnection conn = url.openConnection();
-
-                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-                wr.write( data );
-                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-                StringBuffer sb = new StringBuffer("");
-                String line = "";
-
-                while ((line = in.readLine()) != null) {
-                    sb.append(line);
-                    break;
-                }
-
-                in.close();
-                String receivedData = sb.toString();
-                Thread.sleep(1000);
-                Toast.makeText(this, receivedData, Toast.LENGTH_LONG).show();*/
             } catch (Exception e) {}
         }
     }
@@ -286,7 +254,6 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
             }
         }
         else {
-            mEmailView.setText("");
             mPasswordView.setText("");
             showProgress(false);
             AlertDialog.Builder builder;

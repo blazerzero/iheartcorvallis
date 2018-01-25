@@ -3,6 +3,9 @@ package edu.oregonstate.studentlife.ihcv2;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -27,12 +30,20 @@ import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,14 +69,12 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
-    private ONIDLogin onidLogin;
 
     // UI references.
-    private EditText mFirstNameField;
-    private EditText mLastNameField;
-    private AutoCompleteTextView mEmailField;
-    private EditText mPasswordField;
+    private EditText mFirstNameView;
+    private EditText mLastNameView;
+    private AutoCompleteTextView mEmailView;
+    private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -87,14 +96,14 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
             }
         });
 
-        mFirstNameField = (EditText) findViewById(R.id.firstnamefield);
-        mLastNameField = (EditText) findViewById(R.id.lastnamefield);
+        mFirstNameView = (EditText) findViewById(R.id.firstnamefield);
+        mLastNameView = (EditText) findViewById(R.id.lastnamefield);
         // Set up the login form.
-        mEmailField = (AutoCompleteTextView) findViewById(R.id.emailfield);
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.emailfield);
         populateAutoComplete();
 
-        mPasswordField = (EditText) findViewById(R.id.passwordfield);
-        mPasswordField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mPasswordView = (EditText) findViewById(R.id.passwordfield);
+        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
@@ -118,10 +127,10 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
 
         Animation myanim = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         mLoginFormView.startAnimation(myanim);
-        mFirstNameField.startAnimation(myanim);
-        mLastNameField.startAnimation(myanim);
-        mEmailField.startAnimation(myanim);
-        mPasswordField.startAnimation(myanim);
+        mFirstNameView.startAnimation(myanim);
+        mLastNameView.startAnimation(myanim);
+        mEmailView.startAnimation(myanim);
+        mPasswordView.startAnimation(myanim);
         mEmailSignInButton.startAnimation(myanim);
     }
 
@@ -146,7 +155,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
             return true;
         }
         if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailField, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok, new View.OnClickListener() {
                         @Override
                         @TargetApi(Build.VERSION_CODES.M)
@@ -180,68 +189,65 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
 
         char ch;
         boolean hasUppercase = false;
         boolean hasLowercase = false;
 
         // Reset errors.
-        mEmailField.setError(null);
-        mPasswordField.setError(null);
+        mEmailView.setError(null);
+        mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String firstName = mFirstNameField.getText().toString();
-        String lastName = mLastNameField.getText().toString();
-        String email = mEmailField.getText().toString();
-        String password = mPasswordField.getText().toString();
+        String firstname = mFirstNameView.getText().toString();
+        String lastname = mLastNameView.getText().toString();
+        String email = mEmailView.getText().toString();
+        String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid first name.
-        if (TextUtils.isEmpty(firstName)) {
-            mFirstNameField.setError(getString(R.string.error_field_required));
-            focusView = mFirstNameField;
+        if (TextUtils.isEmpty(firstname)) {
+            mFirstNameView.setError(getString(R.string.error_field_required));
+            focusView = mFirstNameView;
             cancel = true;
         }
 
         // Check for a valid last name.
-        if (TextUtils.isEmpty(lastName)) {
-            mLastNameField.setError(getString(R.string.error_field_required));
-            focusView = mLastNameField;
+        if (TextUtils.isEmpty(lastname)) {
+            mLastNameView.setError(getString(R.string.error_field_required));
+            focusView = mLastNameView;
             cancel = true;
         }
 
         // Check if password field is empty.
         if (TextUtils.isEmpty(password)) {
-            mPasswordField.setError(getString(R.string.error_field_required));
-            focusView = mPasswordField;
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
             cancel = true;
         }
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && password.length() < 7) {
-            mPasswordField.setError(getString(R.string.error_short_password));
-            focusView = mPasswordField;
+            mPasswordView.setError(getString(R.string.error_short_password));
+            focusView = mPasswordView;
             cancel = true;
         }
         if (!isPasswordValid(password)) {
-            mPasswordField.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordField;
+            mPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = mPasswordView;
             cancel = true;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            mEmailField.setError(getString(R.string.error_field_required));
-            focusView = mEmailField;
+            mEmailView.setError(getString(R.string.error_field_required));
+            focusView = mEmailView;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            mEmailField.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailField;
+            mEmailView.setError(getString(R.string.error_invalid_email));
+            focusView = mEmailView;
             cancel = true;
         }
 
@@ -252,10 +258,58 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
+            View view = this.getCurrentFocus();
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            try {
+                SignupAuthProcess signupAuthProcess = new SignupAuthProcess(this);
+                signupAuthProcess.execute(firstname, lastname, email, password);
+            } catch (Exception e) {}
+
         }
+    }
+
+    private void onBackgroundTaskDataObtained(String result) {
+        if (result.equals("SIGNUPSUCCESS")) {
+            try {
+                Thread.sleep(3000);
+                Intent intent = new Intent(SignupPageActivity.this, DashboardActivity.class);
+                startActivity(intent);
+            } catch (Exception e) {
+                Toast.makeText(this, "Exception" + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+        else {
+            mPasswordView.setText("");
+            showProgress(false);
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            }
+            else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("Sign Up Error");
+            builder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Try signing up again
+                }
+            });
+            if (result.equals("DUPACCOUNTERROR")) {
+                builder.setMessage("An account with this email already exists.");
+            }
+            else if (result.equals("SIGNUPERROR")) {
+                builder.setMessage("Error signing up.");
+            }
+            else {
+                builder.setMessage(result);
+            }
+            builder.setIcon(android.R.drawable.ic_dialog_alert);
+            builder.show();
+        }
+
     }
 
     private boolean isEmailValid(String email) {
@@ -368,7 +422,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
                 new ArrayAdapter<>(SignupPageActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        mEmailField.setAdapter(adapter);
+        mEmailView.setAdapter(adapter);
     }
 
 
@@ -382,62 +436,68 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
         int IS_PRIMARY = 1;
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    class SignupAuthProcess extends AsyncTask {
 
-        private final String mEmail;
-        private final String mPassword;
+        private Context context;
+        private String firstname;
+        private String lastname;
+        private String email;
+        private String password;
+        final static String IHC_SIGNUP_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/signup.php";
 
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
+        public SignupAuthProcess(Context context) {
+            this.context = context;
+        }
+
+        protected void onPreExecute() {
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+        protected Object doInBackground(Object[] objects) {
+            firstname = (String) objects[0];
+            lastname = (String) objects[1];
+            email = (String) objects[2];
+            password = (String) objects[3];
 
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
+                URL url = new URL(IHC_SIGNUP_URL);
+                String data = URLEncoder.encode("firstname", "UTF-8") + "=" + URLEncoder.encode(firstname, "UTF-8");
+                data += "&" + URLEncoder.encode("lastname", "UTF-8") + "=" + URLEncoder.encode(lastname, "UTF-8");
+                data += "&" + URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
+                data += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
+                //Toast.makeText(this, data, Toast.LENGTH_SHORT).show();
+                //this.loginSuccessTextView.setText(data);
+                Thread.sleep(1000);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+                conn.setRequestMethod("POST");
+                conn.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                wr.write( data );
+                wr.flush();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                StringBuffer sb = new StringBuffer("");
+                String line = null;
+
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                    break;
                 }
-            }
 
-            // TODO: register the new account here.
-            return true;
+                //Thread.sleep(1000);
+                //Toast.makeText(this, sb.toString(), Toast.LENGTH_LONG).show();
+                return sb.toString();
+            } catch (Exception e) { return new String("Exception: " + e.getMessage()); }
         }
 
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-                Intent intent = new Intent(SignupPageActivity.this, DashboardActivity.class);
-                startActivity(intent);
-            } else {
-                mPasswordField.setError(getString(R.string.error_incorrect_password));
-                mPasswordField.requestFocus();
-            }
-        }
 
         @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
+        protected void onPostExecute(Object result) {
+            String resultText = (String) result;
+            SignupPageActivity.this.onBackgroundTaskDataObtained(resultText);
         }
     }
+
 }
