@@ -262,11 +262,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             showProgress(true);
-            try {
-                SignupAuthProcess signupAuthProcess = new SignupAuthProcess(this);
-                signupAuthProcess.execute(firstname, lastname, email, password);
-            } catch (Exception e) {}
-
+            new SignupAuthProcess(this).execute(firstname, lastname, email, password);
         }
     }
 
@@ -465,9 +461,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
                 data += "&" + URLEncoder.encode("lastname", "UTF-8") + "=" + URLEncoder.encode(lastname, "UTF-8");
                 data += "&" + URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
                 data += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
-                //Toast.makeText(this, data, Toast.LENGTH_SHORT).show();
-                //this.loginSuccessTextView.setText(data);
-                Thread.sleep(1000);
+
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 conn.setRequestMethod("POST");
@@ -486,8 +480,6 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
                     break;
                 }
 
-                //Thread.sleep(1000);
-                //Toast.makeText(this, sb.toString(), Toast.LENGTH_LONG).show();
                 return sb.toString();
             } catch (Exception e) { return new String("Exception: " + e.getMessage()); }
         }
@@ -495,8 +487,8 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
 
         @Override
         protected void onPostExecute(Object result) {
-            String resultText = (String) result;
-            SignupPageActivity.this.onBackgroundTaskDataObtained(resultText);
+            String resultString = (String) result;
+            SignupPageActivity.this.onBackgroundTaskDataObtained(resultString);
         }
     }
 

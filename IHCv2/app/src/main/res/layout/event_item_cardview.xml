@@ -24,10 +24,10 @@
 
             <ImageView
                 android:id="@+id/cv_event_imageview"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="150dp"
-                android:src="@drawable/corvallis_aerial"
-                android:scaleType="fitXY"/>
+                android:scaleType="centerCrop"
+                android:src="@drawable/corvallis_aerial"/>
 
             <TextView
                 android:id="@+id/tv_event_name"

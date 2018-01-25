@@ -10,10 +10,6 @@
    //Output any connection error
    if ($mysqli->connect_error) {
        die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
-       echo "Connection failed!<br>";
-   }
-   else {
-      echo "Connection succesful!<br>";
    }
 
    $firstname = $lastname = $email = $password = $row = "";
@@ -26,17 +22,10 @@
       $password = $_POST["password"];
    }
 
-   echo "First name entered: " . $firstname . "<br>";
-   echo "Last name entered: " . $lastname . "<br>";
-   echo "Email entered: " . $email . "<br>";
-   echo "Password entered: " . $password . "<br>";
-
    # CHECK IF ACCOUNT ALREADY EXISTS
    $result = $mysqli->query("SELECT email FROM ihc_users WHERE email='$email'");
    if ($result->num_rows > 0) {
       $alreadyExists = True;
-      echo "ALREADY EXISTS<br>";
-      break;
    }
 
    # ADD ACCOUNT IF IT DOESN'T ALREADY EXIST
@@ -53,7 +42,7 @@
       }
    }
    else {
-      echo "DUPERROR"; # account already exists
+      echo "DUPACCOUNTERROR"; # account already exists
    }
    mysqli_close($con);
 ?>

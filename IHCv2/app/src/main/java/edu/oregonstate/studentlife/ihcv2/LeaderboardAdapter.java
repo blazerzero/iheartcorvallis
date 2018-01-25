@@ -45,7 +45,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
 
         void bind(User user) {
             // set to grab username?
-            mUserNameTextView.setText(user.getUserName());
+            mUserNameTextView.setText(user.getFirstName() + " " + user.getLastName());
             // set way to grab number of stamps
             mStampCountTextView.setText(user.getStampCount());
 

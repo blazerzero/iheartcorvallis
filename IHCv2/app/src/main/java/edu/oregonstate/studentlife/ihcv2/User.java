@@ -7,19 +7,57 @@ import android.support.v7.app.AppCompatActivity;
  */
 
 public class User extends AppCompatActivity {
-    private String userName;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String id;
     private String stampCount;
 
-    public User(String userName, String stampCount){
-        this.userName = userName;
+    public User(String firstName, String lastName, String email, String id, String stampCount) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.id = id;
         this.stampCount = stampCount;
     }
 
-    public String getUserName(){ return userName;}
+    public String getFirstName() {
+        return firstName;
+    }
 
-    public void setUserName(String userName) {this.userName = userName;}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-    public String getStampCount() {return stampCount;}
+    public String getLastName() {
+        return lastName;
+    }
 
-    public void setStampCount(String stampCount){this.stampCount = stampCount;}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getStampCount() {
+        return stampCount;
+    }
+
+    public void setStampCount(String stampCount) {
+        this.stampCount = stampCount;
+    }
 }

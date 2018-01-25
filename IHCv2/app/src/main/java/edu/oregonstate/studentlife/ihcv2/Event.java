@@ -8,20 +8,44 @@ import android.support.v7.app.AppCompatActivity;
 
 public class Event extends AppCompatActivity {
 
+    private String name;
+    private String location;
+    private String time;
     private String month;
     private String day;
     private String year;
-    private String time;
-    private String name;
-    private String location;
 
-    public Event(String month, String day, String year, String time, String name, String location) {
+    public Event( String name, String location, String time, String month, String day, String year) {
+        this.name = name;
+        this.location = location;
+        this.time = time;
         this.month = month;
         this.day = day;
         this.year = year;
-        this.time = time;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getMonth() {
@@ -46,29 +70,5 @@ public class Event extends AppCompatActivity {
 
     public void setYear(String year) {
         this.year = year;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
     }
 }

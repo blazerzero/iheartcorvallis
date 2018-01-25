@@ -24,9 +24,9 @@ public class LeaderboardActivity extends AppCompatActivity
     private LeaderboardAdapter mLeaderboardAdapter;
 
     private User[] userList = {
-            new User("Dylan Tomlinson", "15"),
-            new User("Omeed Habibelahian", "13"),
-            new User("Bradley Imai", "13")
+            new User("Dylan", "Tomlinson","tomlinsd@oregonstate.edu", "3", "15"),
+            new User("Omeed", "Habibelahian", "habibelo@oregonstate.edu", "1","13"),
+            new User("Bradley", "Imai", "imaib@oregonstate.edu", "2","13")
     };
 
     @Override

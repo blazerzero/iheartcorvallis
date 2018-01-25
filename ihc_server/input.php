@@ -3,9 +3,9 @@
 <body>
 
    <h1>NON-STUDENT LOGIN</h1>
-   <form action="reslogin.php" method="post">
+   <form action="non_student_login.php" method="post">
       Email: <input type="text" name="email"><br>
-      Password: <input type="text" name="password"><br>
+      Password: <input type="password" name="password"><br>
       <input type="submit">
    </form>
 
@@ -16,7 +16,7 @@
       First Name: <input type="text" name="firstname"><br>
       Last Name: <input type="text" name="lastname"><br>
       Email: <input type="text" name="email"><br>
-      Password: <input type="text" name="password"><br>
+      Password: <input type="password" name="password"><br>
       <input type="submit">
    </form>
 </body>

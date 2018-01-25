@@ -1,5 +1,10 @@
 package edu.oregonstate.studentlife.ihcv2;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,9 +23,17 @@ import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.StringTokenizer;
 
 /**
  * Created by Omeed on 12/20/17.
@@ -34,7 +47,7 @@ public class EventsActivity extends AppCompatActivity
     private EventListAdapter mEventListAdapter;
     private EventCardAdapter mEventCardAdapter;
 
-    private ViewStub stubGrid;
+    /*private ViewStub stubGrid;
     private ViewStub stubList;
     private ListView listView;
     private GridView gridView;
@@ -43,17 +56,17 @@ public class EventsActivity extends AppCompatActivity
     private int currentViewMode = 0;
 
     static final int VIEW_MODE_LISTVIEW = 0;
-    static final int VIEW_MODE_GRIDVIEW = 1;
+    static final int VIEW_MODE_GRIDVIEW = 1;*/
 
     private Event[] eventList = {
-            new Event("January", "20", "2018", "5:00pm", "OSU Men's Basketball vs. USC", "Gill Coliseum"),
-            new Event("January", "20", "2018","7:00pm", "Blazers vs. Dallas", "Moda Center"),
-            new Event("January", "24", "2018", "7:00pm", "Blazers vs. Minnesota", "Moda Center"),
-            new Event("January", "27", "2018", "5:00pm", "OSU Men's Basketball @ Oregon", "Matthew Knight Arena"),
-            new Event("January", "28", "2018", "4:30pm", "60th Grammy Awards", "Madison Square Garden"),
-            new Event("January", "31", "2018", "7:00pm", "Blazers vs. Chicago", "Moda Center"),
-            new Event("February", "8", "2018", "7:30pm", "OSU Men's Basketball vs. WSU", "Gill Coliseum"),
-            new Event("February", "10", "2018", "7:00pm", "OSU Men's Basketball vs. UW", "Gill Coliseum"),
+            new Event("OSU Men's Basketball vs. USC", "Gill Coliseum", "5:00pm","January", "20", "2018"),
+            new Event("Blazers vs. Dallas", "Moda Center", "7:00pm", "January", "20", "2018"),
+            new Event("Blazers vs. Minnesota", "Moda Center", "7:00pm", "January", "24", "2018"),
+            new Event("OSU Men's Basketball @ Oregon", "Matthew Knight Arena", "5:00pm", "January", "27", "2018"),
+            new Event("60th Grammy Awards", "Madison Square Garden", "4:30pm","January", "28", "2018"),
+            new Event("Blazers vs. Chicago", "Moda Center", "7:00pm", "January", "31", "2018"),
+            new Event("OSU Men's Basketball vs. WSU", "Gill Coliseum", "7:30pm", "February", "8", "2018"),
+            new Event("OSU Men's Basketball vs. UW", "Gill Coliseum", "7:00pm", "February", "10", "2018"),
     };
 
     @Override
@@ -82,6 +95,8 @@ public class EventsActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+        //new EventReceiver(this).execute();
 
         mEventListRecyclerView = (RecyclerView) findViewById(R.id.rv_event_list);
         mEventListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -304,5 +319,60 @@ public class EventsActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void onBackgroundTaskDataObtained(String result) {
+        StringTokenizer stJSON = new StringTokenizer(result, "**||**");
+        while (stJSON.hasMoreTokens()) {
+            String eventJSON = stJSON.nextToken();
+            Toast.makeText(this, eventJSON, Toast.LENGTH_LONG).show();
+            try { Thread.sleep(2000); } catch (Exception e) {}
+        }
+
+    }
+
+    class EventReceiver extends AsyncTask {
+
+        private Context context;
+        final static String IHC_GET_EVENTS_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/getevents.php";
+
+        public EventReceiver(Context context) {
+            this.context = context;
+        }
+
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+
+            try {
+                URL url = new URL(IHC_GET_EVENTS_URL);
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                conn.setRequestMethod("POST");
+                conn.setDoOutput(true);
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                StringBuffer sb = new StringBuffer("");
+                String line = null;
+
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                    sb.append("**||**");
+                }
+
+                return sb.toString();
+            } catch (Exception e) { return new String("Exception: " + e.getMessage()); }
+        }
+
+
+        @Override
+        protected void onPostExecute(Object result) {
+            String resultString = (String) result;
+            EventsActivity.this.onBackgroundTaskDataObtained(resultString);
+        }
     }
 }
