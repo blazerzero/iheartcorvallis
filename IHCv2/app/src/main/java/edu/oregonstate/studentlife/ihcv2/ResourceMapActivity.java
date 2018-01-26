@@ -1,5 +1,7 @@
 package edu.oregonstate.studentlife.ihcv2;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -10,11 +12,21 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 public class ResourceMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private ArrayList<ResourceMapMarker> resourceMapMarkers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +39,9 @@ public class ResourceMapActivity extends FragmentActivity implements OnMapReadyC
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        resourceMapMarkers = new ArrayList<ResourceMapMarker>();
+
     }
 
     public void onPause() {
@@ -52,10 +67,12 @@ public class ResourceMapActivity extends FragmentActivity implements OnMapReadyC
         LatLng Corvallis = new LatLng(44.564663, -123.263282);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(Corvallis));
 
+        new ResourceMarkerReceiver(this).execute();
+
         // Add markers for resource locations
 
         /* ACTIVITIES AND ENTERTAINMENT */
-        LatLng pioneerPark = new LatLng(44.554949, -123.269763);
+        /*LatLng pioneerPark = new LatLng(44.554949, -123.269763);
         mMap.addMarker(new MarkerOptions().position(pioneerPark).title("Pioneer Park"));
 
         LatLng AveryPark = new LatLng(44.554001, -123.271747);
@@ -86,10 +103,10 @@ public class ResourceMapActivity extends FragmentActivity implements OnMapReadyC
         mMap.addMarker(new MarkerOptions().position(Magestic).title("Magestic Theatre"));
 
         LatLng McKinleySkate = new LatLng(44.557754, -123.262474);
-        mMap.addMarker(new MarkerOptions().position(McKinleySkate).title("McKinley Skate Park"));
+        mMap.addMarker(new MarkerOptions().position(McKinleySkate).title("McKinley Skate Park"));*/
 
         /* GROCERY STORES */
-        LatLng SafewayDowntown = new LatLng(44.560853, -123.263348);
+        /*LatLng SafewayDowntown = new LatLng(44.560853, -123.263348);
         mMap.addMarker(new MarkerOptions().position(SafewayDowntown).title("Safeway (Downtown)"));
 
         LatLng FredMeyer = new LatLng(44.575261, -123.274158);
@@ -114,10 +131,10 @@ public class ResourceMapActivity extends FragmentActivity implements OnMapReadyC
         mMap.addMarker(new MarkerOptions().position(BiMart).title("Bi-Mart"));
 
         LatLng WinCo = new LatLng(44.590630, -123.274336);
-        mMap.addMarker(new MarkerOptions().position(WinCo).title("WinCo"));
+        mMap.addMarker(new MarkerOptions().position(WinCo).title("WinCo"));*/
 
         /* RESTAURANTS */
-        LatLng AlJebal = new LatLng(44.543992, -123.266417);
+        /*LatLng AlJebal = new LatLng(44.543992, -123.266417);
         mMap.addMarker(new MarkerOptions().position(AlJebal).title("Al-Jebal Middle-Eastern Restaurant"));
 
         LatLng FlatTail = new LatLng(44.562705, -123.259747);
@@ -184,10 +201,10 @@ public class ResourceMapActivity extends FragmentActivity implements OnMapReadyC
         mMap.addMarker(new MarkerOptions().position(MIX).title("2MIX food & beverages"));
 
         LatLng WackyYo = new LatLng(44.551931, -123.307519);
-        mMap.addMarker(new MarkerOptions().position(WackyYo).title("Wacky Yo"));
+        mMap.addMarker(new MarkerOptions().position(WackyYo).title("Wacky Yo"));*/
 
         /* SHOPPING */
-        LatLng CorvallisMarket = new LatLng(44.582303, -123.259970);
+        /*LatLng CorvallisMarket = new LatLng(44.582303, -123.259970);
         mMap.addMarker(new MarkerOptions().position(CorvallisMarket).title("Corvallis Market Center"));
 
         LatLng Big5 = new LatLng(44.589441, -123.250757);
@@ -209,10 +226,10 @@ public class ResourceMapActivity extends FragmentActivity implements OnMapReadyC
         mMap.addMarker(new MarkerOptions().position(BikeNHike).title("Bike N Hike"));
 
         LatLng DollarTree = new LatLng(44.550547, -123.307168);
-        mMap.addMarker(new MarkerOptions().position(DollarTree).title("Dollar Tree"));
+        mMap.addMarker(new MarkerOptions().position(DollarTree).title("Dollar Tree"));*/
 
         /* CITY OFFICES */
-        LatLng PublicLib = new LatLng(44.565667, -123.264363);
+        /*LatLng PublicLib = new LatLng(44.565667, -123.264363);
         mMap.addMarker(new MarkerOptions().position(PublicLib).title("Public Libary"));
 
         LatLng CorvallisCityBuilding = new LatLng(44.565799, -123.263111);
@@ -225,10 +242,10 @@ public class ResourceMapActivity extends FragmentActivity implements OnMapReadyC
         mMap.addMarker(new MarkerOptions().position(BentonCountyHealthCenter).title("Benton County Health Center"));
 
         LatLng PostOffice = new LatLng(44.561721, -123.260467);
-        mMap.addMarker(new MarkerOptions().position(PostOffice).title("Post Office"));
+        mMap.addMarker(new MarkerOptions().position(PostOffice).title("Post Office"));*/
 
         /* OSU CAMPUS */
-        LatLng StudentHealthServices = new LatLng(44.567754, -123.278265);
+        /*LatLng StudentHealthServices = new LatLng(44.567754, -123.278265);
         mMap.addMarker(new MarkerOptions().position(StudentHealthServices).title("Student Health Services"));
 
         LatLng ValleyLib = new LatLng(44.565328, -123.276003);
@@ -253,11 +270,79 @@ public class ResourceMapActivity extends FragmentActivity implements OnMapReadyC
         mMap.addMarker(new MarkerOptions().position(CorvallisCommunityRelationOffice).title("Corvallis Community Relation Office"));
 
         LatLng PeavyFields = new LatLng(44.565122, -123.286945);
-        mMap.addMarker(new MarkerOptions().position(PeavyFields).title("Peavy Fields"));
+        mMap.addMarker(new MarkerOptions().position(PeavyFields).title("Peavy Fields"));*/
 
     }
 
     public void newMarker(LatLng latLng, String name) {
         mMap.addMarker(new MarkerOptions().position(latLng).title(name));
+    }
+
+    private void onBackgroundTaskDataObtained(String result) {
+        StringTokenizer stFeed = new StringTokenizer(result, ";");
+        while (stFeed.hasMoreTokens()) {
+            String[] eventTokens = new String[4];
+            String eventJSON = stFeed.nextToken();
+            StringTokenizer stEvent = new StringTokenizer(eventJSON, "\\");
+            for (int i = 0; stEvent.hasMoreTokens(); i++) {
+                eventTokens[i] = stEvent.nextToken();
+            }
+            String resourceName = eventTokens[0];
+            String resourceLatString = eventTokens[1];
+            String resourceLngString = eventTokens[2];
+            String resourceType = eventTokens[3];
+
+            double resourceLat = Double.parseDouble(resourceLatString);
+            double resourceLng = Double.parseDouble(resourceLngString);
+
+            LatLng resourceLatLng = new LatLng(resourceLat, resourceLng);
+
+            mMap.addMarker(new MarkerOptions().position(resourceLatLng).title(resourceName));
+        }
+
+    }
+
+    class ResourceMarkerReceiver extends AsyncTask {
+
+        private Context context;
+        final static String IHC_GET_RESOURCE_MARKERS_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/getresource_markers.php";
+
+        public ResourceMarkerReceiver(Context context) {
+            this.context = context;
+        }
+
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+
+            try {
+                URL url = new URL(IHC_GET_RESOURCE_MARKERS_URL);
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                conn.setRequestMethod("POST");
+                conn.setDoOutput(true);
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                StringBuffer sb = new StringBuffer("");
+                String line = null;
+
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                }
+
+                return sb.toString();
+            } catch (Exception e) { return new String("Exception: " + e.getMessage()); }
+        }
+
+
+        @Override
+        protected void onPostExecute(Object result) {
+            String resultString = (String) result;
+            ResourceMapActivity.this.onBackgroundTaskDataObtained(resultString);
+        }
     }
 }
