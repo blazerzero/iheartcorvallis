@@ -13,13 +13,12 @@
    }
 
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      $result = $mysqli->query("SELECT name, location, dateandtime, description, link1, link2, link3 FROM ihc_events");
+      $result = $mysqli->query("SELECT firstname, lastname, stampcount FROM ihc_users");
       if ($result->num_rows > 0) {
          while ($row = $result->fetch_assoc()) {
-            echo $row["name"] . "\\";
-            echo $row["location"] . "\\";
-            echo $row["dateandtime"] . "\\";
-            echo $row["description"] . "\\";
+            echo $row["firstname"] . "\\";
+            echo $row["lastname"] . "\\";
+            echo $row["stampcount"] . "\\";
             echo ";";
          }
       }

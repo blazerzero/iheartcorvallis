@@ -3,7 +3,9 @@ package edu.oregonstate.studentlife.ihcv2;
 /**
  * Created by Omeed on 12/20/17.
  */
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,17 +19,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.ContentProvider;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.StringTokenizer;
+
 public class LeaderboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     private RecyclerView mLeaderboardRecyclerView;
     private LeaderboardAdapter mLeaderboardAdapter;
 
-    private User[] userList = {
-            new User("Dylan", "Tomlinson","tomlinsd@oregonstate.edu", "3", "15"),
-            new User("Omeed", "Habibelahian", "habibelo@oregonstate.edu", "1","13"),
-            new User("Bradley", "Imai", "imaib@oregonstate.edu", "2","13")
-    };
+    private ArrayList<User> userList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +54,8 @@ public class LeaderboardActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        userList = new ArrayList<User>();
+
         mLeaderboardRecyclerView = (RecyclerView) findViewById(R.id.rv_leaderboard_list);
         mLeaderboardRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mLeaderboardRecyclerView.setHasFixedSize(true);
@@ -54,9 +63,11 @@ public class LeaderboardActivity extends AppCompatActivity
         mLeaderboardAdapter = new LeaderboardAdapter();
         mLeaderboardRecyclerView.setAdapter(mLeaderboardAdapter);
 
-        for (User user : userList) {
+        new StampCountReceiver(this).execute();
+
+        /*for (User user : userList) {
             mLeaderboardAdapter.addUserToLeaderboard(user);
-        }
+        }*/
     }
 
     @Override
@@ -132,5 +143,92 @@ public class LeaderboardActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void onBackgroundTaskDataObtained(String result) {
+        StringTokenizer stFeed = new StringTokenizer(result, ";");
+        while (stFeed.hasMoreTokens()) {
+            String[] eventTokens = new String[3];
+            String eventJSON = stFeed.nextToken();
+            StringTokenizer stEvent = new StringTokenizer(eventJSON, "\\");
+            for (int i = 0; stEvent.hasMoreTokens(); i++) {
+                eventTokens[i] = stEvent.nextToken();
+            }
+            String userFirstName = eventTokens[0];
+            String userLastName = eventTokens[1];
+            String userStampCount = eventTokens[2];
+
+            User retrievedUser = new User(userFirstName, userLastName, " ", " ", userStampCount);
+            userList.add(retrievedUser);
+        }
+        sortLeaderboard();
+
+        for (User user : userList) {
+            mLeaderboardAdapter.addUserToLeaderboard(user);
+        }
+    }
+
+    public void sortLeaderboard() {
+        User holder;
+        int indexLeft = 0;
+        int indexRight = 1;
+        int pointer = 0;
+
+        for (int i = 0; i < userList.size() - 1; i++) {
+            while (indexLeft >= 0 && Integer.parseInt(userList.get(indexLeft).getStampCount()) < Integer.parseInt(userList.get(indexRight).getStampCount())) {
+                holder = userList.get(indexLeft);
+                userList.set(indexLeft, userList.get(indexRight));
+                userList.set(indexRight, holder);
+                indexLeft--;
+                indexRight--;
+            }
+            pointer++;
+            indexLeft = pointer;
+            indexRight = pointer + 1;
+        }
+    }
+
+    class StampCountReceiver extends AsyncTask {
+
+        private Context context;
+        final static String IHC_GET_STAMPCOUNT_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/getusers_stampcount.php";
+
+        public StampCountReceiver(Context context) {
+            this.context = context;
+        }
+
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+
+            try {
+                URL url = new URL(IHC_GET_STAMPCOUNT_URL);
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                conn.setRequestMethod("POST");
+                conn.setDoOutput(true);
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                StringBuffer sb = new StringBuffer("");
+                String line = null;
+
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                }
+
+                return sb.toString();
+            } catch (Exception e) { return new String("Exception: " + e.getMessage()); }
+        }
+
+
+        @Override
+        protected void onPostExecute(Object result) {
+            String resultString = (String) result;
+            LeaderboardActivity.this.onBackgroundTaskDataObtained(resultString);
+        }
     }
 }

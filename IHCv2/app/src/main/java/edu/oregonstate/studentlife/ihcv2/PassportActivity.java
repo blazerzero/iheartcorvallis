@@ -3,7 +3,9 @@ package edu.oregonstate.studentlife.ihcv2;
 /**
  * Created by Omeed on 12/20/17.
  */
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,6 +18,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.StringTokenizer;
+
 public class PassportActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -23,8 +33,8 @@ public class PassportActivity extends AppCompatActivity
     private PassportAdapter mPassportAdapter;
 
     private Event[] completedEventList = {
-            new Event("January", "20", "2018", "5:00PM", "OSU Men's Basketball vs. USC", "Gill Coliseum", ""),
-            new Event("January", "20", "2018", "7:00PM", "Blazers vs. Dallas", "Moda Center", "")
+            new Event("OSU Men's Basketball vs. USC", "Gill Coliseum","5:00 PM", "January", "20", "2018", ""),
+            new Event("Blazers vs. Dallas", "Moda Center", "7:00 PM", "January", "20", "2018", "")
     };
 
     @Override
@@ -135,5 +145,93 @@ public class PassportActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void onBackgroundTaskDataObtained(String result) {
+        StringTokenizer stFeed = new StringTokenizer(result, ";");
+        while (stFeed.hasMoreTokens()) {
+            String[] eventTokens = new String[4];
+            String eventJSON = stFeed.nextToken();
+            StringTokenizer stEvent = new StringTokenizer(eventJSON, "\\");
+            for (int i = 0; stEvent.hasMoreTokens(); i++) {
+                eventTokens[i] = stEvent.nextToken();
+            }
+            String eventName = eventTokens[0];
+            String eventLocation = eventTokens[1];
+            String eventDateAndTime = eventTokens[2];
+            String eventDescription = eventTokens[3];
+
+            StringTokenizer dateTimeTokenizer = new StringTokenizer(eventDateAndTime);
+            String eventYear = dateTimeTokenizer.nextToken("-");
+            String eventMonth = dateTimeTokenizer.nextToken("-");
+            String eventDay = dateTimeTokenizer.nextToken(" ");
+            String eventTime = dateTimeTokenizer.nextToken();
+
+            try {
+                SimpleDateFormat _24HourFormat = new SimpleDateFormat("HH:mm");
+                SimpleDateFormat _12HourFormat = new SimpleDateFormat("hh:mm a");
+                Date _24HourEventTime = _24HourFormat.parse(eventTime);
+                eventTime = _12HourFormat.format(_24HourEventTime).toString();
+                if (eventTime.charAt(0) == '0') {
+                    eventTime = eventTime.substring(1);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            eventDay = eventDay.substring(1);
+            if (eventDay.charAt(0) == '0') {
+                eventDay = eventDay.substring(1);
+            }
+
+            Event retrievedEvent = new Event(eventName, eventLocation, eventTime, eventMonth, eventDay, eventYear, eventDescription);
+
+            mPassportAdapter.addEventToPassport(retrievedEvent);
+        }
+
+    }
+
+    class CompletedEventReceiver extends AsyncTask {
+
+        private Context context;
+        final static String IHC_GET_COMPLETED_EVENTS_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/get_completed_events.php";
+
+        public CompletedEventReceiver(Context context) {
+            this.context = context;
+        }
+
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+
+            try {
+                URL url = new URL(IHC_GET_COMPLETED_EVENTS_URL);
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                conn.setRequestMethod("POST");
+                conn.setDoOutput(true);
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                StringBuffer sb = new StringBuffer("");
+                String line = null;
+
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                }
+
+                return sb.toString();
+            } catch (Exception e) { return new String("Exception: " + e.getMessage()); }
+        }
+
+
+        @Override
+        protected void onPostExecute(Object result) {
+            String resultString = (String) result;
+            PassportActivity.this.onBackgroundTaskDataObtained(resultString);
+        }
     }
 }
