@@ -1,8 +1,104 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.oregonstate.studentlife.ihcv2.ResourceMapActivity" />
+    android:fitsSystemWindows="true">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        tools:context="edu.oregonstate.studentlife.ihcv2.ResourceMapActivity"/>
+
+    <LinearLayout
+        android:id="@+id/gm_map_legend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/gm_legend_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="LEGEND"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center_horizontal"/>
+
+        <TextView
+            android:id="@+id/gm_legend_activities"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:text="@string/gm_legend_activities"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="@color/marker_blue"
+            android:background="@color/colorPrimaryDark"/>
+
+        <TextView
+            android:id="@+id/gm_legend_grocery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:text="@string/gm_legend_grocery"
+            android:textColor="@color/marker_green"
+            android:background="@color/colorPrimaryDark"/>
+
+        <TextView
+            android:id="@+id/gm_legend_restaurants"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:text="@string/gm_legend_restaurants"
+            android:textColor="@color/marker_red"
+            android:background="@color/colorPrimaryDark"/>
+
+        <TextView
+            android:id="@+id/gm_legend_shopping"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:text="@string/gm_legend_shopping"
+            android:textColor="@color/marker_purple"
+            android:background="@color/colorPrimaryDark"/>
+
+        <TextView
+            android:id="@+id/gm_legend_cityoffices"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:text="@string/gm_legend_cityoffices"
+            android:textColor="@color/marker_yellow"
+            android:background="@color/colorPrimaryDark"/>
+
+        <TextView
+            android:id="@+id/gm_legend_osucampus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:text="@string/gm_legend_osucampus"
+            android:textColor="@color/marker_orange"
+            android:background="@color/colorPrimaryDark"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

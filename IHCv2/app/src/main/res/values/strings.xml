@@ -44,25 +44,13 @@
     </string>
     <string name="title_activity_signup_page">Sign Up</string>
     <string name="nonstudent_login_form">http://web.engr.oregonstate.edu/~habibelo/ihc_server/reslogin.php</string>
-    <string name="passport_table_header">Corvallis Passport</string>
-    <string name="passport_stamp1">Stamp 1</string>
-    <string name="passport_stamp2">Stamp 2</string>
-    <string name="passport_stamp3">Stamp 3</string>
-    <string name="passport_stamp4">Stamp 4</string>
-    <string name="passport_stamp5">Stamp 5</string>
-    <string name="passport_stamp6">Stamp 6</string>
-    <string name="passport_stamp7">Stamp 7</string>
-    <string name="passport_stamp8">Stamp 8</string>
 
-    <string name="leaderboard_table_header">Leaderboard</string>
-    <string name="leaderboard_user_header">User</string>
-    <string name="leaderboard_score_header">Score</string>
-    <string name="leaderboard_spot1_name">Dylan Tomlinson</string>
-    <string name="leaderboard_spot1_score">9999</string>
-    <string name="leaderboard_spot2_name">Omeed Habibelahian</string>
-    <string name="leaderboard_spot2_score">9001</string>
-    <string name="leaderboard_spot3_name">Bradley Imai</string>
-    <string name="leaderboard_spot3_score">9001</string>
+    <string name="gm_legend_activities">Activities and Entertainment</string>
+    <string name="gm_legend_grocery">Grocery Stores</string>
+    <string name="gm_legend_restaurants">Restaurants</string>
+    <string name="gm_legend_shopping">Shopping</string>
+    <string name="gm_legend_cityoffices">City Offices</string>
+    <string name="gm_legend_osucampus">OSU Campus</string>
 
 
 </resources>

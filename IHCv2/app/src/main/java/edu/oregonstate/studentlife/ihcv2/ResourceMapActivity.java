@@ -9,6 +9,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -26,7 +28,6 @@ import java.util.Vector;
 public class ResourceMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private ArrayList<ResourceMapMarker> resourceMapMarkers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +40,6 @@ public class ResourceMapActivity extends FragmentActivity implements OnMapReadyC
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        resourceMapMarkers = new ArrayList<ResourceMapMarker>();
-
     }
 
     public void onPause() {
@@ -297,7 +295,42 @@ public class ResourceMapActivity extends FragmentActivity implements OnMapReadyC
 
             LatLng resourceLatLng = new LatLng(resourceLat, resourceLng);
 
-            mMap.addMarker(new MarkerOptions().position(resourceLatLng).title(resourceName));
+            if (resourceType.equals("Activities and Entertainment")) {
+                mMap.addMarker(new MarkerOptions()
+                        .position(resourceLatLng)
+                        .title(resourceName)
+                        .icon(BitmapDescriptorFactory.defaultMarker(210))); // blue
+            }
+            else if (resourceType.equals("Grocery Stores")) {
+                mMap.addMarker(new MarkerOptions()
+                        .position(resourceLatLng)
+                        .title(resourceName)
+                        .icon(BitmapDescriptorFactory.defaultMarker(120))); // green
+            }
+            else if (resourceType.equals("Restaurants")) {
+                mMap.addMarker(new MarkerOptions()
+                        .position(resourceLatLng)
+                        .title(resourceName)
+                        .icon(BitmapDescriptorFactory.defaultMarker(0)));   // red
+            }
+            else if (resourceType.equals("Shopping")) {
+                mMap.addMarker(new MarkerOptions()
+                        .position(resourceLatLng)
+                        .title(resourceName)
+                        .icon(BitmapDescriptorFactory.defaultMarker(270))); // purple
+            }
+            else if (resourceType.equals("City Offices")) {
+                mMap.addMarker(new MarkerOptions()
+                        .position(resourceLatLng)
+                        .title(resourceName)
+                        .icon(BitmapDescriptorFactory.defaultMarker(60)));  // yellow
+            }
+            else if (resourceType.equals("OSU Campus")) {
+                mMap.addMarker(new MarkerOptions()
+                        .position(resourceLatLng)
+                        .title(resourceName)
+                        .icon(BitmapDescriptorFactory.defaultMarker(30)));  // orange
+            }
         }
 
     }
