@@ -36,111 +36,6 @@
         android:background="@color/colorPrimary"
         tools:openDrawer="start">
 
-        <!-- <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                android:background="@color/colorPrimary">
-
-                <TextView
-                    android:id="@+id/progIndicator"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:background="#ffffff"
-                    android:text="AVAILABLE EVENTS"
-                    android:textSize="15dp"
-                    android:textStyle="bold"
-                    android:elevation="4dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textAlignment="center"
-                    android:paddingTop="15dp"
-                    android:paddingBottom="15dp"/>
-
-
-                <Button
-                    android:id="@+id/mapbtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/resourcebtn"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
-                    android:text="Google Map"
-                    android:textSize="20dp"
-                    android:paddingTop="30dp"
-                    android:paddingBottom="30dp"/>
-
-                <Button
-                    android:id="@+id/eventbtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/progIndicator"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
-                    android:text="EVENT 1"
-                    android:textSize="20dp"
-                    android:paddingTop="30dp"
-                    android:paddingBottom="30dp" />
-
-                <Button
-                    android:id="@+id/passportbtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/eventbtn"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
-                    android:text="EVENT 2"
-                    android:textSize="20dp"
-                    android:paddingTop="30dp"
-                    android:paddingBottom="30dp"/>
-
-                <Button
-                    android:id="@+id/leaderbtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/passportbtn"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
-                    android:text="EVENT 2"
-                    android:textSize="20dp"
-                    android:paddingTop="30dp"
-                    android:paddingBottom="30dp"/>
-
-                <Button
-                    android:id="@+id/resourcebtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/leaderbtn"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
-                    android:text="EVENT 3"
-                    android:textSize="20dp"
-                    android:paddingTop="30dp"
-                    android:paddingBottom="30dp"/>
-
-                <Button
-                    android:id="@+id/aboutbtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/resourcebtn"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
-                    android:text="Event 4"
-                    android:textSize="20dp"
-                    android:paddingTop="30dp"
-                    android:paddingBottom="30dp"/>
-
-
-
-            </RelativeLayout>
-
-        </ScrollView>-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -164,21 +59,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/mapbtn"/>
-            <!--<ViewStub
-                android:id="@+id/stub_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:inflatedId="@+id/showlayout"
-                android:layout="@layout/mylistviewevents"/>
-
-            <ViewStub
-                android:id="@+id/stub_grid"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:inflatedId="@+id/showlayout"
-                android:layout="@layout/my_gridview"/>-->
 
         </RelativeLayout>
 

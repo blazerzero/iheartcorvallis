@@ -3,6 +3,8 @@ package edu.oregonstate.studentlife.ihcv2;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -71,8 +73,13 @@ public class EventsActivity extends AppCompatActivity
         mapLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EventsActivity.this, MapsActivity.class);
-                startActivity(intent);
+                if (isNetworkAvailable()) {
+                    Intent intent = new Intent(EventsActivity.this, MapsActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    showNoInternetConnectionMsg();
+                }
             }
         });
 
@@ -94,7 +101,12 @@ public class EventsActivity extends AppCompatActivity
 
         mEventCardRecyclerView.setVisibility(View.GONE);
 
-        new EventReceiver(this).execute();
+        if (isNetworkAvailable()) {
+            new EventReceiver(this).execute();
+        }
+        else {
+            showNoInternetConnectionMsg();
+        }
 
     }
 
@@ -331,8 +343,13 @@ public class EventsActivity extends AppCompatActivity
 
             Event retrievedEvent = new Event(eventName, eventLocation, eventTime, eventMonth, eventDay, eventYear, eventDescription);
 
-            mEventListAdapter.addEvent(retrievedEvent);
-            mEventCardAdapter.addEvent(retrievedEvent);
+            if (isNetworkAvailable()) {
+                mEventListAdapter.addEvent(retrievedEvent);
+                mEventCardAdapter.addEvent(retrievedEvent);
+            }
+            else {
+                showNoInternetConnectionMsg();
+            }
         }
 
     }
@@ -379,5 +396,31 @@ public class EventsActivity extends AppCompatActivity
             String resultString = (String) result;
             EventsActivity.this.onBackgroundTaskDataObtained(resultString);
         }
+    }
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+    }
+
+    public void showNoInternetConnectionMsg() {
+        android.app.AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new android.app.AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        }
+        else {
+            builder = new android.app.AlertDialog.Builder(this);
+        }
+        builder.setTitle("No Internet Connection");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Close alert. User can try action again.
+            }
+        });
+        builder.setMessage(getResources().getString(R.string.no_internet_connection_msg));
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+        builder.show();
     }
 }

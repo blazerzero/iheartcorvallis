@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -232,11 +234,16 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            View view = this.getCurrentFocus();
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            showProgress(true);
-            new NonStudentAuthProcess(this).execute(email, password);
+            if (isNetworkAvailable()) {
+                View view = this.getCurrentFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                showProgress(true);
+                new NonStudentAuthProcess(this).execute(email, password);
+            }
+            else {
+                showNoInternetConnectionMsg();
+            }
         }
     }
 
@@ -436,6 +443,32 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
             String resultString = (String) result;
             NonStudentLoginActivity.this.onBackgroundTaskDataObtained(resultString);
         }
+    }
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+    }
+
+    public void showNoInternetConnectionMsg() {
+        android.app.AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new android.app.AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        }
+        else {
+            builder = new android.app.AlertDialog.Builder(this);
+        }
+        builder.setTitle("No Internet Connection");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Close alert. User can try action again.
+            }
+        });
+        builder.setMessage(getResources().getString(R.string.no_internet_connection_msg));
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+        builder.show();
     }
 
 }
