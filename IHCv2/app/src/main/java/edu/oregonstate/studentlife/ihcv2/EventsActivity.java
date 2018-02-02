@@ -28,11 +28,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -307,7 +310,7 @@ public class EventsActivity extends AppCompatActivity
     private void onBackgroundTaskDataObtained(String result) {
         StringTokenizer stFeed = new StringTokenizer(result, ";");
         while (stFeed.hasMoreTokens()) {
-            String[] eventTokens = new String[4];
+            String[] eventTokens = new String[5];
             String eventJSON = stFeed.nextToken();
             StringTokenizer stEvent = new StringTokenizer(eventJSON, "\\");
             for (int i = 0; stEvent.hasMoreTokens(); i++) {
@@ -317,6 +320,12 @@ public class EventsActivity extends AppCompatActivity
             String eventLocation = eventTokens[1];
             String eventDateAndTime = eventTokens[2];
             String eventDescription = eventTokens[3];
+            /*InputStream eventImage = null;
+            try {
+                eventImage = new ByteArrayInputStream(eventTokens[4].getBytes(StandardCharsets.UTF_8.name()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }*/
 
             StringTokenizer dateTimeTokenizer = new StringTokenizer(eventDateAndTime);
             String eventYear = dateTimeTokenizer.nextToken("-");

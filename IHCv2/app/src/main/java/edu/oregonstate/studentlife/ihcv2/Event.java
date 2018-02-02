@@ -2,6 +2,8 @@ package edu.oregonstate.studentlife.ihcv2;
 
 import android.support.v7.app.AppCompatActivity;
 
+import java.io.InputStream;
+
 /**
  * Created by Omeed on 1/18/18.
  */
@@ -15,6 +17,7 @@ public class Event extends AppCompatActivity {
     private String day;
     private String year;
     private String description;
+    //private InputStream image;
 
     public Event(String name, String location, String time, String month, String day, String year, String description) {
         this.name = name;
@@ -24,6 +27,7 @@ public class Event extends AppCompatActivity {
         this.day = day;
         this.year = year;
         this.description = description;
+        //this.image = image;
     }
 
     public String getName() {
@@ -81,4 +85,12 @@ public class Event extends AppCompatActivity {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    /*public InputStream getImage() {
+        return image;
+    }
+
+    public void setImage(InputStream image) {
+        this.image = image;
+    }*/
 }

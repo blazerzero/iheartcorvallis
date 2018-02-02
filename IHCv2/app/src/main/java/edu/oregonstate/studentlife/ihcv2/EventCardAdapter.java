@@ -1,5 +1,6 @@
 package edu.oregonstate.studentlife.ihcv2;
 
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +52,9 @@ public class EventCardAdapter extends RecyclerView.Adapter<EventCardAdapter.Even
 
         void bind(Event event) {
             int monthInt = Integer.parseInt(event.getMonth()) - 1;
+            /*if (event.getImage() != null) {
+                mEventImageView.setImageBitmap(BitmapFactory.decodeStream(event.getImage()));
+            }*/
             mEventNameTextView.setText(event.getName());
             mEventDateTimeTextView.setText(monthLongNames[monthInt] + " " + event.getDay() + ", "
                     + event.getYear() + " @ " + event.getTime());

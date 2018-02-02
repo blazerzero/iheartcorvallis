@@ -61,10 +61,22 @@
             Name of Location: <input class="inputbox" type="text" name="location"><br><br>
          </div>
          <div class="elem">
+            Street Address: <input class="inputbox" type="text" name="streetaddress">
+         </div>
+         <div class="elem">
+            City: <input class="inputbox" type="text" name="city">
+         </div>
+         <div class="elem">
+            State: <input class="inputbox" type="text" name="state">
+         </div>
+         <div class="elem">
+            ZIP: <input class="inputbox" type="text" name="zip"><br><br>
+         </div>
+         <div class="elem">
             Date: <input class="inputbox" type="date" name="date"><br><br>
          </div>
          <div class="elem">
-            Date: <input class="inputbox" type="time" name="time"><br><br>
+            Time: <input class="inputbox" type="time" name="time"><br><br>
          </div>
          <div class="elem">
             Description of Event: <input class="inputbox" type="text" name="description"><br><br>

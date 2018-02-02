@@ -16,7 +16,7 @@
       echo "Connection succesful!<br>";
    }
 
-   $name = $location = $date = $time = $dateandtime = $description = $image = $link1 = $link2 = $link3 = $pin = $row = "";
+   $name = $location = $date = $time = $dateandtime = $description = $image = $link1 = $link2 = $link3 = $pin = $addressFields = $addressData = $latLng = $row = "";
 
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $name = $_POST["name"];
@@ -29,6 +29,16 @@
       $link2 = $_POST["link2"];
       $link3 = $_POST["link3"];
       $pin = $_POST["pin"];
+
+      $addressFields = array(
+         $_POST["streetaddress"],
+         $_POST["city"],
+         $_POST["state"],
+         $_POST["zip"]
+      );
+
+      $addressData = implode(', ', array_filter($addressFields));
+      // MAKE GEOCODING FUNCTION and set $latLng to the return value of this function
 
       $dateandtime = $date . " " . $time . ":00";
 
