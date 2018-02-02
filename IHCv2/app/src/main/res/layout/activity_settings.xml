@@ -49,6 +49,16 @@
                 android:background="@color/colorPrimary">
 
                 <!-- CONTENT GOES HERE -->
+                <Button
+                    android:id="@+id/logoutbtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:text="Logout"
+                    android:textSize="20sp"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="30dp"/>
 
             </RelativeLayout>
 
