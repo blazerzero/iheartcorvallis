@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin');
+
+/* Website Page Settings */
+/*.sitepage {
+  background-image: url('mthood.png');
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.9;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}*/
+
+.siteheader {
+   background-color: black;
+   padding-left: 2vw;
+}
+
+.sitenametop {
+   font-size: 4vw;
+   color: #dc4005;
+}
+
+.sitenamebottom {
+   font-size: 2vw;
+   color: white;
+}
+
+.homeinfo {
+  font-size: 1.5vw;
+  padding-left: 3vw;
+  padding-right: 3vw;
+}
+
+/* Quick Navigation Buttons */
+.quicknav {
+  position: fixed;
+  bottom: .5vw;
+  right: .5vw;
+}
+
+/* Navigation Bar Stylings */
+.navbar {
+   list-style-type: none;
+   margin-top: 0.5vw;
+   margin-bottom: 0.5vw;
+   overflow: hidden;
+   background-color: #333;
+}
+
+.mainbody { padding: 2vw }
+.dropdown.icon.white { color: white }
+.sectionheader { font-size: 2vw }
+.elem { font-size: 1.5vw }
+.inputbox { width: 30vw }
+#input-box { width: 30vw }
+
+ul li {
+    float: left;
+    margin: 0.5vw;
+    color: white;
+    font-size: 1.5vw;
+}
+
+ul li a {
+    display: block;
+    color: #e5e5e5;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+ul a {
+    display: block;
+    color: #e5e5e5;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+ul li a:hover {
+    background-color: #778899;
+}
+/* End of navigation bar stylings */
