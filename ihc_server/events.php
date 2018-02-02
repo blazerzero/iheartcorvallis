@@ -51,7 +51,7 @@
    </ul>
 
    <div class="mainbody">
-      <left class="sectionheader">Add an Event</left>
+      <left class="sectionheader"><strong>Add an Event</strong></left>
       <br><br>
       <form action="client.php" method="post">
          <div class="elem">
