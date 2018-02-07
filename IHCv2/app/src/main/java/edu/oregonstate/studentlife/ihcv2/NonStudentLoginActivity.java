@@ -62,6 +62,7 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class NonStudentLoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
+    SessionActivity session;
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -94,7 +95,10 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
+        session = new SessionActivity(getApplicationContext());
+
         overridePendingTransition(0,0);
+
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -105,6 +109,7 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+
                     attemptLogin();
                     return true;
                 }
@@ -248,9 +253,12 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
     }
 
     private void onBackgroundTaskDataObtained(String result) {
-        if (result.equals("LOGINSUCCESS")) {
+        if (result.contains("LOGINSUCCESS")) {
             try {
                 Thread.sleep(3000);
+                //tokenize through result string to get name, email, etc.
+                //session.createLoginSession("Omeed Habibilian","")
+                session.createLoginSession("Dylan Tomlinson", "tomlinsd@oregonstate.edu");
                 Intent intent = new Intent(NonStudentLoginActivity.this, DashboardActivity.class);
                 startActivity(intent);
             } catch (Exception e) {

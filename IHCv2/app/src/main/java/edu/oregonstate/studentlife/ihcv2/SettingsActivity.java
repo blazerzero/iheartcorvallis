@@ -11,19 +11,26 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.content.Intent;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import java.sql.*;
+import java.util.HashMap;
+
 /**
  * Created by Omeed on 12/20/17.
  */
 
 public class SettingsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    SessionActivity session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,12 +46,15 @@ public class SettingsActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        session = new SessionActivity(getApplicationContext());
+
         Button button1 = (Button)findViewById(R.id.logoutbtn);
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SettingsActivity.this, Splash.class);
-                startActivity(intent);
+                session.logoutUser();
+                //Intent intent = new Intent(SettingsActivity.this, Splash.class);
+                //startActivity(intent);
             }
         });
 
@@ -93,6 +103,19 @@ public class SettingsActivity extends AppCompatActivity
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.action_settings);
         item.setVisible(false);
+
+        session = new SessionActivity(getApplicationContext());
+
+        HashMap<String, String> user = session.getUserDetails();
+
+        String name = user.get(SessionActivity.KEY_NAME);
+        String email = user.get(SessionActivity.KEY_EMAIL);
+
+
+        TextView sesName = (TextView) findViewById(R.id.sesName);
+        TextView sesEmail = (TextView) findViewById(R.id.sesEmail);
+        sesName.setText(name);
+        sesEmail.setText(email);
         return super.onPrepareOptionsMenu(menu);
     }
 
