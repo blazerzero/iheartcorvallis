@@ -54,6 +54,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
+import java.util.StringTokenizer;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -260,7 +261,14 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
                 Thread.sleep(3000);
                 //tokenize through result string to get name, email, etc.
                 //session.createLoginSession("Omeed Habibilian","")
-                session.createLoginSession("Dylan Tomlinson", "tomlinsd@oregonstate.edu");
+                StringTokenizer st = new StringTokenizer(result);
+
+                String first = st.nextToken("\\");
+                first = st.nextToken("\\");
+                String last = st.nextToken("\\");
+                String name = first + " " + last;
+                String email = st.nextToken("\\");
+                session.createLoginSession( name , email);
                 Intent intent = new Intent(NonStudentLoginActivity.this, DashboardActivity.class);
                 startActivity(intent);
             } catch (Exception e) {
