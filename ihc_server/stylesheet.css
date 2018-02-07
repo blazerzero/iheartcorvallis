@@ -52,7 +52,12 @@
 
 .mainbody { padding: 2vw }
 .dropdown.icon.white { color: white }
-.sectionheader { font-size: 2vw }
+.sectionheader { font-size: 3vw }
+.requirednote {
+   font-size: 2vw;
+   color: red;
+   font-style: bold;
+}
 .elem { font-size: 1.5vw }
 .inputbox { width: 30vw }
 #input-box { width: 30vw }

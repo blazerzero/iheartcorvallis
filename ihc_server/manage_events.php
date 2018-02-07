@@ -51,8 +51,7 @@ while ($event = $result->fetch_assoc()) {
    </ul>
 
    <div class="mainbody">
-      <left class="sectionheader"><strong>Manage Events</strong></left>
-      <br><br>
+      <left class="sectionheader"><h1>Manage Events</h1></left>
       <table class="ui celled padded table">
          <thead>
             <tr>

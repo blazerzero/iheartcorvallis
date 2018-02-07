@@ -10,6 +10,34 @@
          $("#pin_holder").val((Math.floor((Math.random() * 9000) + 1000)).toString());
       });
    });
+
+   function validateForm() {
+      var nameField = document.forms["eventForm"]["name"].value;
+      var locationField = document.forms["eventForm"]["location"].value;
+      var streetAdressField = document.forms["eventForm"]["streetaddress"].value;
+      var cityField = document.forms["eventForm"]["city"].value;
+      var stateField = document.forms["eventForm"]["state"].value;
+      var zipField = document.forms["eventForm"]["zip"].value;
+      var dateField = document.forms["eventForm"]["date"].value;
+      var timeField = document.forms["eventForm"]["time"].value;
+      var descriptionField = document.forms["eventForm"]["description"].value;
+      var imageField = document.forms["eventForm"]["image"].value;
+      if (nameField == null || nameField == "" ||
+         locationField == null || locationField == "" ||
+         streetAddressField == null || streetAddressField == "" ||
+         cityField == null || cityField == "" ||
+         stateField == null || stateField == "" ||
+         zipField == null || zipField == "" ||
+         dateField == null || dateField == "" ||
+         timeField == null || timeField == "" ||
+         descriptionField == null || descriptionField == "") {
+            alert("Please fill all required fields before submitting!");
+            return false;
+      }
+      else {
+         return true;
+      }
+   }
    </script>
 </head>
 <body>
@@ -49,38 +77,40 @@
    </ul>
 
    <div class="mainbody">
-      <left class="sectionheader"><strong>Add an Event</strong></left>
-      <br><br>
-      <form action="client.php" method="post">
+      <left class="sectionheader"><h1>Add an Event</h1></left>
+      <br>
+      <strong class="requirednote">* Denotes a required field</strong><br><br>
+
+      <form name="eventForm" onsubmit="return validateForm()" action="add_events_server.php" method="post">
          <div class="elem">
-            Name of Event: <input class="inputbox" type="text" name="name"><br><br>
+            *Name of Event: <input class="inputbox" type="text" name="name"><br><br>
          </div>
          <div class="elem">
-            Name of Location: <input class="inputbox" type="text" name="location"><br><br>
+            *Name of Location: <input class="inputbox" type="text" name="location"><br><br>
          </div>
          <div class="elem">
-            Street Address: <input class="inputbox" type="text" name="streetaddress">
+            *Street Address: <input class="inputbox" type="text" name="streetaddress"><br>
          </div>
          <div class="elem">
-            City: <input class="inputbox" type="text" name="city">
+            *City: <input class="inputbox" type="text" name="city"><br>
          </div>
          <div class="elem">
-            State: <input class="inputbox" type="text" name="state">
+            *State: <input class="inputbox" type="text" name="state"><br>
          </div>
          <div class="elem">
-            ZIP: <input class="inputbox" type="text" name="zip"><br><br>
+            *ZIP: <input class="inputbox" type="text" name="zip"><br><br>
          </div>
          <div class="elem">
-            Date: <input class="inputbox" type="date" name="date"><br><br>
+            *Date: <input class="inputbox" type="date" name="date"><br><br>
          </div>
          <div class="elem">
-            Time: <input class="inputbox" type="time" name="time"><br><br>
+            *Time: <input class="inputbox" type="time" name="time"><br><br>
          </div>
          <div class="elem">
-            Description of Event: <input class="inputbox" type="text" name="description"><br><br>
+            *Description of Event: <input class="inputbox" type="text" name="description"><br><br>
          </div>
          <div class="elem">
-            Cover Image: <input class="ui button" type="file" name="image"><br><br>
+            *Cover Image: <input class="ui button" type="file" name="image"><br><br>
          </div>
          <div class="elem">
             Link 1: <input class="inputbox" type="text" name="link1"><br><br>
