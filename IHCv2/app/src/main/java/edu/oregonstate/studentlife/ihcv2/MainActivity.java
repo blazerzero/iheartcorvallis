@@ -14,10 +14,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 
 public class MainActivity extends AppCompatActivity {
 
-
+    SessionActivity session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
         spinner.setVisibility(View.VISIBLE);*/
         /*Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);*/
+
+        // session information is retrieved and displayed on nav menu
+        session = new SessionActivity(getApplicationContext());
+        session.checkLogin();  // check this
 
         ImageView iv = (ImageView) findViewById(R.id.iv_ihc);
         TextView tv = (TextView) findViewById(R.id.tv_main_title);

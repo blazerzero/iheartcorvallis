@@ -205,14 +205,11 @@ public class DashboardActivity extends AppCompatActivity
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.action_settings);
         item.setVisible(false);
+        // session information is retrieved and displayed on nav menu
         session = new SessionActivity(getApplicationContext());
-
         HashMap<String, String> user = session.getUserDetails();
-
         String name = user.get(SessionActivity.KEY_NAME);
         String email = user.get(SessionActivity.KEY_EMAIL);
-
-
         TextView sesName = (TextView) findViewById(R.id.sesName);
         TextView sesEmail = (TextView) findViewById(R.id.sesEmail);
         sesName.setText(name);

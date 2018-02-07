@@ -56,7 +56,7 @@ public class SessionActivity {
     public void checkLogin(){
 
         if(!this.isLoggedIn()){
-            // user not logged in redirect to mainActivity
+            // user not logged in redirect to dashboard
             Intent i = new Intent(_context, MainActivity.class);
 
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -104,6 +104,7 @@ public class SessionActivity {
 
     //Quick check for login
     public boolean isLoggedIn() {
+
         return pref.getBoolean(IS_LOGIN, false);
     }
 

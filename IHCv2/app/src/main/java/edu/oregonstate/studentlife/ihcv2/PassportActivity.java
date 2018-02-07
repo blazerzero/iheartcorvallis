@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -27,6 +28,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
 public class PassportActivity extends AppCompatActivity
@@ -39,6 +41,7 @@ public class PassportActivity extends AppCompatActivity
             new Event("OSU Men's Basketball vs. USC", "Gill Coliseum","5:00 PM", "January", "20", "2018", ""),
             new Event("Blazers vs. Dallas", "Moda Center", "7:00 PM", "January", "20", "2018", "")
     };
+    SessionActivity session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +114,17 @@ public class PassportActivity extends AppCompatActivity
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.action_settings);
         item.setVisible(false);
+
+        // session information is retrieved and displayed on nav menu
+        session = new SessionActivity(getApplicationContext());
+        HashMap<String, String> user = session.getUserDetails();
+        String name = user.get(SessionActivity.KEY_NAME);
+        String email = user.get(SessionActivity.KEY_EMAIL);
+        TextView sesName = (TextView) findViewById(R.id.sesName);
+        TextView sesEmail = (TextView) findViewById(R.id.sesEmail);
+        sesName.setText(name);
+        sesEmail.setText(email);
+
         return super.onPrepareOptionsMenu(menu);
     }
 

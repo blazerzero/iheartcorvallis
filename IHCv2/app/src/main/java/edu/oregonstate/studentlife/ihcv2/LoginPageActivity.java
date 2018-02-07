@@ -13,6 +13,9 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.TextView;
+
+import java.util.HashMap;
 
 /**
  * Created by Omeed on 12/20/17.
@@ -20,12 +23,19 @@ import android.widget.Button;
 
 public class LoginPageActivity extends AppCompatActivity {
 
+    SessionActivity session;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loginpage);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
+        // session information is retrieved and displayed on nav menu
+        session = new SessionActivity(getApplicationContext());
+
+
 
         /*myToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
         myToolbar.setNavigationOnClickListener(new View.OnClickListener() {

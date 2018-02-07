@@ -95,7 +95,9 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
+
         session = new SessionActivity(getApplicationContext());
+
 
         overridePendingTransition(0,0);
 

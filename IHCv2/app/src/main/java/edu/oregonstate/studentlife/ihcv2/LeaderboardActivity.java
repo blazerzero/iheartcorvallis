@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.ContentProvider;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -26,6 +27,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
 public class LeaderboardActivity extends AppCompatActivity
@@ -35,6 +37,7 @@ public class LeaderboardActivity extends AppCompatActivity
     private LeaderboardAdapter mLeaderboardAdapter;
 
     private ArrayList<User> userList;
+    SessionActivity session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +109,16 @@ public class LeaderboardActivity extends AppCompatActivity
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.action_settings);
         item.setVisible(false);
+
+        // session information is retrieved and displayed on nav menu
+        session = new SessionActivity(getApplicationContext());
+        HashMap<String, String> user = session.getUserDetails();
+        String name = user.get(SessionActivity.KEY_NAME);
+        String email = user.get(SessionActivity.KEY_EMAIL);
+        TextView sesName = (TextView) findViewById(R.id.sesName);
+        TextView sesEmail = (TextView) findViewById(R.id.sesEmail);
+        sesName.setText(name);
+        sesEmail.setText(email);
         return super.onPrepareOptionsMenu(menu);
     }
 

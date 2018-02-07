@@ -25,6 +25,7 @@ import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -40,6 +41,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
 /**
@@ -53,6 +55,8 @@ public class EventsActivity extends AppCompatActivity
     private RecyclerView mEventCardRecyclerView;
     private EventListAdapter mEventListAdapter;
     private EventCardAdapter mEventCardAdapter;
+
+    SessionActivity session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -268,6 +272,16 @@ public class EventsActivity extends AppCompatActivity
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.action_settings);
         item.setTitle(R.string.action_switch_view);
+
+        // session information is retrieved and displayed on nav menu
+        session = new SessionActivity(getApplicationContext());
+        HashMap<String, String> user = session.getUserDetails();
+        String name = user.get(SessionActivity.KEY_NAME);
+        String email = user.get(SessionActivity.KEY_EMAIL);
+        TextView sesName = (TextView) findViewById(R.id.sesName);
+        TextView sesEmail = (TextView) findViewById(R.id.sesEmail);
+        sesName.setText(name);
+        sesEmail.setText(email);
         return super.onPrepareOptionsMenu(menu);
     }
 

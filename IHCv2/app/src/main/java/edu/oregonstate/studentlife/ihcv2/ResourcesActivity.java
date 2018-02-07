@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.sql.*;
+import java.util.HashMap;
 
 /**
  * Created by Omeed on 12/20/17.
@@ -30,6 +31,8 @@ import java.sql.*;
 
 public class ResourcesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    SessionActivity session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +109,17 @@ public class ResourcesActivity extends AppCompatActivity
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.action_settings);
         item.setVisible(false);
+
+        // session information is retrieved and displayed on nav menu
+        session = new SessionActivity(getApplicationContext());
+        HashMap<String, String> user = session.getUserDetails();
+        String name = user.get(SessionActivity.KEY_NAME);
+        String email = user.get(SessionActivity.KEY_EMAIL);
+        TextView sesName = (TextView) findViewById(R.id.sesName);
+        TextView sesEmail = (TextView) findViewById(R.id.sesEmail);
+        sesName.setText(name);
+        sesEmail.setText(email);
+
         return super.onPrepareOptionsMenu(menu);
     }
 
