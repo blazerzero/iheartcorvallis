@@ -246,7 +246,6 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
                 View view = this.getCurrentFocus();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                showProgress(true);
                 new NonStudentAuthProcess(this).execute(email, password);
             }
             else {
@@ -421,6 +420,7 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
         }
 
         protected void onPreExecute() {
+            showProgress(true);
         }
 
         @Override

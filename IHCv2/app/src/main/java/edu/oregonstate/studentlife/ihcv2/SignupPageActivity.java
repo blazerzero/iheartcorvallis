@@ -264,7 +264,6 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
                 View view = this.getCurrentFocus();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                showProgress(true);
                 new SignupAuthProcess(this).execute(firstname, lastname, email, password);
             }
             else {
@@ -453,6 +452,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
         }
 
         protected void onPreExecute() {
+            showProgress(true);
         }
 
         @Override
