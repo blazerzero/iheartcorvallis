@@ -28,24 +28,22 @@
          <a class="text">Events</a>
          <div class="menu">
             <div class="item">Add an Event</div>
-            <div class="item">Modify an Event</div>
-            <div class="item">Delete an Event</div>
+            <div class="item">Manage Events</div>
          </div>
       </div>
       <div class="ui pointing dropdown link item">
          <a class="text">Resources</a>
          <div class="menu">
-            <div class="item">Edit Primary Resources</div>
-            <div class="item">Edit Resource Map</div>
+            <div class="item">Manage Primary Resources</div>
+            <div class="item">Manage Resource Map</div>
          </div>
       </div>
       <div class="ui pointing dropdown link item">
          <a class="text">Prizes</a>
          <div class="menu">
             <div class="item">Add a Prize</div>
-            <div class="item">Modify a Prize</div>
-            <div class="item">Delete a Prize</div>
-            <div class="item">Modify Prize Thresholds</div>
+            <div class="item">Manage Prizes</div>
+            <div class="item">Manage Prize Thresholds</div>
          </div>
       </div>
    </ul>

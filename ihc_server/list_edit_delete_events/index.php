@@ -1,6 +1,6 @@
 <?php
 require 'db.php';
-$sql = 'SELECT eventid, name, location FROM ihc_events ';
+$sql = 'SELECT eventid, name, location FROM ihc_events';
 $statement = $connection->prepare($sql);
 $statement->execute();
 $ihc_events = $statement->fetch(PDO::FETCH_OBJ);
