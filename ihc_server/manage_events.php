@@ -13,7 +13,21 @@ while ($event = $result->fetch_assoc()) {
       <title>Manage Events - I Heart Corvallis Administrative Suite</title>
       <link type="text/css" rel="stylesheet" href="./css/Semantic-UI-CSS-master/semantic.css"/>
       <link type="text/css" rel="stylesheet" href="./css/stylesheet.css"/>
+      <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+      <script>
+      $(document).ready(function() {
+         $("#events_dropdown").hover(function() {
+            $("#events_dropdown").dropdown();
+         });
+         $("#resources_dropdown").hover(function() {
+            $("#resources_dropdown").dropdown();
+         });
+         $("#prizes_dropdown").hover(function() {
+            $("#prizes_dropdown").dropdown();
+         });
+      });
+      </script>
    </head>
    <body>
       <div class="siteheader">
@@ -25,28 +39,27 @@ while ($event = $result->fetch_assoc()) {
       </div>
       <ul class="navbar">
          <div class="ui pointing dropdown link item">
-            <a class="text">Home</a>
+            <a href="./index.html" class="text">Home</a>
          </div>
-         <div class="ui pointing dropdown link item">
+         <div class="ui pointing dropdown link item" id="events_dropdown">
             <a class="text">Events</a>
             <div class="menu">
-               <div class="item">Add an Event</div>
-               <div class="item">Manage Events</div>
+               <a href="./add_event.php" class="item">Add an Event</a>
+               <a href="./manage_events.php" class="item">Manage Events</a>
             </div>
          </div>
-         <div class="ui pointing dropdown link item">
+         <div class="ui pointing dropdown link item" id="resources_dropdown">
             <a class="text">Resources</a>
             <div class="menu">
-               <div class="item">Manage Primary Resources</div>
-               <div class="item">Manage Resource Map</div>
+               <a class="item">Manage Primary Resources</a>
+               <a class="item">Manage Resource Map</a>
             </div>
          </div>
-         <div class="ui pointing dropdown link item">
+         <div class="ui pointing dropdown link item" id="prizes_dropdown">
             <a class="text">Prizes</a>
             <div class="menu">
-               <div class="item">Add a Prize</div>
-               <div class="item">Manage a Prize</div>
-               <div class="item">Manage Prize Thresholds</div>
+               <a class="item">Add a Prize</a>
+               <a class="item">Manage Prizes</a>
             </div>
          </div>
       </ul>
