@@ -36,9 +36,9 @@
 
 /* Quick Navigation Buttons */
 .quicknav {
-  position: fixed;
+  /*position: fixed;
   bottom: .5vw;
-  right: .5vw;
+  right: .5vw;*/
 }
 
 /* Navigation Bar Stylings */
@@ -52,11 +52,13 @@
 
 .mainbody { padding: 2vw }
 .dropdown.icon.white { color: white }
-.sectionheader { font-size: 3vw }
-.requirednote {
+.sectionheader {
    font-size: 2vw;
-   color: red;
    font-style: bold;
+}
+.requirednote {
+   font-size: 1.75vw;
+   color: red;
 }
 .elem { font-size: 1.5vw }
 .inputbox { width: 30vw }
