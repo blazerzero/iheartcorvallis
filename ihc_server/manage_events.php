@@ -1,5 +1,5 @@
 <?php
-require 'db.php';
+require './admin_server/db.php';
 $sql = 'SELECT name, location, dateandtime FROM ihc_events';
 $result = $mysqli->query("SELECT name, location, dateandtime FROM ihc_events");
 $ihc_events = array();
@@ -69,7 +69,7 @@ while ($event = $result->fetch_assoc()) {
                   <td><?php echo $event['dateandtime']; ?></td>
                   <td>
                      <a href="edit_event.php?id=<?php echo $event['eventid'] ?>" class="ui blue button">Edit</a>
-                     <a onclick="return confirm('Are you sure you want to delete this entry?')" href="../admin_server/delete.php?id=<?php echo $event['eventid'] ?>" class='ui red button'>Delete</a>
+                     <a onclick="return confirm('Are you sure you want to delete this entry?')" href="./admin_server/delete.php?id=<?php echo $event['eventid'] ?>" class='ui red button'>Delete</a>
                   </td>
                </tr>
             <?php endforeach; ?>
