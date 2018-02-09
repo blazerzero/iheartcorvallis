@@ -204,7 +204,7 @@ public class LeaderboardActivity extends AppCompatActivity
     class StampCountReceiver extends AsyncTask {
 
         private Context context;
-        final static String IHC_GET_STAMPCOUNT_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/getusers_stampcount.php";
+        final static String IHC_GET_STAMPCOUNT_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/getusers_stampcount.php";
 
         public StampCountReceiver(Context context) {
             this.context = context;

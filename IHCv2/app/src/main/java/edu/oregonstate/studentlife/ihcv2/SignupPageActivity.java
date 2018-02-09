@@ -445,7 +445,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
         private String lastname;
         private String email;
         private String password;
-        final static String IHC_SIGNUP_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/signup.php";
+        final static String IHC_SIGNUP_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/signup.php";
 
         public SignupAuthProcess(Context context) {
             this.context = context;

@@ -338,7 +338,7 @@ public class ResourceMapActivity extends FragmentActivity implements OnMapReadyC
     class ResourceMarkerReceiver extends AsyncTask {
 
         private Context context;
-        final static String IHC_GET_RESOURCE_MARKERS_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/getresource_markers.php";
+        final static String IHC_GET_RESOURCE_MARKERS_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/getresource_markers.php";
 
         public ResourceMarkerReceiver(Context context) {
             this.context = context;

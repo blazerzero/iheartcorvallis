@@ -380,7 +380,7 @@ public class EventsActivity extends AppCompatActivity
     class EventReceiver extends AsyncTask {
 
         private Context context;
-        final static String IHC_GET_EVENTS_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/getevents.php";
+        final static String IHC_GET_EVENTS_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/getevents.php";
 
         public EventReceiver(Context context) {
             this.context = context;

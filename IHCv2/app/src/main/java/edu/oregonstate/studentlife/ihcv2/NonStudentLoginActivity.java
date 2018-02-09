@@ -68,7 +68,7 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-    final static String IHC_LOGIN_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/non_student_login.php";
+    final static String IHC_LOGIN_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/non_student_login.php";
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -413,7 +413,7 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
         private Context context;
         private String email;
         private String password;
-        final static String IHC_NS_LOGIN_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/non_student_login.php";
+        final static String IHC_NS_LOGIN_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/non_student_login.php";
 
         public NonStudentAuthProcess(Context context) {
             this.context = context;

@@ -217,7 +217,7 @@ public class PassportActivity extends AppCompatActivity
     class CompletedEventReceiver extends AsyncTask {
 
         private Context context;
-        final static String IHC_GET_COMPLETED_EVENTS_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/get_completed_events.php";
+        final static String IHC_GET_COMPLETED_EVENTS_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/get_completed_events.php";
 
         public CompletedEventReceiver(Context context) {
             this.context = context;
