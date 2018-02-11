@@ -17,16 +17,13 @@ import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.content.ContentProvider;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
@@ -36,7 +33,7 @@ public class LeaderboardActivity extends AppCompatActivity
     private RecyclerView mLeaderboardRecyclerView;
     private LeaderboardAdapter mLeaderboardAdapter;
 
-    private ArrayList<User> userList;
+    private ArrayList<User.LeaderboardUser> leaderboardUserList;
     SessionActivity session;
 
     @Override
@@ -57,7 +54,7 @@ public class LeaderboardActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        userList = new ArrayList<User>();
+        leaderboardUserList = new ArrayList<User.LeaderboardUser>();
 
         mLeaderboardRecyclerView = (RecyclerView) findViewById(R.id.rv_leaderboard_list);
         mLeaderboardRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -68,7 +65,7 @@ public class LeaderboardActivity extends AppCompatActivity
 
         new StampCountReceiver(this).execute();
 
-        /*for (User user : userList) {
+        /*for (User user : leaderboardUserList) {
             mLeaderboardAdapter.addUserToLeaderboard(user);
         }*/
     }
@@ -171,27 +168,27 @@ public class LeaderboardActivity extends AppCompatActivity
             String userLastName = eventTokens[1];
             String userStampCount = eventTokens[2];
 
-            User retrievedUser = new User(userFirstName, userLastName, " ", " ", userStampCount);
-            userList.add(retrievedUser);
+            User.LeaderboardUser retrievedUser = new User.LeaderboardUser(userFirstName, userLastName, userStampCount);
+            leaderboardUserList.add(retrievedUser);
         }
         sortLeaderboard();
 
-        for (User user : userList) {
-            mLeaderboardAdapter.addUserToLeaderboard(user);
+        for (User.LeaderboardUser leaderboardUser : leaderboardUserList) {
+            mLeaderboardAdapter.addUserToLeaderboard(leaderboardUser);
         }
     }
 
     public void sortLeaderboard() {
-        User holder;
+        User.LeaderboardUser holder;
         int indexLeft = 0;
         int indexRight = 1;
         int pointer = 0;
 
-        for (int i = 0; i < userList.size() - 1; i++) {
-            while (indexLeft >= 0 && Integer.parseInt(userList.get(indexLeft).getStampCount()) < Integer.parseInt(userList.get(indexRight).getStampCount())) {
-                holder = userList.get(indexLeft);
-                userList.set(indexLeft, userList.get(indexRight));
-                userList.set(indexRight, holder);
+        for (int i = 0; i < leaderboardUserList.size() - 1; i++) {
+            while (indexLeft >= 0 && Integer.parseInt(leaderboardUserList.get(indexLeft).getStampCount()) < Integer.parseInt(leaderboardUserList.get(indexRight).getStampCount())) {
+                holder = leaderboardUserList.get(indexLeft);
+                leaderboardUserList.set(indexLeft, leaderboardUserList.get(indexRight));
+                leaderboardUserList.set(indexRight, holder);
                 indexLeft--;
                 indexRight--;
             }

@@ -279,7 +279,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
                 Intent intent = new Intent(SignupPageActivity.this, DashboardActivity.class);
                 startActivity(intent);
             } catch (Exception e) {
-                Toast.makeText(this, "Exception" + e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Exception: " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
         else {

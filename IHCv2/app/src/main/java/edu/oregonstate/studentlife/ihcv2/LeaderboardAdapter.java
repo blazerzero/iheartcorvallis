@@ -13,20 +13,20 @@ import java.util.ArrayList;
  */
 
 public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.LeaderboardViewHolder> {
-    private ArrayList<User> mUserAccounts;
+    private ArrayList<User.LeaderboardUser> mLeaderboardUserAccounts;
 
     public LeaderboardAdapter() {
-        mUserAccounts = new ArrayList<User>();
+        mLeaderboardUserAccounts = new ArrayList<User.LeaderboardUser>();
     }
 
-    public void addUserToLeaderboard(User user) {
-        mUserAccounts.add(user);
+    public void addUserToLeaderboard(User.LeaderboardUser leaderboardUser) {
+        mLeaderboardUserAccounts.add(leaderboardUser);
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return mUserAccounts.size();
+        return mLeaderboardUserAccounts.size();
     }
 
     class LeaderboardViewHolder extends RecyclerView.ViewHolder {
@@ -43,11 +43,11 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
             mStampCountTextView = (TextView) itemView.findViewById(R.id.tv_user_stamp_count);
         }
 
-        void bind(User user) {
+        void bind(User.LeaderboardUser leaderboardUser) {
             // set to grab username?
-            mUserNameTextView.setText(user.getFirstName() + " " + user.getLastName());
+            mUserNameTextView.setText(leaderboardUser.getFirstName() + " " + leaderboardUser.getLastName());
             // set way to grab number of stamps
-            mStampCountTextView.setText(user.getStampCount());
+            mStampCountTextView.setText(leaderboardUser.getStampCount());
 
         }
 
@@ -63,7 +63,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
 
     @Override
     public void onBindViewHolder(LeaderboardViewHolder holder, int position) {
-        User user = mUserAccounts.get(position);
-        holder.bind(user);
+        User.LeaderboardUser leaderboardUser = mLeaderboardUserAccounts.get(position);
+        holder.bind(leaderboardUser);
     }
 }

@@ -41,6 +41,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.client.HttpClient;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -69,6 +70,7 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
      */
     private static final int REQUEST_READ_CONTACTS = 0;
     final static String IHC_LOGIN_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/non_student_login.php";
+    public static final String EXTRA_USER = "User";
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -257,21 +259,20 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
     private void onBackgroundTaskDataObtained(String result) {
         if (result.contains("LOGINSUCCESS")) {
             try {
-                Thread.sleep(3000);
-                //tokenize through result string to get name, email, etc.
-                //session.createLoginSession("Omeed Habibilian","")
                 StringTokenizer st = new StringTokenizer(result);
+                String returnMsg = st.nextToken("\\");
 
-                String first = st.nextToken("\\");
-                first = st.nextToken("\\");
-                String last = st.nextToken("\\");
+                String userInfo = st.nextToken("\\");
+                JSONObject userJSON = new JSONObject(userInfo);
+                String first = userJSON.getString("firstname");
+                String last = userJSON.getString("lastname");
                 String name = first + " " + last;
-                String email = st.nextToken("\\");
+                String email = userJSON.getString("email");
                 session.createLoginSession( name , email);
                 Intent intent = new Intent(NonStudentLoginActivity.this, DashboardActivity.class);
                 startActivity(intent);
             } catch (Exception e) {
-                Toast.makeText(this, "Exception" + e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Exception: " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
         else {

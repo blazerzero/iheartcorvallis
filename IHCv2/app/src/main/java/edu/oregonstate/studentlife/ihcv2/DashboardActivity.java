@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,14 +26,28 @@ import android.content.ContentProvider;
 import android.database.sqlite.*;
 import android.support.v7.app.AlertDialog;
 import android.content.DialogInterface;
+import android.widget.Toast;
 
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.StringTokenizer;
 
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private User currentUser;
+    private int numStamps;
+    public TextView progIndicator;
+    public static final String EXTRA_USER = "User";
 
     SessionActivity session;
     @Override
@@ -40,10 +56,6 @@ public class DashboardActivity extends AppCompatActivity
         setContentView(R.layout.activity_dashboard);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
-
-
-
-
 
         overridePendingTransition(0,0);
 
@@ -56,15 +68,19 @@ public class DashboardActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        session = new SessionActivity(getApplicationContext());
+        HashMap<String, String> user = session.getUserDetails();
+        String email = user.get(SessionActivity.KEY_EMAIL);
 
-        TextView progIndicator = (TextView)findViewById(R.id.progIndicator);
-        int numStamps = 11;
-        progIndicator = initProgIndicator(numStamps, progIndicator);
+        new UserInfoReceiver(this).execute(email);
+
+        progIndicator = (TextView)findViewById(R.id.progIndicator);
 
         progIndicator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, PrizesActivity.class);
+                intent.putExtra(DashboardActivity.EXTRA_USER, currentUser);
                 startActivity(intent);
             }
         });
@@ -74,6 +90,7 @@ public class DashboardActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, EventsActivity.class);
+                intent.putExtra(DashboardActivity.EXTRA_USER, currentUser);
                 startActivity(intent);
             }
         });
@@ -84,6 +101,7 @@ public class DashboardActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, PassportActivity.class);
+                intent.putExtra(DashboardActivity.EXTRA_USER, currentUser);
                 startActivity(intent);
             }
         });
@@ -93,6 +111,7 @@ public class DashboardActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, LeaderboardActivity.class);
+                intent.putExtra(DashboardActivity.EXTRA_USER, currentUser);
                 startActivity(intent);
             }
         });
@@ -102,6 +121,7 @@ public class DashboardActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, ResourcesActivity.class);
+                intent.putExtra(DashboardActivity.EXTRA_USER, currentUser);
                 startActivity(intent);
             }
         });
@@ -111,6 +131,7 @@ public class DashboardActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, AboutUsActivity.class);
+                intent.putExtra(DashboardActivity.EXTRA_USER, currentUser);
                 startActivity(intent);
             }
         });
@@ -206,7 +227,7 @@ public class DashboardActivity extends AppCompatActivity
         MenuItem item = menu.findItem(R.id.action_settings);
         item.setVisible(false);
         // session information is retrieved and displayed on nav menu
-        session = new SessionActivity(getApplicationContext());
+        //session = new SessionActivity(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
         String name = user.get(SessionActivity.KEY_NAME);
         String email = user.get(SessionActivity.KEY_EMAIL);
@@ -249,10 +270,97 @@ public class DashboardActivity extends AppCompatActivity
             startActivity(intent);
         }
 
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void onBackgroundTaskDataObtained(String result) {
+        if (result != null) {
+            try {
+                JSONObject userJSON = new JSONObject(result);
+                String firstname = userJSON.getString("firstname");
+                String lastname = userJSON.getString("lastname");
+                String name = firstname + " " + lastname;
+                String email = userJSON.getString("email");
+                String id = userJSON.getString("id");
+                String stampcount = userJSON.getString("stampcount");
+                currentUser = new User(firstname, lastname, email, id, stampcount);
+                numStamps = Integer.parseInt(stampcount);
+                progIndicator = initProgIndicator(numStamps, progIndicator);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            android.app.AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new android.app.AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            }
+            else {
+                builder = new android.app.AlertDialog.Builder(this);
+            }
+            builder.setTitle("Error");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Close alert dialog
+                }
+            });
+            builder.setMessage("Error retrieving user info.");
+            builder.setIcon(android.R.drawable.ic_dialog_alert);
+            builder.show();
+        }
+
+    }
+
+    class UserInfoReceiver extends AsyncTask {
+
+        private Context context;
+        private String email;
+        final static String IHC_GETUSERINFO_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/getuserinfo.php";
+
+        public UserInfoReceiver(Context context) {
+            this.context = context;
+        }
+
+        protected void onPreExecute() {}
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            email = (String) objects[0];
+
+            try {
+                URL url = new URL(IHC_GETUSERINFO_URL);
+                String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                conn.setRequestMethod("POST");
+                conn.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                wr.write( data );
+                wr.flush();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                StringBuffer sb = new StringBuffer("");
+                String line = null;
+
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                    break;
+                }
+
+                return sb.toString();
+            } catch (Exception e) { return new String("Exception: " + e.getMessage()); }
+        }
+
+
+        @Override
+        protected void onPostExecute(Object result) {
+            String resultString = (String) result;
+            DashboardActivity.this.onBackgroundTaskDataObtained(resultString);
+        }
     }
 }

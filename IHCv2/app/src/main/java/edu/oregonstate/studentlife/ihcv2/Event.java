@@ -3,12 +3,13 @@ package edu.oregonstate.studentlife.ihcv2;
 import android.support.v7.app.AppCompatActivity;
 
 import java.io.InputStream;
+import java.io.Serializable;
 
 /**
  * Created by Omeed on 1/18/18.
  */
 
-public class Event extends AppCompatActivity {
+public class Event extends AppCompatActivity implements Serializable {
 
     private String name;
     private String location;

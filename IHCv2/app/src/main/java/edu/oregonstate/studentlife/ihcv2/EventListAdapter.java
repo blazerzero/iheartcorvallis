@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,9 +16,11 @@ import java.util.ArrayList;
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventListViewHolder> {
 
    private ArrayList<Event> mEventList;
+   private OnEventClickListener mOnEventClickListener;
 
-   public EventListAdapter() {
+   public EventListAdapter(OnEventClickListener onEventClickListener) {
        mEventList = new ArrayList<Event>();
+       mOnEventClickListener = onEventClickListener;
    }
 
    public void addEvent(Event event) {
@@ -28,6 +31,10 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
    @Override
    public int getItemCount() {
        return mEventList.size();
+   }
+
+   public interface OnEventClickListener {
+       void onEventClick(Event event);
    }
 
    @Override
@@ -46,27 +53,36 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
    class EventListViewHolder extends RecyclerView.ViewHolder {
 
-       private TextView mEventMonthTextView;
-       private TextView mEventDayTextView;
-       private TextView mEventNameTextView;
-       private TextView mEventLocationTextView;
+       private LinearLayout mEventListingLL;
+       private TextView mEventMonthTV;
+       private TextView mEventDayTV;
+       private TextView mEventNameTV;
+       private TextView mEventLocationTV;
 
        private String[] monthShortNames = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
 
        public EventListViewHolder(View itemView) {
            super(itemView);
-           mEventMonthTextView = (TextView) itemView.findViewById(R.id.tv_event_month);
-           mEventDayTextView = (TextView) itemView.findViewById(R.id.tv_event_day);
-           mEventNameTextView = (TextView) itemView.findViewById(R.id.tv_event_name);
-           mEventLocationTextView = (TextView) itemView.findViewById(R.id.tv_event_location);
+           mEventListingLL = (LinearLayout) itemView.findViewById(R.id.ll_event_listing);
+           mEventMonthTV = (TextView) itemView.findViewById(R.id.tv_event_month);
+           mEventDayTV = (TextView) itemView.findViewById(R.id.tv_event_day);
+           mEventNameTV = (TextView) itemView.findViewById(R.id.tv_event_name);
+           mEventLocationTV = (TextView) itemView.findViewById(R.id.tv_event_location);
+
+           mEventListingLL.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   mOnEventClickListener.onEventClick(mEventList.get(getAdapterPosition()));
+               }
+           });
        }
 
        void bind(Event event) {
            int monthInt = Integer.parseInt(event.getMonth()) - 1;
-           mEventMonthTextView.setText(monthShortNames[monthInt]);
-           mEventDayTextView.setText(event.getDay());
-           mEventNameTextView.setText(event.getName());
-           mEventLocationTextView.setText(event.getLocation());
+           mEventMonthTV.setText(monthShortNames[monthInt]);
+           mEventDayTV.setText(event.getDay());
+           mEventNameTV.setText(event.getName());
+           mEventLocationTV.setText(event.getLocation());
        }
 
    }

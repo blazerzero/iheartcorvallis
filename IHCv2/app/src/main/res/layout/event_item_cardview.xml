@@ -64,12 +64,12 @@
                 android:lines="1"/>
 
             <TextView
-                android:id="@+id/tv_event_learnmore"
+                android:id="@+id/tv_event_cv_learn_more"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/event_elem_height"
                 android:layout_below="@+id/tv_event_location"
                 android:paddingLeft="10dp"
-                android:text="LEARN MORE"
+                android:text="@string/event_learn_more"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/holo_blue_dark"

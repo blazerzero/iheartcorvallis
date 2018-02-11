@@ -28,16 +28,13 @@
          }
       }
       if ($isAuth == True) {
-         $result = $mysqli->query("SELECT firstname, lastname, email, id FROM ihc_users WHERE email='$email' AND password='$password'");
+         $result = $mysqli->query("SELECT firstname, lastname, email, id, stampcount FROM ihc_users WHERE email='$email' AND password='$password'");
 
          if ($result->num_rows == 1) {
             while ($row = $result->fetch_assoc()) {
+               $data = json_encode($row);
                echo "LOGINSUCCESS\\";
-               echo $row["firstname"] . "\\";
-               echo $row["lastname"] . "\\";
-               echo $row["email"] . "\\";
-               echo $row["id"] . "\\";
-               echo ";";
+               echo $data;
             }
          }
          else if ($result->num_rows == 0) {

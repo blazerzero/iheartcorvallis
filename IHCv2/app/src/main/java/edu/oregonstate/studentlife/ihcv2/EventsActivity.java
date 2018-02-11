@@ -49,7 +49,7 @@ import java.util.StringTokenizer;
  */
 
 public class EventsActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, EventListAdapter.OnEventClickListener, EventCardAdapter.OnEventClickListener {
 
     private RecyclerView mEventListRecyclerView;
     private RecyclerView mEventCardRecyclerView;
@@ -57,6 +57,8 @@ public class EventsActivity extends AppCompatActivity
     private EventCardAdapter mEventCardAdapter;
 
     SessionActivity session;
+
+    public static final String EXTRA_EVENT = "Event";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,14 +96,14 @@ public class EventsActivity extends AppCompatActivity
         mEventListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mEventListRecyclerView.setHasFixedSize(true);
 
-        mEventListAdapter = new EventListAdapter();
+        mEventListAdapter = new EventListAdapter(this);
         mEventListRecyclerView.setAdapter(mEventListAdapter);
 
         mEventCardRecyclerView = (RecyclerView) findViewById(R.id.rv_event_card);
         mEventCardRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mEventCardRecyclerView.setHasFixedSize(true);
 
-        mEventCardAdapter = new EventCardAdapter();
+        mEventCardAdapter = new EventCardAdapter(this);
         mEventCardRecyclerView.setAdapter(mEventCardAdapter);
 
         //eventList = mergeSortEventList(eventList);
@@ -115,6 +117,13 @@ public class EventsActivity extends AppCompatActivity
             showNoInternetConnectionMsg();
         }
 
+    }
+
+    @Override
+    public void onEventClick(Event event) {
+        Intent eventDetailActivityIntent = new Intent(this, EventDetailActivity.class);
+        eventDetailActivityIntent.putExtra(EXTRA_EVENT, event);
+        startActivity(eventDetailActivityIntent);
     }
 
     public void onPause() {

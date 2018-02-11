@@ -1,6 +1,6 @@
 package edu.oregonstate.studentlife.ihcv2;
 
-import android.graphics.BitmapFactory;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +17,10 @@ import java.util.ArrayList;
 public class EventCardAdapter extends RecyclerView.Adapter<EventCardAdapter.EventCardViewHolder> {
 
     private ArrayList<Event> mEventList;
+    private OnEventClickListener mOnEventClickListener;
 
-    public EventCardAdapter() {
+    public EventCardAdapter(OnEventClickListener onEventClickListener) {
+        mOnEventClickListener = onEventClickListener;
         mEventList = new ArrayList<Event>();
     }
 
@@ -32,33 +34,45 @@ public class EventCardAdapter extends RecyclerView.Adapter<EventCardAdapter.Even
         return mEventList.size();
     }
 
+    public interface OnEventClickListener {
+        void onEventClick(Event event);
+    }
+
     class EventCardViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView mEventImageView;
-        private TextView mEventNameTextView;
-        private TextView mEventDateTimeTextView;
-        private TextView mEventLocationTextView;
+        private ImageView mEventImageIV;
+        private TextView mEventNameTV;
+        private TextView mEventDateTimeTV;
+        private TextView mEventLocationTV;
+        private TextView mEventLearnMoreTV;
 
         private String[] monthLongNames = {"January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December"};
 
         public EventCardViewHolder(View itemView) {
             super(itemView);
-            mEventImageView = (ImageView) itemView.findViewById(R.id.cv_event_imageview);
-            mEventNameTextView = (TextView) itemView.findViewById(R.id.tv_event_name);
-            mEventDateTimeTextView = (TextView) itemView.findViewById(R.id.tv_event_cv_datetime);
-            mEventLocationTextView = (TextView) itemView.findViewById(R.id.tv_event_location);
+            mEventImageIV = (ImageView) itemView.findViewById(R.id.cv_event_imageview);
+            mEventNameTV = (TextView) itemView.findViewById(R.id.tv_event_name);
+            mEventDateTimeTV = (TextView) itemView.findViewById(R.id.tv_event_cv_datetime);
+            mEventLocationTV = (TextView) itemView.findViewById(R.id.tv_event_location);
+            mEventLearnMoreTV = (TextView) itemView.findViewById(R.id.tv_event_cv_learn_more);
+            mEventLearnMoreTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnEventClickListener.onEventClick(mEventList.get(getAdapterPosition()));
+                }
+            });
         }
 
         void bind(Event event) {
             int monthInt = Integer.parseInt(event.getMonth()) - 1;
             /*if (event.getImage() != null) {
-                mEventImageView.setImageBitmap(BitmapFactory.decodeStream(event.getImage()));
+                mEventImageIV.setImageBitmap(BitmapFactory.decodeStream(event.getImage()));
             }*/
-            mEventNameTextView.setText(event.getName());
-            mEventDateTimeTextView.setText(monthLongNames[monthInt] + " " + event.getDay() + ", "
+            mEventNameTV.setText(event.getName());
+            mEventDateTimeTV.setText(monthLongNames[monthInt] + " " + event.getDay() + ", "
                     + event.getYear() + " @ " + event.getTime());
-            mEventLocationTextView.setText(event.getLocation());
+            mEventLocationTV.setText(event.getLocation());
         }
 
     }
