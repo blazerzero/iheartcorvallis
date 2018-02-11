@@ -19,6 +19,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -156,25 +158,25 @@ public class LeaderboardActivity extends AppCompatActivity
     }
 
     private void onBackgroundTaskDataObtained(String result) {
-        StringTokenizer stFeed = new StringTokenizer(result, ";");
-        while (stFeed.hasMoreTokens()) {
-            String[] eventTokens = new String[3];
-            String eventJSON = stFeed.nextToken();
-            StringTokenizer stEvent = new StringTokenizer(eventJSON, "\\");
-            for (int i = 0; stEvent.hasMoreTokens(); i++) {
-                eventTokens[i] = stEvent.nextToken();
+        try {
+            StringTokenizer stUser = new StringTokenizer(result, "\\");
+            while (stUser.hasMoreTokens()) {
+                String leaderboardUserString = stUser.nextToken();
+                JSONObject leaderboardUserJSON = new JSONObject(leaderboardUserString);
+                String userFirstName = leaderboardUserJSON.getString("firstname");
+                String userLastName = leaderboardUserJSON.getString("lastname");
+                String userStampCount = leaderboardUserJSON.getString("stampcount");
+
+                User.LeaderboardUser retrievedUser = new User.LeaderboardUser(userFirstName, userLastName, userStampCount);
+                leaderboardUserList.add(retrievedUser);
             }
-            String userFirstName = eventTokens[0];
-            String userLastName = eventTokens[1];
-            String userStampCount = eventTokens[2];
+            sortLeaderboard();
 
-            User.LeaderboardUser retrievedUser = new User.LeaderboardUser(userFirstName, userLastName, userStampCount);
-            leaderboardUserList.add(retrievedUser);
-        }
-        sortLeaderboard();
-
-        for (User.LeaderboardUser leaderboardUser : leaderboardUserList) {
-            mLeaderboardAdapter.addUserToLeaderboard(leaderboardUser);
+            for (User.LeaderboardUser leaderboardUser : leaderboardUserList) {
+                mLeaderboardAdapter.addUserToLeaderboard(leaderboardUser);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

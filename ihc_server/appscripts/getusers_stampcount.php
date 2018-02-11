@@ -16,10 +16,9 @@
       $result = $mysqli->query("SELECT firstname, lastname, stampcount FROM ihc_users");
       if ($result->num_rows > 0) {
          while ($row = $result->fetch_assoc()) {
-            echo $row["firstname"] . "\\";
-            echo $row["lastname"] . "\\";
-            echo $row["stampcount"] . "\\";
-            echo ";";
+            $data = json_encode($row);
+            echo $data;
+            echo "\\";
          }
       }
    }

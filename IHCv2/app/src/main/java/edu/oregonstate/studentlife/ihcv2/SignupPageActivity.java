@@ -275,7 +275,6 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
     private void onBackgroundTaskDataObtained(String result) {
         if (result.equals("SIGNUPSUCCESS")) {
             try {
-                Thread.sleep(3000);
                 Intent intent = new Intent(SignupPageActivity.this, DashboardActivity.class);
                 startActivity(intent);
             } catch (Exception e) {

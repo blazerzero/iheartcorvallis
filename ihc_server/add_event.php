@@ -90,7 +90,7 @@
          <left class="sectionheader">Add an Event</left>
          <br>
          <br><p class="requirednote">* Denotes a required field</p><br>
-         <form name="eventForm" onsubmit="return validateForm()" action="../admin_server/add_events_server.php" method="post">
+         <form name="eventForm" onsubmit="return validateForm()" action="./admin_server/add_events_server.php" method="post">
             <div class="elem">
                <span class="requirednote">*</span>Name of Event: <input class="inputbox" type="text" name="name"><br><br>
             </div>
@@ -98,9 +98,9 @@
                <span class="requirednote">*</span>Name of Location: <input class="inputbox" type="text" name="location"><br><br>
             </div>
             <div class="elem">
-               <span class="requirednote">*</span>Street Address: <input class="inputbox" type="text" name="streetaddress"><br>
+               <span class="requirednote">*</span>Full Address: <input class="inputbox" type="text" name="fulladdress"><br>
             </div>
-            <div class="elem">
+            <!--<div class="elem">
                <span class="requirednote">*</span>City: <input class="inputbox" type="text" name="city"><br>
             </div>
             <div class="elem">
@@ -108,7 +108,7 @@
             </div>
             <div class="elem">
                <span class="requirednote">*</span>ZIP: <input class="inputbox" type="text" name="zip"><br><br>
-            </div>
+            </div>-->
             <div class="elem">
                <span class="requirednote">*</span>Date: <input class="inputbox" type="date" name="date"><br><br>
             </div>

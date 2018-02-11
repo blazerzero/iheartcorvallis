@@ -16,11 +16,12 @@
       echo "Connection succesful!<br>";
    }
 
-   $name = $location = $date = $time = $dateandtime = $description = $image = $link1 = $link2 = $link3 = $pin = $addressFields = $fullAddress = $addressData = $prepAddress = $latLng = $row = "";
+   $name = $location = $date = $time = $dateandtime = $description = $image = $link1 = $link2 = $link3 = $pin = $fullAddress = $addressData = $prepAddress = $latLng = $row = "";
 
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $name = $_POST["name"];
       $location = $_POST["location"];
+      $fullAddress = $_POST["fulladdress"];
       $date = $_POST["date"];
       $time = $_POST["time"];
       $description = $_POST["description"];
@@ -30,17 +31,9 @@
       $link3 = $_POST["link3"];
       $pin = $_POST["pin"];
 
-      $addressFields = array(
-         $_POST["streetaddress"],
-         $_POST["city"],
-         $_POST["state"],
-         $_POST["zip"]
-      );
-
-      $fullAddress = implode(', ', array_filter($addressFields));
-      $addressData = implode(' ', array_filter($addressFields));
+      $addressData = implode(' ', array_filter($fullAddress));
       $prepAddress = str_replace(' ', '+', $addressData);
-      $geocode = file_get_contents('https://maps.google.com.maps/api/geocode/json?address='.$prepAddr.'&sensor=false&key=AIzaSyBYbpLA_XmLpBF31OVt91u1K3z2pAVyvrM');
+      $geocode = file_get_contents('https://maps.google.com.maps/api/geocode/json?address='.$prepAddress.'&sensor=false&key=AIzaSyBYbpLA_XmLpBF31OVt91u1K3z2pAVyvrM');
       $output = json_decode($geocode);
       $latitude = $output->results[0]->geometry->location->lat;
       $longitude = $output->results[0]->geometry->location->lng;
@@ -50,7 +43,7 @@
 
       echo "Event name entered: " . $name . "<br>";
       echo "Location entered: " . $location . "<br>";
-      echo "Address entered: " . $addressData . "<br>";
+      echo "Address entered: " . $fullAddress . "<br>";
       echo "Latitude: " . $latitude . "<br>";
       echo "Longitude: " . $longitude . "<br>";
       echo "date and time entered: " . $dateandtime . "<br>";
@@ -61,17 +54,38 @@
       echo "link3 entered: " . $link3 . "<br>";
       echo "Pin entered: " . $pin . "<br>";
 
-      # ADD ACCOUNT IF IT DOESN'T ALREADY EXIST
-      if ($alreadyExists == False) {
-         $result = $mysqli->query("INSERT INTO ihc_events (name, location, address, latitude, longitude, dateandtime, description, image, link1, link2, link3, pin) VALUES ('$name', '$location', '$fullAddress', '$latitude', '$longitude',  '$dateandtime', '$description', '$image', '$link1', '$link2', '$link3', '$pin')");
+      $result = $mysqli->query("INSERT INTO ihc_events (name, location, address, latitude, longitude, dateandtime, description, image, link1, link2, link3, pin) VALUES ('$name', '$location', '$fullAddress', '$latitude', '$longitude',  '$dateandtime', '$description', '$image', '$link1', '$link2', '$link3', '$pin')");
 
-         if ($result == True) {
-            echo "Events are Added!"; # account successfully added to database
-         }
-         else {
-            echo "Adding Error"; # error adding account to database
-         }
+      if ($result == True) {
+         echo "Events are Added!"; # account successfully added to database
+      }
+      else {
+         echo "Adding Error"; # error adding account to database
       }
    }
    mysqli_close($con);
+
+   /*function geocode($address) {
+      $address = urlencode($address);
+      $url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address={$address}";
+      $resp_json = file_get_contents($url);
+      $resp = json_decode($resp_json, true);
+      if ($resp['status'] = "OK") {
+         $lat = $resp['results'][0]['geometry']['location']['lat'];
+         $lng = $resp['results'][0]['geometry']['location']['lng'];
+         $formatted_address = $resp['results'][0]['formatted_address'];
+
+         if ($lat && $lng && $formatted_address) {
+            $data_arr = array();
+            array_push($data_arr, $lat, $lng, $formatted_address);
+            return $data_arr;
+         }
+         else {
+            return false;
+         }
+      }
+      else {
+         return false;
+      }
+   }*/
 ?>
