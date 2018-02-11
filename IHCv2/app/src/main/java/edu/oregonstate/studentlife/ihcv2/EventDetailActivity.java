@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -30,6 +31,8 @@ public class EventDetailActivity extends AppCompatActivity {
 
     private String[] monthLongNames = {"January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"};
+
+    public static final String EXTRA_EVENT_DETAILED = "Detailed Event";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +77,7 @@ public class EventDetailActivity extends AppCompatActivity {
         mEventCheckInTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // GO TO PAGE CHECKING GEOLOCATION AND ASKING FOR PIN
+                // go to check user geolocation and ask for event verification PIN
             }
         });
     }
@@ -85,11 +88,21 @@ public class EventDetailActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.event_detail, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.action_map:
+                Intent mapIntent = new Intent(EventDetailActivity.this, MapsActivity.class);
+                mapIntent.putExtra(EXTRA_EVENT_DETAILED, event);
+                startActivity(mapIntent);
             default:
                 return super.onOptionsItemSelected(item);
         }

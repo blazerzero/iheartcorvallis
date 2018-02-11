@@ -1,7 +1,11 @@
 package edu.oregonstate.studentlife.ihcv2;
 
+import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -10,9 +14,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private ArrayList<Event> eventList;
+    private Event singleEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +34,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        eventList = new ArrayList<Event>();
+        Intent intent = getIntent();
+        if (intent != null) {
+            if (intent.hasExtra(EventDetailActivity.EXTRA_EVENT_DETAILED)) {
+                singleEvent = (Event) intent.getSerializableExtra(EventDetailActivity.EXTRA_EVENT_DETAILED);
+                eventList.add(singleEvent);
+            }
+        }
     }
 
 
@@ -45,5 +63,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Set the camera over Corvallis
         LatLng Corvallis = new LatLng(44.564663, -123.263282);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(Corvallis));
+
+        Geocoder coder = new Geocoder(this);
+        List<Address> address;
+        LatLng eventLatLng = null;
+
+        for (int i = 0; i < eventList.size(); i++) {
+            try {
+                address = coder.getFromLocationName(eventList.get(i).getAddress(), 5);
+                if (address == null || address.size() == 0) {
+                    Toast.makeText(this, "Error reading event address.", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Address location = address.get(0);
+                    eventLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    mMap.addMarker(new MarkerOptions()
+                            .position(eventLatLng)
+                            .title(eventList.get(i).getName()));
+                    if (eventList.size() == 1) {
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(eventLatLng));
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+
+        }
     }
 }
