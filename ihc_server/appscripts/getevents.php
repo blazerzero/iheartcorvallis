@@ -13,15 +13,21 @@
    }
 
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      $result = $mysqli->query("SELECT name, location, address, latitude, longitude, dateandtime, description, image, link1, link2, link3 FROM ihc_events");
+      $result = $mysqli->query("SELECT name, location, address, latitude, longitude, dateandtime, description, link1, link2, link3 FROM ihc_events");
       if ($result->num_rows > 0) {
          while ($row = $result->fetch_assoc()) {
-            echo $row["name"] . "\\";
-            echo $row["location"] . "\\";
-            echo $row["dateandtime"] . "\\";
-            echo $row["description"] . "\\";
-            //echo $row["image"] . "\\";
-            echo ";";
+            if (strpos($row['link1'], '/') === true) {
+               $row['link1'] = "";
+            }
+            if (strpos($row['link2'], '/') === true) {
+               $row['link1'] = "";
+            }
+            if (strpos($row['link3'], '/') === true) {
+               $row['link1'] = "";
+            }
+            $data = json_encode($row);
+            echo $data;
+            echo "\\";
          }
       }
    }

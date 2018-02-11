@@ -40,12 +40,6 @@ public class EventDetailActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();*/
-
         overridePendingTransition(0,0);
 
         mEventImageIV = (ImageView) findViewById(R.id.iv_event_image_detail);
@@ -66,6 +60,9 @@ public class EventDetailActivity extends AppCompatActivity {
             mEventDateTimeTV.setText(monthLongNames[monthInt] + " " + event.getDay() + ", "
                     + event.getYear() + " @ " + event.getTime());
             mEventDescriptionTV.setText(event.getDescription());
+            mEventLink1TV.setText(event.getLink1());
+            mEventLink2TV.setText(event.getLink2());
+            mEventLink3TV.setText(event.getLink3());
         }
     }
 

@@ -28,6 +28,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -42,6 +46,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 
 /**
@@ -331,32 +336,29 @@ public class EventsActivity extends AppCompatActivity
     }
 
     private void onBackgroundTaskDataObtained(String result) {
-        StringTokenizer stFeed = new StringTokenizer(result, ";");
-        while (stFeed.hasMoreTokens()) {
-            String[] eventTokens = new String[5];
-            String eventJSON = stFeed.nextToken();
-            StringTokenizer stEvent = new StringTokenizer(eventJSON, "\\");
-            for (int i = 0; stEvent.hasMoreTokens(); i++) {
-                eventTokens[i] = stEvent.nextToken();
-            }
-            String eventName = eventTokens[0];
-            String eventLocation = eventTokens[1];
-            String eventDateAndTime = eventTokens[2];
-            String eventDescription = eventTokens[3];
-            /*InputStream eventImage = null;
-            try {
-                eventImage = new ByteArrayInputStream(eventTokens[4].getBytes(StandardCharsets.UTF_8.name()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*/
 
-            StringTokenizer dateTimeTokenizer = new StringTokenizer(eventDateAndTime);
-            String eventYear = dateTimeTokenizer.nextToken("-");
-            String eventMonth = dateTimeTokenizer.nextToken("-");
-            String eventDay = dateTimeTokenizer.nextToken(" ");
-            String eventTime = dateTimeTokenizer.nextToken();
+        try {
+            StringTokenizer stEvents = new StringTokenizer(result, "\\");
+            while (stEvents.hasMoreTokens()) {
+                String eventInfoString = stEvents.nextToken();
+                JSONObject eventJSON = new JSONObject(eventInfoString);
+                String eventName = eventJSON.getString("name");
+                String eventLocation = eventJSON.getString("location");
+                String eventAddress = eventJSON.getString("address");
+                double eventLatitude = Double.parseDouble(eventJSON.getString("latitude"));
+                double eventLongitude = Double.parseDouble(eventJSON.getString("longitude"));
+                String eventDateAndTime = eventJSON.getString("dateandtime");
+                String eventDescription = eventJSON.getString("description");
+                String eventLink1 = eventJSON.getString("link1");
+                String eventLink2 = eventJSON.getString("link2");
+                String eventLink3 = eventJSON.getString("link3");
 
-            try {
+                StringTokenizer dateTimeTokenizer = new StringTokenizer(eventDateAndTime);
+                String eventYear = dateTimeTokenizer.nextToken("-");
+                String eventMonth = dateTimeTokenizer.nextToken("-");
+                String eventDay = dateTimeTokenizer.nextToken(" ");
+                String eventTime = dateTimeTokenizer.nextToken();
+
                 SimpleDateFormat _24HourFormat = new SimpleDateFormat("HH:mm");
                 SimpleDateFormat _12HourFormat = new SimpleDateFormat("hh:mm a");
                 Date _24HourEventTime = _24HourFormat.parse(eventTime);
@@ -364,24 +366,27 @@ public class EventsActivity extends AppCompatActivity
                 if (eventTime.charAt(0) == '0') {
                     eventTime = eventTime.substring(1);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
-            eventDay = eventDay.substring(1);
-            if (eventDay.charAt(0) == '0') {
                 eventDay = eventDay.substring(1);
-            }
+                if (eventDay.charAt(0) == '0') {
+                    eventDay = eventDay.substring(1);
+                }
 
-            Event retrievedEvent = new Event(eventName, eventLocation, eventTime, eventMonth, eventDay, eventYear, eventDescription);
+                Event retrievedEvent = new Event(eventName, eventLocation, eventAddress,
+                        eventLatitude, eventLongitude, eventTime, eventMonth, eventDay, eventYear,
+                        eventDescription, eventLink1, eventLink2, eventLink3);
 
-            if (isNetworkAvailable()) {
-                mEventListAdapter.addEvent(retrievedEvent);
-                mEventCardAdapter.addEvent(retrievedEvent);
+                if (isNetworkAvailable()) {
+                    mEventListAdapter.addEvent(retrievedEvent);
+                    mEventCardAdapter.addEvent(retrievedEvent);
+                }
+                else {
+                    showNoInternetConnectionMsg();
+                }
+
             }
-            else {
-                showNoInternetConnectionMsg();
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
@@ -418,8 +423,10 @@ public class EventsActivity extends AppCompatActivity
                     sb.append(line);
                 }
 
+                //Toast.makeText(EventsActivity.this, "HERE", Toast.LENGTH_LONG).show();
+
                 return sb.toString();
-            } catch (Exception e) { return new String("Exception: " + e.getMessage()); }
+            } catch (Exception e) { e.printStackTrace(); return null; }
         }
 
 
