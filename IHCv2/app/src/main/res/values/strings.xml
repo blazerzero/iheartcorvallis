@@ -55,6 +55,7 @@
     <string name="no_internet_connection_msg">I Heart Corvallis requires an internet connection. Make sure you have an internet connection and try again.</string>
 
     <string name="event_learn_more">LEARN MORE</string>
+    <string name="event_check_in">CHECK IN</string>
 
 
 </resources>

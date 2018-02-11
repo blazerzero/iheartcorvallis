@@ -43,12 +43,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
+            android:textSize="24sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@android:color/darker_gray"/>
+
+        <TextView
+            android:id="@+id/tv_event_location_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:textSize="20sp"
             android:textColor="@color/colorPrimaryDark"
             android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/tv_event_location_detail"
+            android:id="@+id/tv_event_address_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
@@ -121,6 +142,28 @@
             android:paddingRight="10dp"
             android:textSize="16sp"
             android:textColor="@android:color/holo_blue_dark"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@android:color/darker_gray"/>
+
+        <TextView
+            android:id="@+id/tv_event_check_in"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/event_elem_height"
+            android:layout_below="@+id/tv_event_location"
+            android:paddingLeft="10dp"
+            android:text="@string/event_check_in"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_blue_dark"
+            android:gravity="left|center_vertical"
+            android:lines="1"/>
 
     </LinearLayout>
 
