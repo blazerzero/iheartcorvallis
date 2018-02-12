@@ -16,8 +16,6 @@ public class Event extends AppCompatActivity implements Serializable {
     private String name;
     private String location;
     private String address;
-    private double latitude;
-    private double longitude;
     private String time;
     private String month;
     private String day;
@@ -28,12 +26,10 @@ public class Event extends AppCompatActivity implements Serializable {
     private String link3;
     //private InputStream image;
 
-    public Event(String name, String location, String address, double latitude, double longitude, String time, String month, String day, String year, String description, String link1, String link2, String link3) {
+    public Event(String name, String location, String address, String time, String month, String day, String year, String description, String link1, String link2, String link3) {
         this.name = name;
         this.location = location;
         this.address = address;
-        this.latitude = latitude;
-        this.longitude = longitude;
         this.time = time;
         this.month = month;
         this.day = day;
@@ -67,22 +63,6 @@ public class Event extends AppCompatActivity implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
     }
 
     public String getTime() {

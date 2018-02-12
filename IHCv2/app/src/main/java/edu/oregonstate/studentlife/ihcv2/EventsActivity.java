@@ -42,6 +42,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -60,6 +61,7 @@ public class EventsActivity extends AppCompatActivity
     private RecyclerView mEventCardRecyclerView;
     private EventListAdapter mEventListAdapter;
     private EventCardAdapter mEventCardAdapter;
+    private ArrayList<Event> eventList;
 
     SessionActivity session;
 
@@ -80,22 +82,10 @@ public class EventsActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        eventList = new ArrayList<Event>();
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        Button mapLink = (Button)findViewById(R.id.mapbtn);
-        mapLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isNetworkAvailable()) {
-                    Intent intent = new Intent(EventsActivity.this, MapsActivity.class);
-                    startActivity(intent);
-                }
-                else {
-                    showNoInternetConnectionMsg();
-                }
-            }
-        });
 
         mEventListRecyclerView = (RecyclerView) findViewById(R.id.rv_event_list);
         mEventListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -259,7 +249,7 @@ public class EventsActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.dashboard, menu);
+        getMenuInflater().inflate(R.menu.events_toolbar, menu);
         return true;
     }
 
@@ -269,23 +259,34 @@ public class EventsActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         //int id = item.getItemId();
+        switch (item.getItemId()) {
 
-        if (mEventListRecyclerView.getVisibility() == View.VISIBLE && mEventCardRecyclerView.getVisibility() == View.GONE) {
-            mEventListRecyclerView.setVisibility(View.GONE);
-            mEventCardRecyclerView.setVisibility(View.VISIBLE);
+            case R.id.action_map:
+                if (isNetworkAvailable()) {
+                    Intent mapIntent = new Intent(this, MapsActivity.class);
+                    mapIntent.putExtra(EXTRA_EVENT, eventList);
+                    startActivity(mapIntent);
+                }
+                else {
+                    showNoInternetConnectionMsg();
+                }
+                return true;
+            case R.id.action_switch_view:
+                if (mEventListRecyclerView.getVisibility() == View.VISIBLE && mEventCardRecyclerView.getVisibility() == View.GONE) {
+                    mEventListRecyclerView.setVisibility(View.GONE);
+                    mEventCardRecyclerView.setVisibility(View.VISIBLE);
+                } else if (mEventListRecyclerView.getVisibility() == View.GONE && mEventCardRecyclerView.getVisibility() == View.VISIBLE) {
+                    mEventCardRecyclerView.setVisibility(View.GONE);
+                    mEventListRecyclerView.setVisibility(View.VISIBLE);
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        else if (mEventListRecyclerView.getVisibility() == View.GONE && mEventCardRecyclerView.getVisibility() == View.VISIBLE) {
-            mEventCardRecyclerView.setVisibility(View.GONE);
-            mEventListRecyclerView.setVisibility(View.VISIBLE);
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem item = menu.findItem(R.id.action_settings);
-        item.setTitle(R.string.action_switch_view);
 
         // session information is retrieved and displayed on nav menu
         session = new SessionActivity(getApplicationContext());
@@ -345,8 +346,6 @@ public class EventsActivity extends AppCompatActivity
                 String eventName = eventJSON.getString("name");
                 String eventLocation = eventJSON.getString("location");
                 String eventAddress = eventJSON.getString("address");
-                double eventLatitude = Double.parseDouble(eventJSON.getString("latitude"));
-                double eventLongitude = Double.parseDouble(eventJSON.getString("longitude"));
                 String eventDateAndTime = eventJSON.getString("dateandtime");
                 String eventDescription = eventJSON.getString("description");
                 String eventLink1 = eventJSON.getString("link1");
@@ -373,8 +372,10 @@ public class EventsActivity extends AppCompatActivity
                 }
 
                 Event retrievedEvent = new Event(eventName, eventLocation, eventAddress,
-                        eventLatitude, eventLongitude, eventTime, eventMonth, eventDay, eventYear,
+                        eventTime, eventMonth, eventDay, eventYear,
                         eventDescription, eventLink1, eventLink2, eventLink3);
+
+                eventList.add(retrievedEvent);
 
                 if (isNetworkAvailable()) {
                     mEventListAdapter.addEvent(retrievedEvent);

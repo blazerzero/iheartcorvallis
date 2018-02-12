@@ -38,8 +38,8 @@ public class PassportActivity extends AppCompatActivity
     private PassportAdapter mPassportAdapter;
 
     private Event[] completedEventList = {
-            new Event("OSU Men's Basketball vs. USC", "Gill Coliseum", "", 0.0, 0.0, "5:00 PM", "January", "20", "2018", "", "", "", ""),
-            new Event("Blazers vs. Dallas", "Moda Center", "", 0.0, 0.0, "7:00 PM", "January", "20", "2018", "", "", "", "")
+            new Event("OSU Men's Basketball vs. USC", "Gill Coliseum", "", "5:00 PM", "January", "20", "2018", "", "", "", ""),
+            new Event("Blazers vs. Dallas", "Moda Center", "", "7:00 PM", "January", "20", "2018", "", "", "", "")
     };
     SessionActivity session;
 
