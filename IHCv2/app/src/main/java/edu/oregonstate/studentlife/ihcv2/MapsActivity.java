@@ -42,6 +42,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 singleEvent = (Event) intent.getSerializableExtra(EventDetailActivity.EXTRA_EVENT_DETAILED);
                 eventList.add(singleEvent);
             }
+            else if (intent.hasExtra(EventsActivity.EXTRA_EVENT)) {
+                eventList = (ArrayList<Event>) intent.getSerializableExtra(EventsActivity.EXTRA_EVENT);
+            }
         }
     }
 
@@ -86,7 +89,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
 
         }

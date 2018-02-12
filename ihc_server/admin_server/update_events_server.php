@@ -32,14 +32,6 @@
       $link3 = $_POST["link3"];
       $pin = $_POST["pin"];
 
-      $addressData = implode(' ', array_filter($fullAddress));
-      $prepAddress = str_replace(' ', '+', $addressData);
-      $geocode = file_get_contents('https://maps.google.com.maps/api/geocode/json?address='.$prepAddress.'&sensor=false&key=AIzaSyBYbpLA_XmLpBF31OVt91u1K3z2pAVyvrM');
-      $output = json_decode($geocode);
-      $latitude = $output->results[0]->geometry->location->lat;
-      $longitude = $output->results[0]->geometry->location->lng;
-      // MAKE GEOCODING FUNCTION and set $latLng to the return value of this function
-
       $dateandtime = $date . " " . $time;
       if (strlen($dateandtime) < 19) {
          $dateandtime = $dateandtime . ":00";
@@ -49,8 +41,6 @@
       echo "Event name entered: " . $name . "<br>";
       echo "Location entered: " . $location . "<br>";
       echo "Address entered: " . $fullAddress . "<br>";
-      echo "Latitude: " . $latitude . "<br>";
-      echo "Longitude: " . $longitude . "<br>";
       echo "date and time entered: " . $dateandtime . "<br>";
       echo "description entered: " . $description . "<br>";
       echo "image entered: " . $image . "<br>";
@@ -59,7 +49,7 @@
       echo "link3 entered: " . $link3 . "<br>";
       echo "Pin entered: " . $pin . "<br>";
 
-      $result = $mysqli->query("UPDATE ihc_events SET name='$name', location='$location', address='$fullAddress', latitude='$latitude', longitude='$longitude', dateandtime='$dateandtime', description='$description', image='$image', link1='$link1', link2='$link2', link3='$link3', pin='$pin' WHERE eventid='$eventid'");
+      $result = $mysqli->query("UPDATE ihc_events SET name='$name', location='$location', address='$fullAddress', dateandtime='$dateandtime', description='$description', image='$image', link1='$link1', link2='$link2', link3='$link3', pin='$pin' WHERE eventid='$eventid'");
 
       if ($result == True) {
          echo "Events are Added!"; # account successfully added to database
