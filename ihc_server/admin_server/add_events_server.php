@@ -47,35 +47,11 @@
       $result = $mysqli->query("INSERT INTO ihc_events (name, location, address, latitude, longitude, dateandtime, description, image, link1, link2, link3, pin) VALUES ('$name', '$location', '$fullAddress', '$dateandtime', '$description', '$image', '$link1', '$link2', '$link3', '$pin')");
 
       if ($result == True) {
-         echo "Events are Added!"; # account successfully added to database
+         echo "Event has been added!"; # account successfully added to database
       }
       else {
-         echo "Adding Error"; # error adding account to database
+         echo "Error adding event!"; # error adding account to database
       }
    }
    mysqli_close($con);
-
-   /*function geocode($address) {
-      $address = urlencode($address);
-      $url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address={$address}";
-      $resp_json = file_get_contents($url);
-      $resp = json_decode($resp_json, true);
-      if ($resp['status'] = "OK") {
-         $lat = $resp['results'][0]['geometry']['location']['lat'];
-         $lng = $resp['results'][0]['geometry']['location']['lng'];
-         $formatted_address = $resp['results'][0]['formatted_address'];
-
-         if ($lat && $lng && $formatted_address) {
-            $data_arr = array();
-            array_push($data_arr, $lat, $lng, $formatted_address);
-            return $data_arr;
-         }
-         else {
-            return false;
-         }
-      }
-      else {
-         return false;
-      }
-   }*/
 ?>

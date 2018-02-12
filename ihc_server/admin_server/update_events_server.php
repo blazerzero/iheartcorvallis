@@ -52,35 +52,11 @@
       $result = $mysqli->query("UPDATE ihc_events SET name='$name', location='$location', address='$fullAddress', dateandtime='$dateandtime', description='$description', image='$image', link1='$link1', link2='$link2', link3='$link3', pin='$pin' WHERE eventid='$eventid'");
 
       if ($result == True) {
-         echo "Events are Added!"; # account successfully added to database
+         echo "Event has been updated!"; # account successfully added to database
       }
       else {
-         echo "Adding Error"; # error adding account to database
+         echo "Error updating event!"; # error adding account to database
       }
    }
    mysqli_close($con);
-
-   /*function geocode($address) {
-      $address = urlencode($address);
-      $url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address={$address}";
-      $resp_json = file_get_contents($url);
-      $resp = json_decode($resp_json, true);
-      if ($resp['status'] = "OK") {
-         $lat = $resp['results'][0]['geometry']['location']['lat'];
-         $lng = $resp['results'][0]['geometry']['location']['lng'];
-         $formatted_address = $resp['results'][0]['formatted_address'];
-
-         if ($lat && $lng && $formatted_address) {
-            $data_arr = array();
-            array_push($data_arr, $lat, $lng, $formatted_address);
-            return $data_arr;
-         }
-         else {
-            return false;
-         }
-      }
-      else {
-         return false;
-      }
-   }*/
 ?>
