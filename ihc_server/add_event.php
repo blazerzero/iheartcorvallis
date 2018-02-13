@@ -87,7 +87,7 @@
       </ul>
 
       <div class="mainbody">
-         <left class="sectionheader">Add an Event</left>
+         <left class="sectionheader"><h1>Add an Event</h1></left>
          <br>
          <br><p class="requirednote">* Denotes a required field</p><br>
          <form name="eventForm" onsubmit="return validateForm()" action="./admin_server/add_events_server.php" method="post">

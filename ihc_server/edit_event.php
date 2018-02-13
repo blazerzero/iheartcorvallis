@@ -95,7 +95,7 @@ if ($result->num_rows > 0) {
       </ul>
 
       <div class="mainbody">
-         <left class="sectionheader">Edit Event</left>
+         <left class="sectionheader"><h1>Edit Event</h1></left>
          <br>
          <br><p class="requirednote">* Denotes a required field</p><br>
          <form name="eventForm" onsubmit="return validateForm()" action="./admin_server/update_events_server.php" method="post">
