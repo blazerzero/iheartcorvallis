@@ -44,6 +44,7 @@
             descriptionField == null || descriptionField == "") {
                alert("Please fill all required fields before submitting!");
                return false;
+            }
          }
          else {
             return true;
@@ -98,7 +99,7 @@
                <span class="requirednote">*</span>Name of Location: <input class="inputbox" type="text" name="location"><br><br>
             </div>
             <div class="elem">
-               <span class="requirednote">*</span>Full Address: <input class="inputbox" type="text" name="fulladdress"><br>
+               <span class="requirednote">*</span>Full Address: <input class="inputbox" type="text" name="fulladdress"><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>Date: <input class="inputbox" type="date" name="date"><br><br>

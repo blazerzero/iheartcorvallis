@@ -1,5 +1,3 @@
-<!DOCTYPE HTML>
-
 <?php
 
    $dbhost="oniddb.cws.oregonstate.edu";
@@ -21,7 +19,7 @@
 
    $name = $location = $date = $time = $dateandtime = $description = $image = $link1 = $link2 = $link3 = $pin = $fullAddress = $addressData = $prepAddress = $latLng = $row = "";
 
-   $eventids = array();
+   $events = array();
 
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -56,14 +54,17 @@
       /* ADD EVENT TO DATABASE */
       $result = $mysqli->query("INSERT INTO ihc_events (eventid, name, location, address, dateandtime, description, image, link1, link2, link3, pin) VALUES ('$totalEventCount', '$name', '$location', '$fullAddress', '$dateandtime', '$description', '$image', '$link1', '$link2', '$link3', '$pin')");
 
+      $url = "";
+
       if ($result == True) {
          $message = "Event has been added!";
          echo "<script type='text/javascript'>alert('$message');</script>";
       }
-      if ($result == False) {
-         $message = "Error adding event!<br>"; # error adding account to database
+      else {
+         $message = "Error adding event!<br>"; # error adding event to database
          $url = "../add_event.php";
          echo "<script type='text/javascript'>alert('$message');</script>";
+         mysqli_close($con);
          echo "<script type='text/javascript'>document.location.href = '$url';</script>";
          exit;
       }
@@ -72,19 +73,20 @@
       $result = $mysqli->query("UPDATE ihc_events SET totalEventCount='$totalEventCount'");
       if ($result == True) {
          $url = "../index.html";
-         echo "<script type='text/javascript'>document.location.href = '$url';</script>";
-         exit;
       }
-      if ($result == False) {
+      else {
          $message = "Error updating total event count!<br>";
          $url = "../add_event.php";
          echo "<script type='text/javascript'>alert('$message');</script>";
-         echo "<script type='text/javascript'>document.location.href = '$url';</script>";
-         exit;
       }
+      mysqli_close($con);
+      echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+      exit;
+
+   }
 
    mysqli_close($con);
-}
+
 ?>
 
 <!--<html>

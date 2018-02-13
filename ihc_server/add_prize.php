@@ -1,15 +1,7 @@
-<?php
-require './admin_server/db.php';
-$result = $mysqli->query("SELECT eventid, name, location, dateandtime FROM ihc_events");
-$ihc_events = array();
-while ($event = $result->fetch_assoc()) {
-   $ihc_events[] = $event;
-}
-?>
-
+<!DOCTYPE HTML>
 <html>
    <head>
-      <title>Manage Events - I Heart Corvallis Administrative Suite</title>
+      <title>Add a Prize - I Heart Corvallis Administrative Suite</title>
       <link type="text/css" rel="stylesheet" href="./css/Semantic-UI-CSS-master/semantic.css"/>
       <link type="text/css" rel="stylesheet" href="./css/stylesheet.css"/>
       <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
@@ -26,6 +18,20 @@ while ($event = $result->fetch_assoc()) {
             $("#prizes_dropdown").dropdown();
          });
       });
+
+      function validateForm() {
+         var nameField = document.forms["eventForm"]["name"].value;
+         var levelField = document.forms["prizeForm"]["level"].value;
+         if (nameField == null || nameField == "" ||
+            levelField == null || levelField == "") {
+               alert("Please fill both fields before submitting!");
+               return false;
+            }
+         }
+         else {
+            return true;
+         }
+      }
       </script>
    </head>
    <body>
@@ -64,30 +70,23 @@ while ($event = $result->fetch_assoc()) {
       </ul>
 
       <div class="mainbody">
-         <left class="sectionheader"><h1>Manage Events</h1></left>
-         <table class="ui celled padded table">
-            <thead>
-               <tr>
-                  <th class="single line">Name</th>
-                  <th>Location</th>
-                  <th>Date and Time</th>
-                  <th>Action</th>
-               </tr>
-            </thead>
-            <tbody>
-               <?php foreach($ihc_events as $event): ?>
-                  <tr>
-                     <td><?php echo $event['name']; ?></td>
-                     <td><?php echo $event['location']; ?></td>
-                     <td><?php echo $event['dateandtime']; ?></td>
-                     <td>
-                        <a href="edit_event.php?eventid=<?php echo $event['eventid'] ?>" class="ui blue button">Edit</a>
-                        <a onclick="return confirm('Are you sure you want to delete this event?')" href="./admin_server/delete_event.php?eventid=<?php echo $event['eventid'] ?>" class='ui red button'>Delete</a>
-                     </td>
-                  </tr>
-               <?php endforeach; ?>
-            </tbody>
-         </table>
+         <left class="sectionheader"><h1>Add a Prize</h1></left>
+         <br><br>
+         <form name="prizeForm" onsubmit="return validateForm()" action="./admin_server/add_prizes_server.php" method="post">
+            <div class="elem">
+               Name of Prize: <input class="inputbox" type="text" name="name"><br><br>
+            </div>
+            <div class="elem">
+               Prize Level: <select class="ui search dropdown" name="level">
+                  <option value="">Choose a level</option>
+                  <option value="1">Gold</option>
+                  <option value="2">Silver</option>
+                  <option value="3">Bronze</option>
+               </select>
+               <br><br>
+            </div>
+            <input class="ui button" type="submit">
+         </form>
       </div>
    </body>
 </html>

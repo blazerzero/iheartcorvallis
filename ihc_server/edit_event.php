@@ -109,7 +109,7 @@ if ($result->num_rows > 0) {
                <span class="requirednote">*</span>Name of Location: <input class="inputbox" type="text" name="location" value="<?php echo $event['location']; ?>"><br><br>
             </div>
             <div class="elem">
-               <span class="requirednote">*</span>Full Address: <input class="inputbox" type="text" name="fulladdress" value="<?php echo $event['address']; ?>"><br>
+               <span class="requirednote">*</span>Full Address: <input class="inputbox" type="text" name="fulladdress" value="<?php echo $event['address']; ?>"><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>Date: <input class="inputbox" type="date" name="date" value="<?php echo substr($event['dateandtime'], 0, 10); ?>"><br><br>
