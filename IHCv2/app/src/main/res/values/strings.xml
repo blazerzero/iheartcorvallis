@@ -59,5 +59,8 @@
     <string name="action_map_single_event">View Event on Map</string>
     <string name="action_map_main">View Events on Map</string>
 
+    <string name="gold_prizes_list">Gold Level</string>
+    <string name="silver_prizes_list">Silver Level</string>
+    <string name="bronze_prizes_list">Bronze Level</string>
 
 </resources>

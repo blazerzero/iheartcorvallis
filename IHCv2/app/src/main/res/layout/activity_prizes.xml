@@ -40,98 +40,103 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
+                android:orientation="vertical"
+                android:layout_margin="8dp"
                 android:background="@color/colorPrimary">
 
-                <RelativeLayout
-                    android:id="@+id/goldPrizes"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:background="@color/eventGold">
 
                     <TextView
-                        android:id="@+id/goldPrizeName"
+                        android:id="@+id/tv_gold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="GOLD PRIZES"
+                        android:text="@string/gold_prizes_list"
                         android:textSize="25dp"
                         android:textStyle="bold"
                         android:textAlignment="center"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textColor="@color/colorPrimaryDark"
+                        android:background="@color/eventGold" />
 
-                    <LinearLayout
-                        android:id="@+id/goldPrizeList"
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_gold_prizes"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/goldPrizeName"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content"/>
 
-                    </LinearLayout>
+                </LinearLayout>
 
-                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/dark_gray"/>
 
-                <RelativeLayout
-                    android:id="@+id/silverPrizes"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/eventSilver"
-                    android:layout_below="@+id/goldPrizes">
+                    android:orientation="vertical"
+                    android:background="@color/eventSilver">
 
                     <TextView
-                        android:id="@+id/silverPrizeName"
+                        android:id="@+id/tv_silver"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="SILVER PRIZES"
+                        android:text="@string/silver_prizes_list"
                         android:textSize="25dp"
                         android:textStyle="bold"
                         android:textAlignment="center"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textColor="@color/colorPrimaryDark"
+                        android:background="@color/eventSilver" />
 
-                    <LinearLayout
-                        android:id="@+id/silverPrizeList"
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_silver_prizes"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/silverPrizeName"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content"/>
 
-                    </LinearLayout>
+                </LinearLayout>
 
-                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/dark_gray"/>
 
-                <RelativeLayout
-                    android:id="@+id/bronzePrizes"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/eventBronze"
-                    android:layout_below="@+id/silverPrizes">
+                    android:orientation="vertical"
+                    android:background="@color/eventBronze">
 
                     <TextView
-                        android:id="@+id/bronzePrizeName"
+                        android:id="@+id/tv_bronze"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="BRONZE PRIZES"
+                        android:text="@string/bronze_prizes_list"
                         android:textSize="25dp"
                         android:textStyle="bold"
                         android:textAlignment="center"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textColor="@color/colorPrimaryDark"
+                        android:background="@color/eventBronze" />
 
-                    <LinearLayout
-                        android:id="@+id/bronzePrizeList"
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_bronze_prizes"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/bronzePrizeName"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content"/>
 
-                    </LinearLayout>
+                </LinearLayout>
 
-                </RelativeLayout>
-
-            </RelativeLayout>
+            </LinearLayout>
 
         </ScrollView>
 

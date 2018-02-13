@@ -100,15 +100,6 @@
             <div class="elem">
                <span class="requirednote">*</span>Full Address: <input class="inputbox" type="text" name="fulladdress"><br>
             </div>
-            <!--<div class="elem">
-               <span class="requirednote">*</span>City: <input class="inputbox" type="text" name="city"><br>
-            </div>
-            <div class="elem">
-               <span class="requirednote">*</span>State: <input class="inputbox" type="text" name="state"><br>
-            </div>
-            <div class="elem">
-               <span class="requirednote">*</span>ZIP: <input class="inputbox" type="text" name="zip"><br><br>
-            </div>-->
             <div class="elem">
                <span class="requirednote">*</span>Date: <input class="inputbox" type="date" name="date"><br><br>
             </div>

@@ -111,15 +111,6 @@ if ($result->num_rows > 0) {
             <div class="elem">
                <span class="requirednote">*</span>Full Address: <input class="inputbox" type="text" name="fulladdress" value="<?php echo $event['address']; ?>"><br>
             </div>
-            <!--<div class="elem">
-               <span class="requirednote">*</span>City: <input class="inputbox" type="text" name="city"><br>
-            </div>
-            <div class="elem">
-               <span class="requirednote">*</span>State: <input class="inputbox" type="text" name="state"><br>
-            </div>
-            <div class="elem">
-               <span class="requirednote">*</span>ZIP: <input class="inputbox" type="text" name="zip"><br><br>
-            </div>-->
             <div class="elem">
                <span class="requirednote">*</span>Date: <input class="inputbox" type="date" name="date" value="<?php echo substr($event['dateandtime'], 0, 10); ?>"><br><br>
             </div>

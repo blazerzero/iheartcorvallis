@@ -11,9 +11,4 @@ else {
 echo "<script type='text/javascript'>alert('$message');</script>";
 $url = "../manage_events.php";
 echo "<script type='text/javascript'>document.location.href = '$url';</script>";
-/*$sql = 'DELETE FROM ihc_events WHERE eventid=:id';
-$statement = $connection->prepare($sql);
-if ($statement->execute([':id' => $id])) {
-  header("Location: /");
-}*/
 ?>
