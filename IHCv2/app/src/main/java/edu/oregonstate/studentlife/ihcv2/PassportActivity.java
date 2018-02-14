@@ -87,10 +87,6 @@ public class PassportActivity extends AppCompatActivity
         HashMap<String, String> user = session.getUserDetails();
         String email = user.get(SessionActivity.KEY_EMAIL);
         new CompletedEventReceiver(this).execute(email);
-
-        /*for (Event event : completedEventList) {
-            mPassportAdapter.addEventToPassport(event);
-        }*/
     }
 
     public void onPause() {
@@ -186,7 +182,6 @@ public class PassportActivity extends AppCompatActivity
 
     private void onBackgroundTaskDataObtained(String result) {
         try {
-            Toast.makeText(this, "TEXT", Toast.LENGTH_LONG).show();
             StringTokenizer stEvents = new StringTokenizer(result, "\\");
             while (stEvents.hasMoreTokens()) {
                 String eventInfoString = stEvents.nextToken();
@@ -206,7 +201,7 @@ public class PassportActivity extends AppCompatActivity
                 String eventDay = dateTimeTokenizer.nextToken(" ");
                 String eventTime = dateTimeTokenizer.nextToken();
 
-                SimpleDateFormat sdfEvent = new SimpleDateFormat("EEE., MMMM d, yyyy, hh:mm a");
+                SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date eventDate = sdfEvent.parse(eventDateAndTime);
 
                 if (eventTime.charAt(0) == '0') {
