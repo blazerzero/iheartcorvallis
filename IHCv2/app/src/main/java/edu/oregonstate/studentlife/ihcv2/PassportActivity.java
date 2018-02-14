@@ -4,8 +4,12 @@ package edu.oregonstate.studentlife.ihcv2;
  * Created by Omeed on 12/20/17.
  */
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,18 +19,25 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -36,11 +47,13 @@ public class PassportActivity extends AppCompatActivity
 
     private RecyclerView mPassportRecyclerView;
     private PassportAdapter mPassportAdapter;
+    private String[] monthShortNames = {"Jan.", "Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."};
 
-    private Event[] completedEventList = {
+    /*private Event[] completedEventList = {
             new Event("OSU Men's Basketball vs. USC", "Gill Coliseum", "", "5:00 PM", "January", "20", "2018", "", "", "", ""),
             new Event("Blazers vs. Dallas", "Moda Center", "", "7:00 PM", "January", "20", "2018", "", "", "", "")
-    };
+    };*/
+    private ArrayList<Event> completedEventList;
     SessionActivity session;
 
     @Override
@@ -51,6 +64,8 @@ public class PassportActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         overridePendingTransition(0,0);
+
+        completedEventList = new ArrayList<Event>();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -68,9 +83,14 @@ public class PassportActivity extends AppCompatActivity
         mPassportAdapter = new PassportAdapter();
         mPassportRecyclerView.setAdapter(mPassportAdapter);
 
-        for (Event event : completedEventList) {
+        session = new SessionActivity(getApplicationContext());
+        HashMap<String, String> user = session.getUserDetails();
+        String email = user.get(SessionActivity.KEY_EMAIL);
+        new CompletedEventReceiver(this).execute(email);
+
+        /*for (Event event : completedEventList) {
             mPassportAdapter.addEventToPassport(event);
-        }
+        }*/
     }
 
     public void onPause() {
@@ -165,58 +185,69 @@ public class PassportActivity extends AppCompatActivity
     }
 
     private void onBackgroundTaskDataObtained(String result) {
-        StringTokenizer stFeed = new StringTokenizer(result, ";");
-        while (stFeed.hasMoreTokens()) {
-            String[] eventTokens = new String[5];
-            String eventJSON = stFeed.nextToken();
-            StringTokenizer stEvent = new StringTokenizer(eventJSON, "\\");
-            for (int i = 0; stEvent.hasMoreTokens(); i++) {
-                eventTokens[i] = stEvent.nextToken();
-            }
-            String eventName = eventTokens[0];
-            String eventLocation = eventTokens[1];
-            String eventDateAndTime = eventTokens[2];
-            String eventDescription = eventTokens[3];
-            /*InputStream eventImage = null;
-            try {
-                eventImage = new ByteArrayInputStream(eventTokens[4].getBytes(StandardCharsets.UTF_8.name()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*/
+        try {
+            Toast.makeText(this, "TEXT", Toast.LENGTH_LONG).show();
+            StringTokenizer stEvents = new StringTokenizer(result, "\\");
+            while (stEvents.hasMoreTokens()) {
+                String eventInfoString = stEvents.nextToken();
+                JSONObject eventJSON = new JSONObject(eventInfoString);
+                String eventName = eventJSON.getString("name");
+                String eventLocation = eventJSON.getString("location");
+                String eventAddress = eventJSON.getString("address");
+                String eventDateAndTime = eventJSON.getString("dateandtime");
+                String eventDescription = eventJSON.getString("description");
+                String eventLink1 = eventJSON.getString("link1");
+                String eventLink2 = eventJSON.getString("link2");
+                String eventLink3 = eventJSON.getString("link3");
 
-            StringTokenizer dateTimeTokenizer = new StringTokenizer(eventDateAndTime);
-            String eventYear = dateTimeTokenizer.nextToken("-");
-            String eventMonth = dateTimeTokenizer.nextToken("-");
-            String eventDay = dateTimeTokenizer.nextToken(" ");
-            String eventTime = dateTimeTokenizer.nextToken();
+                StringTokenizer dateTimeTokenizer = new StringTokenizer(eventDateAndTime);
+                String eventYear = dateTimeTokenizer.nextToken("-");
+                String eventMonth = dateTimeTokenizer.nextToken("-");
+                String eventDay = dateTimeTokenizer.nextToken(" ");
+                String eventTime = dateTimeTokenizer.nextToken();
 
-            try {
-                SimpleDateFormat _24HourFormat = new SimpleDateFormat("HH:mm");
-                SimpleDateFormat _12HourFormat = new SimpleDateFormat("hh:mm a");
-                Date _24HourEventTime = _24HourFormat.parse(eventTime);
-                eventTime = _12HourFormat.format(_24HourEventTime).toString();
+                SimpleDateFormat sdfEvent = new SimpleDateFormat("EEE., MMMM d, yyyy, hh:mm a");
+                Date eventDate = sdfEvent.parse(eventDateAndTime);
+
                 if (eventTime.charAt(0) == '0') {
                     eventTime = eventTime.substring(1);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
-            eventDay = eventDay.substring(1);
-            if (eventDay.charAt(0) == '0') {
                 eventDay = eventDay.substring(1);
+                if (eventDay.charAt(0) == '0') {
+                    eventDay = eventDay.substring(1);
+                }
+
+                if (eventMonth.charAt(0) == '0') {
+                    eventMonth = eventMonth.substring(1);
+                }
+
+                int monthInt = Integer.parseInt(eventMonth);
+                eventMonth = monthShortNames[monthInt-1];
+
+                Event retrievedEvent = new Event(eventName, eventLocation, eventAddress,
+                        eventDate, eventTime, eventMonth, eventDay, eventYear,
+                        eventDescription, eventLink1, eventLink2, eventLink3);
+
+                completedEventList.add(retrievedEvent);
+
+                if (isNetworkAvailable()) {
+                    mPassportAdapter.addEventToPassport(retrievedEvent);
+                } else {
+                    showNoInternetConnectionMsg();
+                }
             }
 
-            //Event retrievedEvent = new Event(eventName, eventLocation, eventTime, eventMonth, eventDay, eventYear, eventDescription);
 
-            //mPassportAdapter.addEventToPassport(retrievedEvent);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
 
     class CompletedEventReceiver extends AsyncTask {
 
         private Context context;
+        private String email;
         final static String IHC_GET_COMPLETED_EVENTS_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/get_completed_events.php";
 
         public CompletedEventReceiver(Context context) {
@@ -229,13 +260,20 @@ public class PassportActivity extends AppCompatActivity
         @Override
         protected Object doInBackground(Object[] objects) {
 
+            email = (String) objects[0];
+
             try {
+
                 URL url = new URL(IHC_GET_COMPLETED_EVENTS_URL);
+                String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
 
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 conn.setRequestMethod("POST");
                 conn.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                wr.write( data );
+                wr.flush();
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
@@ -256,5 +294,31 @@ public class PassportActivity extends AppCompatActivity
             String resultString = (String) result;
             PassportActivity.this.onBackgroundTaskDataObtained(resultString);
         }
+    }
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+    }
+
+    public void showNoInternetConnectionMsg() {
+        android.app.AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new android.app.AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        }
+        else {
+            builder = new android.app.AlertDialog.Builder(this);
+        }
+        builder.setTitle("No Internet Connection");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Close alert. User can try action again.
+            }
+        });
+        builder.setMessage(getResources().getString(R.string.no_internet_connection_msg));
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+        builder.show();
     }
 }

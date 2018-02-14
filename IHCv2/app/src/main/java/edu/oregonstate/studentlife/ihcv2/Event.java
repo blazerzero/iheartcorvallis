@@ -6,6 +6,8 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.io.InputStream;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Omeed on 1/18/18.
@@ -16,6 +18,7 @@ public class Event extends AppCompatActivity implements Serializable {
     private String name;
     private String location;
     private String address;
+    private Date dateTime;
     private String time;
     private String month;
     private String day;
@@ -26,10 +29,11 @@ public class Event extends AppCompatActivity implements Serializable {
     private String link3;
     //private InputStream image;
 
-    public Event(String name, String location, String address, String time, String month, String day, String year, String description, String link1, String link2, String link3) {
+    public Event(String name, String location, String address, Date dateTime, String time, String month, String day, String year, String description, String link1, String link2, String link3) {
         this.name = name;
         this.location = location;
         this.address = address;
+        this.dateTime = dateTime;
         this.time = time;
         this.month = month;
         this.day = day;
@@ -63,6 +67,14 @@ public class Event extends AppCompatActivity implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Date getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(Date dateTime) {
+        this.dateTime = dateTime;
     }
 
     public String getTime() {

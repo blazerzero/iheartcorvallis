@@ -18,6 +18,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,6 +46,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -126,97 +128,26 @@ public class EventsActivity extends AppCompatActivity
         overridePendingTransition(0,0);
     }
 
-    public Event[] mergeSortEventList(Event[] eventList) {
-        int half_len;
-        Event[] sortedEventList;
-        Event tempEvent;
-        switch (eventList.length) {
-            case 1: {
-                sortedEventList = eventList;
-                break;
+    public void sortEventsByDate() {
+        Event temp;
+        int indexLeft = 0;
+        int indexRight = 1;
+        int pointer = 0;
+
+        for (int i = 0; i < eventList.size() - 1; i++) {
+            while (indexLeft >= 0 && compareDates(eventList.get(indexLeft), eventList.get(indexRight)) > 0) {
+                Collections.swap(eventList, indexLeft, indexRight);
+                indexLeft--;
+                indexRight--;
             }
-            default: {
-                half_len = eventList.length / 2;
-                Event[] lowEventList = Arrays.copyOfRange(eventList, 0, half_len-1);
-                Event[] highEventList = Arrays.copyOfRange(eventList, half_len, eventList.length - 1);
-                lowEventList = mergeSortEventList(lowEventList);
-                highEventList = mergeSortEventList(highEventList);
-                sortedEventList = mergeLists(lowEventList, highEventList);
-            }
+            pointer++;
+            indexLeft = pointer;
+            indexRight = pointer + 1;
         }
-        return sortedEventList;
     }
 
-    public Event[] mergeLists(Event[] lowEventList, Event[] highEventList) {
-        Event[] sortedEventList = new Event[lowEventList.length + highEventList.length];
-        int i = 0;
-        int j = 0;
-        int count = 0;
-        char[] time1 = new char[7];
-        char[] time2 = new char[7];
-        while (i < lowEventList.length && j < highEventList.length) {
-            if (Integer.parseInt(lowEventList[i].getYear()) == Integer.parseInt(highEventList[j].getYear())) {
-                if (monthValue(lowEventList[i].getMonth()) == monthValue(highEventList[j].getMonth())) {
-                    if (Integer.parseInt(lowEventList[i].getDay()) == Integer.parseInt(highEventList[j].getDay())) {
-                        lowEventList[i].getTime().getChars(lowEventList[i].getTime().length()-2, lowEventList[i].getTime().length(), time1, 0);
-                        highEventList[j].getTime().getChars(highEventList[i].getTime().length()-2, highEventList[i].getTime().length(), time2, 0);
-                        if (time1.equals("am") && time2.equals("pm")) {
-                            sortedEventList[count] = lowEventList[i];
-                            i++;
-                            count++;
-                        }
-                        else if (time1.equals("pm") && time2.equals("am")) {
-                            sortedEventList[count] = highEventList[j];
-                            j++;
-                            count++;
-                        }
-                    }
-                    else if (Integer.parseInt(lowEventList[i].getDay()) < Integer.parseInt(highEventList[j].getDay())) {
-                        sortedEventList[count] = lowEventList[i];
-                        i++;
-                        count++;
-                    }
-                    else {
-                        sortedEventList[count] = highEventList[j];
-                        j++;
-                        count++;
-                    }
-                }
-                else if (monthValue(lowEventList[i].getMonth()) < monthValue(highEventList[j].getMonth())) {
-                    sortedEventList[count] = lowEventList[i];
-                    i++;
-                    count++;
-                }
-                else {
-                    sortedEventList[count] = highEventList[j];
-                    j++;
-                    count++;
-                }
-            }
-            else if (Integer.parseInt(lowEventList[i].getYear()) < Integer.parseInt(highEventList[j].getYear())) {
-                sortedEventList[count] = lowEventList[i];
-                i++;
-                count++;
-            }
-            else {
-                sortedEventList[count] = highEventList[j];
-                j++;
-                count++;
-            }
-        }
-        if (i == lowEventList.length) {
-            while (j < highEventList.length) {
-                sortedEventList[count] = highEventList[j];
-                count++;
-            }
-        }
-        else if (j == highEventList.length) {
-            while (i < lowEventList.length) {
-                sortedEventList[count] = lowEventList[i];
-                count++;
-            }
-        }
-        return sortedEventList;
+    public int compareDates(Event eLeft, Event eRight) {
+        return eLeft.getDateTime().compareTo(eRight.getDateTime());
     }
 
     public int monthValue(String month) {
@@ -358,6 +289,9 @@ public class EventsActivity extends AppCompatActivity
                 String eventDay = dateTimeTokenizer.nextToken(" ");
                 String eventTime = dateTimeTokenizer.nextToken();
 
+                SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date eventDate = sdfEvent.parse(eventDateAndTime);
+
                 SimpleDateFormat _24HourFormat = new SimpleDateFormat("HH:mm");
                 SimpleDateFormat _12HourFormat = new SimpleDateFormat("hh:mm a");
                 Date _24HourEventTime = _24HourFormat.parse(eventTime);
@@ -372,19 +306,22 @@ public class EventsActivity extends AppCompatActivity
                 }
 
                 Event retrievedEvent = new Event(eventName, eventLocation, eventAddress,
-                        eventTime, eventMonth, eventDay, eventYear,
+                        eventDate, eventTime, eventMonth, eventDay, eventYear,
                         eventDescription, eventLink1, eventLink2, eventLink3);
 
                 eventList.add(retrievedEvent);
 
+            }
+
+            sortEventsByDate();
+
+            for (Event event : eventList) {
                 if (isNetworkAvailable()) {
-                    mEventListAdapter.addEvent(retrievedEvent);
-                    mEventCardAdapter.addEvent(retrievedEvent);
-                }
-                else {
+                    mEventListAdapter.addEvent(event);
+                    mEventCardAdapter.addEvent(event);
+                } else {
                     showNoInternetConnectionMsg();
                 }
-
             }
         } catch (Exception e) {
             e.printStackTrace();
