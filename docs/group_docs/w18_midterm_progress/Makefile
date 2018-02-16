@@ -84,6 +84,6 @@ $(TAR):
 	fi ;
 
 clean:
-	rm -f *.ps *.dvi *.out *.log *.aux *.bbl *.blg *.pyg *.synctex.gz *.toc *.bz2
+	rm -f $(HWNAME).ps *.dvi *.out *.log *.aux *.bbl *.blg *.pyg *.synctex.gz *.toc *.bz2
 
 .PHONY: all show clean ps pdf showps

@@ -7,6 +7,7 @@
 \usepackage[top=0.75in, bottom=0.75in, left=0.75in, right=0.75in]{geometry}
 \usepackage{color}
 \usepackage{longtable}
+\graphicspath{ {./} }
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
@@ -84,6 +85,10 @@
    \section{Bradley}
       \subsection{Map Integration}
          Throughout our discussions with our client during fall term, Lyndi presented us with a map that displayed useful resources and notable locations. She had asked us to replicate these maps into the application. To my knowledge at the time, I had figured that I would be able to take the map from the website and display it onto the application. However, I ran into some trouble with displaying the map and had to rethink my implementation of it. In the end, I created two separate maps using the Google Maps API. The first map I created was the resource map. In order to display the notable landmarks on to this map, I first hard-coded each of the markers by its latitude and longitude in the Java file. Later on, I was able to figure out that you can use AsyncTask to retrieve the data from the database instead of hardcoding the latitude and longitude within the Java file. The second map I created was for the events page. This map displays the current list of events that are happening on the events page list.
+
+         \begin{figure}
+            \includegraphics[scale=1, bb=0 0 30 30]{resourcemap}
+         \end{figure}
 
       \subsection{Splash Screen}
          One of the simplest and neatest features that I implemented into this application was the splash screen. Even though it is a simple feature, it still took me a little time to figure out and implement it into the application. The splash screen occurs when the user first opens the app. A quick animation is created which gives the application a more fluid transition to the login page. If the user does not close the application, the animation will not appear, however, if they do close the application and reopen it, the animation will be displayed. When I showcased the feature to our client she was very impressed and loved the animation.
