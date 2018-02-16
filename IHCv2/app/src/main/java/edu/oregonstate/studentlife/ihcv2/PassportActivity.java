@@ -49,10 +49,6 @@ public class PassportActivity extends AppCompatActivity
     private PassportAdapter mPassportAdapter;
     private String[] monthShortNames = {"Jan.", "Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."};
 
-    /*private Event[] completedEventList = {
-            new Event("OSU Men's Basketball vs. USC", "Gill Coliseum", "", "5:00 PM", "January", "20", "2018", "", "", "", ""),
-            new Event("Blazers vs. Dallas", "Moda Center", "", "7:00 PM", "January", "20", "2018", "", "", "", "")
-    };*/
     private ArrayList<Event> completedEventList;
     SessionActivity session;
 
