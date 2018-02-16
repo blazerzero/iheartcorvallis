@@ -1,0 +1,21 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}Project Overview}{3}
+\contentsline {section}{\numberline {2}Current Status}{3}
+\contentsline {section}{\numberline {3}Problems We've Encountered}{3}
+\contentsline {section}{\numberline {4}Solutions to Problems}{3}
+\contentsline {section}{\numberline {5}Bradley}{4}
+\contentsline {subsection}{\numberline {5.1}Map Integration}{4}
+\contentsline {subsection}{\numberline {5.2}Splash Screen}{4}
+\contentsline {subsection}{\numberline {5.3}Administrative Website Functionality}{4}
+\contentsline {subsection}{\numberline {5.4}Geolocation}{5}
+\contentsline {section}{\numberline {6}Omeed}{5}
+\contentsline {subsection}{\numberline {6.1}Database Usage}{5}
+\contentsline {subsection}{\numberline {6.2}User Interface Setup}{6}
+\contentsline {subsection}{\numberline {6.3}Administrative Website Structure}{6}
+\contentsline {subsection}{\numberline {6.4}Login/Signup}{7}
+\contentsline {section}{\numberline {7}Dylan}{7}
+\contentsline {subsection}{\numberline {7.1}Action Toolbar, Navigation Menu, and Initial Page Designs}{7}
+\contentsline {subsection}{\numberline {7.2}RecyclerView}{8}
+\contentsline {subsection}{\numberline {7.3}Session Management}{8}
+\contentsline {subsection}{\numberline {7.4}Security}{8}
+\contentsline {subsection}{\numberline {7.5}Interface Scaling}{9}
