@@ -248,10 +248,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	\subsection{RecyclerView}
 		After that I implemented a recycler layout for the leaderboards page. The recycler layout helps reduce the amount of processing power needed for pages that are populated with long lists of items. This required creating an adapter class to systematically generate new views to host the content. Our leaderboard page pulls in all of the user accounts from the database and displays their names along with their stamp counts, so it is one of the pages that will benefit from this change. \\ \\
 
-		\includegraphics[height=8cm]{eventlistview}
-		\includegraphics[height=8cm]{eventcardview}
-		\includegraphics[height=8cm]{passport}
-		\includegraphics[height=8cm]{leaderboard}
+		\includegraphics[height=7cm]{eventlistview}
+		\includegraphics[height=7cm]{eventcardview}
+		\includegraphics[height=7cm]{passport}
+		\includegraphics[height=7cm]{leaderboard}
 
 	\subsection{Updating the Design Document}
 		The next thing I worked on was updating the design document with Bradley. We made some big changes to the design of our project back during the winter break. We were originally going to implement the UI with the Semantic UI library, but we eventually found out that this would require us to basically convert our program from a website to an application. This added a lot of extra processing for our app which would make it a lot slower than simply using the android SDK. We ended up doing just that, and needed to include those changes in our design document.
