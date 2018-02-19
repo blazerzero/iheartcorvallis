@@ -17,6 +17,9 @@
          $row = $result->fetch_assoc();
          echo $row['password'];
       }
+      else {
+         echo "NOACCOUNTERROR";
+      }
    }
 
    mysqli_close($con);

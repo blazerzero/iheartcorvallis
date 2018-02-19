@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -62,7 +63,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class NonStudentLoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class NonStudentLoginActivity extends AppCompatActivity /*implements LoaderCallbacks<Cursor>*/ {
 
     SessionActivity session;
     /**
@@ -86,7 +87,7 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
      */
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private EditText mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
@@ -106,8 +107,8 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
 
 
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
+        mEmailView = (EditText) findViewById(R.id.email);
+        //populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -142,49 +143,6 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
     public void onPause() {
         super.onPause();
         this.overridePendingTransition(R.anim.push_left,R.anim.push_right);
-    }
-
-    private void populateAutoComplete() {
-        if (!mayRequestContacts()) {
-            return;
-        }
-
-        getLoaderManager().initLoader(0, null, this);
-    }
-
-    private boolean mayRequestContacts() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
-        } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
-    }
-
-    /**
-     * Callback received when a permissions request has been completed.
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_READ_CONTACTS) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                populateAutoComplete();
-            }
-        }
     }
 
 
@@ -248,7 +206,8 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
                 View view = this.getCurrentFocus();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                new NonStudentAuthProcess(this).execute(email, password);
+                new NonStudentAuthProcess(this).execute(email);
+                //new HashReceiver(this).execute(email, password);
             }
             else {
                 showNoInternetConnectionMsg();
@@ -257,13 +216,10 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
     }
 
     private void onBackgroundTaskDataObtained(String result) {
-        if (result.contains("LOGINSUCCESS")) {
+        Log.d("NonStudentLoginActivity", "result: " + result);
+        if (!result.equals("AUTHERROR")) {
             try {
-                StringTokenizer st = new StringTokenizer(result);
-                String returnMsg = st.nextToken("\\");
-
-                String userInfo = st.nextToken("\\");
-                JSONObject userJSON = new JSONObject(userInfo);
+                JSONObject userJSON = new JSONObject(result);
                 String first = userJSON.getString("firstname");
                 String last = userJSON.getString("lastname");
                 String name = first + " " + last;
@@ -272,7 +228,8 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
                 Intent intent = new Intent(NonStudentLoginActivity.this, DashboardActivity.class);
                 startActivity(intent);
             } catch (Exception e) {
-                Toast.makeText(this, "Exception: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "Exception: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, result, Toast.LENGTH_LONG).show();
             }
         }
         else {
@@ -355,49 +312,6 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
         }
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-
-        addEmailsToAutoComplete(emails);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
-    }
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(NonStudentLoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
-    }
-
 
     private interface ProfileQuery {
         String[] PROJECTION = {
@@ -427,12 +341,10 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
         @Override
         protected Object doInBackground(Object[] objects) {
             email = (String) objects[0];
-            password = (String) objects[1];
 
             try {
                 URL url = new URL(IHC_NS_LOGIN_URL);
                 String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
-                data += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
 
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
@@ -488,6 +400,76 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
         builder.setMessage(getResources().getString(R.string.no_internet_connection_msg));
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         builder.show();
+    }
+
+    class HashReceiver extends AsyncTask {
+
+        Context context;
+        private String email;
+        private String password;
+
+        final static String IHC_PASS_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/gethash.php";
+
+        public HashReceiver(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected void onPreExecute() {}
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            email = (String) objects[0];
+            password = (String) objects[1];
+
+            try{
+                URL url = new URL(IHC_PASS_URL);
+
+                String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                conn.setRequestMethod("POST");
+                conn.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                wr.write( data );
+                wr.flush();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                StringBuffer sb = new StringBuffer("");
+                String line = null;
+
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                    break;
+                }
+
+                return sb.toString();
+            } catch (Exception e) { return new String("Exception: " + e.getMessage()); }
+
+        }
+        @Override
+        protected void onPostExecute(Object result) {
+            String resultString = (String) result;
+
+            if (!resultString.equals("NOACCOUNTERROR")) {
+                Log.d("HashReceiver", "Account found!");
+
+                try {
+                    PBKDF2 pHash = new PBKDF2();
+                    pHash.validatePassword(password, resultString);
+                    if (pHash.isMatch) {
+                        Log.d("HashReceiver", "Password matched!");
+                        //new NonStudentAuthProcess(NonStudentLoginActivity.this).execute(email);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        }
     }
 
 }

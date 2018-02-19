@@ -48,6 +48,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -60,6 +61,8 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
+
+    SessionActivity session;
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -273,8 +276,13 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
     }
 
     private void onBackgroundTaskDataObtained(String result) {
-        if (result.equals("SIGNUPSUCCESS")) {
+        if (result.contains("SIGNUPSUCCESS")) {
             try {
+                StringTokenizer stRes = new StringTokenizer(result);
+                String name = stRes.nextToken("\\");
+                String email = stRes.nextToken("\\");
+                session = new SessionActivity(getApplicationContext());
+                session.createLoginSession(name, email);
                 Intent intent = new Intent(SignupPageActivity.this, DashboardActivity.class);
                 startActivity(intent);
             } catch (Exception e) {
@@ -472,7 +480,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
                 String data = URLEncoder.encode("firstname", "UTF-8") + "=" + URLEncoder.encode(firstname, "UTF-8");
                 data += "&" + URLEncoder.encode("lastname", "UTF-8") + "=" + URLEncoder.encode(lastname, "UTF-8");
                 data += "&" + URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
-                data += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
+                data += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(pHash.hPassword, "UTF-8");
 
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
@@ -486,6 +494,8 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
 
                 StringBuffer sb = new StringBuffer("");
                 String line = null;
+
+                sb.append(firstname + " " + lastname + "\\" + email + "\\");
 
                 while ((line = reader.readLine()) != null) {
                     sb.append(line);
