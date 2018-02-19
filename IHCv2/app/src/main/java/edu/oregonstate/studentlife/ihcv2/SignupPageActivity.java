@@ -460,8 +460,14 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
             lastname = (String) objects[1];
             email = (String) objects[2];
             password = (String) objects[3];
+            PBKDF2 pHash;
+
+
 
             try {
+                pHash = new PBKDF2();
+                pHash.createPBKDF2hash(password);
+
                 URL url = new URL(IHC_SIGNUP_URL);
                 String data = URLEncoder.encode("firstname", "UTF-8") + "=" + URLEncoder.encode(firstname, "UTF-8");
                 data += "&" + URLEncoder.encode("lastname", "UTF-8") + "=" + URLEncoder.encode(lastname, "UTF-8");
