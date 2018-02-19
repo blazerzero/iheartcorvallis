@@ -282,6 +282,7 @@ public class EventsActivity extends AppCompatActivity
                 String eventLink1 = eventJSON.getString("link1");
                 String eventLink2 = eventJSON.getString("link2");
                 String eventLink3 = eventJSON.getString("link3");
+                int eventPin = Integer.parseInt(eventJSON.getString("pin"));
 
                 StringTokenizer dateTimeTokenizer = new StringTokenizer(eventDateAndTime);
                 String eventYear = dateTimeTokenizer.nextToken("-");
@@ -307,7 +308,7 @@ public class EventsActivity extends AppCompatActivity
 
                 Event retrievedEvent = new Event(eventName, eventLocation, eventAddress,
                         eventDate, eventTime, eventMonth, eventDay, eventYear,
-                        eventDescription, eventLink1, eventLink2, eventLink3);
+                        eventDescription, eventLink1, eventLink2, eventLink3, eventPin);
 
                 eventList.add(retrievedEvent);
 

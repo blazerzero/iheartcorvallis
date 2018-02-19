@@ -27,9 +27,10 @@ public class Event extends AppCompatActivity implements Serializable {
     private String link1;
     private String link2;
     private String link3;
+    private int pin;
     //private InputStream image;
 
-    public Event(String name, String location, String address, Date dateTime, String time, String month, String day, String year, String description, String link1, String link2, String link3) {
+    public Event(String name, String location, String address, Date dateTime, String time, String month, String day, String year, String description, String link1, String link2, String link3, int pin) {
         this.name = name;
         this.location = location;
         this.address = address;
@@ -42,6 +43,7 @@ public class Event extends AppCompatActivity implements Serializable {
         this.link1 = link1;
         this.link2 = link2;
         this.link3 = link3;
+        this.pin = pin;
         //this.image = image;
     }
 
@@ -139,6 +141,14 @@ public class Event extends AppCompatActivity implements Serializable {
 
     public void setLink3(String link3) {
         this.link3 = link3;
+    }
+
+    public int getPin() {
+        return pin;
+    }
+
+    public void setPin(int pin) {
+        this.pin = pin;
     }
 
     /*public InputStream getImage() {

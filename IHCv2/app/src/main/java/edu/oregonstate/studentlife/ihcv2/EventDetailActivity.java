@@ -78,6 +78,10 @@ public class EventDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // go to check user geolocation and ask for event verification PIN
+                // go to geolocation first, but goes straight to PIN for now
+                Intent enterEventPINIntent = new Intent(EventDetailActivity.this, EventPINActivity.class);
+                enterEventPINIntent.putExtra(EXTRA_EVENT_DETAILED, event);
+                startActivity(enterEventPINIntent);
             }
         });
     }

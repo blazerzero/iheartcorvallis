@@ -228,8 +228,7 @@ public class NonStudentLoginActivity extends AppCompatActivity /*implements Load
                 Intent intent = new Intent(NonStudentLoginActivity.this, DashboardActivity.class);
                 startActivity(intent);
             } catch (Exception e) {
-                //Toast.makeText(this, "Exception: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+                e.printStackTrace();
             }
         }
         else {
