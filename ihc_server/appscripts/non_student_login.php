@@ -16,14 +16,22 @@
 
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $email = $_POST['email'];
-      $result = $mysqli->query("SELECT email FROM ihc_users WHERE email='$email'");
-      if ($result->num_rows > 0) {
+	  $stmt = mysqli->prepare("SELECT email FROM ihc_users WHERE email=?");
+	  $stmt->bind_param('$email');
+	  $stmt->execute();
+      //$result = $mysqli->query("SELECT email FROM ihc_users WHERE email='$email'");
+      if ($stmt->num_rows > 0) {
             $isAuth = True;
       }
       if ($isAuth == True) {
-         $result = $mysqli->query("SELECT firstname, lastname, email, id, stampcount FROM ihc_users WHERE email='$email'");
-         $row = $result->fetch_assoc();
-         $data = json_encode($row);
+		 $stmt = mysqli->prepare("SELECT firstname, lastname, email, id, stampcount FROM ihc_users WHERE email= ?");
+		 $stmt->bind_param('$email');
+		 $stmt->execute();
+		 $row = $stmt->fetch_assoc();
+		 $data = json_encode($row);
+         //$result = $mysqli->query("SELECT firstname, lastname, email, id, stampcount FROM ihc_users WHERE email='$email'");
+         //$row = $result->fetch_assoc();
+         //$data = json_encode($row);
          echo $data;
       }
       else {
