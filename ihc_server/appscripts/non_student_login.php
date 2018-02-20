@@ -16,15 +16,15 @@
 
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $email = $_POST['email'];
-	  $stmt = mysqli->prepare("SELECT email FROM ihc_users WHERE email=?");
-	  $stmt->bind_param('$email');
-	  $stmt->execute();
-	  $res = $stmt->get_result();
-      //$result = $mysqli->query("SELECT email FROM ihc_users WHERE email='$email'");
-      if ($res->num_rows > 0) {
+	  //$stmt = mysqli->prepare("SELECT email FROM ihc_users WHERE email=?");
+	  //$stmt->bind_param('$email');
+	  //$stmt->execute();
+	  //$res = $stmt->get_result();
+      $result = $mysqli->query("SELECT email FROM ihc_users WHERE email='$email'");
+      if ($result->num_rows > 0) {
             $isAuth = True;
       }
-	  $res->close();
+	  //$res->close();
 	  
       if ($isAuth == True) {
 		 //$stmt = mysqli->prepare("SELECT firstname, lastname, email, id, stampcount FROM ihc_users WHERE email= ?");
