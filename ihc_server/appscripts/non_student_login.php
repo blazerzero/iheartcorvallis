@@ -27,7 +27,8 @@
 		 $stmt = mysqli->prepare("SELECT firstname, lastname, email, id, stampcount FROM ihc_users WHERE email= ?");
 		 $stmt->bind_param('$email');
 		 $stmt->execute();
-		 $row = $stmt->fetch_assoc();
+		 $result = $stmt->get_result();
+		 $row = $result->fetch_assoc();
 		 $data = json_encode($row);
          //$result = $mysqli->query("SELECT firstname, lastname, email, id, stampcount FROM ihc_users WHERE email='$email'");
          //$row = $result->fetch_assoc();

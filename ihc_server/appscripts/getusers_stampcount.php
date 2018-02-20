@@ -13,7 +13,10 @@
    }
 
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      $result = $mysqli->query("SELECT firstname, lastname, stampcount FROM ihc_users");
+	  $stmt = $mysqli->prepare("SELECT firstname, lastname, stampcount FROM ihc_users");
+	  $stmt->execute();
+	  $result = $stmt->get_result();
+      //$result = $mysqli->query("SELECT firstname, lastname, stampcount FROM ihc_users");
       if ($result->num_rows > 0) {
          while ($row = $result->fetch_assoc()) {
             if ($row["stampcount"] > 0) {
