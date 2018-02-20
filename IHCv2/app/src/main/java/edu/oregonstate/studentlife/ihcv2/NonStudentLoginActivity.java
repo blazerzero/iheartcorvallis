@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.LoaderManager;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -63,15 +65,23 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class NonStudentLoginActivity extends AppCompatActivity /*implements LoaderCallbacks<Cursor>*/ {
+public class NonStudentLoginActivity extends AppCompatActivity {
 
     SessionActivity session;
     /**
      * Id to identity READ_CONTACTS permission request.
      */
+
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     private static final int REQUEST_READ_CONTACTS = 0;
     final static String IHC_LOGIN_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/non_student_login.php";
+    final static String IHC_PASS_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/gethash.php";
     public static final String EXTRA_USER = "User";
+    private final static String NS_LOGIN_PASS_KEY = "IHC_PASS_URL";
+    private final static String NS_LOGIN_AUTH_KEY = "IHC_NS_LOGIN_URL";
+    private final static int NS_LOGIN_PASS_ID = 1;
+    private final static int NS_LOGIN_AUTH_ID = 2;
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -138,6 +148,9 @@ public class NonStudentLoginActivity extends AppCompatActivity /*implements Load
         mLoginFormView.startAnimation(myanim);
         mEmailView.startAnimation(myanim);
         mPasswordView.startAnimation(myanim);
+
+        //getSupportLoaderManager().initLoader(NS_LOGIN_LOADER_ID, null, this);
+
     }
 
     public void onPause() {
@@ -206,14 +219,74 @@ public class NonStudentLoginActivity extends AppCompatActivity /*implements Load
                 View view = this.getCurrentFocus();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                new NonStudentAuthProcess(this).execute(email);
-                //new HashReceiver(this).execute(email, password);
+                //new NonStudentAuthProcess(this).execute(email);
+                new HashReceiver(this).execute(email, password);
             }
             else {
                 showNoInternetConnectionMsg();
             }
         }
     }
+
+    /*public Loader<String> onCreateLoader(int id, final Bundle args) {
+        if (id == NS_LOGIN_PASS_ID) {
+            return new AsyncTaskLoader<String>(this) {
+
+                Context context;
+                private String email;
+                private String password;
+
+                @Override
+                protected void onStartLoading() {
+                    if (args != null) {
+                        showProgress(true);
+                    }
+                }
+
+                @Override
+                public String loadInBackground() {
+                    if (args != null) {
+                        String ihcPassCheckURL = args.getString(NS_LOGIN_PASS_KEY);
+                        Log.d(TAG, "checking password");
+                    }
+                    email = (String) args.getString(EMAIL);
+                    password = (String) args.getString(PASS);
+
+                    try{
+                        URL url = new URL(IHC_PASS_URL);
+
+                        String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
+
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                        conn.setRequestMethod("POST");
+                        conn.setDoOutput(true);
+                        OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                        wr.write( data );
+                        wr.flush();
+
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                        StringBuffer sb = new StringBuffer("");
+                        String line = null;
+
+                        while ((line = reader.readLine()) != null) {
+                            sb.append(line);
+                            break;
+                        }
+
+                        return sb.toString();
+                    } catch (Exception e) { return new String("Exception: " + e.getMessage()); }
+
+                }
+
+                @Override
+                public void deliverResult(String data)
+            };
+
+        }
+        else return null;
+    }*/
 
     private void onBackgroundTaskDataObtained(String result) {
         Log.d("NonStudentLoginActivity", "result: " + result);
@@ -460,7 +533,7 @@ public class NonStudentLoginActivity extends AppCompatActivity /*implements Load
                     pHash.validatePassword(password, resultString);
                     if (pHash.isMatch) {
                         Log.d("HashReceiver", "Password matched!");
-                        //new NonStudentAuthProcess(NonStudentLoginActivity.this).execute(email);
+                        new NonStudentAuthProcess(NonStudentLoginActivity.this).execute(email);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

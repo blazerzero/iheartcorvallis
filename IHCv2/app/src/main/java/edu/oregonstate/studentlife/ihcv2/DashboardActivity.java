@@ -1,15 +1,14 @@
 package edu.oregonstate.studentlife.ihcv2;
 
+import android.support.v4.content.AsyncTaskLoader;
 import android.content.Context;
-import android.content.UriMatcher;
-import android.graphics.Color;
-import android.graphics.Typeface;
+import android.content.Loader;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.text.Html;
+import android.support.v4.app.LoaderManager;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,32 +21,33 @@ import android.view.MenuItem;
 import android.content.Intent;
 import android.widget.Button;
 import android.widget.TextView;
-import android.content.ContentProvider;
-import android.database.sqlite.*;
-import android.support.v7.app.AlertDialog;
 import android.content.DialogInterface;
 import android.widget.Toast;
 
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.StringTokenizer;
 
 public class DashboardActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        LoaderManager.LoaderCallbacks<String> {
 
     private User currentUser;
+    private String email;
     private int numStamps;
     public TextView progIndicator;
     public static final String EXTRA_USER = "User";
+    private final static String IHC_USER_EMAIL_KEY = "IHC_USER_EMAIL";
+    private final static int IHC_USER_LOADER_ID = 0;
+
+    private static final String TAG = DashboardActivity.class.getSimpleName();
+
 
     SessionActivity session;
     @Override
@@ -70,9 +70,12 @@ public class DashboardActivity extends AppCompatActivity
 
         session = new SessionActivity(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
-        String email = user.get(SessionActivity.KEY_EMAIL);
+        email = user.get(SessionActivity.KEY_EMAIL);
 
-        new UserInfoReceiver(this).execute(email);
+        //new UserInfoReceiver(this).execute(email);
+
+        getSupportLoaderManager().initLoader(IHC_USER_LOADER_ID, null, this);
+        getUserInfo();
 
         progIndicator = (TextView)findViewById(R.id.progIndicator);
 
@@ -135,6 +138,126 @@ public class DashboardActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+    }
+
+    public android.support.v4.content.Loader<String> onCreateLoader(int id, final Bundle args) {
+        return new AsyncTaskLoader<String>(this) {
+
+            String userJSON;
+            private String email;
+            final static String IHC_GETUSERINFO_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/getuserinfo.php";
+
+            @Override
+            protected void onStartLoading() {
+                if (args != null) {
+                    if (userJSON != null) {
+                        Log.d(TAG, "loader returning cached results");
+                        deliverResult(userJSON);
+                    } else {
+                        forceLoad();
+                    }
+                }
+            }
+
+            @Override
+            public String loadInBackground() {
+                if (args != null) {
+                    Log.d(TAG, "getting user information with URL: " + IHC_GETUSERINFO_URL);
+                    email = args.getString(IHC_USER_EMAIL_KEY);
+                    Log.d(TAG, "getting account information for email: " + email);
+
+                    try {
+                        URL url = new URL(IHC_GETUSERINFO_URL);
+                        String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
+
+                        Log.d(TAG, "About to open connection.");
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                        conn.setRequestMethod("POST");
+                        conn.setDoOutput(true);
+                        OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                        wr.write( data );
+                        wr.flush();
+
+                        Log.d(TAG, "Just wrote to script: " + data);
+
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                        StringBuffer sb = new StringBuffer("");
+                        String line = null;
+
+                        Log.d(TAG, "About to read from file!");
+
+                        while ((line = reader.readLine()) != null) {
+                            sb.append(line);
+                            break;
+                        }
+
+                        Log.d(TAG, "Just read from file!");
+
+                        return sb.toString();
+                    } catch (Exception e) { e.printStackTrace(); }
+                }
+                return null;
+            }
+
+            @Override
+            public void deliverResult(String data) {
+                userJSON = data;
+                super.deliverResult(data);
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(android.support.v4.content.Loader<String> loader, String data) {
+        if (data != null) {
+            Toast.makeText(this, data, Toast.LENGTH_SHORT).show();
+            try {
+                JSONObject userJSON = new JSONObject(data);
+                String firstname = userJSON.getString("firstname");
+                String lastname = userJSON.getString("lastname");
+                String email = userJSON.getString("email");
+                String id = userJSON.getString("id");
+                String stampcount = userJSON.getString("stampcount");
+                currentUser = new User(firstname, lastname, email, id, stampcount);
+                numStamps = Integer.parseInt(stampcount);
+                progIndicator = initProgIndicator(numStamps, progIndicator);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            }
+            else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("Error");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Close alert dialog
+                }
+            });
+            builder.setMessage("Error retrieving user info.");
+            builder.setIcon(android.R.drawable.ic_dialog_alert);
+            builder.show();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(android.support.v4.content.Loader<String> loader) {
+        // Nothing to do...
+    }
+
+    public void getUserInfo() {
+        Bundle args = new Bundle();
+        args.putString(IHC_USER_EMAIL_KEY, email);
+        //Toast.makeText(this, email, Toast.LENGTH_LONG).show();
+        getSupportLoaderManager().restartLoader(IHC_USER_LOADER_ID, args, this);
     }
 
     public void onPause() {
@@ -275,13 +398,12 @@ public class DashboardActivity extends AppCompatActivity
         return true;
     }
 
-    private void onBackgroundTaskDataObtained(String result) {
+    /*private void onBackgroundTaskDataObtained(String result) {
         if (result != null) {
             try {
                 JSONObject userJSON = new JSONObject(result);
                 String firstname = userJSON.getString("firstname");
                 String lastname = userJSON.getString("lastname");
-                String name = firstname + " " + lastname;
                 String email = userJSON.getString("email");
                 String id = userJSON.getString("id");
                 String stampcount = userJSON.getString("stampcount");
@@ -353,7 +475,7 @@ public class DashboardActivity extends AppCompatActivity
                 }
 
                 return sb.toString();
-            } catch (Exception e) { return new String("Exception: " + e.getMessage()); }
+            } catch (Exception e) { e.printStackTrace(); return null; }
         }
 
 
@@ -362,5 +484,5 @@ public class DashboardActivity extends AppCompatActivity
             String resultString = (String) result;
             DashboardActivity.this.onBackgroundTaskDataObtained(resultString);
         }
-    }
+    }*/
 }
