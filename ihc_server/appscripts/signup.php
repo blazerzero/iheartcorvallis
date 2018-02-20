@@ -45,10 +45,12 @@
          else {
             echo "SIGNUPERROR"; # error adding account to database
          }
+		  $stmt->close();
       }
       else {
          echo "DUPACCOUNTERROR"; # account already exists
       }
+	 
    }
 
    mysqli_close($con);

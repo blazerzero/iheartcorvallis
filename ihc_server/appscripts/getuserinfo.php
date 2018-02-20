@@ -27,7 +27,8 @@
             echo $data;
          }
       }
+	  $result->close();
    }
-
+   
    mysqli_close($con);
 ?>

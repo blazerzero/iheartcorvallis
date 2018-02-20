@@ -26,6 +26,7 @@
             }
          }
       }
+	  $result->close();
    }
 
    mysqli_close($con);

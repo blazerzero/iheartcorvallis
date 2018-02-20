@@ -23,17 +23,20 @@
       if ($stmt->num_rows > 0) {
             $isAuth = True;
       }
+	  $stmt->close();
+	  
       if ($isAuth == True) {
 		 $stmt = mysqli->prepare("SELECT firstname, lastname, email, id, stampcount FROM ihc_users WHERE email= ?");
 		 $stmt->bind_param('$email');
 		 $stmt->execute();
-		 $result = $stmt->get_result();
-		 $row = $result->fetch_assoc();
+		 $res = $stmt->get_result();
+		 $row = $res->fetch_assoc();
 		 $data = json_encode($row);
          //$result = $mysqli->query("SELECT firstname, lastname, email, id, stampcount FROM ihc_users WHERE email='$email'");
          //$row = $result->fetch_assoc();
          //$data = json_encode($row);
          echo $data;
+		 $result->close();
       }
       else {
          echo "AUTHERROR"; # unable to authenticate email/password
