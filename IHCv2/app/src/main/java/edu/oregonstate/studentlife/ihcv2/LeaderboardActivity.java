@@ -29,6 +29,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
+import edu.oregonstate.studentlife.ihcv2.adapters.LeaderboardAdapter;
+import edu.oregonstate.studentlife.ihcv2.data.User;
+
 public class LeaderboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 

@@ -1,6 +1,8 @@
-package edu.oregonstate.studentlife.ihcv2;
+package edu.oregonstate.studentlife.ihcv2.data;
 
 import android.support.v7.app.AppCompatActivity;
+
+import edu.oregonstate.studentlife.ihcv2.R;
 
 /**
  * Created by Omeed on 1/22/18.

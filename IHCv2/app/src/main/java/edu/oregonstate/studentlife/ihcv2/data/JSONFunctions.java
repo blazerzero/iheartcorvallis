@@ -1,4 +1,4 @@
-package edu.oregonstate.studentlife.ihcv2;
+package edu.oregonstate.studentlife.ihcv2.data;
 
 /**
  * Created by Omeed on 1/5/18.

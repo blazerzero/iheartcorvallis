@@ -1,4 +1,4 @@
-package edu.oregonstate.studentlife.ihcv2;
+package edu.oregonstate.studentlife.ihcv2.data;
 
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;

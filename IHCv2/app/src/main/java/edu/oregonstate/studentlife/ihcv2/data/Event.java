@@ -1,4 +1,4 @@
-package edu.oregonstate.studentlife.ihcv2;
+package edu.oregonstate.studentlife.ihcv2.data;
 
 import android.support.v7.app.AppCompatActivity;
 

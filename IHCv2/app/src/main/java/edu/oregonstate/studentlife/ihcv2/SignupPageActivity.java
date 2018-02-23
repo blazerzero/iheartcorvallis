@@ -50,6 +50,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import edu.oregonstate.studentlife.ihcv2.data.PBKDF2;
+
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**

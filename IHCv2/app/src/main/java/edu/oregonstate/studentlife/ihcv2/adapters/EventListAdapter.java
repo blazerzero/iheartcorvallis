@@ -1,5 +1,6 @@
-package edu.oregonstate.studentlife.ihcv2;
+package edu.oregonstate.studentlife.ihcv2.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import edu.oregonstate.studentlife.ihcv2.R;
+import edu.oregonstate.studentlife.ihcv2.data.Event;
 
 /**
  * Created by Omeed on 1/18/18.

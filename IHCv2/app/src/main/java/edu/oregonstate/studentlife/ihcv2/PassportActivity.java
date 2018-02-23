@@ -8,9 +8,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,37 +20,35 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
+import edu.oregonstate.studentlife.ihcv2.adapters.PassportAdapter;
+import edu.oregonstate.studentlife.ihcv2.data.Event;
+import edu.oregonstate.studentlife.ihcv2.loaders.PassportLoader;
+
 public class PassportActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener, LoaderManager.LoaderCallbacks<String> {
+
+    private final static String TAG = PassportActivity.class.getSimpleName();
+    private final static int IHC_GETCOMPLETEDEVENTS_ID = 0;
+    private final static String IHC_USER_EMAIL_KEY = "ihcUserEmail";
 
     private RecyclerView mPassportRecyclerView;
     private PassportAdapter mPassportAdapter;
     private String[] monthShortNames = {"Jan.", "Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."};
 
     private ArrayList<Event> completedEventList;
+    private String email;
     SessionActivity session;
 
     @Override
@@ -81,8 +80,11 @@ public class PassportActivity extends AppCompatActivity
 
         session = new SessionActivity(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
-        String email = user.get(SessionActivity.KEY_EMAIL);
-        new CompletedEventReceiver(this).execute(email);
+        email = user.get(SessionActivity.KEY_EMAIL);
+        Bundle args = new Bundle();
+        args.putString(IHC_USER_EMAIL_KEY, email);
+        //new CompletedEventReceiver(this).execute(email);
+        getSupportLoaderManager().initLoader(IHC_GETCOMPLETEDEVENTS_ID, args, this);
     }
 
     public void onPause() {
@@ -176,9 +178,18 @@ public class PassportActivity extends AppCompatActivity
         return true;
     }
 
-    private void onBackgroundTaskDataObtained(String result) {
+    @Override
+    public Loader<String> onCreateLoader(int id, Bundle args) {
+        if (args != null) {
+            email = args.getString(IHC_USER_EMAIL_KEY);
+        }
+        return new PassportLoader(this, email);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<String> loader, String data) {
         try {
-            StringTokenizer stEvents = new StringTokenizer(result, "\\");
+            StringTokenizer stEvents = new StringTokenizer(data, "\\");
             while (stEvents.hasMoreTokens()) {
                 String eventInfoString = stEvents.nextToken();
                 JSONObject eventJSON = new JSONObject(eventInfoString);
@@ -236,56 +247,9 @@ public class PassportActivity extends AppCompatActivity
         }
     }
 
-    class CompletedEventReceiver extends AsyncTask {
-
-        private Context context;
-        private String email;
-        final static String IHC_GET_COMPLETED_EVENTS_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/get_completed_events.php";
-
-        public CompletedEventReceiver(Context context) {
-            this.context = context;
-        }
-
-        protected void onPreExecute() {
-        }
-
-        @Override
-        protected Object doInBackground(Object[] objects) {
-
-            email = (String) objects[0];
-
-            try {
-
-                URL url = new URL(IHC_GET_COMPLETED_EVENTS_URL);
-                String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
-
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-                conn.setRequestMethod("POST");
-                conn.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-                wr.write( data );
-                wr.flush();
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-                StringBuffer sb = new StringBuffer("");
-                String line = null;
-
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
-                }
-
-                return sb.toString();
-            } catch (Exception e) { return new String("Exception: " + e.getMessage()); }
-        }
-
-
-        @Override
-        protected void onPostExecute(Object result) {
-            String resultString = (String) result;
-            PassportActivity.this.onBackgroundTaskDataObtained(resultString);
-        }
+    @Override
+    public void onLoaderReset(Loader<String> loader) {
+        // Nothing to do...
     }
 
     public boolean isNetworkAvailable() {

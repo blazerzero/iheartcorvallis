@@ -1,19 +1,18 @@
 package edu.oregonstate.studentlife.ihcv2;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -22,42 +21,35 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewStub;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.StringTokenizer;
+
+import edu.oregonstate.studentlife.ihcv2.adapters.EventCardAdapter;
+import edu.oregonstate.studentlife.ihcv2.adapters.EventListAdapter;
+import edu.oregonstate.studentlife.ihcv2.data.Event;
+import edu.oregonstate.studentlife.ihcv2.loaders.EventLoader;
+;
 
 /**
  * Created by Omeed on 12/20/17.
  */
 
 public class EventsActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, EventListAdapter.OnEventClickListener, EventCardAdapter.OnEventClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        EventListAdapter.OnEventClickListener,
+        EventCardAdapter.OnEventClickListener,
+        LoaderManager.LoaderCallbacks<String> {
+
+    private final static String TAG = EventsActivity.class.getSimpleName();
 
     private RecyclerView mEventListRecyclerView;
     private RecyclerView mEventCardRecyclerView;
@@ -68,6 +60,7 @@ public class EventsActivity extends AppCompatActivity
     SessionActivity session;
 
     public static final String EXTRA_EVENT = "Event";
+    private final static int IHC_EVENT_LOADER_ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +101,8 @@ public class EventsActivity extends AppCompatActivity
         mEventCardRecyclerView.setVisibility(View.GONE);
 
         if (isNetworkAvailable()) {
-            new EventReceiver(this).execute();
+            //new EventReceiver(this).execute();
+            getSupportLoaderManager().initLoader(IHC_EVENT_LOADER_ID, null, this);
         }
         else {
             showNoInternetConnectionMsg();
@@ -267,10 +261,16 @@ public class EventsActivity extends AppCompatActivity
         return true;
     }
 
-    private void onBackgroundTaskDataObtained(String result) {
+    @Override
+    public Loader<String> onCreateLoader(int id, Bundle args) {
+        return new EventLoader(this);
+    }
 
+    @Override
+    public void onLoadFinished(Loader<String> loader, String data) {
+        Log.d(TAG, "got results from loader");
         try {
-            StringTokenizer stEvents = new StringTokenizer(result, "\\");
+            StringTokenizer stEvents = new StringTokenizer(data, "\\");
             while (stEvents.hasMoreTokens()) {
                 String eventInfoString = stEvents.nextToken();
                 JSONObject eventJSON = new JSONObject(eventInfoString);
@@ -330,50 +330,9 @@ public class EventsActivity extends AppCompatActivity
 
     }
 
-    class EventReceiver extends AsyncTask {
-
-        private Context context;
-        final static String IHC_GET_EVENTS_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/getevents.php";
-
-        public EventReceiver(Context context) {
-            this.context = context;
-        }
-
-        protected void onPreExecute() {
-        }
-
-        @Override
-        protected Object doInBackground(Object[] objects) {
-
-            try {
-                URL url = new URL(IHC_GET_EVENTS_URL);
-
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-                conn.setRequestMethod("POST");
-                conn.setDoOutput(true);
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-                StringBuffer sb = new StringBuffer("");
-                String line = null;
-
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
-                }
-
-                //Toast.makeText(EventsActivity.this, "HERE", Toast.LENGTH_LONG).show();
-
-                return sb.toString();
-            } catch (Exception e) { e.printStackTrace(); return null; }
-        }
-
-
-        @Override
-        protected void onPostExecute(Object result) {
-            String resultString = (String) result;
-            EventsActivity.this.onBackgroundTaskDataObtained(resultString);
-        }
+    @Override
+    public void onLoaderReset(Loader<String> loader) {
+        // Nothing to do...
     }
 
     public boolean isNetworkAvailable() {

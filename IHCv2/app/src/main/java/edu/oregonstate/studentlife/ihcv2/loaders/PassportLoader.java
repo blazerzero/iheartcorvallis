@@ -15,24 +15,23 @@ import java.net.URLEncoder;
  * Created by Omeed on 2/22/18.
  */
 
-public class UserInfoLoader extends AsyncTaskLoader<String> {
+public class PassportLoader extends AsyncTaskLoader<String> {
+    private final static String TAG = PassportLoader.class.getSimpleName();
 
-    private final static String TAG = UserInfoLoader.class.getSimpleName();
-
-    private String userJSON;
     private String email;
-    final static String IHC_GETUSERINFO_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/getuserinfo.php";
+    private String passportJSON;
+    private final static String IHC_GET_COMPLETED_EVENTS_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/get_completed_events.php";
 
-    public UserInfoLoader(Context context, String email) {
+    public PassportLoader(Context context, String email) {
         super(context);
         this.email = email;
     }
 
     @Override
     protected void onStartLoading() {
-        if (userJSON != null) {
-            Log.d(TAG, "loader returning cached results");
-            deliverResult(userJSON);
+        if (passportJSON != null) {
+            Log.d(TAG, "getting events with URL: " + IHC_GET_COMPLETED_EVENTS_URL);
+            deliverResult(passportJSON);
         } else {
             forceLoad();
         }
@@ -40,14 +39,10 @@ public class UserInfoLoader extends AsyncTaskLoader<String> {
 
     @Override
     public String loadInBackground() {
-        Log.d(TAG, "getting user information with URL: " + IHC_GETUSERINFO_URL);
-        Log.d(TAG, "getting account information for email: " + email);
-
         try {
-            URL url = new URL(IHC_GETUSERINFO_URL);
+            URL url = new URL(IHC_GET_COMPLETED_EVENTS_URL);
             String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
 
-            Log.d(TAG, "About to open connection.");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             conn.setRequestMethod("POST");
@@ -56,29 +51,23 @@ public class UserInfoLoader extends AsyncTaskLoader<String> {
             wr.write( data );
             wr.flush();
 
-            Log.d(TAG, "Just wrote to script: " + data);
-
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
             StringBuffer sb = new StringBuffer("");
             String line = null;
 
-            Log.d(TAG, "About to read from file!");
-
             while ((line = reader.readLine()) != null) {
                 sb.append(line);
-                break;
             }
 
-            Log.d(TAG, "Just read from file!");
-
             return sb.toString();
-        } catch (Exception e) { e.printStackTrace(); return null; }
+        } catch (Exception e) { return new String("Exception: " + e.getMessage()); }
     }
 
     @Override
     public void deliverResult(String data) {
-        userJSON = data;
+        passportJSON = data;
         super.deliverResult(data);
     }
+
 }

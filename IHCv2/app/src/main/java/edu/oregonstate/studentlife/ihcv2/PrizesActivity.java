@@ -4,10 +4,10 @@ package edu.oregonstate.studentlife.ihcv2;
  * Created by Omeed on 12/25/17.
  */
 
-import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,16 +23,21 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
+import edu.oregonstate.studentlife.ihcv2.adapters.PrizeAdapter;
+import edu.oregonstate.studentlife.ihcv2.data.Prize;
+import edu.oregonstate.studentlife.ihcv2.loaders.PrizeLoader;
+
 public class PrizesActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, PrizeAdapter.OnPrizeClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, PrizeAdapter.OnPrizeClickListener,
+        LoaderManager.LoaderCallbacks<String> {
+
+    private final static String TAG = PrizesActivity.class.getSimpleName();
+
+    private final static int IHC_GETPRIZES_ID = 0;
 
     SessionActivity session;
 
@@ -83,7 +88,8 @@ public class PrizesActivity extends AppCompatActivity
         bronzePrizeRV.setAdapter(mBronzePrizeAdapter);
 
 
-        new PrizeReceiver(this).execute();
+        //new PrizeReceiver(this).execute();
+        getSupportLoaderManager().initLoader(IHC_GETPRIZES_ID, null, this);
     }
 
     @Override
@@ -182,9 +188,16 @@ public class PrizesActivity extends AppCompatActivity
         return true;
     }
 
-    private void onBackgroundTaskDataObtained(String result) {
+    @Override
+    public Loader<String> onCreateLoader(int id, Bundle args) {
+        return new PrizeLoader(this);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<String> loader, String data) {
+        Log.d(TAG, "got results from loader");
         try {
-            StringTokenizer stPrizes = new StringTokenizer(result, "\\");
+            StringTokenizer stPrizes = new StringTokenizer(data, "\\");
             while (stPrizes.hasMoreTokens()) {
                 String prizesString = stPrizes.nextToken();
                 JSONObject prizeJSON = new JSONObject(prizesString);
@@ -209,51 +222,11 @@ public class PrizesActivity extends AppCompatActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
-
-    class PrizeReceiver extends AsyncTask {
-
-        private Context context;
-        final static String IHC_GET_PRIZES_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/getprizes.php";
-
-        public PrizeReceiver(Context context) {
-            this.context = context;
-        }
-
-        protected void onPreExecute() {
-        }
-
-        @Override
-        protected Object doInBackground(Object[] objects) {
-
-            try {
-                URL url = new URL(IHC_GET_PRIZES_URL);
-
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-                conn.setRequestMethod("POST");
-                conn.setDoOutput(true);
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-                StringBuffer sb = new StringBuffer("");
-                String line = null;
-
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
-                }
-
-                return sb.toString();
-            } catch (Exception e) { return new String("Exception: " + e.getMessage()); }
-        }
-
-
-        @Override
-        protected void onPostExecute(Object result) {
-            String resultString = (String) result;
-            PrizesActivity.this.onBackgroundTaskDataObtained(resultString);
-        }
+    @Override
+    public void onLoaderReset(Loader<String> loader) {
+        // Nothing to do...
     }
+
 }
