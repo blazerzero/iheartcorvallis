@@ -33,7 +33,7 @@
          $id = $result->num_rows + 1;
 		 
 		 $stmt = $mysqli->prepare("INSERT INTO ihc_users (student, firstname, lastname, email, password, id) VALUES (?, ?, ?, ?, ?, ?)");
-         $stmt->bind_param('$student', '$firstname', '$lastname', '$email', '$password', '$id');
+         $stmt->bind_param("sssssi", '$student', '$firstname', '$lastname', '$email', '$password', '$id');
 		 
 		 $stmt->execute();
 		 

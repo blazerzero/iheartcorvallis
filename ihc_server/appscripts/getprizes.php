@@ -13,7 +13,10 @@
    }
 
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      $result = $mysqli->query("SELECT * FROM ihc_prizes");
+	  $stmt = $mysqli->prepare("SELECT * FROM ihc_prizes");
+	  $stmt->execute();
+	  $result = $stmt->get_result();
+      //$result = $mysqli->query("SELECT * FROM ihc_prizes");
       if ($result->num_rows > 0) {
          while ($row = $result->fetch_assoc()) {
             $data = json_encode($row);
@@ -21,6 +24,7 @@
             echo "\\";
          }
       }
+	  $result->close();
    }
 
    mysqli_close($con);

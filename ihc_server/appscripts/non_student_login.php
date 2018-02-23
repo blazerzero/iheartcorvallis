@@ -27,17 +27,17 @@
 	  //$res->close();
 	  
       if ($isAuth == True) {
-		 //$stmt = mysqli->prepare("SELECT firstname, lastname, email, id, stampcount FROM ihc_users WHERE email= ?");
-		 //$stmt->bind_param('$email');
-		 //$stmt->execute();
-		 //$res = $stmt->get_result();
-		 //$row = $res->fetch_assoc();
-		 //$data = json_encode($row);
-         $result = $mysqli->query("SELECT firstname, lastname, email, id, stampcount FROM ihc_users WHERE email='$email'");
-         $row = $result->fetch_assoc();
-         $data = json_encode($row);
+		 $stmt = mysqli->prepare("SELECT firstname, lastname, email, id, stampcount FROM ihc_users WHERE email= ?");
+		 $stmt->bind_param("s",$email);
+		 $stmt->execute();
+		 $res = $stmt->get_result();
+		 $row = $res->fetch_assoc();
+		 $data = json_encode($row);
+         //$result = $mysqli->query("SELECT firstname, lastname, email, id, stampcount FROM ihc_users WHERE email='$email'");
+         //$row = $result->fetch_assoc();
+         //$data = json_encode($row);
          echo $data;
-		// $res->close();
+		 $res->close();
       }
       else {
          echo "AUTHERROR"; # unable to authenticate email/password
