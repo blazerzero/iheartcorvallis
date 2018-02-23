@@ -34,6 +34,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 
+import edu.oregonstate.studentlife.ihcv2.loaders.UserInfoLoader;
+
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         LoaderManager.LoaderCallbacks<String> {
@@ -140,79 +142,17 @@ public class DashboardActivity extends AppCompatActivity
         });
     }
 
+    @Override
     public android.support.v4.content.Loader<String> onCreateLoader(int id, final Bundle args) {
-        return new AsyncTaskLoader<String>(this) {
-
-            String userJSON;
-            private String email;
-            final static String IHC_GETUSERINFO_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/getuserinfo.php";
-
-            @Override
-            protected void onStartLoading() {
-                if (args != null) {
-                    if (userJSON != null) {
-                        Log.d(TAG, "loader returning cached results");
-                        deliverResult(userJSON);
-                    } else {
-                        forceLoad();
-                    }
-                }
-            }
-
-            @Override
-            public String loadInBackground() {
-                if (args != null) {
-                    Log.d(TAG, "getting user information with URL: " + IHC_GETUSERINFO_URL);
-                    email = args.getString(IHC_USER_EMAIL_KEY);
-                    Log.d(TAG, "getting account information for email: " + email);
-
-                    try {
-                        URL url = new URL(IHC_GETUSERINFO_URL);
-                        String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
-
-                        Log.d(TAG, "About to open connection.");
-                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-                        conn.setRequestMethod("POST");
-                        conn.setDoOutput(true);
-                        OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-                        wr.write( data );
-                        wr.flush();
-
-                        Log.d(TAG, "Just wrote to script: " + data);
-
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-                        StringBuffer sb = new StringBuffer("");
-                        String line = null;
-
-                        Log.d(TAG, "About to read from file!");
-
-                        while ((line = reader.readLine()) != null) {
-                            sb.append(line);
-                            break;
-                        }
-
-                        Log.d(TAG, "Just read from file!");
-
-                        return sb.toString();
-                    } catch (Exception e) { e.printStackTrace(); }
-                }
-                return null;
-            }
-
-            @Override
-            public void deliverResult(String data) {
-                userJSON = data;
-                super.deliverResult(data);
-            }
-        };
+        if (args != null) {
+            email = args.getString(IHC_USER_EMAIL_KEY);
+        }
+        return new UserInfoLoader(this, email);
     }
 
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<String> loader, String data) {
         if (data != null) {
-            Toast.makeText(this, data, Toast.LENGTH_SHORT).show();
             try {
                 JSONObject userJSON = new JSONObject(data);
                 String firstname = userJSON.getString("firstname");
@@ -287,7 +227,9 @@ public class DashboardActivity extends AppCompatActivity
             if (eventsToGo == 1) {
                 message = "Only " + eventsToGo + " event away from reaching gold status!\nCLICK HERE TO VIEW PRIZES";
             }
-            message = "Only " + eventsToGo + " events away from reaching gold status!\nCLICK HERE TO VIEW PRIZES";
+            else {
+                message = "Only " + eventsToGo + " events away from reaching gold status!\nCLICK HERE TO VIEW PRIZES";
+            }
         }
         else if (numStamps >= getResources().getInteger(R.integer.goldThreshold)) {
             progColor = getResources().getColor(R.color.eventGold);
