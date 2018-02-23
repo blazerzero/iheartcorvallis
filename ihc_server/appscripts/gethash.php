@@ -16,9 +16,13 @@
 	  $stmt = $mysqli->prepare("SELECT password FROM ihc_users WHERE email= ?");
 	  $stmt->bind_param("s", $email);
 	  $stmt->execute();
-	 
-      if ($stmt == True) {
-		 $result = $stmt->get_result();
+	  $result = $stmt->get_result();
+	 if ($result->num_rows > 0) {
+            $isAuth = True;
+      }
+	  
+      if ($isAuth == True) {
+		 
          $row = $result->fetch_assoc();
          echo $row['password'];
 		 $result->close();
