@@ -18,19 +18,15 @@
 	  $stmt->execute();
 	  $result = $stmt->get_result();
 	 if ($result->num_rows > 0) {
-            $isAuth = True;
-      }
-	  
-      if ($isAuth == True) {
 		 
          $row = $result->fetch_assoc();
          echo $row['password'];
-		 $result->close();
+		 
       }
       else {
          echo "NOACCOUNTERROR";
       }
-	  $stmt->close();
+	$result->close();
    }
 
    mysqli_close($con);

@@ -21,12 +21,9 @@
 	  $stmt->execute();
 	  $result = $stmt->get_result();
       //$result = $mysqli->query("SELECT email FROM ihc_users WHERE email='$email'");
-      if ($result->num_rows > 0) {
-            $isAuth = True;
-      }
-	  //$res->close();
+      
 	  
-      if ($isAuth == True) {
+      if ($result->num_rows > 0) {
 		 $stmt = mysqli->prepare("SELECT firstname, lastname, email, id, stampcount FROM ihc_users WHERE email= ?");
 		 $stmt->bind_param("s",$email);
 		 $stmt->execute();
