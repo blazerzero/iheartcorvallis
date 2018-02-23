@@ -16,11 +16,11 @@
 
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $email = $_POST['email'];
-	  //$stmt = mysqli->prepare("SELECT email FROM ihc_users WHERE email=?");
-	  //$stmt->bind_param('$email');
-	  //$stmt->execute();
-	  //$res = $stmt->get_result();
-      $result = $mysqli->query("SELECT email FROM ihc_users WHERE email='$email'");
+	  $stmt = mysqli->prepare("SELECT email FROM ihc_users WHERE email= ?");
+	  $stmt->bind_param("s", $email);
+	  $stmt->execute();
+	  $result = $stmt->get_result();
+      //$result = $mysqli->query("SELECT email FROM ihc_users WHERE email='$email'");
       if ($result->num_rows > 0) {
             $isAuth = True;
       }
@@ -42,6 +42,7 @@
       else {
          echo "AUTHERROR"; # unable to authenticate email/password
       }
+	  $result->close();
    }
    mysqli_close($con);
 ?>
