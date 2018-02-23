@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -31,9 +33,14 @@ import java.util.StringTokenizer;
 
 import edu.oregonstate.studentlife.ihcv2.adapters.LeaderboardAdapter;
 import edu.oregonstate.studentlife.ihcv2.data.User;
+import edu.oregonstate.studentlife.ihcv2.loaders.LeaderboardLoader;
 
 public class LeaderboardActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener,
+        LoaderManager.LoaderCallbacks<String> {
+
+    private final static String TAG = LeaderboardActivity.class.getSimpleName();
+    private final static int IHC_PASSPORT_LOADER_ID = 0;
 
     private RecyclerView mLeaderboardRecyclerView;
     private LeaderboardAdapter mLeaderboardAdapter;
@@ -68,7 +75,9 @@ public class LeaderboardActivity extends AppCompatActivity
         mLeaderboardAdapter = new LeaderboardAdapter();
         mLeaderboardRecyclerView.setAdapter(mLeaderboardAdapter);
 
-        new StampCountReceiver(this).execute();
+        //new StampCountReceiver(this).execute();
+
+        getSupportLoaderManager().initLoader(IHC_PASSPORT_LOADER_ID, null, this);
 
         /*for (User user : leaderboardUserList) {
             mLeaderboardAdapter.addUserToLeaderboard(user);
@@ -160,7 +169,41 @@ public class LeaderboardActivity extends AppCompatActivity
         return true;
     }
 
-    private void onBackgroundTaskDataObtained(String result) {
+    @Override
+    public Loader<String> onCreateLoader(int id, Bundle args) {
+        return new LeaderboardLoader(this);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<String> loader, String data) {
+        try {
+            StringTokenizer stUser = new StringTokenizer(data, "\\");
+            while (stUser.hasMoreTokens()) {
+                String leaderboardUserString = stUser.nextToken();
+                JSONObject leaderboardUserJSON = new JSONObject(leaderboardUserString);
+                String userFirstName = leaderboardUserJSON.getString("firstname");
+                String userLastName = leaderboardUserJSON.getString("lastname");
+                String userStampCount = leaderboardUserJSON.getString("stampcount");
+
+                User.LeaderboardUser retrievedUser = new User.LeaderboardUser(userFirstName, userLastName, userStampCount);
+                leaderboardUserList.add(retrievedUser);
+            }
+            sortLeaderboard();
+
+            for (User.LeaderboardUser leaderboardUser : leaderboardUserList) {
+                mLeaderboardAdapter.addUserToLeaderboard(leaderboardUser);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<String> loader) {
+        // Nothing to do...
+    }
+
+    /*private void onBackgroundTaskDataObtained(String result) {
         try {
             StringTokenizer stUser = new StringTokenizer(result, "\\");
             while (stUser.hasMoreTokens()) {
@@ -181,7 +224,7 @@ public class LeaderboardActivity extends AppCompatActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public void sortLeaderboard() {
         User.LeaderboardUser holder;
@@ -203,7 +246,7 @@ public class LeaderboardActivity extends AppCompatActivity
         }
     }
 
-    class StampCountReceiver extends AsyncTask {
+    /*class StampCountReceiver extends AsyncTask {
 
         private Context context;
         final static String IHC_GET_STAMPCOUNT_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/getusers_stampcount.php";
@@ -245,5 +288,5 @@ public class LeaderboardActivity extends AppCompatActivity
             String resultString = (String) result;
             LeaderboardActivity.this.onBackgroundTaskDataObtained(resultString);
         }
-    }
+    }*/
 }
