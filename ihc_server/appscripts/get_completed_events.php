@@ -36,10 +36,10 @@
                $eventid = $row['eventid'];
 			   
                //$res = $mysqli->query("SELECT * FROM ihc_events WHERE eventid='$eventid'");
-			   $stmt = $mysqli->query("SELECT * FROM ihc_events WHERE eventid= ?");
-			   $stmt->bind_param("i", $eventid);
-			   $stmt->execute();
-			   $res = $stmt->get_result();
+			   $stmt2 = $mysqli->query("SELECT * FROM ihc_events WHERE eventid= ?");
+			   $stmt2->bind_param("i", $eventid);
+			   $stmt2->execute();
+			   $res = $stmt2->get_result();
 			   
                if ($res->num_rows > 0) {
                   $event = $res->fetch_assoc();
