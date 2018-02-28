@@ -33,13 +33,13 @@
          $id = $result->num_rows + 1;
 		 
 		 $stmt = $mysqli->prepare("INSERT INTO ihc_users (student, firstname, lastname, email, password, id) VALUES (?, ?, ?, ?, ?, ?)");
-         $stmt->bind_param("sssssi", '$student', '$firstname', '$lastname', '$email', '$password', '$id');
+         $stmt->bind_param('issssi', $student, $firstname, $lastname, $email, $password, $id);
 		 
-		 $stmt->execute();
+		 
 		 
 		// $result = $mysqli->query("INSERT INTO ihc_users (student, firstname, lastname, email, password, id) VALUES ('$student', '$firstname', '$lastname', '$email', '$password', '$id')");
 
-         if ($stmt == True) {
+         if ($stmt->execute()) {
             echo "SIGNUPSUCCESS"; # account successfully added to database
          }
          else {
@@ -47,8 +47,8 @@
          }
 		  $stmt->close();
       }
-      else {
          echo "DUPACCOUNTERROR"; # account already exists
+      else {
       }
 	 
    }

@@ -17,7 +17,7 @@
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $email = $_POST['email'];
 	  $stmt = mysqli->prepare("SELECT email FROM ihc_users WHERE email= ?");
-	  $stmt->bind_param("s", $email);
+	  $stmt->bind_param('s', $email);
 	  $stmt->execute();
 	  $result = $stmt->get_result();
       //$result = $mysqli->query("SELECT email FROM ihc_users WHERE email='$email'");
@@ -25,7 +25,7 @@
 	  
       if ($result->num_rows > 0) {
 		 $stmt2 = mysqli->prepare("SELECT firstname, lastname, email, id, stampcount FROM ihc_users WHERE email= ?");
-		 $stmt2->bind_param("s",$email);
+		 $stmt2->bind_param('s','$email');
 		 $stmt2->execute();
 		 $res = $stmt2->get_result();
 		 $row = $res->fetch_assoc();
@@ -34,12 +34,12 @@
          //$row = $result->fetch_assoc();
          //$data = json_encode($row);
          echo $data;
-		 $res->close();
+		 $stmt2->close();
       }
       else {
          echo "AUTHERROR"; # unable to authenticate email/password
       }
-	  $result->close();
+	  $stmt->close();
    }
    mysqli_close($con);
 ?>

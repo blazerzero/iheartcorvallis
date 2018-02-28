@@ -17,7 +17,7 @@
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $email = $_POST['email'];
 	  $stmt = $mysqli->prepare("SELECT firstname, lastname, email, id, stampcount FROM ihc_users WHERE email = ?");
-	  $stmt->bind_param("s", $email);
+	  $stmt->bind_param('s', $email);
 	  $stmt->execute();
 	  $result = $stmt->get_result();
 	  

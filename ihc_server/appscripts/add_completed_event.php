@@ -18,7 +18,7 @@
       $userid = $_POST["userid"];
       $eventid = $_POST["eventid"];
 	  $stmt = $mysqli->query("INSERT INTO ihc_completed_events (userid, eventid) VALUES (?, ?)");
-	  $stmt->bind_param("ii", $userid, $eventid);
+	  $stmt->bind_param('ii', $userid, $eventid);
 	  $stmt->execute();
 	  $stmt->close();
       //$result = $mysqli->query("INSERT INTO ihc_completed_events (userid, eventid) VALUES ('$userid', '$eventid')");
