@@ -36,7 +36,7 @@
                $eventid = $row['eventid'];
 			   
                //$res = $mysqli->query("SELECT * FROM ihc_events WHERE eventid='$eventid'");
-			   $stmt3 = $mysqli->query("SELECT * FROM ihc_events WHERE eventid= ?");
+			   $stmt3 = $mysqli->prepare("SELECT * FROM ihc_events WHERE eventid= ?");
 			   $stmt3->bind_param('i', $eventid);
 			   $stmt3->execute();
 			   $res = $stmt3->get_result();
@@ -49,7 +49,7 @@
                }
             }
          }
-		 $result->close();
+		 //$result->close();
       }
    }
 
