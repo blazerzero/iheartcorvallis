@@ -32,14 +32,14 @@
          $result = $mysqli->query("SELECT id FROM ihc_users");
          $id = $result->num_rows + 1;
 		 
-		 $stmt = $mysqli->prepare("INSERT INTO ihc_users (student, firstname, lastname, email, password, id) VALUES (?, ?, ?, ?, ?, ?)");
-         $stmt->bind_param('issssi', $student, $firstname, $lastname, $email, $password, $id);
+		// $stmt = $mysqli->prepare("INSERT INTO ihc_users (student, firstname, lastname, email, password, id) VALUES (?, ?, ?, ?, ?, ?)");
+        // $stmt->bind_param("sssssi", $student, $firstname, $lastname, $email, $password, $id);
 		 
 		 
 		 
-		// $result = $mysqli->query("INSERT INTO ihc_users (student, firstname, lastname, email, password, id) VALUES ('$student', '$firstname', '$lastname', '$email', '$password', '$id')");
+		$result = $mysqli->query("INSERT INTO ihc_users (student, firstname, lastname, email, password, id) VALUES ('$student', '$firstname', '$lastname', '$email', '$password', '$id')");
 
-         if ($stmt->execute()) {
+         if ($result == True) {
             echo "SIGNUPSUCCESS"; # account successfully added to database
          }
          else {
