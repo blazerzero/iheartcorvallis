@@ -37,9 +37,66 @@
         android:background="@color/colorPrimary"
         tools:openDrawer="start">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:layout_width="@dimen/event_monthday_width"
+                android:layout_height="@dimen/event_item_height"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/dash_stampheader"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/event_elem_height"
+                    android:paddingLeft="5dp"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:lines="1"/>
+
+                <TextView
+                    android:id="@+id/dash_stampcount"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/event_elem_height"
+                    android:paddingLeft="5dp"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:lines="1"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/event_item_height"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/dash_userstatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/event_elem_height"
+                    android:paddingLeft="5dp"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="left|center_vertical"
+                    android:lines="1"/>
+
+                <TextView
+                    android:id="@+id/dash_displaystatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/event_elem_height"
+                    android:paddingLeft="5dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="left|center_vertical"
+                    android:lines="1"/>
+
+            </LinearLayout>
 
             <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -48,6 +105,7 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 android:background="@color/colorPrimary">
+
 
                 <TextView
                     android:id="@+id/progIndicator"
@@ -126,7 +184,7 @@
 
             </RelativeLayout>
 
-        </ScrollView>
+
 
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"

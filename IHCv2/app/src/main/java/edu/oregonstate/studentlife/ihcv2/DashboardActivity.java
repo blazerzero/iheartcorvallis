@@ -1,8 +1,11 @@
 package edu.oregonstate.studentlife.ihcv2;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -20,9 +23,15 @@ import android.content.DialogInterface;
 
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
+import java.util.StringTokenizer;
 
 import edu.oregonstate.studentlife.ihcv2.data.User;
+import edu.oregonstate.studentlife.ihcv2.loaders.DashboardLoader;
 import edu.oregonstate.studentlife.ihcv2.loaders.UserInfoLoader;
 
 public class DashboardActivity extends AppCompatActivity
@@ -66,6 +75,7 @@ public class DashboardActivity extends AppCompatActivity
         //new UserInfoReceiver(this).execute(email);
 
         getSupportLoaderManager().initLoader(IHC_USER_LOADER_ID, null, this);
+
         getUserInfo();
 
         progIndicator = (TextView)findViewById(R.id.progIndicator);
@@ -130,6 +140,41 @@ public class DashboardActivity extends AppCompatActivity
             }
         });
     }
+/*
+    @Override
+    public Loader<String> onCreateLoader(int id, Bundle args) {
+        return new DashboardLoader(this);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<String> loader, String data) {
+        try {
+            StringTokenizer stUser = new StringTokenizer(data, "\\");
+            while (stUser.hasMoreTokens()) {
+                String dashboardUserString = stUser.nextToken();
+                JSONObject dashboardUserJSON = new JSONObject(dashboardUserString);
+                String userFirstName = dashboardUserJSON.getString("firstname");
+                String userLastName = dashboardUserJSON.getString("lastname");
+                String userStampCount = dashboardUserJSON.getString("stampcount");
+
+                User.DashboardUser retrievedUser = new User.DashboardUser(userFirstName, userLastName, userStampCount);
+                //dashboardUserList.add(retrievedUser);
+            }
+            //sortLeaderboard();
+
+            //for (User.DashboardUser leaderboardUser : dashboardUserList) {
+            //    mLeaderboardAdapter.addUserToLeaderboard(leaderboardUser);
+            //}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<String> loader) {
+        // Nothing to do...
+    }
+*/
 
     @Override
     public android.support.v4.content.Loader<String> onCreateLoader(int id, final Bundle args) {
@@ -144,6 +189,7 @@ public class DashboardActivity extends AppCompatActivity
         if (data != null) {
             try {
                 JSONObject userJSON = new JSONObject(data);
+
                 String firstname = userJSON.getString("firstname");
                 String lastname = userJSON.getString("lastname");
                 String email = userJSON.getString("email");
@@ -151,7 +197,7 @@ public class DashboardActivity extends AppCompatActivity
                 String stampcount = userJSON.getString("stampcount");
                 currentUser = new User(firstname, lastname, email, id, stampcount);
                 numStamps = Integer.parseInt(stampcount);
-                progIndicator = initProgIndicator(numStamps, progIndicator);
+                //progIndicator = initProgIndicator(numStamps, progIndicator);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -177,10 +223,12 @@ public class DashboardActivity extends AppCompatActivity
         }
     }
 
+
     @Override
     public void onLoaderReset(android.support.v4.content.Loader<String> loader) {
         // Nothing to do...
     }
+
 
     public void getUserInfo() {
         Bundle args = new Bundle();
@@ -327,6 +375,54 @@ public class DashboardActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+
+
+
+    class StampCountReceiver extends AsyncTask {
+
+        private Context context;
+        final static String IHC_GET_STAMPCOUNT_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/getusers_stampcount.php";
+
+        public StampCountReceiver(Context context) {
+            this.context = context;
+        }
+
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+
+            try {
+                URL url = new URL(IHC_GET_STAMPCOUNT_URL);
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                conn.setRequestMethod("POST");
+                conn.setDoOutput(true);
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                StringBuffer sb = new StringBuffer("");
+                String line = null;
+
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                }
+
+                return sb.toString();
+            } catch (Exception e) { return new String("Exception: " + e.getMessage()); }
+        }
+
+
+        @Override
+        protected void onPostExecute(Object result) {
+            String resultString = (String) result;
+          //  DashboardActivity.this.onBackgroundTaskDataObtained(resultString);
+        }
     }
 
     /*private void onBackgroundTaskDataObtained(String result) {

@@ -30,7 +30,7 @@
 		 $stmt2 = $mysqli->prepare("SELECT * FROM ihc_completed_events WHERE userid= ?");
 		 $stmt2->bind_param('i', $id);
 		 $stmt2->execute();
-		 $result2 = $stmt->get_result();
+		 $result2 = $stmt2->get_result();
          if ($result2->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                $eventid = $row['eventid'];
