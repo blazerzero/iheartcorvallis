@@ -17,30 +17,30 @@
 
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $email = $_POST["email"];
-      //$usersResult = $mysqli->query("SELECT id FROM ihc_users WHERE email='$email'");
-	  $stmt = $mysqli->prepare("SELECT id FROM ihc_users WHERE email= ?");
+      $usersResult = $mysqli->query("SELECT id FROM ihc_users WHERE email='$email'");
+	  /*$stmt = $mysqli->prepare("SELECT id FROM ihc_users WHERE email= ?");
 	  $stmt->bind_param('s', $email);
 	  $stmt->execute();
-	  $usersResult = $stmt->get_result();
+	  $usersResult = $stmt->get_result();*/
       if ($usersResult->num_rows > 0) {
          $user = $usersResult->fetch_assoc();
          $userid = $user['id'];
 
-         //$result = $mysqli->query("SELECT * FROM ihc_completed_events WHERE userid='$userid'");
-		 $stmt2 = $mysqli->prepare("SELECT * FROM ihc_completed_events WHERE userid= ?");
+         $result2 = $mysqli->query("SELECT * FROM ihc_completed_events WHERE userid='$userid'");
+		 /*$stmt2 = $mysqli->prepare("SELECT * FROM ihc_completed_events WHERE userid= ?");
 		 $stmt2->bind_param('i', $id);
 		 $stmt2->execute();
-		 $result2 = $stmt->get_result();
+		 $result2 = $stmt->get_result();*/
          if ($result2->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
+            while ($row = $result2->fetch_assoc()) {
                $eventid = $row['eventid'];
-			   
-               //$res = $mysqli->query("SELECT * FROM ihc_events WHERE eventid='$eventid'");
-			   $stmt3 = $mysqli->prepare("SELECT * FROM ihc_events WHERE eventid= ?");
+
+               $res = $mysqli->query("SELECT * FROM ihc_events WHERE eventid='$eventid'");
+			   /*$stmt3 = $mysqli->prepare("SELECT * FROM ihc_events WHERE eventid= ?");
 			   $stmt3->bind_param('i', $eventid);
 			   $stmt3->execute();
-			   $res = $stmt3->get_result();
-			   
+			   $res = $stmt3->get_result();*/
+
                if ($res->num_rows > 0) {
                   $event = $res->fetch_assoc();
                   $data = json_encode($event);

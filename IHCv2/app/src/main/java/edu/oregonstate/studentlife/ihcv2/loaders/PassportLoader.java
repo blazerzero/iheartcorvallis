@@ -61,7 +61,7 @@ public class PassportLoader extends AsyncTaskLoader<String> {
             }
 
             return sb.toString();
-        } catch (Exception e) { return new String("Exception: " + e.getMessage()); }
+        } catch (Exception e) { e.printStackTrace(); return new String("Exception: " + e.getMessage()); }
     }
 
     @Override

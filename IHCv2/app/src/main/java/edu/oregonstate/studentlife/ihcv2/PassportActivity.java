@@ -20,6 +20,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -192,7 +193,9 @@ public class PassportActivity extends AppCompatActivity
             StringTokenizer stEvents = new StringTokenizer(data, "\\");
             while (stEvents.hasMoreTokens()) {
                 String eventInfoString = stEvents.nextToken();
+                Log.d(TAG, "eventInfoString: " + eventInfoString);
                 JSONObject eventJSON = new JSONObject(eventInfoString);
+                Log.d(TAG, "eventJSON: " + eventJSON);
                 int eventid = Integer.parseInt(eventJSON.getString("eventid"));
                 String eventName = eventJSON.getString("name");
                 String eventLocation = eventJSON.getString("location");
