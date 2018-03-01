@@ -36,6 +36,7 @@ import java.util.StringTokenizer;
 import edu.oregonstate.studentlife.ihcv2.adapters.EventCardAdapter;
 import edu.oregonstate.studentlife.ihcv2.adapters.EventListAdapter;
 import edu.oregonstate.studentlife.ihcv2.data.Event;
+import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.EventLoader;
 ;
 
@@ -56,10 +57,12 @@ public class EventsActivity extends AppCompatActivity
     private EventListAdapter mEventListAdapter;
     private EventCardAdapter mEventCardAdapter;
     private ArrayList<Event> eventList;
+    private User user;
 
     SessionActivity session;
 
     public static final String EXTRA_EVENT = "Event";
+    public static final String EXTRA_USER = "User";
     private final static int IHC_EVENT_LOADER_ID = 0;
 
     @Override
@@ -78,6 +81,10 @@ public class EventsActivity extends AppCompatActivity
         toggle.syncState();
 
         eventList = new ArrayList<Event>();
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra(DashboardActivity.EXTRA_USER)) {
+            user = (User) intent.getSerializableExtra(DashboardActivity.EXTRA_USER);
+        }
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -114,6 +121,7 @@ public class EventsActivity extends AppCompatActivity
     public void onEventClick(Event event) {
         Intent eventDetailActivityIntent = new Intent(this, EventDetailActivity.class);
         eventDetailActivityIntent.putExtra(EXTRA_EVENT, event);
+        eventDetailActivityIntent.putExtra(EXTRA_USER, user);
         startActivity(eventDetailActivityIntent);
     }
 
@@ -274,6 +282,7 @@ public class EventsActivity extends AppCompatActivity
             while (stEvents.hasMoreTokens()) {
                 String eventInfoString = stEvents.nextToken();
                 JSONObject eventJSON = new JSONObject(eventInfoString);
+                int eventid = Integer.parseInt(eventJSON.getString("eventid"));
                 String eventName = eventJSON.getString("name");
                 String eventLocation = eventJSON.getString("location");
                 String eventAddress = eventJSON.getString("address");
@@ -306,7 +315,7 @@ public class EventsActivity extends AppCompatActivity
                     eventDay = eventDay.substring(1);
                 }
 
-                Event retrievedEvent = new Event(eventName, eventLocation, eventAddress,
+                Event retrievedEvent = new Event(eventid, eventName, eventLocation, eventAddress,
                         eventDate, eventTime, eventMonth, eventDay, eventYear,
                         eventDescription, eventLink1, eventLink2, eventLink3, eventPin);
 

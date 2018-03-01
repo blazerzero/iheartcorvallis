@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import edu.oregonstate.studentlife.ihcv2.data.Event;
+import edu.oregonstate.studentlife.ihcv2.data.User;
 
 public class EventDetailActivity extends AppCompatActivity {
 
@@ -26,11 +27,13 @@ public class EventDetailActivity extends AppCompatActivity {
     private TextView mEventCheckInTV;
 
     private Event event;
+    private User user;
 
     private String[] monthLongNames = {"January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"};
 
     public static final String EXTRA_EVENT_DETAILED = "Detailed Event";
+    public static final String EXTRA_USER = "User";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +61,8 @@ public class EventDetailActivity extends AppCompatActivity {
         mEventCheckInTV = (TextView) findViewById(R.id.tv_event_check_in);
 
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(EventsActivity.EXTRA_EVENT)) {
+        if (intent != null && intent.hasExtra(EventsActivity.EXTRA_EVENT) && intent.hasExtra(EventsActivity.EXTRA_USER)) {
+            user = (User) intent.getSerializableExtra(EventsActivity.EXTRA_USER);
             event = (Event) intent.getSerializableExtra(EventsActivity.EXTRA_EVENT);
             mEventNameTV.setText(event.getName());
             mEventLocationTV.setText(event.getLocation());
@@ -79,6 +83,7 @@ public class EventDetailActivity extends AppCompatActivity {
                 // go to geolocation first, but goes straight to PIN for now
                 Intent enterEventPINIntent = new Intent(EventDetailActivity.this, EventPINActivity.class);
                 enterEventPINIntent.putExtra(EXTRA_EVENT_DETAILED, event);
+                enterEventPINIntent.putExtra(EXTRA_USER, user);
                 startActivity(enterEventPINIntent);
             }
         });

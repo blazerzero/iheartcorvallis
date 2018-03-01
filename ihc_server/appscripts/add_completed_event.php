@@ -17,10 +17,16 @@
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $userid = $_POST["userid"];
       $eventid = $_POST["eventid"];
-	  $stmt = $mysqli->query("INSERT INTO ihc_completed_events (userid, eventid) VALUES (?, ?)");
-	  $stmt->bind_param('ii', $userid, $eventid);
-	  $stmt->execute();
-	  $stmt->close();
+	   $stmt = $mysqli->prepare("INSERT INTO ihc_completed_events (userid, eventid) VALUES (?, ?)");
+	   $stmt->bind_param('ii', $userid, $eventid);
+	   $result = $stmt->execute();
+      if ($result == True) {
+         echo "COMPLETED EVENT ADDED";
+      }
+      else {
+         echo "ADDERROR";
+      }
+	   $stmt->close();
       //$result = $mysqli->query("INSERT INTO ihc_completed_events (userid, eventid) VALUES ('$userid', '$eventid')");
    }
 

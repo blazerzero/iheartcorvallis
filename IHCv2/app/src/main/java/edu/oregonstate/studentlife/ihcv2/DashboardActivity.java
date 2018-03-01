@@ -147,7 +147,7 @@ public class DashboardActivity extends AppCompatActivity
                 String firstname = userJSON.getString("firstname");
                 String lastname = userJSON.getString("lastname");
                 String email = userJSON.getString("email");
-                String id = userJSON.getString("id");
+                int id = Integer.parseInt(userJSON.getString("id"));
                 String stampcount = userJSON.getString("stampcount");
                 currentUser = new User(firstname, lastname, email, id, stampcount);
                 numStamps = Integer.parseInt(stampcount);

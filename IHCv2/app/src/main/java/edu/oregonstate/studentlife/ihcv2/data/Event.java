@@ -15,6 +15,7 @@ import java.util.Date;
 
 public class Event extends AppCompatActivity implements Serializable {
 
+    private int eventid;
     private String name;
     private String location;
     private String address;
@@ -30,7 +31,8 @@ public class Event extends AppCompatActivity implements Serializable {
     private int pin;
     //private InputStream image;
 
-    public Event(String name, String location, String address, Date dateTime, String time, String month, String day, String year, String description, String link1, String link2, String link3, int pin) {
+    public Event(int eventid, String name, String location, String address, Date dateTime, String time, String month, String day, String year, String description, String link1, String link2, String link3, int pin) {
+        this.eventid = eventid;
         this.name = name;
         this.location = location;
         this.address = address;
@@ -45,6 +47,14 @@ public class Event extends AppCompatActivity implements Serializable {
         this.link3 = link3;
         this.pin = pin;
         //this.image = image;
+    }
+
+    public int getEventid() {
+        return eventid;
+    }
+
+    public void setEventid(int eventid) {
+        this.eventid = eventid;
     }
 
     public String getName() {

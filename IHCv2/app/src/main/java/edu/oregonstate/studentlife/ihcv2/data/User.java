@@ -12,11 +12,11 @@ public class User extends AppCompatActivity implements Serializable {
     private String firstName;
     private String lastName;
     private String email;
-    private String id;
+    private int id;
     private String stampCount;
     private LeaderboardUser leaderboardUser;
 
-    public User(String firstName, String lastName, String email, String id, String stampCount) {
+    public User(String firstName, String lastName, String email, int id, String stampCount) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -49,11 +49,11 @@ public class User extends AppCompatActivity implements Serializable {
         this.email = email;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

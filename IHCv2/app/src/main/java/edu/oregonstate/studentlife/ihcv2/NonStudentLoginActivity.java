@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.AsyncTask;
@@ -40,11 +42,13 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 import edu.oregonstate.studentlife.ihcv2.data.PBKDF2;
+import edu.oregonstate.studentlife.ihcv2.loaders.HashReceiverLoader;
+import edu.oregonstate.studentlife.ihcv2.loaders.NonStudentAuthLoader;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class NonStudentLoginActivity extends AppCompatActivity {
+public class NonStudentLoginActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
 
     SessionActivity session;
     /**
@@ -59,8 +63,9 @@ public class NonStudentLoginActivity extends AppCompatActivity {
     public static final String EXTRA_USER = "User";
     private final static String NS_LOGIN_PASS_KEY = "IHC_PASS_URL";
     private final static String NS_LOGIN_AUTH_KEY = "IHC_NS_LOGIN_URL";
+    private final static int NS_LOGIN_HASH_ID = 0;
     private final static int NS_LOGIN_PASS_ID = 1;
-    private final static int NS_LOGIN_AUTH_ID = 2;
+    private boolean isAuth = false;
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -80,6 +85,8 @@ public class NonStudentLoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private String email;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,8 +157,8 @@ public class NonStudentLoginActivity extends AppCompatActivity {
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        email = mEmailView.getText().toString();
+        password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -199,7 +206,8 @@ public class NonStudentLoginActivity extends AppCompatActivity {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 //new NonStudentAuthProcess(this).execute(email);
-                new HashReceiver(this).execute(email, password);
+                //new HashReceiver(this).execute(email, password);
+                getSupportLoaderManager().initLoader(NS_LOGIN_HASH_ID, null, this);
             }
             else {
                 showNoInternetConnectionMsg();
@@ -267,7 +275,7 @@ public class NonStudentLoginActivity extends AppCompatActivity {
         else return null;
     }*/
 
-    private void onBackgroundTaskDataObtained(String result) {
+    /*private void onBackgroundTaskDataObtained(String result) {
         Log.d("NonStudentLoginActivity", "result: " + result);
         if (!result.equals("AUTHERROR")) {
             try {
@@ -314,7 +322,7 @@ public class NonStudentLoginActivity extends AppCompatActivity {
             builder.show();
         }
 
-    }
+    }*/
 
 
     private boolean isEmailValid(String email) {
@@ -363,6 +371,113 @@ public class NonStudentLoginActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public Loader<String> onCreateLoader(int id, Bundle args) {
+        if (id == NS_LOGIN_HASH_ID) {
+            showProgress(true);
+            return new HashReceiverLoader(this, email);
+        }
+        else if (id == NS_LOGIN_PASS_ID){
+            Log.d(TAG, "Hashed password found! Time to log in.");
+            return new NonStudentAuthLoader(this, email);
+        }
+        else {
+            return null;
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<String> loader, String data) {
+        if (!isAuth) {
+            String resultString = (String) data;
+
+            if (!resultString.equals("NOACCOUNTERROR")) {
+                Log.d("HashReceiver", "Account found!");
+
+                try {
+                    PBKDF2 pHash = new PBKDF2();
+                    pHash.validatePassword(password, resultString);
+                    if (pHash.isMatch) {
+                        Log.d("HashReceiver", "Password matched!");
+                        //new NonStudentAuthProcess(NonStudentLoginActivity.this).execute(email);
+                        isAuth = true;
+                        getSupportLoaderManager().initLoader(NS_LOGIN_PASS_ID, null, this);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                mEmailView.setText("");
+                mPasswordView.setText("");
+                showProgress(false);
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(NonStudentLoginActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                }
+                else {
+                    builder = new AlertDialog.Builder(NonStudentLoginActivity.this);
+                }
+                builder.setTitle("Login Error");
+                builder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Try logging in again
+                    }
+                });
+                builder.setMessage("Incorrect email/password combination.");
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.show();
+            }
+        }
+        else {
+            Log.d("NonStudentLoginActivity", "result: " + data);
+            if (!data.equals("AUTHERROR")) {
+                try {
+                    JSONObject userJSON = new JSONObject(data);
+                    String first = userJSON.getString("firstname");
+                    String last = userJSON.getString("lastname");
+                    String name = first + " " + last;
+                    String email = userJSON.getString("email");
+                    session.createLoginSession( name , email);
+                    Intent intent = new Intent(NonStudentLoginActivity.this, DashboardActivity.class);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                mEmailView.setText("");
+                mPasswordView.setText("");
+                showProgress(false);
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+                }
+                else {
+                    builder = new AlertDialog.Builder(this);
+                }
+                builder.setTitle("Login Error");
+                builder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Try logging in again
+                    }
+                });
+                builder.setMessage("Unable to authenticate user.");
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.show();
+            }
+
+
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<String> loader) {
+        // Nothing to do...
+    }
+
 
     private interface ProfileQuery {
         String[] PROJECTION = {
@@ -374,7 +489,7 @@ public class NonStudentLoginActivity extends AppCompatActivity {
         int IS_PRIMARY = 1;
     }
 
-    class NonStudentAuthProcess extends AsyncTask {
+    /*class NonStudentAuthProcess extends AsyncTask {
 
         private Context context;
         private String email;
@@ -385,9 +500,7 @@ public class NonStudentLoginActivity extends AppCompatActivity {
             this.context = context;
         }
 
-        protected void onPreExecute() {
-            showProgress(true);
-        }
+        protected void onPreExecute() {}
 
         @Override
         protected Object doInBackground(Object[] objects) {
@@ -425,7 +538,7 @@ public class NonStudentLoginActivity extends AppCompatActivity {
             String resultString = (String) result;
             NonStudentLoginActivity.this.onBackgroundTaskDataObtained(resultString);
         }
-    }
+    }*/
 
     public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -453,7 +566,9 @@ public class NonStudentLoginActivity extends AppCompatActivity {
         builder.show();
     }
 
-    class HashReceiver extends AsyncTask {
+
+
+    /*class HashReceiver extends AsyncTask {
 
         Context context;
         private String email;
@@ -466,7 +581,7 @@ public class NonStudentLoginActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPreExecute() {}
+        protected void onPreExecute() {showProgress(true);}
 
         @Override
         protected Object doInBackground(Object[] objects) {
@@ -518,10 +633,31 @@ public class NonStudentLoginActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-
+            else {
+                mEmailView.setText("");
+                mPasswordView.setText("");
+                showProgress(false);
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(NonStudentLoginActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                }
+                else {
+                    builder = new AlertDialog.Builder(NonStudentLoginActivity.this);
+                }
+                builder.setTitle("Login Error");
+                builder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Try logging in again
+                    }
+                });
+                builder.setMessage("Incorrect email/password combination.");
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.show();
+            }
 
         }
-    }
+    }*/
 
 }
 

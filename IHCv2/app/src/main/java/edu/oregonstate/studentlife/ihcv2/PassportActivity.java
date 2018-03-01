@@ -193,6 +193,7 @@ public class PassportActivity extends AppCompatActivity
             while (stEvents.hasMoreTokens()) {
                 String eventInfoString = stEvents.nextToken();
                 JSONObject eventJSON = new JSONObject(eventInfoString);
+                int eventid = Integer.parseInt(eventJSON.getString("eventid"));
                 String eventName = eventJSON.getString("name");
                 String eventLocation = eventJSON.getString("location");
                 String eventAddress = eventJSON.getString("address");
@@ -228,7 +229,7 @@ public class PassportActivity extends AppCompatActivity
                 int monthInt = Integer.parseInt(eventMonth);
                 eventMonth = monthShortNames[monthInt-1];
 
-                Event retrievedEvent = new Event(eventName, eventLocation, eventAddress,
+                Event retrievedEvent = new Event(eventid, eventName, eventLocation, eventAddress,
                         eventDate, eventTime, eventMonth, eventDay, eventYear,
                         eventDescription, eventLink1, eventLink2, eventLink3, eventPin);
 
