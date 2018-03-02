@@ -64,6 +64,12 @@
                     android:paddingBottom="15dp"/>
                 <!-- CONTENT GOES HERE -->
 
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_resource_list"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/mapbtn2"/>
+
             </RelativeLayout>
 
         </ScrollView>

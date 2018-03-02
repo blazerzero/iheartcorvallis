@@ -4,16 +4,22 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,17 +28,34 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.StringTokenizer;
+
+import edu.oregonstate.studentlife.ihcv2.adapters.ResourceAdapter;
+import edu.oregonstate.studentlife.ihcv2.data.Resource;
+import edu.oregonstate.studentlife.ihcv2.loaders.ResourceLoader;
 
 /**
  * Created by Omeed on 12/20/17.
  */
 
 public class ResourcesActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        ResourceAdapter.OnResourceClickListener,
+        LoaderManager.LoaderCallbacks<String> {
+
+    private final static String TAG = ResourcesActivity.class.getSimpleName();
 
     SessionActivity session;
+    private RecyclerView mResourceRV;
+    private ResourceAdapter mResourceAdapter;
+    private ArrayList<Resource> resourceList;
+
+    private final static int IHC_RESOURCE_LOADER_ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +75,15 @@ public class ResourcesActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        resourceList = new ArrayList<Resource>();
+
+        mResourceRV = (RecyclerView) findViewById(R.id.rv_resource_list);
+        mResourceRV.setLayoutManager(new LinearLayoutManager(this));
+        mResourceRV.setHasFixedSize(true);
+
+        mResourceAdapter = new ResourceAdapter(this);
+        mResourceRV.setAdapter(mResourceAdapter);
+
         TextView resourceMapBtn = (TextView)findViewById(R.id.mapbtn2);
         resourceMapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +98,17 @@ public class ResourcesActivity extends AppCompatActivity
             }
         });
 
+        getSupportLoaderManager().initLoader(IHC_RESOURCE_LOADER_ID, null, this);
+
+    }
+
+    @Override
+    public void onResourceClick(Resource resource) {
+        Uri resourceURI = Uri.parse(resource.getResourceLink());
+        Intent linkIntent = new Intent(Intent.ACTION_VIEW, resourceURI);
+        if (linkIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(linkIntent);
+        }
     }
 
     public void onPause() {
@@ -157,6 +200,40 @@ public class ResourcesActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public Loader<String> onCreateLoader(int id, Bundle args) {
+        return new ResourceLoader(this);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<String> loader, String data) {
+        Log.d(TAG, "got results from loader");
+        try {
+            StringTokenizer stResources = new StringTokenizer(data, "\\");
+            while (stResources.hasMoreTokens()) {
+                String resourceString = stResources.nextToken();
+                JSONObject resourceJSON = new JSONObject(resourceString);
+                int resourceID = Integer.parseInt(resourceJSON.getString("id"));
+                String resourceTitle = resourceJSON.getString("title");
+                String resourceDescription = resourceJSON.getString("description");
+                String resourceLink = resourceJSON.getString("link");
+
+                Resource retrievedResource = new Resource(resourceID, resourceTitle, resourceDescription, resourceLink);
+                resourceList.add(retrievedResource);
+            }
+            for (Resource resource : resourceList) {
+                mResourceAdapter.addResource(resource);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<String> loader) {
+        // Nothing to do...
     }
 
     public boolean isNetworkAvailable() {

@@ -6,33 +6,27 @@ import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 
 /**
- * Created by Omeed on 2/22/18.
+ * Created by Omeed on 3/1/18.
  */
 
-public class UserInfoLoader extends AsyncTaskLoader<String> {
+public class ResourceLoader extends AsyncTaskLoader<String> {
+    private final static String TAG = ResourceLoader.class.getSimpleName();
+    final static String IHC_GET_RESOURCES_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/getresources.php";
+    private String resourceJSON;
 
-    private final static String TAG = UserInfoLoader.class.getSimpleName();
-
-    private String userJSON;
-    private String email;
-    final static String IHC_GETUSERINFO_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/getuserinfo.php";
-
-    public UserInfoLoader(Context context, String email) {
+    public ResourceLoader(Context context) {
         super(context);
-        this.email = email;
     }
 
     @Override
-    protected void onStartLoading() {
-        if (userJSON != null) {
+    public void onStartLoading() {
+        if (resourceJSON != null) {
             Log.d(TAG, "loader returning cached results");
-            deliverResult(userJSON);
+            deliverResult(resourceJSON);
         } else {
             forceLoad();
         }
@@ -40,20 +34,14 @@ public class UserInfoLoader extends AsyncTaskLoader<String> {
 
     @Override
     public String loadInBackground() {
-        Log.d(TAG, "getting user information with URL: " + IHC_GETUSERINFO_URL);
-
+        Log.d(TAG, "getting events with URL: " + IHC_GET_RESOURCES_URL);
         try {
-            URL url = new URL(IHC_GETUSERINFO_URL);
-            String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
+            URL url = new URL(IHC_GET_RESOURCES_URL);
 
-            //Log.d(TAG, "About to open connection.");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            wr.write( data );
-            wr.flush();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
@@ -62,16 +50,15 @@ public class UserInfoLoader extends AsyncTaskLoader<String> {
 
             while ((line = reader.readLine()) != null) {
                 sb.append(line);
-                break;
             }
-            
+
             return sb.toString();
         } catch (Exception e) { e.printStackTrace(); return null; }
     }
 
     @Override
     public void deliverResult(String data) {
-        userJSON = data;
+        resourceJSON = data;
         super.deliverResult(data);
     }
 }
