@@ -24,7 +24,13 @@
       if ($result == True) {
          $res2 = $mysqli->query("SELECT * FROM ihc_completed_events WHERE userid='$userid'");
          if ($res2 == True) {
-            $stampcount = $res2->num_rows + 1;
+            $stampcount = "";
+            if ($res2->num_rows == 1) {
+               $stampcount = 1;
+            }
+            else if ($res2->num_rows > 1){
+               $stampcount = $res2->num_rows + 1;
+            }
             $res3 = $mysqli->query("UPDATE ihc_users SET stampcount='$stampcount' WHERE id='$userid'");
             if ($res3 == True) {
                echo "COMPLETED EVENT ADDED";
