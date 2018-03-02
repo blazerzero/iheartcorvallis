@@ -49,6 +49,7 @@
                   <a href="#">Resources</a>
                   <div class="menu">
                      <div style="background-color: #dc4405;"><a href="./manage_primary_resources.php">Manage Resource Page</a></div>
+                     <div style="background-color: #dc4405;"><a href="./add_marker.php">Add Resource to Map </a></div>
                      <div style="background-color: #dc4405;"><a href="./manage_resource_map.php">Manage Resource Map</a></div>
                   </div>
                </div>

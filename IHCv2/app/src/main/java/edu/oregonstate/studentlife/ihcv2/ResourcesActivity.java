@@ -104,9 +104,12 @@ public class ResourcesActivity extends AppCompatActivity
 
     @Override
     public void onResourceClick(Resource resource) {
-        Uri resourceURI = Uri.parse(resource.getResourceLink());
+        String resourceURL = "http:" + resource.getResourceLink();
+        Uri resourceURI = Uri.parse(resourceURL);
+        Log.d(TAG, "resource URI: " + resourceURI);
         Intent linkIntent = new Intent(Intent.ACTION_VIEW, resourceURI);
         if (linkIntent.resolveActivity(getPackageManager()) != null) {
+            Log.d(TAG, "About to go to resource link.");
             startActivity(linkIntent);
         }
     }

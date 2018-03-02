@@ -51,6 +51,7 @@
                   <a href="#">Resources</a>
                   <div class="menu">
                      <div style="background-color: #dc4405;"><a href="./manage_primary_resources.php">Manage Resource Page</a></div>
+                     <div style="background-color: #dc4405;"><a href="./add_marker.php">Add Resource to Map </a></div>
                      <div style="background-color: #dc4405;"><a href="./manage_resource_map.php">Manage Resource Map</a></div>
                   </div>
                </div>
@@ -68,7 +69,7 @@
       </div>
 
       <div class="mainbody">
-         <left class="sectionheader"><h1>Add a Prize</h1></left>
+         <left class="sectionheader"><h1>Add a Resource to the Map</h1></left>
          <br><br>
          <form name="markerForm" onsubmit="return validateForm()" action="./admin_server/add_marker_server.php" method="post">
             <div class="elem">

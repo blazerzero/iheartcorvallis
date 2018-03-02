@@ -36,43 +36,36 @@
         android:background="@color/colorPrimary"
         tools:openDrawer="start">
 
-        <ScrollView
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:background="@color/colorPrimary">
 
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
+            <TextView
+                android:id="@+id/mapbtn2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                android:background="@color/colorPrimary">
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="#ffffff"
+                android:text="@string/resource_map_button_text"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:elevation="4dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textAlignment="center"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"/>
 
-                <TextView
-                    android:id="@+id/mapbtn2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:background="#ffffff"
-                    android:text="CLICK HERE FOR RESOURCE MAP"
-                    android:textSize="15dp"
-                    android:textStyle="bold"
-                    android:elevation="4dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textAlignment="center"
-                    android:paddingTop="15dp"
-                    android:paddingBottom="15dp"/>
-                <!-- CONTENT GOES HERE -->
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_resource_list"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mapbtn2"/>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_resource_list"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/mapbtn2"/>
-
-            </RelativeLayout>
-
-        </ScrollView>
+        </RelativeLayout>
 
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"

@@ -64,7 +64,7 @@ public class UserInfoLoader extends AsyncTaskLoader<String> {
                 sb.append(line);
                 break;
             }
-            
+
             return sb.toString();
         } catch (Exception e) { e.printStackTrace(); return null; }
     }
