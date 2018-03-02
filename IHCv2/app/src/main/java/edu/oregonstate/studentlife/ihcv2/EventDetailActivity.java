@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,7 @@ public class EventDetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_EVENT_DETAILED = "Detailed Event";
     public static final String EXTRA_USER = "User";
+    private static final String TAG = EventDetailActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,7 @@ public class EventDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(EventsActivity.EXTRA_EVENT) && intent.hasExtra(EventsActivity.EXTRA_USER)) {
             user = (User) intent.getSerializableExtra(EventsActivity.EXTRA_USER);
+            Log.d(TAG, "User ID: " + user.getId());
             event = (Event) intent.getSerializableExtra(EventsActivity.EXTRA_EVENT);
             mEventNameTV.setText(event.getName());
             mEventLocationTV.setText(event.getLocation());

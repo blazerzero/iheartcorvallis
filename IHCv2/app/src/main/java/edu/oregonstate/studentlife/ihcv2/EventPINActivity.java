@@ -63,6 +63,7 @@ public class EventPINActivity extends AppCompatActivity implements LoaderManager
                             }
                             Thread.sleep(1000);
                             getSupportLoaderManager().initLoader(IHC_COMPLETED_EVENTS_ID, null, EventPINActivity.this);
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

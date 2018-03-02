@@ -41,13 +41,14 @@
   right: .5vw;*/
 }
 
-/* Navigation Bar Stylings */
-.navbar {
-   list-style-type: none;
-   margin-top: 0.5vw;
-   margin-bottom: 0.5vw;
-   overflow: hidden;
-   background-color: #333;
+.navelem {
+   color: #fff;
+   display: inline;
+}
+
+.item.ihc {
+   background-color: #dc4405;
+   color: black;
 }
 
 .mainbody { padding: 2vw }

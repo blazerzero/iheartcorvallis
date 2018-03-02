@@ -22,7 +22,14 @@
 	   //$result = $stmt->execute();
       $result = $mysqli->query("INSERT INTO ihc_completed_events (userid, eventid) VALUES ('$userid', '$eventid')");
       if ($result == True) {
-         echo "COMPLETED EVENT ADDED";
+         $res2 = $mysqli->query("SELECT * FROM ihc_completed_events WHERE userid='$userid'");
+         if ($res2 == True) {
+            $stampcount = $res2->num_rows + 1;
+            $res3 = $mysqli->query("UPDATE ihc_users SET stampcount='$stampcount' WHERE id='$userid'");
+            if ($res3 == True) {
+               echo "COMPLETED EVENT ADDED";
+            }
+         }
       }
       else {
          echo "ADDERROR";
