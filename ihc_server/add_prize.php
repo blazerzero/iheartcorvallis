@@ -48,6 +48,7 @@
                <div class="ui simple dropdown item">
                   <a href="#">Resources</a>
                   <div class="menu">
+                     <div style="background-color: #dc4405;"><a href="./add_primary_resource.php">Add to Resource Page</a></div>
                      <div style="background-color: #dc4405;"><a href="./manage_primary_resources.php">Manage Resource Page</a></div>
                      <div style="background-color: #dc4405;"><a href="./add_marker.php">Add Resource to Map </a></div>
                      <div style="background-color: #dc4405;"><a href="./manage_resource_map.php">Manage Resource Map</a></div>
@@ -69,11 +70,14 @@
       <div class="mainbody">
          <left class="sectionheader"><h1>Add a Prize</h1></left>
          <br><br>
+         <p class="requirednote">* Denotes a required field</p><br>
          <form name="prizeForm" onsubmit="return validateForm()" action="./admin_server/add_prizes_server.php" method="post">
             <div class="elem">
+               <span class="requirednote">*</span>
                Name of Prize: <input class="inputbox" type="text" name="name"><br><br>
             </div>
             <div class="elem">
+               <span class="requirednote">*</span>
                Prize Level: <select class="ui search dropdown" name="level">
                   <option value="">Choose a level</option>
                   <option value="1">Gold</option>

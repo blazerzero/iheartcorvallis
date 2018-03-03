@@ -50,6 +50,7 @@
                <div class="ui simple dropdown item">
                   <a href="#">Resources</a>
                   <div class="menu">
+                     <div style="background-color: #dc4405;"><a href="./add_primary_resource.php">Add to Resource Page</a></div>
                      <div style="background-color: #dc4405;"><a href="./manage_primary_resources.php">Manage Resource Page</a></div>
                      <div style="background-color: #dc4405;"><a href="./add_marker.php">Add Resource to Map </a></div>
                      <div style="background-color: #dc4405;"><a href="./manage_resource_map.php">Manage Resource Map</a></div>
@@ -71,15 +72,18 @@
       <div class="mainbody">
          <left class="sectionheader"><h1>Add a Resource to the Map</h1></left>
          <br><br>
+         <p class="requirednote">* Denotes a required field</p><br>
          <form name="markerForm" onsubmit="return validateForm()" action="./admin_server/add_marker_server.php" method="post">
             <div class="elem">
+               <span class="requirednote">*</span>
                Name of Location: <input class="inputbox" type="text" name="name"><br><br>
             </div>
             <div class="elem">
-               Address: <input class="inputbox" type="text" name="address"><br><br>
+               <span class="requirednote">*</span>
+               Full Address: <textarea class="inputbox" rows="2" cols="50" name="address"></textarea><br><br>
             </div>
             <div class="elem">
-            <div class="elem">
+               <span class="requirednote">*</span>
                Resource Type: <select class="ui search dropdown" name="type">
                   <option value="">Choose a resource type</option>
                   <option value="1">Activities and Entertainment</option>

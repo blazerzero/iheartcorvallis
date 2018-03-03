@@ -1,28 +1,18 @@
-<?php
-require './admin_server/db.php';
-$id = $_GET['id'];
-$result = $mysqli->query("SELECT * FROM ihc_resources WHERE id='$id'");
-if ($result->num_rows > 0) {
-   $marker = $result->fetch_assoc();
-}
-?>
-
+<!DOCTYPE HTML>
 <html>
    <head>
-      <title>Edit Map Resource - I Heart Corvallis Administrative Suite</title>
+      <title>Add to Resource Page - I Heart Corvallis Administrative Suite</title>
       <link type="text/css" rel="stylesheet" href="./css/Semantic-UI-CSS-master/semantic.css"/>
       <link type="text/css" rel="stylesheet" href="./css/stylesheet.css"/>
       <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
       <script>
       function validateForm() {
-         var nameField = document.forms["markerForm"]["name"].value;
-         var addressField = document.forms["markerForm"]["address"]
-         var typeField = document.forms["markerForm"]["type"].value;
-         if (nameField == null || nameField == "" ||
-            addressField == null || addressField == "" ||
-            levelField == null || levelField == "") {
-               alert("Please fill all fields before submitting!");
+         var titleField = document.forms["resourceForm"]["title"].value;
+         var descriptionField = document.forms["resourceForm"]["description"].value;
+         if (titleField == null || titleField == "" ||
+            descriptionField == null || descriptionField == "") {
+               alert("Please fill all required fields before submitting!");
                return false;
             }
          }
@@ -78,24 +68,20 @@ if ($result->num_rows > 0) {
       </div>
 
       <div class="mainbody">
-         <left class="sectionheader"><h1>Edit Map Resource</h1></left>
-         <br>
-         <br><p class="requirednote">* Denotes a required field</p><br>
-         <form name="markerForm" onsubmit="return validateForm()" action="./admin_server/update_marker_server.php" method="post">
-            <div class="elem" style="display: none">
-               Marker ID: <input class="inputbox" type="text" name="eventid" value="<?php /*echo $prizes['eventid']; */?>" readonly><br><br>
+         <left class="sectionheader"><h1>Add a Resource to the Resource Page</h1></left>
+         <br><br>
+         <p class="requirednote">* Denotes a required field</p><br>
+         <form name="resourceForm" onsubmit="return validateForm()" action="./admin_server/add_primary_resource_server.php" method="post">
+            <div class="elem">
+               <span class="requirednote">*</span>
+               Resource Title: <input class="inputbox" type="text" name="title"><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
-               Name of Location: <input class="inputbox" type="text" name="name" value="<?php echo $marker['name']; ?>"><br><br>
+               Description: <textarea class="inputbox" rows="4" cols="50" name="description"></textarea><br><br>
             </div>
             <div class="elem">
-               <span class="requirednote">*</span>
-               Full Address: <textarea class="inputbox" rows="2" cols="50" name="name" value="<?php echo $marker['address']; ?>"></textarea><br><br>
-            </div>
-            <div class="elem">
-               <span class="requirednote">*</span>
-               Resource Type: <input class="inputbox" type="text" name="level" value="<?php echo $marker['type']; ?>"><br><br>
+               Link: <input class="inputbox" type="text" name="link"><br><br>
             </div>
             <input class="ui button" type="submit">
          </form>

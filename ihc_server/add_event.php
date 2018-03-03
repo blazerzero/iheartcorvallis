@@ -69,6 +69,7 @@
                <div class="ui simple dropdown item">
                   <a href="#">Resources</a>
                   <div class="menu">
+                     <div style="background-color: #dc4405;"><a href="./add_primary_resource.php">Add to Resource Page</a></div>
                      <div style="background-color: #dc4405;"><a href="./manage_primary_resources.php">Manage Resource Page</a></div>
                      <div style="background-color: #dc4405;"><a href="./add_marker.php">Add Resource to Map </a></div>
                      <div style="background-color: #dc4405;"><a href="./manage_resource_map.php">Manage Resource Map</a></div>
@@ -89,29 +90,36 @@
 
       <div class="mainbody">
          <left class="sectionheader"><h1>Add an Event</h1></left>
-         <br>
-         <br><p class="requirednote">* Denotes a required field</p><br>
+         <br><br>
+         <p class="requirednote">* Denotes a required field</p><br>
          <form name="eventForm" onsubmit="return validateForm()" action="./admin_server/add_events_server.php" method="post">
             <div class="elem">
-               <span class="requirednote">*</span>Name of Event: <input class="inputbox" type="text" name="name"><br><br>
+               <span class="requirednote">*</span>
+               Name of Event: <input class="inputbox" type="text" name="name"><br><br>
             </div>
             <div class="elem">
-               <span class="requirednote">*</span>Name of Location: <input class="inputbox" type="text" name="location"><br><br>
+               <span class="requirednote">*</span>
+               Name of Location: <input class="inputbox" type="text" name="location"><br><br>
             </div>
             <div class="elem">
-               <span class="requirednote">*</span>Full Address: <input class="inputbox" type="text" name="fulladdress"><br><br>
+               <span class="requirednote">*</span>
+               Full Address: <textarea class="inputbox" rows="2" cols="50" name="fulladdress"></textarea><br><br>
             </div>
             <div class="elem">
-               <span class="requirednote">*</span>Date: <input class="inputbox" type="date" name="date"><br><br>
+               <span class="requirednote">*</span>
+               Date: <input class="inputbox" type="date" name="date"><br><br>
             </div>
             <div class="elem">
-               <span class="requirednote">*</span>Time: <input class="inputbox" type="time" name="time"><br><br>
+               <span class="requirednote">*</span>
+               Time: <input class="inputbox" type="time" name="time"><br><br>
             </div>
             <div class="elem">
-               <span class="requirednote">*</span>Description of Event: <input class="inputbox" type="text" name="description"><br><br>
+               <span class="requirednote">*</span>
+               Description of Event: <textarea class="inputbox" rows="3" cols="50" name="description"></textarea><br><br>
             </div>
             <div class="elem">
-               <span class="requirednote">*</span>Cover Image: <input class="ui button" type="file" name="image"><br><br>
+               <span class="requirednote">*</span>
+               Cover Image: <input class="ui button" type="file" name="image"><br><br>
             </div>
             <div class="elem">
                Link 1: <input class="inputbox" type="text" name="link1"><br><br>

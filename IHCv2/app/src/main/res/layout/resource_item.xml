@@ -33,27 +33,25 @@
             <TextView
                 android:id="@+id/tv_resource_title"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/event_cv_elem_height"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/iv_resource"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimaryDark"
-                android:gravity="start|center_vertical"
-                android:lines="2"/>
+                android:gravity="start|center_vertical"/>
 
             <TextView
                 android:id="@+id/tv_resource_description"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/event_cv_elem_height"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_resource_title"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:textSize="18sp"
                 android:textColor="@color/colorPrimaryDark"
-                android:gravity="start|center_vertical"
-                android:lines="5"/>
+                android:gravity="start|center_vertical"/>
 
             <TextView
                 android:id="@+id/tv_resource_link"
@@ -66,8 +64,7 @@
                 android:textSize="18sp"
                 android:textColor="@android:color/holo_blue_dark"
                 android:textStyle="bold"
-                android:gravity="start|center_vertical"
-                android:lines="1"/>
+                android:gravity="start|center_vertical"/>
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

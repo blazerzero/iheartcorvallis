@@ -3,21 +3,22 @@ require './admin_server/db.php';
 $result = $mysqli->query("SELECT * FROM ihc_resources");
 $marker = array();
 $markers = array();
+$sortedMarkers = array();
 while ($marker = $result->fetch_assoc()) {
    $markers[] = $marker;
 }
 
-/*$indexLeft = 0;
+$indexLeft = 0;
 $pointer = 0;
 $i = 0;
 $indexRight = 1;
 
 // INSERTION SORT TO SORT PRIZES IN DESCENDING ORDER FROM GOLD TO BRONZE
-for ($i = 0; $i < count($ihc_prizes)-1; $i++) {
+/*for ($i = 0; $i < count($ihc_prizes)-1; $i++) {
    while ($indexLeft >= 0
-         && (($ihc_prizes[$indexLeft]["level"] == "silver" && $ihc_prizes[$indexRight]["level"] == "gold")
-         || ($ihc_prizes[$indexLeft]["level"] == "bronze" && $ihc_prizes[$indexRight]["level"] == "gold")
-         || ($ihc_prizes[$indexLeft]["level"] == "bronze" && $ihc_prizes[$indexRight]["level"] == "silver"))) {
+         && (($ihc_prizes[$indexLeft]["type"] == "silver" && $ihc_prizes[$indexRight]["type"] == "gold")
+         || ($ihc_prizes[$indexLeft]["type"] == "bronze" && $ihc_prizes[$indexRight]["type"] == "gold")
+         || ($ihc_prizes[$indexLeft]["type"] == "bronze" && $ihc_prizes[$indexRight]["type"] == "silver"))) {
             $temp = $ihc_prizes[$indexLeft];
             $ihc_prizes[$indexLeft] = $ihc_prizes[$indexRight];
             $ihc_prizes[$indexRight] = $temp;
@@ -28,6 +29,38 @@ for ($i = 0; $i < count($ihc_prizes)-1; $i++) {
    $indexLeft = $pointer;
    $indexRight = $pointer + 1;
 }*/
+
+for ($i = 0; $i < count($markers); $i++) {
+   if ($markers[$i]['type'] == "Activities and Entertainment") {
+      $sortedMarkers[] = $markers[$i];
+   }
+}
+for ($i = 0; $i < count($markers); $i++) {
+   if ($markers[$i]['type'] == "Grocery Stores") {
+      $sortedMarkers[] = $markers[$i];
+   }
+}
+for ($i = 0; $i < count($markers); $i++) {
+   if ($markers[$i]['type'] == "Restaurants") {
+      $sortedMarkers[] = $markers[$i];
+   }
+}
+for ($i = 0; $i < count($markers); $i++) {
+   if ($markers[$i]['type'] == "Shopping") {
+      $sortedMarkers[] = $markers[$i];
+   }
+}
+for ($i = 0; $i < count($markers); $i++) {
+   if ($markers[$i]['type'] == "City Offices") {
+      $sortedMarkers[] = $markers[$i];
+   }
+}
+for ($i = 0; $i < count($markers); $i++) {
+   if ($markers[$i]['type'] == "OSU Campus") {
+      $sortedMarkers[] = $markers[$i];
+   }
+}
+
 ?>
 
 <html>
@@ -69,6 +102,7 @@ for ($i = 0; $i < count($ihc_prizes)-1; $i++) {
                <div class="ui simple dropdown item">
                   <a href="#">Resources</a>
                   <div class="menu">
+                     <div style="background-color: #dc4405;"><a href="./add_primary_resource.php">Add to Resource Page</a></div>
                      <div style="background-color: #dc4405;"><a href="./manage_primary_resources.php">Manage Resource Page</a></div>
                      <div style="background-color: #dc4405;"><a href="./add_marker.php">Add Resource to Map </a></div>
                      <div style="background-color: #dc4405;"><a href="./manage_resource_map.php">Manage Resource Map</a></div>
@@ -99,7 +133,7 @@ for ($i = 0; $i < count($ihc_prizes)-1; $i++) {
                </tr>
             </thead>
             <tbody>
-               <?php foreach($markers as $marker): ?>
+               <?php foreach($sortedMarkers as $marker): ?>
                   <tr>
                      <td><?php echo $marker['name']; ?></td>
                      <td><?php echo $marker['address']; ?></td>
