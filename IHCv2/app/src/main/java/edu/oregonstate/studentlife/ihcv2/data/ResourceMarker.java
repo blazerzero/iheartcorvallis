@@ -1,4 +1,4 @@
-package edu.oregonstate.studentlife.ihcv2;
+package edu.oregonstate.studentlife.ihcv2.data;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -6,13 +6,13 @@ import com.google.android.gms.maps.model.LatLng;
  * Created by Omeed on 1/25/18.
  */
 
-public class ResourceMapMarker {
+public class ResourceMarker {
 
     private String name;
     private LatLng latLng;
     private String type;
 
-    public ResourceMapMarker(String name, LatLng latLng, String type) {
+    public ResourceMarker(String name, LatLng latLng, String type) {
         this.name = name;
         this.latLng = latLng;
         this.type = type;

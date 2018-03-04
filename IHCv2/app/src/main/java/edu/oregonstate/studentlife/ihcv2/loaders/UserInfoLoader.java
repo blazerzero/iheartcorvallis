@@ -31,7 +31,7 @@ public class UserInfoLoader extends AsyncTaskLoader<String> {
     @Override
     protected void onStartLoading() {
         if (userJSON != null) {
-            Log.d(TAG, "loader returning cached results");
+            Log.d(TAG, "loader returning cached user information");
             deliverResult(userJSON);
         } else {
             forceLoad();

@@ -10,24 +10,24 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by Omeed on 2/22/18.
+ * Created by Omeed on 3/4/18.
  */
 
-public class PrizeLoader extends AsyncTaskLoader<String> {
-    private final static String TAG = PrizeLoader.class.getSimpleName();
+public class MarkerLoader extends AsyncTaskLoader<String> {
 
-    private String prizeJSON;
-    private final static String IHC_GET_PRIZES_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/getprizes.php";
+    private final static String TAG = MarkerLoader.class.getSimpleName();
+    final static String IHC_GET_RESOURCE_MARKERS_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/getresource_markers.php";
+    private String markerJSON;
 
-    public PrizeLoader(Context context) {
+    public MarkerLoader(Context context) {
         super(context);
     }
 
     @Override
-    protected void onStartLoading() {
-        if (prizeJSON != null) {
-            Log.d(TAG, "loader returning cached prizes");
-            deliverResult(prizeJSON);
+    public void onStartLoading() {
+        if (markerJSON != null) {
+            Log.d(TAG, "loader returning cached markers");
+            deliverResult(markerJSON);
         } else {
             forceLoad();
         }
@@ -36,7 +36,7 @@ public class PrizeLoader extends AsyncTaskLoader<String> {
     @Override
     public String loadInBackground() {
         try {
-            URL url = new URL(IHC_GET_PRIZES_URL);
+            URL url = new URL(IHC_GET_RESOURCE_MARKERS_URL);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
@@ -53,13 +53,12 @@ public class PrizeLoader extends AsyncTaskLoader<String> {
             }
 
             return sb.toString();
-        } catch (Exception e) { return new String("Exception: " + e.getMessage()); }
+        } catch (Exception e) { e.printStackTrace(); return null; }
     }
 
     @Override
     public void deliverResult(String data) {
-        prizeJSON = data;
+        markerJSON = data;
         super.deliverResult(data);
     }
-
 }

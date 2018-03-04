@@ -83,7 +83,7 @@ if ($result->num_rows > 0) {
          <br><p class="requirednote">* Denotes a required field</p><br>
          <form name="markerForm" onsubmit="return validateForm()" action="./admin_server/update_marker_server.php" method="post">
             <div class="elem" style="display: none">
-               Marker ID: <input class="inputbox" type="text" name="eventid" value="<?php /*echo $prizes['eventid']; */?>" readonly><br><br>
+               Marker ID: <input class="inputbox" type="text" name="eventid" value="<?php echo $prizes['eventid']; ?>" readonly><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
@@ -91,7 +91,7 @@ if ($result->num_rows > 0) {
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
-               Full Address: <textarea class="inputbox" rows="2" cols="50" name="name" value="<?php echo $marker['address']; ?>"></textarea><br><br>
+               Full Address: <textarea class="inputbox" rows="2" cols="50" name="name"><?php echo $marker['address']; ?></textarea><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>

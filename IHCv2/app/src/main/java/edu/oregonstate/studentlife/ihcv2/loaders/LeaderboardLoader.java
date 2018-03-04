@@ -25,7 +25,7 @@ public class LeaderboardLoader extends AsyncTaskLoader<String> {
     @Override
     public void onStartLoading() {
         if (leaderboardJSON != null) {
-            Log.d(TAG, "loader returning cached results");
+            Log.d(TAG, "loader returning cached leaderboard");
             deliverResult(leaderboardJSON);
         } else {
             forceLoad();

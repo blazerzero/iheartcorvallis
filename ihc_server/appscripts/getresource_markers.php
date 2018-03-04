@@ -20,11 +20,14 @@
       //$result = $mysqli->query("SELECT * FROM ihc_resources");
       if ($result->num_rows > 0) {
          while ($row = $result->fetch_assoc()) {
-            echo $row["name"] . "\\";
+            /*echo $row["name"] . "\\";
             echo $row["latitude"] . "\\";
             echo $row["longitude"] . "\\";
             echo $row["type"] . "\\";
-            echo ";";
+            echo ";";*/
+            $data = json_encode($row);
+            echo $data;
+            echo "\\";
          }
       }
 	  $result->close();

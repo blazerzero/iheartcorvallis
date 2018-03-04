@@ -1,6 +1,7 @@
 package edu.oregonstate.studentlife.ihcv2.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,9 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
         void bind(Resource resource) {
             mResourceTitleTV.setText(resource.getResourceTitle());
             mResourceDescriptionTV.setText(resource.getResourceDescription());
+            if (TextUtils.isEmpty(resource.getResourceLink())) {
+                mResourceLinkTV.setVisibility(View.GONE);
+            }
         }
     }
 

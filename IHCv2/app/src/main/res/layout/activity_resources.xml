@@ -63,7 +63,8 @@
                 android:id="@+id/rv_resource_list"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/mapbtn2"/>
+                android:layout_below="@+id/mapbtn2"
+                android:layout_marginTop="5dp"/>
 
         </RelativeLayout>
 

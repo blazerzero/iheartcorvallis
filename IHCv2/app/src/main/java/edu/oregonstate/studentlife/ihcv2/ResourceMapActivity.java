@@ -1,10 +1,14 @@
 package edu.oregonstate.studentlife.ihcv2;
 
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -15,6 +19,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -23,12 +29,19 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-public class ResourceMapActivity extends FragmentActivity implements OnMapReadyCallback {
+import edu.oregonstate.studentlife.ihcv2.loaders.MarkerLoader;
+
+public class ResourceMapActivity extends FragmentActivity
+        implements OnMapReadyCallback, LoaderManager.LoaderCallbacks<String> {
 
     private GoogleMap mMap;
+
+    private final static String TAG = ResourceMapActivity.class.getSimpleName();
+    private final static int IHC_MARKER_LOADER_ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,210 +80,8 @@ public class ResourceMapActivity extends FragmentActivity implements OnMapReadyC
         LatLng Corvallis = new LatLng(44.564663, -123.263282);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(Corvallis));
 
-        new ResourceMarkerReceiver(this).execute();
-
-        // Add markers for resource locations
-
-        /* ACTIVITIES AND ENTERTAINMENT */
-        /*LatLng pioneerPark = new LatLng(44.554949, -123.269763);
-        mMap.addMarker(new MarkerOptions().position(pioneerPark).title("Pioneer Park"));
-
-        LatLng AveryPark = new LatLng(44.554001, -123.271747);
-        mMap.addMarker(new MarkerOptions().position(AveryPark).title("Avery Park"));
-
-        LatLng AMC = new LatLng(44.588004, -123.249011);
-        mMap.addMarker(new MarkerOptions().position(AMC).title("AMC Corvallis 12 (Carmike)"));
-
-        LatLng RegalCinema = new LatLng(44.584979, -123.258667);
-        mMap.addMarker(new MarkerOptions().position(RegalCinema).title("Regal Cinema"));
-
-        LatLng OsbornAquaticCenter = new LatLng(44.588113, -123.263179);
-        mMap.addMarker(new MarkerOptions().position(OsbornAquaticCenter).title("Osborn Aquatic Center"));
-
-        LatLng HighlandBowl = new LatLng(44.590093, -123.253437);
-        mMap.addMarker(new MarkerOptions().position(HighlandBowl).title("Highland Bowl"));
-
-        LatLng WithamHill = new LatLng(44.579724, -123.299653);
-        mMap.addMarker(new MarkerOptions().position(WithamHill).title("Witham Hill Natural Area"));
-
-        LatLng CrystalLake = new LatLng(44.549943, -123.251701);
-        mMap.addMarker(new MarkerOptions().position(CrystalLake).title("Crystal Lake Sports Field"));
-
-        LatLng DarkSide = new LatLng(44.563333, -123.262436);
-        mMap.addMarker(new MarkerOptions().position(DarkSide).title("Darkside Cinema"));
-
-        LatLng Magestic = new LatLng(44.563662, -123.259662);
-        mMap.addMarker(new MarkerOptions().position(Magestic).title("Magestic Theatre"));
-
-        LatLng McKinleySkate = new LatLng(44.557754, -123.262474);
-        mMap.addMarker(new MarkerOptions().position(McKinleySkate).title("McKinley Skate Park"));*/
-
-        /* GROCERY STORES */
-        /*LatLng SafewayDowntown = new LatLng(44.560853, -123.263348);
-        mMap.addMarker(new MarkerOptions().position(SafewayDowntown).title("Safeway (Downtown)"));
-
-        LatLng FredMeyer = new LatLng(44.575261, -123.274158);
-        mMap.addMarker(new MarkerOptions().position(FredMeyer).title("Fred Meyer"));
-
-        LatLng GroceryOutlet = new LatLng(44.584359, -123.256133);
-        mMap.addMarker(new MarkerOptions().position(GroceryOutlet).title("Grocery Outlet"));
-
-        LatLng NaturalFood = new LatLng(44.553891, -123.264552);
-        mMap.addMarker(new MarkerOptions().position(NaturalFood).title("Natural Food Co-Op"));
-
-        LatLng CountryMarket = new LatLng(44.570658, -123.312247);
-        mMap.addMarker(new MarkerOptions().position(CountryMarket).title("Country Market and Deli"));
-
-        LatLng BazzarInt = new LatLng(44.543984, -123.266391);
-        mMap.addMarker(new MarkerOptions().position(BazzarInt).title("Bazzar International Market"));
-
-        LatLng Safewayphilo = new LatLng(44.550462, -123.308768);
-        mMap.addMarker(new MarkerOptions().position(Safewayphilo).title("Safeway (Philomath)"));
-
-        LatLng BiMart = new LatLng(44.549937, -123.311110);
-        mMap.addMarker(new MarkerOptions().position(BiMart).title("Bi-Mart"));
-
-        LatLng WinCo = new LatLng(44.590630, -123.274336);
-        mMap.addMarker(new MarkerOptions().position(WinCo).title("WinCo"));*/
-
-        /* RESTAURANTS */
-        /*LatLng AlJebal = new LatLng(44.543992, -123.266417);
-        mMap.addMarker(new MarkerOptions().position(AlJebal).title("Al-Jebal Middle-Eastern Restaurant"));
-
-        LatLng FlatTail = new LatLng(44.562705, -123.259747);
-        mMap.addMarker(new MarkerOptions().position(FlatTail).title("Flat Tail Brewing"));
-
-        LatLng AmericanDream = new LatLng(44.569039, -123.279511);
-        mMap.addMarker(new MarkerOptions().position(AmericanDream).title("American Dream Pizza (Campus)"));
-
-        LatLng Delicias = new LatLng(44.589143, -123.256930);
-        mMap.addMarker(new MarkerOptions().position(Delicias).title("Delicias Valley Cafe"));
-
-        LatLng Sada = new LatLng(44.564060, -123.259076);
-        mMap.addMarker(new MarkerOptions().position(Sada).title("Sada Sushi & Izakaya"));
-
-        LatLng Baguette = new LatLng(44.563829, -123.260973);
-        mMap.addMarker(new MarkerOptions().position(Baguette).title("Baguette Vietnamese Sandwiches"));
-
-        LatLng Cibellis = new LatLng(44.572909, -123.264290);
-        mMap.addMarker(new MarkerOptions().position(Cibellis).title("Cibelli's Pizza"));
-
-        LatLng Bellhop = new LatLng(44.562878, -123.259998);
-        mMap.addMarker(new MarkerOptions().position(Bellhop).title("BELLHOP | Brothers in Cheer"));
-
-        LatLng Koriander = new LatLng(44.563070, -123.261321);
-        mMap.addMarker(new MarkerOptions().position(Koriander).title("Koriander"));
-
-        LatLng Evergreen = new LatLng(44.563768, -123.261402);
-        mMap.addMarker(new MarkerOptions().position(Evergreen).title("Evergreen Indian Restaurant"));
-
-        LatLng LocalBoyz = new LatLng(44.567537, -123.272425);
-        mMap.addMarker(new MarkerOptions().position(LocalBoyz).title("Local Boyz Hawaiian Cafe"));
-
-        LatLng NearlyNormals = new LatLng(44.567824, -123.272729);
-        mMap.addMarker(new MarkerOptions().position(NearlyNormals).title("Nearly Normals Gonzo Cuisine"));
-
-        LatLng DelAlma = new LatLng(44.559705, -123.261257);
-        mMap.addMarker(new MarkerOptions().position(DelAlma).title("del Alma Restaurant"));
-
-        LatLng Francescos = new LatLng(44.562923, -123.260683);
-        mMap.addMarker(new MarkerOptions().position(Francescos).title("Francesco's"));
-
-        LatLng Block15 = new LatLng(44.562320, -123.262209);
-        mMap.addMarker(new MarkerOptions().position(Block15).title("Block 15 Brewing Co"));
-
-        LatLng Tommys4th = new LatLng(44.561884, -123.263545);
-        mMap.addMarker(new MarkerOptions().position(Tommys4th).title("Tommy's 4th Street Bar & Grill"));
-
-        LatLng BrokenYolk = new LatLng(44.563961, -123.260942);
-        mMap.addMarker(new MarkerOptions().position(BrokenYolk).title("Broken Yolk Cafe"));
-
-        LatLng AomatsuSushi = new LatLng(44.564983, -123.260890);
-        mMap.addMarker(new MarkerOptions().position(AomatsuSushi).title("Aomatsu Sushi & Grill"));
-
-        LatLng LaRockita = new LatLng(44.559458, -123.264392);
-        mMap.addMarker(new MarkerOptions().position(LaRockita).title("La Rockita Downtown"));
-
-        LatLng QueensChopstick = new LatLng(44.590595, -123.275315);
-        mMap.addMarker(new MarkerOptions().position(QueensChopstick).title("Queen's Chopstick"));
-
-        LatLng Stones = new LatLng(44.590769, -123.275032);
-        mMap.addMarker(new MarkerOptions().position(Stones).title("2 Stones Wood Fired Italian Trattoria"));
-
-        LatLng MIX = new LatLng(44.550099, -123.310598);
-        mMap.addMarker(new MarkerOptions().position(MIX).title("2MIX food & beverages"));
-
-        LatLng WackyYo = new LatLng(44.551931, -123.307519);
-        mMap.addMarker(new MarkerOptions().position(WackyYo).title("Wacky Yo"));*/
-
-        /* SHOPPING */
-        /*LatLng CorvallisMarket = new LatLng(44.582303, -123.259970);
-        mMap.addMarker(new MarkerOptions().position(CorvallisMarket).title("Corvallis Market Center"));
-
-        LatLng Big5 = new LatLng(44.589441, -123.250757);
-        mMap.addMarker(new MarkerOptions().position(Big5).title("Big 5 Sporting Goods"));
-
-        LatLng KingsCircle = new LatLng(44.587802, -123.275404);
-        mMap.addMarker(new MarkerOptions().position(KingsCircle).title("Kings Circle Shopping Center"));
-
-        LatLng Timberhill = new LatLng(44.590851, -123.274362);
-        mMap.addMarker(new MarkerOptions().position(Timberhill).title("Timberhill Shopping Center"));
-
-        LatLng Footwise = new LatLng(44.563652, -123.261626);
-        mMap.addMarker(new MarkerOptions().position(Footwise).title("Footwise in Corvallis"));
-
-        LatLng Revolve = new LatLng(44.563862, -123.259677);
-        mMap.addMarker(new MarkerOptions().position(Revolve).title("re*volve"));
-
-        LatLng BikeNHike = new LatLng(44.561208, -123.262332);
-        mMap.addMarker(new MarkerOptions().position(BikeNHike).title("Bike N Hike"));
-
-        LatLng DollarTree = new LatLng(44.550547, -123.307168);
-        mMap.addMarker(new MarkerOptions().position(DollarTree).title("Dollar Tree"));*/
-
-        /* CITY OFFICES */
-        /*LatLng PublicLib = new LatLng(44.565667, -123.264363);
-        mMap.addMarker(new MarkerOptions().position(PublicLib).title("Public Libary"));
-
-        LatLng CorvallisCityBuilding = new LatLng(44.565799, -123.263111);
-        mMap.addMarker(new MarkerOptions().position(CorvallisCityBuilding).title("Corvallis City Building"));
-
-        LatLng CircuitCourt = new LatLng(44.565303, -123.262365);
-        mMap.addMarker(new MarkerOptions().position(CircuitCourt).title("Circuit Court"));
-
-        LatLng BentonCountyHealthCenter = new LatLng(44.573314, -123.281478);
-        mMap.addMarker(new MarkerOptions().position(BentonCountyHealthCenter).title("Benton County Health Center"));
-
-        LatLng PostOffice = new LatLng(44.561721, -123.260467);
-        mMap.addMarker(new MarkerOptions().position(PostOffice).title("Post Office"));*/
-
-        /* OSU CAMPUS */
-        /*LatLng StudentHealthServices = new LatLng(44.567754, -123.278265);
-        mMap.addMarker(new MarkerOptions().position(StudentHealthServices).title("Student Health Services"));
-
-        LatLng ValleyLib = new LatLng(44.565328, -123.276003);
-        mMap.addMarker(new MarkerOptions().position(ValleyLib).title("The Valley Libary"));
-
-        LatLng IntramuralField = new LatLng(44.562773, -123.280795);
-        mMap.addMarker(new MarkerOptions().position(IntramuralField).title("Intramural Field"));
-
-        LatLng BeaverStore = new LatLng(44.561334, -123.279497);
-        mMap.addMarker(new MarkerOptions().position(BeaverStore).title("Beaver Store"));
-
-        LatLng Reser = new LatLng(44.559607, -123.281422);
-        mMap.addMarker(new MarkerOptions().position(Reser).title("Reser Stadium"));
-
-        LatLng Dixon = new LatLng(44.563168, -123.278617);
-        mMap.addMarker(new MarkerOptions().position(Dixon).title("Dixon Rec Center"));
-
-        LatLng MemorialUnion = new LatLng(44.565031, -123.278900);
-        mMap.addMarker(new MarkerOptions().position(MemorialUnion).title("Memorial Union"));
-
-        LatLng CorvallisCommunityRelationOffice = new LatLng(44.564236, -123.276596);
-        mMap.addMarker(new MarkerOptions().position(CorvallisCommunityRelationOffice).title("Corvallis Community Relation Office"));
-
-        LatLng PeavyFields = new LatLng(44.565122, -123.286945);
-        mMap.addMarker(new MarkerOptions().position(PeavyFields).title("Peavy Fields"));*/
+        //new ResourceMarkerReceiver(this).execute();
+        getSupportLoaderManager().initLoader(IHC_MARKER_LOADER_ID, null, this);
 
     }
 
@@ -278,66 +89,138 @@ public class ResourceMapActivity extends FragmentActivity implements OnMapReadyC
         mMap.addMarker(new MarkerOptions().position(latLng).title(name));
     }
 
-    private void onBackgroundTaskDataObtained(String result) {
-        StringTokenizer stFeed = new StringTokenizer(result, ";");
-        while (stFeed.hasMoreTokens()) {
-            String[] eventTokens = new String[4];
-            String eventJSON = stFeed.nextToken();
-            StringTokenizer stEvent = new StringTokenizer(eventJSON, "\\");
-            for (int i = 0; stEvent.hasMoreTokens(); i++) {
-                eventTokens[i] = stEvent.nextToken();
-            }
-            String resourceName = eventTokens[0];
-            String resourceLatString = eventTokens[1];
-            String resourceLngString = eventTokens[2];
-            String resourceType = eventTokens[3];
+    /*private void onBackgroundTaskDataObtained(String result) {
+        StringTokenizer stMarker = new StringTokenizer(result, "\\");
+        while (stMarker.hasMoreTokens()) {
+            try {
+                String markerString = stMarker.nextToken();
+                JSONObject markerJSON = new JSONObject(markerString);
+                String markerName = markerJSON.getString("name");
+                String markerAddress = markerJSON.getString("address");
+                String markerType = markerJSON.getString("type");
 
-            double resourceLat = Double.parseDouble(resourceLatString);
-            double resourceLng = Double.parseDouble(resourceLngString);
+                Geocoder coder = new Geocoder(this);
+                List<Address> address;
+                LatLng markerLatLng = null;
 
-            LatLng resourceLatLng = new LatLng(resourceLat, resourceLng);
+                address = coder.getFromLocationName(markerAddress, 5);
+                if (address == null || address.size() == 0) {
+                    Log.d(TAG, "Error geocoding address.");
+                } else {
+                    Address location = address.get(0);
+                    markerLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    if (markerType.equals("Activities and Entertainment")) {
+                        mMap.addMarker(new MarkerOptions()
+                                .position(markerLatLng)
+                                .title(markerName)
+                                .icon(BitmapDescriptorFactory.defaultMarker(210))); // blue
+                    } else if (markerType.equals("Grocery Stores")) {
+                        mMap.addMarker(new MarkerOptions()
+                                .position(markerLatLng)
+                                .title(markerName)
+                                .icon(BitmapDescriptorFactory.defaultMarker(120))); // green
+                    } else if (markerType.equals("Restaurants")) {
+                        mMap.addMarker(new MarkerOptions()
+                                .position(markerLatLng)
+                                .title(markerName)
+                                .icon(BitmapDescriptorFactory.defaultMarker(0)));   // red
+                    } else if (markerType.equals("Shopping")) {
+                        mMap.addMarker(new MarkerOptions()
+                                .position(markerLatLng)
+                                .title(markerName)
+                                .icon(BitmapDescriptorFactory.defaultMarker(270))); // purple
+                    } else if (markerType.equals("City Offices")) {
+                        mMap.addMarker(new MarkerOptions()
+                                .position(markerLatLng)
+                                .title(markerName)
+                                .icon(BitmapDescriptorFactory.defaultMarker(60)));  // yellow
+                    } else if (markerType.equals("OSU Campus")) {
+                        mMap.addMarker(new MarkerOptions()
+                                .position(markerLatLng)
+                                .title(markerName)
+                                .icon(BitmapDescriptorFactory.defaultMarker(30)));  // orange
+                    }
+                }
 
-            if (resourceType.equals("Activities and Entertainment")) {
-                mMap.addMarker(new MarkerOptions()
-                        .position(resourceLatLng)
-                        .title(resourceName)
-                        .icon(BitmapDescriptorFactory.defaultMarker(210))); // blue
-            }
-            else if (resourceType.equals("Grocery Stores")) {
-                mMap.addMarker(new MarkerOptions()
-                        .position(resourceLatLng)
-                        .title(resourceName)
-                        .icon(BitmapDescriptorFactory.defaultMarker(120))); // green
-            }
-            else if (resourceType.equals("Restaurants")) {
-                mMap.addMarker(new MarkerOptions()
-                        .position(resourceLatLng)
-                        .title(resourceName)
-                        .icon(BitmapDescriptorFactory.defaultMarker(0)));   // red
-            }
-            else if (resourceType.equals("Shopping")) {
-                mMap.addMarker(new MarkerOptions()
-                        .position(resourceLatLng)
-                        .title(resourceName)
-                        .icon(BitmapDescriptorFactory.defaultMarker(270))); // purple
-            }
-            else if (resourceType.equals("City Offices")) {
-                mMap.addMarker(new MarkerOptions()
-                        .position(resourceLatLng)
-                        .title(resourceName)
-                        .icon(BitmapDescriptorFactory.defaultMarker(60)));  // yellow
-            }
-            else if (resourceType.equals("OSU Campus")) {
-                mMap.addMarker(new MarkerOptions()
-                        .position(resourceLatLng)
-                        .title(resourceName)
-                        .icon(BitmapDescriptorFactory.defaultMarker(30)));  // orange
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
+    }*/
+
+    @Override
+    public Loader<String> onCreateLoader(int id, Bundle args) {
+        return new MarkerLoader(this);
     }
 
-    class ResourceMarkerReceiver extends AsyncTask {
+    @Override
+    public void onLoadFinished(Loader<String> loader, String data) {
+        Log.d(TAG, "got markers from loader");
+        try {
+            StringTokenizer stMarker = new StringTokenizer(data, "\\");
+            while (stMarker.hasMoreTokens()) {
+                String markerString = stMarker.nextToken();
+                JSONObject markerJSON = new JSONObject(markerString);
+                String markerName = markerJSON.getString("name");
+                String markerAddress = markerJSON.getString("address");
+                String markerType = markerJSON.getString("type");
+
+                Geocoder coder = new Geocoder(this);
+                List<Address> address;
+                LatLng markerLatLng = null;
+
+                address = coder.getFromLocationName(markerAddress, 5);
+                if (address == null || address.size() == 0) {
+                    Log.d(TAG, "Error geocoding address.");
+                } else {
+                    Address location = address.get(0);
+                    markerLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    if (markerType.equals("Activities and Entertainment")) {
+                        mMap.addMarker(new MarkerOptions()
+                                .position(markerLatLng)
+                                .title(markerName)
+                                .icon(BitmapDescriptorFactory.defaultMarker(210))); // blue
+                    } else if (markerType.equals("Grocery Stores")) {
+                        mMap.addMarker(new MarkerOptions()
+                                .position(markerLatLng)
+                                .title(markerName)
+                                .icon(BitmapDescriptorFactory.defaultMarker(120))); // green
+                    } else if (markerType.equals("Restaurants")) {
+                        mMap.addMarker(new MarkerOptions()
+                                .position(markerLatLng)
+                                .title(markerName)
+                                .icon(BitmapDescriptorFactory.defaultMarker(0)));   // red
+                    } else if (markerType.equals("Shopping")) {
+                        mMap.addMarker(new MarkerOptions()
+                                .position(markerLatLng)
+                                .title(markerName)
+                                .icon(BitmapDescriptorFactory.defaultMarker(270))); // purple
+                    } else if (markerType.equals("City Offices")) {
+                        mMap.addMarker(new MarkerOptions()
+                                .position(markerLatLng)
+                                .title(markerName)
+                                .icon(BitmapDescriptorFactory.defaultMarker(60)));  // yellow
+                    } else if (markerType.equals("OSU Campus")) {
+                        mMap.addMarker(new MarkerOptions()
+                                .position(markerLatLng)
+                                .title(markerName)
+                                .icon(BitmapDescriptorFactory.defaultMarker(30)));  // orange
+                    }
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<String> loader) {
+        // Nothing to do...
+    }
+
+    /*class ResourceMarkerReceiver extends AsyncTask {
 
         private Context context;
         final static String IHC_GET_RESOURCE_MARKERS_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/getresource_markers.php";
@@ -379,5 +262,5 @@ public class ResourceMapActivity extends FragmentActivity implements OnMapReadyC
             String resultString = (String) result;
             ResourceMapActivity.this.onBackgroundTaskDataObtained(resultString);
         }
-    }
+    }*/
 }

@@ -25,7 +25,7 @@ public class ResourceLoader extends AsyncTaskLoader<String> {
     @Override
     public void onStartLoading() {
         if (resourceJSON != null) {
-            Log.d(TAG, "loader returning cached results");
+            Log.d(TAG, "loader returning cached resources");
             deliverResult(resourceJSON);
         } else {
             forceLoad();
@@ -34,7 +34,7 @@ public class ResourceLoader extends AsyncTaskLoader<String> {
 
     @Override
     public String loadInBackground() {
-        Log.d(TAG, "getting events with URL: " + IHC_GET_RESOURCES_URL);
+        Log.d(TAG, "getting resources with URL: " + IHC_GET_RESOURCES_URL);
         try {
             URL url = new URL(IHC_GET_RESOURCES_URL);
 

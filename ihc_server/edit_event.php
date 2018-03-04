@@ -113,7 +113,7 @@ if ($result->num_rows > 0) {
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
-               Full Address: <textarea class="inputbox" rows="2" cols="50" name="fulladdress" value="<?php echo $event['address']; ?>"></textarea><br><br>
+               Full Address: <textarea class="inputbox" rows="2" cols="50" name="fulladdress"><?php echo $event['address']; ?></textarea><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
@@ -125,7 +125,7 @@ if ($result->num_rows > 0) {
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
-               Description of Event: <input class="inputbox" type="text" name="description" value="<?php echo $event['description']; ?>"><br><br>
+               Description of Event: <textarea class="inputbox" type="text" name="description" rows="4" cols="50"><?php echo $event['description']; ?></textarea><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
