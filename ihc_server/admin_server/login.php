@@ -15,10 +15,10 @@ if ($mysqli->connect_error) {
 
 session_start();
 
-function checkAuth() {
+function checkAuth($id) {
    //echo session_id();
-   if (isset($_SESSION["id"]) && $_SESSION["id"] != null) {
-      return $_SESSION["id"];
+   if ($id != null) {
+      return $id;
    }
    else {
       return "";
@@ -31,7 +31,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
    $result = $mysqli->query("SELECT email FROM ihc_admin_users WHERE email='$email' AND password='$password'");
    if ($result->num_rows > 0) {
-      //$_SESSION["id"] = $email;
+      $_SESSION["id"] = $email;
+      //$sessionid = $_SESSION["id"];
+      //session_regenerate_id(true);
       /*$user = $result->fetch_assoc();
       if ($email == $user["email"]) {*/
          //$message = "Correct login credentials!"; # correct login credentials

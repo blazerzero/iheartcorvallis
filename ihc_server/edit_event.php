@@ -1,3 +1,9 @@
+<!DOCTYPE HTML>
+
+<?php require "./admin_server/login.php"; ?>
+
+<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>
+
 <?php
 require './admin_server/db.php';
 $eventid = $_GET['eventid'];
@@ -92,6 +98,11 @@ if ($result->num_rows > 0) {
                   </div>
                </div>
             </div>
+            <div style="color: #fff; display: inline;">
+               <div class="ui simple dropdown item">
+                  <a style="color: red;" href="./admin_server/logout.php">Logout</a>
+               </div>
+            </div>
          </ul>
       </div>
 
@@ -150,3 +161,10 @@ if ($result->num_rows > 0) {
       </div>
    </body>
 </html>
+
+<?php }
+else {
+   $url = "./admin_auth.php";
+   echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+}
+?>

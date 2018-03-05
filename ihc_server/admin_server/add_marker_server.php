@@ -1,5 +1,8 @@
 <?php
 
+require "./login.php";
+
+if (isset($_SESSION["id"]) && $_SESSION["id"] != null) {
    $dbhost="oniddb.cws.oregonstate.edu";
    $dbname="habibelo-db";
    $dbuser="habibelo-db";
@@ -19,7 +22,7 @@
    }
 
    $name = $address = $typeVal = $type = "";
-   $prizeids = array();
+   $markerids = array();
 
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -71,11 +74,16 @@
       }
 
       echo "<script type='text/javascript'>document.location.href = '$url';</script>";
-      mysqli_close($con);
+      $mysqli->close();
       exit;
 
    }
 
-   mysqli_close($con);
+   $mysqli->close();
+}
+else {
+   $url = "../admin_auth.php";
+   echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+}
 
 ?>

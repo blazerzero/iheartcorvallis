@@ -1,4 +1,9 @@
 <!DOCTYPE HTML>
+
+<?php require "./admin_server/login.php"; ?>
+
+<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>
+
 <html>
    <head>
       <title>Add an Event - I Heart Corvallis Administrative Suite</title>
@@ -85,6 +90,11 @@
                   </div>
                </div>
             </div>
+            <div style="color: #fff; display: inline;">
+               <div class="ui simple dropdown item">
+                  <a style="color: red;" href="./admin_server/logout.php">Logout</a>
+               </div>
+            </div>
          </ul>
       </div>
 
@@ -140,3 +150,10 @@
       </div>
    </body>
 </html>
+
+<?php }
+else {
+   $url = "./admin_auth.php";
+   echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+}
+?>

@@ -2,8 +2,8 @@
 
 <?php require "./admin_server/login.php"; ?>
 
-<?php
-if (checkAuth() != "") { ?>
+<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>
+
 <html>
    <head>
       <title>I Heart Corvallis Administrative Suite</title>
@@ -55,6 +55,11 @@ if (checkAuth() != "") { ?>
                   </div>
                </div>
             </div>
+            <div style="color: #fff; display: inline;">
+               <div class="ui simple dropdown item">
+                  <a style="color: red;" href="./admin_server/logout.php">Logout</a>
+               </div>
+            </div>
          </ul>
       </div>
 
@@ -72,7 +77,7 @@ if (checkAuth() != "") { ?>
             <p>Manage Events</p>
           </button>
         </a>
-        <a href="./manage_resources.php">
+        <a href="./manage_primary_resources.php">
           <button class="circular ui icon button">
             <i class="info circle icon"></i>
             <p>Manage Primary Resources</p>
@@ -106,4 +111,9 @@ if (checkAuth() != "") { ?>
    </body>
 </html>
 
-<?php } ?>
+<?php }
+else {
+   $url = "./admin_auth.php";
+   echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+}
+?>

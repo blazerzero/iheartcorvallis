@@ -1,5 +1,8 @@
 <?php
 
+require "./login.php";
+
+if (isset($_SESSION["id"]) && $_SESSION["id"] != null) {
    $dbhost="oniddb.cws.oregonstate.edu";
    $dbname="habibelo-db";
    $dbuser="habibelo-db";
@@ -64,7 +67,7 @@
          $message = "Error adding event!<br>"; # error adding event to database
          $url = "../add_event.php";
          echo "<script type='text/javascript'>alert('$message');</script>";
-         mysqli_close($con);
+         $mysqli->close();
          echo "<script type='text/javascript'>document.location.href = '$url';</script>";
          exit;
       }
@@ -79,13 +82,18 @@
          echo "<script type='text/javascript'>alert('$message');</script>";
       }
 
-      mysqli_close($con);
+      $mysql->_close();
       $url = "../add_event.php";
       echo "<script type='text/javascript'>document.location.href = '$url';</script>";
       exit;
 
    }
 
-   mysqli_close($con);
+   $mysqli->close();
+}
+else {
+   $url = "../admin_auth.php";
+   echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+}
 
 ?>

@@ -1,5 +1,14 @@
 <!DOCTYPE html>
 
+<?php require "./admin_server/login.php"; ?>
+
+<?php if (!isset($_SESSION["id"]) && $_SESSION["id"] != null) {
+   $url = "./index.php";
+   echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+}
+else {
+?>
+
 <html>
 <head>
     <title>Login - I Heart Corvallis Administrative Suite</title>
@@ -38,3 +47,5 @@
     </center>
 </body>
 </html>
+
+<?php } ?>
