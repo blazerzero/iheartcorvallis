@@ -26,8 +26,16 @@
       $email = $_POST["email"];
       $password = $_POST["password"];
       
+	  $iterations = 1000;
+	  
+	  $salt = openssl_random_pseudo_bytes(16);
+	  
+	  $hash = hash_pbkdf2("sha256",$password, $salt, $iterations, 50);
+	  
+	  // store salt with hash
+	  $hashandSalt = $salt . '|' . $hash;
 
-      $result = $mysqli->query("INSERT INTO ihc_admin_users (email, password) VALUES ('$email', '$password')");
+      $result = $mysqli->query("INSERT INTO ihc_admin_users (email, password) VALUES ('$email', '$hashandSalt')");
 
       if ($result == True) {
          $message = "New User Created!";
