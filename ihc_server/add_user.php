@@ -4,32 +4,17 @@
 
 <?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>
 
-<?php
-require './admin_server/db.php';
-$prizeid = $_GET['prizeid'];
-$result = $mysqli->query("SELECT * FROM ihc_events WHERE prizeid='$prizeid'");
-if ($result->num_rows > 0) {
-   $prize = $result->fetch_assoc();
-}
-?>
-
 <html>
    <head>
-      <title>Edit Prize - I Heart Corvallis Administrative Suite</title>
+      <title>Add a User - I Heart Corvallis Administrative Suite</title>
       <link type="text/css" rel="stylesheet" href="./css/Semantic-UI-CSS-master/semantic.css"/>
       <link type="text/css" rel="stylesheet" href="./css/stylesheet.css"/>
       <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
       <script>
-      $(document).ready(function() {
-         $("#pin_generator").click(function() {
-            $("#pin_holder").val((Math.floor((Math.random() * 9000) + 1000)).toString());
-         });
-      });
-
       function validateForm() {
-         var nameField = document.forms["prizeForm"]["name"].value;
-         var levelField = document.forms["prizeForm"]["level"].value;
+         var nameField = document.forms["userForm"]["email"].value;
+         var levelField = document.forms["userForm"]["password"].value;
          if (nameField == null || nameField == "" ||
             levelField == null || levelField == "") {
                alert("Please fill both fields before submitting!");
@@ -93,20 +78,17 @@ if ($result->num_rows > 0) {
       </div>
 
       <div class="mainbody">
-         <left class="sectionheader"><h1>Edit Prize</h1></left>
-         <br>
-         <br><p class="requirednote">* Denotes a required field</p><br>
-         <form name="prizeForm" onsubmit="return validateForm()" action="./admin_server/update_prizes_server.php" method="post">
-            <div class="elem" style="display: none">
-               Prize ID: <input class="inputbox" type="text" name="eventid" value="<?php echo $prizes['eventid']; ?>" readonly><br><br>
+         <left class="sectionheader"><h1>Add a User</h1></left>
+         <br><br>
+         <p class="requirednote">* Denotes a required field</p><br>
+         <form name="prizeForm" onsubmit="return validateForm()" action="./admin_server/add_users_server.php" method="post">
+            <div class="elem">
+               <span class="requirednote">*</span>
+               Email: <input class="inputbox" type="email" name="email"><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
-               Name of Prize: <input class="inputbox" type="text" name="name" value="<?php echo $prize['name']; ?>"><br><br>
-            </div>
-            <div class="elem">
-               <span class="requirednote">*</span>
-               Prize Level: <input class="inputbox" type="text" name="level" value="<?php echo $prize['level']; ?>"><br><br>
+               Password: <input class="inputbox" type="text" name="password"><br><br>
             </div>
             <input class="ui button" type="submit">
          </form>

@@ -23,21 +23,21 @@
    $prizeid = $name = $level = "";
 
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      $prizeid = $_POST["prizeid"];
-      $name = $_POST["name"];
-      $level = $_POST["level"];
+      $email = $_POST["email"];
+      $password = $_POST["password"];
+      
 
-      $result = $mysqli->query("UPDATE ihc_prizes SET name='$name', level='$level' WHERE eventid='$eventid'");
+      $result = $mysqli->query("INSERT INTO ihc_admin_users (email, password) VALUES ('$email', '$password')");
 
       if ($result == True) {
-         $message = "Prize has been updated!";
+         $message = "New User Created!";
          echo "<script type='text/javascript'>alert('$message');</script>";
       }
       else {
-         $message = "Error updating prize!"; # error updating prize in database
+         $message = "Error Creating User!"; # error updating prize in database
          echo "<script type='text/javascript'>alert('$message');</script>";
       }
-      $url = "../manage_prizes.php";
+      $url = "../index.php";
       echo "<script type='text/javascript'>document.location.href = '$url';</script>";
    }
    $mysqli->close();

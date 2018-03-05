@@ -65,6 +65,12 @@
 
       <br><br>
       <div class="quicknav"><center>
+      <a href="./add_user.php">
+          <button class="circular ui icon button">
+            <i class="upload icon"></i>
+            <p>Add User</p>
+          </button>
+        </a>
         <a href="./add_event.php">
           <button class="circular ui icon button">
             <i class="upload icon"></i>
