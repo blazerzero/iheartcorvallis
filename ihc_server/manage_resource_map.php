@@ -86,7 +86,7 @@ for ($i = 0; $i < count($markers); $i++) {
          <ul>
             <div style="color: #fff; display: inline;">
                <div class="ui simple dropdown item">
-                  <a href="./index.html">Home</a>
+                  <a href="./index.php">Home</a>
                </div>
             </div>
             <div style="color: #fff; display: inline;">

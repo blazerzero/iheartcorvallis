@@ -52,11 +52,14 @@
       $result = $mysqli->query("UPDATE ihc_events SET name='$name', location='$location', address='$fullAddress', dateandtime='$dateandtime', description='$description', image='$image', link1='$link1', link2='$link2', link3='$link3', pin='$pin' WHERE eventid='$eventid'");
 
       if ($result == True) {
-         echo "Event has been updated!"; # account successfully added to database
+         $message = "Event has been updated!";
       }
       else {
-         echo "Error updating event!"; # error adding account to database
+         $message = "Error updating event!";
       }
+      echo "<script type='text/javascript'>alert('$message');</script>";
+      $url = "../manage_events.php";
+      echo "<script type='text/javascript'>document.location.href = '$url';</script>";
    }
    mysqli_close($con);
 ?>

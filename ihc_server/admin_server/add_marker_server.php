@@ -62,7 +62,7 @@
       if ($result == True) {
          $message = "Resource has been added to the map!";
          echo "<script type='text/javascript'>alert('$message');</script>";
-         $url = "../index.html";
+         $url = "../index.php";
       }
       else {
          $message = "Error adding resource to the map!"; # error adding prize to database

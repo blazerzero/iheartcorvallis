@@ -52,7 +52,7 @@
       if ($result == True) {
          $message = "Prize has been added!";
          echo "<script type='text/javascript'>alert('$message');</script>";
-         $url = "../index.html";
+         $url = "../index.php";
       }
       else {
          $message = "Error adding prize!"; # error adding prize to database

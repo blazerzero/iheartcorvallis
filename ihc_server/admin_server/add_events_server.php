@@ -72,7 +72,7 @@
       /* UPDATE TOTAL EVENT COUNT IN DATABASE */
       $result = $mysqli->query("UPDATE ihc_events SET totalEventCount='$totalEventCount'");
       if ($result == True) {
-         $url = "../index.html";
+         $url = "../index.php";
       }
       else {
          $message = "Error updating total event count!<br>";

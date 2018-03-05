@@ -1,4 +1,9 @@
 <!DOCTYPE HTML>
+
+<?php require "./admin_server/login.php"; ?>
+
+<?php
+if (checkAuth() != "") { ?>
 <html>
    <head>
       <title>I Heart Corvallis Administrative Suite</title>
@@ -18,7 +23,7 @@
          <ul>
             <div style="color: #fff; display: inline;">
                <div class="ui simple dropdown item">
-                  <a href="./index.html">Home</a>
+                  <a href="./index.php">Home</a>
                </div>
             </div>
             <div style="color: #fff; display: inline;">
@@ -100,3 +105,5 @@
     </center></div>
    </body>
 </html>
+
+<?php } ?>
