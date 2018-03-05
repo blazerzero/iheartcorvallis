@@ -1,8 +1,8 @@
 <?php
 
-require "./login.php";
+//require "./login.php";
 
-if (isset($_SESSION["id"]) && $_SESSION["id"] != null) {
+//if (isset($_SESSION["id"]) && $_SESSION["id"] != null) {
    $dbhost="oniddb.cws.oregonstate.edu";
    $dbname="habibelo-db";
    $dbuser="habibelo-db";
@@ -41,7 +41,7 @@ if (isset($_SESSION["id"]) && $_SESSION["id"] != null) {
          $dateandtime = $dateandtime . ":00";
       }
 
-      echo "Event ID: " . $eventid . "<br>";
+      /*echo "Event ID: " . $eventid . "<br>";
       echo "Event name entered: " . $name . "<br>";
       echo "Location entered: " . $location . "<br>";
       echo "Address entered: " . $fullAddress . "<br>";
@@ -51,7 +51,7 @@ if (isset($_SESSION["id"]) && $_SESSION["id"] != null) {
       echo "link1 entered: " . $link1 . "<br>";
       echo "link2 entered: " . $link2 . "<br>";
       echo "link3 entered: " . $link3 . "<br>";
-      echo "Pin entered: " . $pin . "<br>";
+      echo "Pin entered: " . $pin . "<br>";*/
 
       $result = $mysqli->query("UPDATE ihc_events SET name='$name', location='$location', address='$fullAddress', dateandtime='$dateandtime', description='$description', image='$image', link1='$link1', link2='$link2', link3='$link3', pin='$pin' WHERE eventid='$eventid'");
 
@@ -66,9 +66,9 @@ if (isset($_SESSION["id"]) && $_SESSION["id"] != null) {
       echo "<script type='text/javascript'>document.location.href = '$url';</script>";
    }
    $mysqli->close();
-}
+/*}
 else {
    $url = "../admin_auth.php";
    echo "<script type='text/javascript'>document.location.href = '$url';</script>";
-}
+}*/
 ?>

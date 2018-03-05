@@ -1,8 +1,8 @@
 <?php
 
-require "./login.php";
+//require "./login.php";
 
-if (isset($_SESSION["id"]) && $_SESSION["id"] != null) {
+//if (isset($_SESSION["id"]) && $_SESSION["id"] != null) {
    $dbhost="oniddb.cws.oregonstate.edu";
    $dbname="habibelo-db";
    $dbuser="habibelo-db";
@@ -80,20 +80,20 @@ if (isset($_SESSION["id"]) && $_SESSION["id"] != null) {
       else {
          $message = "Error updating total event count!<br>";
          echo "<script type='text/javascript'>alert('$message');</script>";
+         $url = "../add_event.php";
       }
 
-      $mysql->_close();
-      $url = "../add_event.php";
+      $mysqli->close();
       echo "<script type='text/javascript'>document.location.href = '$url';</script>";
       exit;
 
    }
 
    $mysqli->close();
-}
+/*}
 else {
    $url = "../admin_auth.php";
    echo "<script type='text/javascript'>document.location.href = '$url';</script>";
-}
+}*/
 
 ?>

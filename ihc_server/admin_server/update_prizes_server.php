@@ -1,8 +1,8 @@
 <?php
 
-require "./login.php";
+//require "./login.php";
 
-if (isset($_SESSION["id"]) && $_SESSION["id"] != null) {
+//if (isset($_SESSION["id"]) && $_SESSION["id"] != null) {
    $dbhost="oniddb.cws.oregonstate.edu";
    $dbname="habibelo-db";
    $dbuser="habibelo-db";
@@ -41,9 +41,9 @@ if (isset($_SESSION["id"]) && $_SESSION["id"] != null) {
       echo "<script type='text/javascript'>document.location.href = '$url';</script>";
    }
    $mysqli->close();
-}
+/*}
 else {
    $url = "../admin_auth.php";
    echo "<script type='text/javascript'>document.location.href = '$url';</script>";
-}
+}*/
 ?>
