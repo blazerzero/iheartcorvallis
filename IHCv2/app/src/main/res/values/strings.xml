@@ -65,9 +65,11 @@
     <string name="bronze_prizes_list">Bronze Level</string>
 
     <string name="resource_map_button_text">RESOURCE MAP</string>
-    <string name="corvallis_aerial_description">Aerial view of Corvallis</string>
+    <string name="legend_title">Legend</string>
 
     <!-- Accessibility strings -->
     <string name="acc_stamp">Passport Stamp</string>
+    <string name="corvallis_aerial_description">Aerial view of Corvallis</string>
+
 
 </resources>
