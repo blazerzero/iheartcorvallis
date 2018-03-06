@@ -31,27 +31,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
    $result = $mysqli->query("SELECT password FROM ihc_admin_users WHERE email='$email'");
    if ($result->num_rows > 0) {
-	   
+
 	   $row = $result->fetch_assoc();
-	   
+
 	   // user's stored password that we must compare with
 	   $pHash = $row['password'];
-	   
+
 	   $iterations = 1000;
-	   
+
 	   // use this to salt the original password
 	   //$salt = openssl_random_pseudo_bytes(16);
-	   
+
 	   // need to get the salt from the hash
 	   $storedpHash = explode("|", $pHash);// salt of stored password
-	   
-	   $hash = hash_pbkdf2("sha256",$password, $storedpHash[0], $iterations, 50);
-	   
-	   if (strcmp($hash,$storedpHash[1])) {
+
+	   $hash = hash_pbkdf2("sha256",$password, $storedpHash[0], $iterations, 50, false);
+
+	   if (!strcmp($hash,$storedpHash[1])) {
 	     // logic after checking hash password
 		 $_SESSION["id"] = $email;
-	  
-	  
+
+
          //$sessionid = $_SESSION["id"];
          //session_regenerate_id(true);
          /*$user = $result->fetch_assoc();
@@ -66,6 +66,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
          //}
 	   }
       //$message = "Incorrect login credentials!"; # error logging in
+      else {
+         $message = "Incorrect email/password combination!";
+         echo "<script type='text/javascript'>alert('$message');</script>";
+         $url = "../admin_auth.php";
+         //echo "<script type='text/javascript'>alert('$message');</script>";
+         echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+      }
 
    }
    else {

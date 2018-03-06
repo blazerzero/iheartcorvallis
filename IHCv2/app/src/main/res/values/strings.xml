@@ -64,7 +64,7 @@
     <string name="silver_prizes_list">Silver Level</string>
     <string name="bronze_prizes_list">Bronze Level</string>
 
-    <string name="resource_map_button_text">CLICK HERE FOR RESOURCE MAP</string>
+    <string name="resource_map_button_text">RESOURCE MAP</string>
     <string name="corvallis_aerial_description">Aerial view of Corvallis</string>
 
 </resources>

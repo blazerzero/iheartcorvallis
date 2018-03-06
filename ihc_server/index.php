@@ -124,12 +124,15 @@
                </button>
             </a>
          </div>
+         <br>
+         <div>
             <a href="./add_user.php">
                <button class="circular ui icon button">
-                  <i class="upload icon"></i>
+                  <i class="plus icon"></i>
                   <p>Add User</p>
                </button>
             </a>
+         </div>
       </center></div>
    </body>
    </html>

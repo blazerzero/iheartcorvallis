@@ -15,6 +15,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,15 +36,22 @@ import java.util.StringTokenizer;
 
 import edu.oregonstate.studentlife.ihcv2.adapters.PassportAdapter;
 import edu.oregonstate.studentlife.ihcv2.data.Event;
+import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.PassportLoader;
+import edu.oregonstate.studentlife.ihcv2.loaders.UserInfoLoader;
 
 public class PassportActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, LoaderManager.LoaderCallbacks<String> {
 
     private final static String TAG = PassportActivity.class.getSimpleName();
-    private final static int IHC_GETCOMPLETEDEVENTS_ID = 0;
+    private final static int IHC_GETUSERINFO_ID = 0;
+    private final static int IHC_GETCOMPLETEDEVENTS_ID = 1;
     private final static String IHC_USER_EMAIL_KEY = "ihcUserEmail";
+    private boolean gotUser;
+    private User currentUser;
+    private int numStamps;
 
+    private TextView progIndicatorTV;
     private RecyclerView mPassportRecyclerView;
     private PassportAdapter mPassportAdapter;
     private String[] monthShortNames = {"Jan.", "Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."};
@@ -71,6 +79,8 @@ public class PassportActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        progIndicatorTV = (TextView) findViewById(R.id.tv_current_user_stamp_count);
 
         mPassportRecyclerView = (RecyclerView) findViewById(R.id.rv_passport_list);
         mPassportRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -184,70 +194,128 @@ public class PassportActivity extends AppCompatActivity
         if (args != null) {
             email = args.getString(IHC_USER_EMAIL_KEY);
         }
-        return new PassportLoader(this, email);
+        if (id == IHC_GETCOMPLETEDEVENTS_ID) {
+            return new PassportLoader(this, email);
+        }
+        else if (id == IHC_GETUSERINFO_ID) {
+            return new UserInfoLoader(this, email);
+        }
+        else {
+            return null;
+        }
     }
 
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
-        try {
-            StringTokenizer stEvents = new StringTokenizer(data, "\\");
-            while (stEvents.hasMoreTokens()) {
-                String eventInfoString = stEvents.nextToken();
-                Log.d(TAG, "eventInfoString: " + eventInfoString);
-                JSONObject eventJSON = new JSONObject(eventInfoString);
-                Log.d(TAG, "eventJSON: " + eventJSON);
-                int eventid = Integer.parseInt(eventJSON.getString("eventid"));
-                String eventName = eventJSON.getString("name");
-                String eventLocation = eventJSON.getString("location");
-                String eventAddress = eventJSON.getString("address");
-                String eventDateAndTime = eventJSON.getString("dateandtime");
-                String eventDescription = eventJSON.getString("description");
-                String eventLink1 = eventJSON.getString("link1");
-                String eventLink2 = eventJSON.getString("link2");
-                String eventLink3 = eventJSON.getString("link3");
-                int eventPin = Integer.parseInt(eventJSON.getString("pin"));
+        if (!gotUser) {
+            try {
+                StringTokenizer stEvents = new StringTokenizer(data, "\\");
+                while (stEvents.hasMoreTokens()) {
+                    String eventInfoString = stEvents.nextToken();
+                    Log.d(TAG, "eventInfoString: " + eventInfoString);
+                    JSONObject eventJSON = new JSONObject(eventInfoString);
+                    Log.d(TAG, "eventJSON: " + eventJSON);
+                    int eventid = Integer.parseInt(eventJSON.getString("eventid"));
+                    String eventName = eventJSON.getString("name");
+                    String eventLocation = eventJSON.getString("location");
+                    String eventAddress = eventJSON.getString("address");
+                    String eventDateAndTime = eventJSON.getString("dateandtime");
+                    String eventDescription = eventJSON.getString("description");
+                    String eventLink1 = eventJSON.getString("link1");
+                    String eventLink2 = eventJSON.getString("link2");
+                    String eventLink3 = eventJSON.getString("link3");
+                    int eventPin = Integer.parseInt(eventJSON.getString("pin"));
 
-                StringTokenizer dateTimeTokenizer = new StringTokenizer(eventDateAndTime);
-                String eventYear = dateTimeTokenizer.nextToken("-");
-                String eventMonth = dateTimeTokenizer.nextToken("-");
-                String eventDay = dateTimeTokenizer.nextToken(" ");
-                String eventTime = dateTimeTokenizer.nextToken();
+                    StringTokenizer dateTimeTokenizer = new StringTokenizer(eventDateAndTime);
+                    String eventYear = dateTimeTokenizer.nextToken("-");
+                    String eventMonth = dateTimeTokenizer.nextToken("-");
+                    String eventDay = dateTimeTokenizer.nextToken(" ");
+                    String eventTime = dateTimeTokenizer.nextToken();
 
-                SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date eventDate = sdfEvent.parse(eventDateAndTime);
+                    SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date eventDate = sdfEvent.parse(eventDateAndTime);
 
-                if (eventTime.charAt(0) == '0') {
-                    eventTime = eventTime.substring(1);
-                }
+                    if (eventTime.charAt(0) == '0') {
+                        eventTime = eventTime.substring(1);
+                    }
 
-                eventDay = eventDay.substring(1);
-                if (eventDay.charAt(0) == '0') {
                     eventDay = eventDay.substring(1);
+                    if (eventDay.charAt(0) == '0') {
+                        eventDay = eventDay.substring(1);
+                    }
+
+                    if (eventMonth.charAt(0) == '0') {
+                        eventMonth = eventMonth.substring(1);
+                    }
+
+                    int monthInt = Integer.parseInt(eventMonth);
+                    eventMonth = monthShortNames[monthInt - 1];
+
+                    Event retrievedEvent = new Event(eventid, eventName, eventLocation, eventAddress,
+                            eventDate, eventTime, eventMonth, eventDay, eventYear,
+                            eventDescription, eventLink1, eventLink2, eventLink3, eventPin);
+
+                    completedEventList.add(retrievedEvent);
+
+                    if (isNetworkAvailable()) {
+                        mPassportAdapter.addEventToPassport(retrievedEvent);
+                        gotUser = true;
+                        getSupportLoaderManager().initLoader(IHC_GETUSERINFO_ID, null, this);
+                    } else {
+                        showNoInternetConnectionMsg();
+                    }
                 }
 
-                if (eventMonth.charAt(0) == '0') {
-                    eventMonth = eventMonth.substring(1);
-                }
 
-                int monthInt = Integer.parseInt(eventMonth);
-                eventMonth = monthShortNames[monthInt-1];
-
-                Event retrievedEvent = new Event(eventid, eventName, eventLocation, eventAddress,
-                        eventDate, eventTime, eventMonth, eventDay, eventYear,
-                        eventDescription, eventLink1, eventLink2, eventLink3, eventPin);
-
-                completedEventList.add(retrievedEvent);
-
-                if (isNetworkAvailable()) {
-                    mPassportAdapter.addEventToPassport(retrievedEvent);
-                } else {
-                    showNoInternetConnectionMsg();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            if (data != null) {
+                try {
+                    JSONObject userJSON = new JSONObject(data);
+                    String firstname = userJSON.getString("firstname");
+                    String lastname = userJSON.getString("lastname");
+                    String email = userJSON.getString("email");
+                    int id = Integer.parseInt(userJSON.getString("id"));
+                    String stampcount = userJSON.getString("stampcount");
+                    currentUser = new User(firstname, lastname, email, id, stampcount);
+                    numStamps = Integer.parseInt(stampcount);
+                    progIndicatorTV.setText("STAMPS: " + String.valueOf(numStamps));
+                    if (numStamps >= getResources().getInteger(R.integer.bronzeThreshold)
+                            && numStamps < getResources().getInteger(R.integer.silverThreshold)) {
+                        progIndicatorTV.setBackgroundColor(getResources().getColor(R.color.eventBronze));
+                    }
+                    else if (numStamps >= getResources().getInteger(R.integer.silverThreshold)
+                            && numStamps < getResources().getInteger(R.integer.goldThreshold)) {
+                        progIndicatorTV.setBackgroundColor(getResources().getColor(R.color.eventSilver));
+                    }
+                    else if (numStamps >= getResources().getInteger(R.integer.goldThreshold)) {
+                        progIndicatorTV.setBackgroundColor(getResources().getColor(R.color.eventGold));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            else {
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+                }
+                else {
+                    builder = new AlertDialog.Builder(this);
+                }
+                builder.setTitle("Error");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Close alert dialog
+                    }
+                });
+                builder.setMessage("Error retrieving user info.");
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.show();
+            }
         }
     }
 

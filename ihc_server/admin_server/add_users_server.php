@@ -25,15 +25,17 @@
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $email = $_POST["email"];
       $password = $_POST["password"];
-      
+
 	  $iterations = 1000;
-	  
+
 	  $salt = openssl_random_pseudo_bytes(16);
-	  
-	  $hash = hash_pbkdf2("sha256",$password, $salt, $iterations, 50);
-	  
+
+	  $hash = hash_pbkdf2("sha256",$password, $salt, $iterations, 50, false);
+
 	  // store salt with hash
 	  $hashandSalt = $salt . '|' . $hash;
+
+     //echo $email."<br>".$hashandSalt."<br>";
 
       $result = $mysqli->query("INSERT INTO ihc_admin_users (email, password) VALUES ('$email', '$hashandSalt')");
 
