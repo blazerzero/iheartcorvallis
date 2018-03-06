@@ -23,6 +23,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import edu.oregonstate.studentlife.ihcv2.data.User;
+import edu.oregonstate.studentlife.ihcv2.loaders.EventLoader;
+import edu.oregonstate.studentlife.ihcv2.loaders.PassportLoader;
 import edu.oregonstate.studentlife.ihcv2.loaders.UserInfoLoader;
 
 public class DashboardActivity extends AppCompatActivity
@@ -36,6 +38,11 @@ public class DashboardActivity extends AppCompatActivity
     public static final String EXTRA_USER = "User";
     private final static String IHC_USER_EMAIL_KEY = "IHC_USER_EMAIL";
     private final static int IHC_USER_LOADER_ID = 0;
+    private final static int IHC_PASSPORT_LOADER_ID = 1;
+    private final static int IHC_EVENT_LOADER_ID = 2;
+
+    boolean gotUser = false;
+    boolean gotPassport = false;
 
     private static final String TAG = DashboardActivity.class.getSimpleName();
 
@@ -136,44 +143,63 @@ public class DashboardActivity extends AppCompatActivity
         if (args != null) {
             email = args.getString(IHC_USER_EMAIL_KEY);
         }
-        return new UserInfoLoader(this, email);
+        if (id == IHC_USER_LOADER_ID) {
+            return new UserInfoLoader(this, email);
+        }
+        else if (id == IHC_PASSPORT_LOADER_ID) {
+            return new PassportLoader(this, email);
+        }
+        else if (id == IHC_EVENT_LOADER_ID){
+            return new EventLoader(this);
+        }
+        else
+            return null;
     }
 
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<String> loader, String data) {
-        if (data != null) {
-            try {
-                JSONObject userJSON = new JSONObject(data);
-                String firstname = userJSON.getString("firstname");
-                String lastname = userJSON.getString("lastname");
-                String email = userJSON.getString("email");
-                int id = Integer.parseInt(userJSON.getString("id"));
-                String stampcount = userJSON.getString("stampcount");
-                currentUser = new User(firstname, lastname, email, id, stampcount);
-                numStamps = Integer.parseInt(stampcount);
-                progIndicator = initProgIndicator(numStamps, progIndicator);
-            } catch (Exception e) {
-                e.printStackTrace();
+        if (!gotUser && !gotPassport) {
+            if (data != null) {
+                try {
+                    JSONObject userJSON = new JSONObject(data);
+                    String firstname = userJSON.getString("firstname");
+                    String lastname = userJSON.getString("lastname");
+                    String email = userJSON.getString("email");
+                    int id = Integer.parseInt(userJSON.getString("id"));
+                    String stampcount = userJSON.getString("stampcount");
+                    currentUser = new User(firstname, lastname, email, id, stampcount);
+                    numStamps = Integer.parseInt(stampcount);
+                    progIndicator = initProgIndicator(numStamps, progIndicator);
+                    gotUser = true;
+                    getSupportLoaderManager().initLoader(IHC_PASSPORT_LOADER_ID, null,this);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+                } else {
+                    builder = new AlertDialog.Builder(this);
+                }
+                builder.setTitle("Error");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Close alert dialog
+                    }
+                });
+                builder.setMessage("Error retrieving user info.");
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.show();
             }
         }
+        else if (gotUser && !gotPassport) {
+            // passport stuff
+        }
         else {
-            AlertDialog.Builder builder;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-            }
-            else {
-                builder = new AlertDialog.Builder(this);
-            }
-            builder.setTitle("Error");
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // Close alert dialog
-                }
-            });
-            builder.setMessage("Error retrieving user info.");
-            builder.setIcon(android.R.drawable.ic_dialog_alert);
-            builder.show();
+            // event stuff
         }
     }
 
