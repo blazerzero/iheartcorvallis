@@ -40,7 +40,6 @@
             descriptionField == null || descriptionField == "") {
                alert("Please fill all required fields before submitting!");
                return false;
-            }
          }
          else {
             return true;

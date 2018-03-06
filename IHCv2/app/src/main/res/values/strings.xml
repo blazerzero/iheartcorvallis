@@ -67,4 +67,7 @@
     <string name="resource_map_button_text">RESOURCE MAP</string>
     <string name="corvallis_aerial_description">Aerial view of Corvallis</string>
 
+    <!-- Accessibility strings -->
+    <string name="acc_stamp">Passport Stamp</string>
+
 </resources>

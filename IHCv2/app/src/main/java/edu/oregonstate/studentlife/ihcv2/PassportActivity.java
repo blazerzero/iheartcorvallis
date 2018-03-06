@@ -47,7 +47,7 @@ public class PassportActivity extends AppCompatActivity
     private final static int IHC_GETUSERINFO_ID = 0;
     private final static int IHC_GETCOMPLETEDEVENTS_ID = 1;
     private final static String IHC_USER_EMAIL_KEY = "ihcUserEmail";
-    private boolean gotUser;
+    private boolean gotUser = false;
     private User currentUser;
     private int numStamps;
 
@@ -208,67 +208,69 @@ public class PassportActivity extends AppCompatActivity
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
         if (!gotUser) {
-            try {
-                StringTokenizer stEvents = new StringTokenizer(data, "\\");
-                while (stEvents.hasMoreTokens()) {
-                    String eventInfoString = stEvents.nextToken();
-                    Log.d(TAG, "eventInfoString: " + eventInfoString);
-                    JSONObject eventJSON = new JSONObject(eventInfoString);
-                    Log.d(TAG, "eventJSON: " + eventJSON);
-                    int eventid = Integer.parseInt(eventJSON.getString("eventid"));
-                    String eventName = eventJSON.getString("name");
-                    String eventLocation = eventJSON.getString("location");
-                    String eventAddress = eventJSON.getString("address");
-                    String eventDateAndTime = eventJSON.getString("dateandtime");
-                    String eventDescription = eventJSON.getString("description");
-                    String eventLink1 = eventJSON.getString("link1");
-                    String eventLink2 = eventJSON.getString("link2");
-                    String eventLink3 = eventJSON.getString("link3");
-                    int eventPin = Integer.parseInt(eventJSON.getString("pin"));
+            if (data != null) {
+                try {
+                    StringTokenizer stEvents = new StringTokenizer(data, "\\");
+                    while (stEvents.hasMoreTokens()) {
+                        String eventInfoString = stEvents.nextToken();
+                        Log.d(TAG, "eventInfoString: " + eventInfoString);
+                        JSONObject eventJSON = new JSONObject(eventInfoString);
+                        Log.d(TAG, "eventJSON: " + eventJSON);
+                        int eventid = Integer.parseInt(eventJSON.getString("eventid"));
+                        String eventName = eventJSON.getString("name");
+                        String eventLocation = eventJSON.getString("location");
+                        String eventAddress = eventJSON.getString("address");
+                        String eventDateAndTime = eventJSON.getString("dateandtime");
+                        String eventDescription = eventJSON.getString("description");
+                        String eventLink1 = eventJSON.getString("link1");
+                        String eventLink2 = eventJSON.getString("link2");
+                        String eventLink3 = eventJSON.getString("link3");
+                        int eventPin = Integer.parseInt(eventJSON.getString("pin"));
 
-                    StringTokenizer dateTimeTokenizer = new StringTokenizer(eventDateAndTime);
-                    String eventYear = dateTimeTokenizer.nextToken("-");
-                    String eventMonth = dateTimeTokenizer.nextToken("-");
-                    String eventDay = dateTimeTokenizer.nextToken(" ");
-                    String eventTime = dateTimeTokenizer.nextToken();
+                        StringTokenizer dateTimeTokenizer = new StringTokenizer(eventDateAndTime);
+                        String eventYear = dateTimeTokenizer.nextToken("-");
+                        String eventMonth = dateTimeTokenizer.nextToken("-");
+                        String eventDay = dateTimeTokenizer.nextToken(" ");
+                        String eventTime = dateTimeTokenizer.nextToken();
 
-                    SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    Date eventDate = sdfEvent.parse(eventDateAndTime);
+                        SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        Date eventDate = sdfEvent.parse(eventDateAndTime);
 
-                    if (eventTime.charAt(0) == '0') {
-                        eventTime = eventTime.substring(1);
-                    }
+                        if (eventTime.charAt(0) == '0') {
+                            eventTime = eventTime.substring(1);
+                        }
 
-                    eventDay = eventDay.substring(1);
-                    if (eventDay.charAt(0) == '0') {
                         eventDay = eventDay.substring(1);
+                        if (eventDay.charAt(0) == '0') {
+                            eventDay = eventDay.substring(1);
+                        }
+
+                        if (eventMonth.charAt(0) == '0') {
+                            eventMonth = eventMonth.substring(1);
+                        }
+
+                        int monthInt = Integer.parseInt(eventMonth);
+                        eventMonth = monthShortNames[monthInt - 1];
+
+                        Event retrievedEvent = new Event(eventid, eventName, eventLocation, eventAddress,
+                                eventDate, eventTime, eventMonth, eventDay, eventYear,
+                                eventDescription, eventLink1, eventLink2, eventLink3, eventPin);
+
+                        completedEventList.add(retrievedEvent);
+
+                        if (isNetworkAvailable()) {
+                            mPassportAdapter.addEventToPassport(retrievedEvent);
+                            gotUser = true;
+                            getSupportLoaderManager().initLoader(IHC_GETUSERINFO_ID, null, this);
+                        } else {
+                            showNoInternetConnectionMsg();
+                        }
                     }
 
-                    if (eventMonth.charAt(0) == '0') {
-                        eventMonth = eventMonth.substring(1);
-                    }
 
-                    int monthInt = Integer.parseInt(eventMonth);
-                    eventMonth = monthShortNames[monthInt - 1];
-
-                    Event retrievedEvent = new Event(eventid, eventName, eventLocation, eventAddress,
-                            eventDate, eventTime, eventMonth, eventDay, eventYear,
-                            eventDescription, eventLink1, eventLink2, eventLink3, eventPin);
-
-                    completedEventList.add(retrievedEvent);
-
-                    if (isNetworkAvailable()) {
-                        mPassportAdapter.addEventToPassport(retrievedEvent);
-                        gotUser = true;
-                        getSupportLoaderManager().initLoader(IHC_GETUSERINFO_ID, null, this);
-                    } else {
-                        showNoInternetConnectionMsg();
-                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         } else {
             if (data != null) {

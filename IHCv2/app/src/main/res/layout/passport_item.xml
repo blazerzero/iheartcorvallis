@@ -26,7 +26,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_star_stamp"/>
+                android:padding="10dp"
+                android:src="@drawable/ic_check_stamp"
+                android:contentDescription="@string/acc_stamp"/>
 
         </LinearLayout>
 
@@ -39,21 +41,23 @@
                 android:id="@+id/tv_event_name"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/event_elem_height"
-                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimaryDark"
-                android:gravity="left|center_vertical"
+                android:gravity="start|center_vertical"
                 android:lines="1"/>
 
             <TextView
                 android:id="@+id/tv_passport_event_info"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/event_elem_height"
-                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:textSize="16sp"
                 android:textColor="@color/colorPrimaryDark"
-                android:gravity="left|center_vertical"
+                android:gravity="start|center_vertical"
                 android:lines="1"/>
 
         </LinearLayout>
