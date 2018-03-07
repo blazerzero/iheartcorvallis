@@ -4,13 +4,21 @@
 
 <?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>
 
-   <html>
+<?php
+require './admin_server/db.php';
+$result = $mysqli->query("SELECT * FROM ihc_about");
+$ihc_about = array();
+while ($about = $result->fetch_assoc()) {
+   $ihc_about[] = $about;
+}
+?>
+
+<html>
    <head>
-      <title>Home - I Heart Corvallis Administrative Suite</title>
+      <title>Manage Events - I Heart Corvallis Administrative Suite</title>
       <link type="text/css" rel="stylesheet" href="./css/Semantic-UI-CSS-master/semantic.css"/>
       <link type="text/css" rel="stylesheet" href="./css/stylesheet.css"/>
       <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
-      <script type="text/javascript" src="./css/Semantic-UI-CSS-master/components/dropdown.js"></script>
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
    </head>
    <body>
@@ -63,87 +71,30 @@
          </ul>
       </div>
 
-      <br><br>
-      <div class="quicknav"><center>
-         <div>
-            <a href="./add_event.php">
-               <button class="circular ui icon button">
-                  <i class="upload icon"></i>
-                  <p>Add an Event</p>
-               </button>
-            </a>
-            <a href="./manage_events.php">
-               <button class="circular ui icon button">
-                  <i class="suitcase icon"></i>
-                  <p>Manage Events</p>
-               </button>
-            </a>
-         </div>
-         <br>
-         <div>
-            <a href="./manage_primary_resources.php">
-               <button class="circular ui icon button">
-                  <i class="book icon"></i>
-                  <p>Add to Resource Page</p>
-               </button>
-            </a>
-            <a href="./manage_primary_resources.php">
-               <button class="circular ui icon button">
-                  <i class="info circle icon"></i>
-                  <p>Manage Resource Page</p>
-               </button>
-            </a>
-         </div>
-         <br>
-         <div>
-            <a href="./add_marker.php">
-               <button class="circular ui icon button">
-                  <i class="map pin icon"></i>
-                  <p>Add a Resource to the Map</p>
-               </button>
-            </a>
-            <a href="./manage_resource_map.php">
-               <button class="circular ui icon button">
-                  <i class="map icon"></i>
-                  <p>Manage Resource Map</p>
-               </button>
-            </a>
-         </div>
-         <br>
-         <div>
-            <a href="./add_prize.php">
-               <button class="circular ui icon button">
-                  <i class="plus icon"></i>
-                  <p>Add a Prize</p>
-               </button>
-            </a>
-            <a href="./manage_prizes.php">
-               <button class="circular ui icon button">
-                  <i class="edit icon"></i>
-                  <p>Manage Prizes</p>
-               </button>
-            </a>
-         </div>
-         <br>
-         <div>
-            <a href="./add_user.php">
-               <button class="circular ui icon button">
-                  <i class="plus icon"></i>
-                  <p>Add User</p>
-               </button>
-            </a>
-         </div>
-         <div>
-            <a href="./manage_about.php">
-               <button class="circular ui icon button">
-                  <i class="plus icon"></i>
-                  <p>Manage About Page</p>
-               </button>
-            </a>
-         </div>
-      </center></div>
+      <div class="mainbody">
+         <left class="sectionheader"><h1>Manage About Page</h1></left>
+         <table class="ui celled padded table">
+            <thead>
+               <tr>
+                  <th class="single line">About Page</th>
+                  <th>Action</th>
+               </tr>
+            </thead>
+            <tbody>
+               <?php foreach($ihc_about as $about): ?>
+                  <tr>
+                     <td><?php echo $about['info']; ?></td>
+                     <td>
+                        <a href="summarize_event.php?eventid=<?php echo $event['id'] ?>" class="ui green button">Summary</a>
+                        <a href="edit_about.php?id=<?php echo $about['id'] ?>" class="ui blue button">Edit</a>
+                     </td>
+                  </tr>
+               <?php endforeach; ?>
+            </tbody>
+         </table>
+      </div>
    </body>
-   </html>
+</html>
 
 <?php }
 else {

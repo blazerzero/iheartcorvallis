@@ -7,7 +7,7 @@
 <?php
 require './admin_server/db.php';
 $prizeid = $_GET['prizeid'];
-$result = $mysqli->query("SELECT * FROM ihc_events WHERE prizeid='$prizeid'");
+$result = $mysqli->query("SELECT * FROM ihc_prizes WHERE prizeid='$prizeid'");
 if ($result->num_rows > 0) {
    $prize = $result->fetch_assoc();
 }
@@ -98,7 +98,7 @@ if ($result->num_rows > 0) {
          <br><p class="requirednote">* Denotes a required field</p><br>
          <form name="prizeForm" onsubmit="return validateForm()" action="./admin_server/update_prizes_server.php" method="post">
             <div class="elem" style="display: none">
-               Prize ID: <input class="inputbox" type="text" name="eventid" value="<?php echo $prizes['eventid']; ?>" readonly><br><br>
+               Prize ID: <input class="inputbox" type="text" name="prizeid" value="<?php echo $prize['prizeid']; ?>" readonly><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
@@ -106,7 +106,13 @@ if ($result->num_rows > 0) {
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
-               Prize Level: <input class="inputbox" type="text" name="level" value="<?php echo $prize['level']; ?>"><br><br>
+               Prize Level: <select class="ui search dropdown" name="level">
+                  <option value="">Choose a level</option>
+                  <option value="1">Gold</option>
+                  <option value="2">Silver</option>
+                  <option value="3">Bronze</option>
+               </select>
+               <br><br>
             </div>
             <input class="ui button" type="submit">
          </form>
