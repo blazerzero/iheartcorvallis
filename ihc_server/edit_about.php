@@ -15,7 +15,7 @@ if ($result->num_rows > 0) {
 
 <html>
    <head>
-      <title>Edit Prize - I Heart Corvallis Administrative Suite</title>
+      <title>Edit About Page - I Heart Corvallis Administrative Suite</title>
       <link type="text/css" rel="stylesheet" href="./css/Semantic-UI-CSS-master/semantic.css"/>
       <link type="text/css" rel="stylesheet" href="./css/stylesheet.css"/>
       <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
