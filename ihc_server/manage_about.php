@@ -65,6 +65,11 @@ while ($about = $result->fetch_assoc()) {
             </div>
             <div style="color: #fff; display: inline;">
                <div class="ui simple dropdown item">
+                  <a href="./manage_about.php">About Page</a>
+               </div>
+            </div>
+            <div style="color: #fff; display: inline;">
+               <div class="ui simple dropdown item">
                   <a style="color: red;" href="./admin_server/logout.php">Logout</a>
                </div>
             </div>
@@ -85,7 +90,6 @@ while ($about = $result->fetch_assoc()) {
                   <tr>
                      <td><?php echo $about['info']; ?></td>
                      <td>
-                        <a href="summarize_event.php?eventid=<?php echo $event['id'] ?>" class="ui green button">Summary</a>
                         <a href="edit_about.php?id=<?php echo $about['id'] ?>" class="ui blue button">Edit</a>
                      </td>
                   </tr>

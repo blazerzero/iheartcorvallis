@@ -86,6 +86,11 @@ if ($result->num_rows > 0) {
             </div>
             <div style="color: #fff; display: inline;">
                <div class="ui simple dropdown item">
+                  <a href="./manage_about.php">About Page</a>
+               </div>
+            </div>
+            <div style="color: #fff; display: inline;">
+               <div class="ui simple dropdown item">
                   <a style="color: red;" href="./admin_server/logout.php">Logout</a>
                </div>
             </div>

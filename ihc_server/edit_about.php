@@ -29,10 +29,9 @@ if ($result->num_rows > 0) {
 
       function validateForm() {
          var infoField = document.forms["aboutForm"]["info"].value;
-         if (infoField == null || infoField == ""  {
+         if (infoField == null || infoField == "")  {
                alert("Please fill both fields before submitting!");
                return false;
-            }
          }
          else {
             return true;
@@ -80,6 +79,11 @@ if ($result->num_rows > 0) {
                      <div style="background-color: #dc4405;"><a href="./add_prize.php">Add a Prize</a></div>
                      <div style="background-color: #dc4405;"><a href="./manage_prizes.php">Manage Prizes</a></div>
                   </div>
+               </div>
+            </div>
+            <div style="color: #fff; display: inline;">
+               <div class="ui simple dropdown item">
+                  <a href="./manage_about.php">About Page</a>
                </div>
             </div>
             <div style="color: #fff; display: inline;">
