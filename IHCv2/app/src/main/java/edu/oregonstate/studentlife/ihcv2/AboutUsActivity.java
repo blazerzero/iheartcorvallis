@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -11,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,14 +26,20 @@ import android.widget.TextView;
 import java.sql.*;
 import java.util.HashMap;
 
+import edu.oregonstate.studentlife.ihcv2.loaders.AboutLoader;
+
 /**
  * Created by Omeed on 12/20/17.
  */
 
 public class AboutUsActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        LoaderManager.LoaderCallbacks<String> {
 
+    private final static String TAG = AboutUsActivity.class.getSimpleName();
     SessionActivity session;
+    private TextView mAboutAppTV;
+    private final static int IHC_GETABOUT_ID = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,13 +58,10 @@ public class AboutUsActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        LinearLayout linearLayout1 = (LinearLayout) findViewById(R.id.aboutUsText);
+        mAboutAppTV = (TextView) findViewById(R.id.tv_about_app);
 
-            TextView textView = new TextView(this);
-            textView.setText("This is the application for the I Heart Corvallis Initiative. This initiative is focused on getting students more involved with their community");
-            textView.setTextSize(20);
-            textView.setTextColor(Color.BLACK);
-            linearLayout1.addView(textView);
+        getSupportLoaderManager().initLoader(IHC_GETABOUT_ID, null, this);
+
     }
 
     public void onPause() {
@@ -146,5 +152,24 @@ public class AboutUsActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public Loader<String> onCreateLoader(int id, Bundle args) {
+        Log.d(TAG, "in onCreateLoader");
+        return new AboutLoader(this);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<String> loader, String data) {
+        Log.d(TAG, "received data: " + data);
+        if (data != null) {
+            mAboutAppTV.setText(data);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<String> loader) {
+        // Nothing to do...
     }
 }
