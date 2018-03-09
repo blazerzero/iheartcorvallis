@@ -84,6 +84,7 @@ public class EventsActivity extends AppCompatActivity
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(DashboardActivity.EXTRA_USER)) {
             user = (User) intent.getSerializableExtra(DashboardActivity.EXTRA_USER);
+            Log.d(TAG, "User ID: " + user.getId());
         }
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -262,6 +263,8 @@ public class EventsActivity extends AppCompatActivity
         } else if (id == R.id.nav_settings) {
             Intent intent = new Intent(EventsActivity.this, SettingsActivity.class);
             startActivity(intent);
+        }  else if (id == R.id.nav_logout) {
+            session.logoutUser();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

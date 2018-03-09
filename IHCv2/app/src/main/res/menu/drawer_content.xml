@@ -6,34 +6,37 @@
     <item
         android:id="@+id/nav_dash"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="Dashboard" />
+        android:title="@string/nav_dashboard" />
     <item
         android:id="@+id/nav_events"
         android:icon="@drawable/ic_next_week_black_24dp"
-        android:title="Events" />
+        android:title="@string/nav_events" />
     <item
         android:id="@+id/nav_passport"
         android:icon="@drawable/ic_book_black_24dp"
-        android:title="Passport" />
+        android:title="@string/nav_passport" />
     <item
         android:id="@+id/nav_prizes"
         android:icon="@drawable/ic_shopping_basket_black_24dp"
-        android:title="Prizes" />
+        android:title="@string/nav_prizes" />
     <item
         android:id="@+id/nav_leaderboard"
         android:icon="@drawable/ic_format_list_numbered_black_24dp"
-        android:title="Leaderboard" />
+        android:title="@string/nav_leaderboard" />
     <item
         android:id="@+id/nav_resources"
         android:icon="@drawable/ic_import_contacts_black_24dp"
-        android:title="Resources" />
+        android:title="@string/nav_resources" />
     <item
         android:id="@+id/nav_aboutus"
         android:icon="@drawable/ic_info_outline_black_24dp"
-        android:title="About Us" />
+        android:title="@string/nav_aboutus" />
     <item
         android:id="@+id/nav_settings"
         android:icon="@drawable/ic_settings_black_24dp"
-        android:title="Settings" />
+        android:title="@string/nav_settings" />
+    <item
+        android:id="@+id/nav_logout"
+        android:title="@string/nav_logout" />
 
 </menu>

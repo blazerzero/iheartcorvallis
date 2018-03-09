@@ -72,5 +72,15 @@
     <string name="corvallis_aerial_description">Aerial view of Corvallis</string>
     <string name="ihc_group_description">The development group for the I Heart Corvallis app</string>
 
+    <!-- Navigation bar titles -->
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_events">Events</string>
+    <string name="nav_passport">Passport</string>
+    <string name="nav_prizes">Prizes</string>
+    <string name="nav_leaderboard">Leaderboard</string>
+    <string name="nav_resources">Resources</string>
+    <string name="nav_aboutus">About Us</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_logout">Logout</string>
 
 </resources>

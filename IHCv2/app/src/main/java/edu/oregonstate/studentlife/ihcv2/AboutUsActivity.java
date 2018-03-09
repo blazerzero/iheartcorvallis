@@ -147,6 +147,8 @@ public class AboutUsActivity extends AppCompatActivity
         } else if (id == R.id.nav_settings) {
             Intent intent = new Intent(AboutUsActivity.this, SettingsActivity.class);
             startActivity(intent);
+        } else if (id == R.id.nav_logout) {
+            session.logoutUser();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -148,6 +148,8 @@ public class SettingsActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_settings) {
             onBackPressed();
+        } else if (id == R.id.nav_logout) {
+            session.logoutUser();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
