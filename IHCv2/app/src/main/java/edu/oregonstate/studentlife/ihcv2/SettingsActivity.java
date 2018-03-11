@@ -1,9 +1,14 @@
 package edu.oregonstate.studentlife.ihcv2;
 
 import android.content.DialogInterface;
+import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -20,35 +25,62 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 import java.sql.*;
 import java.util.HashMap;
+
+import edu.oregonstate.studentlife.ihcv2.data.User;
+import edu.oregonstate.studentlife.ihcv2.loaders.UserInfoLoader;
 
 /**
  * Created by Omeed on 12/20/17.
  */
 
 public class SettingsActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        LoaderManager.LoaderCallbacks<String> {
 
     SessionActivity session;
+
+    DrawerLayout mDrawerLayout;
+    ActionBarDrawerToggle mDrawerToggle;
+    SettingsFragment fragment;
+    private final static int IHC_SETTINGS_LOADER_ID = 0;
+    public final static String IHC_USER_EMAIL_KEY = "IHC_USER_EMAIL";
+    public final static String IHC_USER_GRADE_KEY = "IHC_USER_GRADE";
+    public final static String IHC_USER_AGE_KEY = "IHC_USER_AGE";
+
+    private User currentUser;
+    private String email;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(toolbar);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getSupportActionBar().setElevation(0);
+        }
 
         overridePendingTransition(0,0);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         session = new SessionActivity(getApplicationContext());
+        HashMap<String, String> user = session.getUserDetails();
+        email = user.get(SessionActivity.KEY_EMAIL);
 
-        Button button1 = (Button)findViewById(R.id.logoutbtn);
+        /*Button button1 = (Button)findViewById(R.id.logoutbtn);
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,10 +88,75 @@ public class SettingsActivity extends AppCompatActivity
                 //Intent intent = new Intent(SettingsActivity.this, Splash.class);
                 //startActivity(intent);
             }
-        });
+        });*/
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        /*Bundle args = new Bundle();
+        args.putInt(IHC_USER_GRADE_KEY, user.getGrade());
+        args.putInt(IHC_USER_AGE_KEY, user.getAge());
+        fragment.setArguments(args);
+        fragment = (SettingsFragment) getFragmentManager().findFragmentById(R.id.settings_frame);*/
+
+        getSupportLoaderManager().initLoader(IHC_SETTINGS_LOADER_ID, null, this);
+    }
+
+    @Override
+    public Loader<String> onCreateLoader(int id, final Bundle args) {
+        if (args != null) {
+            email = args.getString(IHC_USER_EMAIL_KEY);
+        }
+        return new UserInfoLoader(this, email);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<String> loader, String data) {
+        if (data != null) {
+            try {
+                JSONObject userJSON = new JSONObject(data);
+                String firstname = userJSON.getString("firstname");
+                String lastname = userJSON.getString("lastname");
+                String email = userJSON.getString("email");
+                int id = Integer.parseInt(userJSON.getString("id"));
+                String stampcount = userJSON.getString("stampcount");
+                int grade = Integer.parseInt(userJSON.getString("grade"));
+                int age = Integer.parseInt(userJSON.getString("age"));
+                currentUser = new User(firstname, lastname, email, id, stampcount, grade, age);
+                Bundle args = new Bundle();
+                args.putInt(IHC_USER_GRADE_KEY, currentUser.getGrade());
+                args.putInt(IHC_USER_AGE_KEY, currentUser.getAge());
+                fragment = new SettingsFragment();
+                fragment.setArguments(args);
+                getFragmentManager().beginTransaction().replace(R.id.settings_frame, fragment).commit();
+
+                //numStamps = Integer.parseInt(stampcount);
+                //progIndicator = initProgIndicator(numStamps, progIndicator);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            }
+            else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("Error");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Close alert dialog
+                }
+            });
+            builder.setMessage("Error retrieving user info.");
+            builder.setIcon(android.R.drawable.ic_dialog_alert);
+            builder.show();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<String> loader) {
+        // Nothing to do...
     }
 
     public void onPause() {
@@ -92,11 +189,26 @@ public class SettingsActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        else if (id == R.id.action_settings) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override

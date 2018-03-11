@@ -89,8 +89,10 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_page);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        //setSupportActionBar(toolbar);
+
+        getSupportActionBar().hide();
 
         overridePendingTransition(0,0);
 

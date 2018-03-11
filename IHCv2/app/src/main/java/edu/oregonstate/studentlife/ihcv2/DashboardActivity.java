@@ -1,8 +1,11 @@
 package edu.oregonstate.studentlife.ihcv2;
 
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -10,7 +13,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
@@ -37,6 +39,9 @@ public class DashboardActivity extends AppCompatActivity
     private final static String IHC_USER_EMAIL_KEY = "IHC_USER_EMAIL";
     private final static int IHC_USER_LOADER_ID = 0;
 
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+
     private static final String TAG = DashboardActivity.class.getSimpleName();
 
 
@@ -45,16 +50,20 @@ public class DashboardActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(toolbar);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getSupportActionBar().setElevation(0);
+        }
 
         overridePendingTransition(0,0);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -132,7 +141,7 @@ public class DashboardActivity extends AppCompatActivity
     }
 
     @Override
-    public android.support.v4.content.Loader<String> onCreateLoader(int id, final Bundle args) {
+    public Loader<String> onCreateLoader(int id, final Bundle args) {
         if (args != null) {
             email = args.getString(IHC_USER_EMAIL_KEY);
         }
@@ -140,7 +149,7 @@ public class DashboardActivity extends AppCompatActivity
     }
 
     @Override
-    public void onLoadFinished(android.support.v4.content.Loader<String> loader, String data) {
+    public void onLoadFinished(Loader<String> loader, String data) {
         if (data != null) {
             try {
                 JSONObject userJSON = new JSONObject(data);
@@ -149,7 +158,9 @@ public class DashboardActivity extends AppCompatActivity
                 String email = userJSON.getString("email");
                 int id = Integer.parseInt(userJSON.getString("id"));
                 String stampcount = userJSON.getString("stampcount");
-                currentUser = new User(firstname, lastname, email, id, stampcount);
+                int grade = Integer.parseInt(userJSON.getString("grade"));
+                int age = Integer.parseInt(userJSON.getString("age"));
+                currentUser = new User(firstname, lastname, email, id, stampcount, grade, age);
                 numStamps = Integer.parseInt(stampcount);
                 progIndicator = initProgIndicator(numStamps, progIndicator);
             } catch (Exception e) {
@@ -178,7 +189,7 @@ public class DashboardActivity extends AppCompatActivity
     }
 
     @Override
-    public void onLoaderReset(android.support.v4.content.Loader<String> loader) {
+    public void onLoaderReset(Loader<String> loader) {
         // Nothing to do...
     }
 
@@ -254,10 +265,6 @@ public class DashboardActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.dashboard, menu);
-
-
-
-
         return true;
     }
 
@@ -269,7 +276,10 @@ public class DashboardActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        else if (id == R.id.action_settings) {
             Intent settingsIntent = new Intent(this, SettingsActivity.class);
             startActivity(settingsIntent);
             return true;
@@ -277,6 +287,19 @@ public class DashboardActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {

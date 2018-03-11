@@ -92,15 +92,13 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_non_student_login);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(toolbar);
-
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        //setSupportActionBar(toolbar);
+        getSupportActionBar().hide();
 
         session = new SessionActivity(getApplicationContext());
 
-
         overridePendingTransition(0,0);
-
 
         // Set up the login form.
         mEmailView = (EditText) findViewById(R.id.email);
@@ -201,10 +199,11 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
+
+            View view = this.getCurrentFocus();
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             if (isNetworkAvailable()) {
-                View view = this.getCurrentFocus();
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 //new NonStudentAuthProcess(this).execute(email);
                 //new HashReceiver(this).execute(email, password);
                 getSupportLoaderManager().initLoader(NS_LOGIN_HASH_ID, null, this);

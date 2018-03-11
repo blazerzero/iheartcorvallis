@@ -6,9 +6,11 @@ package edu.oregonstate.studentlife.ihcv2;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -60,22 +62,32 @@ public class PassportActivity extends AppCompatActivity
     private String email;
     SessionActivity session;
 
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passport);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        //setSupportActionBar(toolbar);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getSupportActionBar().setElevation(0);
+        }
 
         overridePendingTransition(0,0);
 
         completedEventList = new ArrayList<Event>();
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -128,11 +140,26 @@ public class PassportActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        else if (id == R.id.action_settings) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -283,7 +310,9 @@ public class PassportActivity extends AppCompatActivity
                     String email = userJSON.getString("email");
                     int id = Integer.parseInt(userJSON.getString("id"));
                     String stampcount = userJSON.getString("stampcount");
-                    currentUser = new User(firstname, lastname, email, id, stampcount);
+                    int grade = Integer.parseInt(userJSON.getString("grade"));
+                    int age = Integer.parseInt(userJSON.getString("age"));
+                    currentUser = new User(firstname, lastname, email, id, stampcount, grade, age);
                     numStamps = Integer.parseInt(stampcount);
                     progIndicatorTV.setText("STAMPS: " + String.valueOf(numStamps));
                     if (numStamps >= getResources().getInteger(R.integer.bronzeThreshold)
