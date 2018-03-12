@@ -100,4 +100,7 @@
     <string name="pref_user_age_key" translatable="false">pref_age</string>
     <string name="pref_user_age_title">Age</string>
 
+    <!-- CheckLocationActivity -->
+    <string name="checking_location">Checking Location</string>
+
 </resources>

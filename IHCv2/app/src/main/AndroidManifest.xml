@@ -56,11 +56,12 @@
             android:name=".LoginPageActivity"
             android:label="Log In"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.oregonstate.studentlife.ihcv2.MainActivity" />
@@ -69,11 +70,12 @@
             android:name=".SignupPageActivity"
             android:label="Sign Up"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.oregonstate.studentlife.ihcv2.MainActivity" />
@@ -170,11 +172,12 @@
             android:name=".NonStudentLoginActivity"
             android:label="Non-Student Login"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".LoginPageActivity">
+            android:parentActivityName=".LoginPageActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.oregonstate.studentlife.ihcv2.LoginPageActivity" />
@@ -183,11 +186,12 @@
             android:name=".EventDetailActivity"
             android:label="Event Details"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".EventsActivity">
+            android:parentActivityName=".EventsActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.oregonstate.studentlife.ihcv2.EventsActivity" />
@@ -196,11 +200,26 @@
             android:name=".EventPINActivity"
             android:label="Enter Event PIN"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".EventsActivity">
+            android:parentActivityName=".EventDetailActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.oregonstate.studentlife.ihcv2.EventDetailActivity" />
+        </activity>
+        <activity
+            android:name=".CheckLocationActivity"
+            android:label="Checking Location"
+            android:launchMode="singleTop"
+            android:parentActivityName=".EventDetailActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.oregonstate.studentlife.ihcv2.EventDetailActivity" />
