@@ -15,12 +15,14 @@ if ($result->num_rows > 0) {
 $result = $mysqli->query("SELECT * FROM ihc_completed_events WHERE eventid='$eventid'");
 $numAttendees = $result->num_rows;
 $numFreshmen = $numSophomores = $numJuniors = $numSeniors = $numGrad = 0;
+$numDomStudents = $numIntlStudents = $numNonStudents = 0;
 while ($row = $result->fetch_assoc()) {
    $userid = $row['userid'];
-   $res = $mysqli->query("SELECT grade FROM ihc_users WHERE id='$userid'");
+   $res = $mysqli->query("SELECT grade, age, studenttype FROM ihc_users WHERE id='$userid'");
    if ($res->num_rows > 0) {
       $user = $res->fetch_assoc();
       $grade = (int)$user['grade'];
+      $studenttype = (int)$user['studenttype'];
       if ($grade == 1) {
          $numFreshmen++;
       }
@@ -36,8 +38,18 @@ while ($row = $result->fetch_assoc()) {
       else if ($grade == 5) {
          $numGrad++;
       }
+      if ($studenttype == 0) {
+         $numDomStudents++;
+      }
+      else if ($studenttype == 1) {
+         $numIntlStudents++;
+      }
+      else if ($studenttype == 2) {
+         $numNonStudents++;
+      }
    }
 }
+$numStudents = $numDomStudents + $numIntlStudents;
 ?>
 
 <html>
@@ -50,21 +62,50 @@ while ($row = $result->fetch_assoc()) {
       <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
       <script type="text/javascript">
          google.charts.load("current", {packages:["corechart"]});
-         google.charts.setOnLoadCallback(drawChart);
-         function drawChart() {
-            var numFresh = <?php echo $numFreshmen; ?>;
-            var numSoph = <?php echo $numSophomores; ?>;
-            var numJr = <?php echo $numJuniors; ?>;
-            var numSr = <?php echo $numSeniors; ?>;
-            var numG = <?php echo $numGrad; ?>;
+         google.charts.setOnLoadCallback(drawAttendeeChart);
+         google.charts.setOnLoadCallback(drawStudentAttendeeChart);
+         google.charts.setOnLoadCallback(drawStudentStatusChart);
 
+         function drawAttendeeChart() {
             var data = google.visualization.arrayToDataTable([
-               ['Grade', 'Number of Attendees of that Grade'],
-               ['Freshmen', numFresh],
-               ['Sophomores', numSoph],
-               ['Juniors', numJr],
-               ['Seniors', numSr],
-               ['Graduate Students', numG]
+               ['Attendee Type', 'Number of Attendees of This Type'],
+               ['Students', <?php echo $numStudents; ?>],
+               ['Non-Students', <?php echo $numNonStudents; ?>]
+            ]);
+
+            var options = {
+               title: 'Attendee Type',
+               pieHole: 0.4,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('all_attendees_donutchart'));
+            chart.draw(data, options);
+         }
+
+         function drawStudentAttendeeChart() {
+            var data = google.visualization.arrayToDataTable([
+               ['Student Attendee Type', 'Number of Attendees of This Type'],
+               ['Domestic Students', <?php echo $numDomStudents; ?>],
+               ['International Students', <?php echo $numIntlStudents; ?>]
+            ]);
+
+            var options = {
+               title: 'Student Attendee Type',
+               pieHole: 0.4,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('student_attendees_donutchart'));
+            chart.draw(data, options);
+         }
+
+         function drawStudentStatusChart() {
+            var data = google.visualization.arrayToDataTable([
+               ['Status', 'Number of Student Attendees of That Status'],
+               ['Freshmen', <?php echo $numFreshmen; ?>],
+               ['Sophomores', <?php echo $numSophomores; ?>],
+               ['Juniors', <?php echo $numJuniors; ?>],
+               ['Seniors', <?php echo $numSeniors; ?>],
+               ['Graduate Students', <?php echo $numGrad; ?>]
             ]);
 
             var options = {
@@ -72,7 +113,7 @@ while ($row = $result->fetch_assoc()) {
                pieHole: 0.4,
             };
 
-            var chart = new google.visualization.PieChart(document.getElementById('attendees_donutchart'));
+            var chart = new google.visualization.PieChart(document.getElementById('student_status_donutchart'));
             chart.draw(data, options);
          }
       </script>
@@ -146,7 +187,35 @@ while ($row = $result->fetch_assoc()) {
             <h4>Number of Attendees: <?php echo $numAttendees; ?></h4>
             <?php if ($numAttendees > 0) { ?>
                <!-- ALL EVENT AND USER STATS GO IN HERE -->
-               <div id="attendees_donutchart" style="width: 900px; height: 500px;"></div>
+               <table>
+                  <tr>
+                     <!--<td>
+                        <div>
+                           <h4>Students: <?php echo $numStudents; ?></h4>
+                           <h4>Non-students: <?php echo $numNonStudents; ?></h4>
+                        </div>
+                     </td>-->
+                     <td><div id="all_attendees_donutchart" style="width: 50vw; height: 30vw;"></div></td>
+                     <td><div id="student_attendees_donutchart" style="width: 50vw; height: 30vw;"></div></td>
+                     <!--<td>
+                        <h4>Domestic Students: <?php echo $numDomStudents; ?></h4>
+                        <h4>International Students: <?php echo $numIntlStudents; ?></h4>
+                     </td>-->
+                  </tr>
+                  <tr>
+                     <!--<td>
+                        <div><center>
+                           <h4>Freshmen: <?php echo $numFreshmen; ?></h4>
+                           <h4>Sophomores: <?php echo $numSophomores; ?></h4>
+                           <h4>Juniors: <?php echo $numJuniors; ?></h4>
+                           <h4>Seniors: <?php echo $numSeniors; ?></h4>
+                           <h4>Gradaute Students: <?php echo $numGrad; ?></h4>
+                        </center></div>
+                     </td>-->
+                     <td><div id="student_status_donutchart" style="width: 50vw; height: 30vw;"></div></td>
+                  </tr>
+               </table>
+
             <?php } ?>
          </div>
 
