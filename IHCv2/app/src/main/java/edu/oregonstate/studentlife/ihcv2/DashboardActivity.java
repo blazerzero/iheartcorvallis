@@ -303,8 +303,6 @@ public class DashboardActivity extends AppCompatActivity
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem item = menu.findItem(R.id.action_settings);
-        item.setVisible(false);
         // session information is retrieved and displayed on nav menu
         //session = new SessionActivity(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();

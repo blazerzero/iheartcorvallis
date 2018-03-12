@@ -39,7 +39,7 @@ public class CheckLocationActivity extends AppCompatActivity {
     private Event event;
     private User user;
     private final static String eventkey = "event geofence";
-    private Geocoder coder = new Geocoder(this);
+    private Geocoder coder;
     private List<Address> address;
     private final static int GEOFENCE_RADIUS_IN_METERS = 50;
     private final static int GEOFENCE_EXPIRATION_IN_MILLISECONDS = 6000;
@@ -55,6 +55,7 @@ public class CheckLocationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_location);
+        coder = new Geocoder(this);
         mLocationCheckPB = (ProgressBar) findViewById(R.id.pb_location_check);
         mGeofencingClient = LocationServices.getGeofencingClient(this);
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -200,6 +201,12 @@ public class CheckLocationActivity extends AppCompatActivity {
         builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
         builder.addGeofence(mGeofence);
         return builder.build();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        super.onBackPressed(); // make page go back to EventDetailActivity on activity resume
     }
 
     @Override

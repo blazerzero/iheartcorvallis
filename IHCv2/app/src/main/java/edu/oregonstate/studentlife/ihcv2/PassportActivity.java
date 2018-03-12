@@ -128,7 +128,6 @@ public class PassportActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.dashboard, menu);
         return true;
     }
 
@@ -141,9 +140,6 @@ public class PassportActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        else if (id == R.id.action_settings) {
             return true;
         }
 
@@ -164,9 +160,6 @@ public class PassportActivity extends AppCompatActivity
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem item = menu.findItem(R.id.action_settings);
-        item.setVisible(false);
-
         // session information is retrieved and displayed on nav menu
         session = new SessionActivity(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
