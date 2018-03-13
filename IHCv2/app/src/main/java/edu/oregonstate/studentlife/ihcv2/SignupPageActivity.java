@@ -285,8 +285,10 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
                 StringTokenizer stRes = new StringTokenizer(result);
                 String name = stRes.nextToken("\\");
                 String email = stRes.nextToken("\\");
+                String tid = stRes.nextToken("\\");
+                //int id = Integer.parseInt(tid);
                 session = new SessionActivity(getApplicationContext());
-                session.createLoginSession(name, email);
+                session.createLoginSession(name, email, tid);
                 Intent intent = new Intent(SignupPageActivity.this, DashboardActivity.class);
                 startActivity(intent);
             } catch (Exception e) {

@@ -438,7 +438,9 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
                     String last = userJSON.getString("lastname");
                     String name = first + " " + last;
                     String email = userJSON.getString("email");
-                    session.createLoginSession( name , email);
+                    String tokeId = userJSON.getString("id");
+                    //int id = Integer.parseInt(tokeId);
+                    session.createLoginSession(name, email, tokeId);
                     Intent intent = new Intent(NonStudentLoginActivity.this, DashboardActivity.class);
                     startActivity(intent);
                 } catch (Exception e) {
