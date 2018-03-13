@@ -37,17 +37,10 @@
         android:background="@color/colorPrimary"
         tools:openDrawer="start">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                android:background="@color/colorPrimary">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/progIndicator"
@@ -63,70 +56,34 @@
                     android:paddingTop="15dp"
                     android:paddingBottom="15dp"/>
 
-                <Button
-                    android:id="@+id/eventbtn"
+                <TextView
+                    android:id="@+id/tv_dash_stamp_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/progIndicator"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
-                    android:text="EVENTS"
-                    android:textSize="20sp"
-                    android:paddingTop="30dp"
-                    android:paddingBottom="30dp"/>
+                    android:layout_gravity="center"
+                    android:background="#ffffff"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:elevation="4dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textAlignment="center"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"/>
 
-                <Button
-                    android:id="@+id/passportbtn"
-                    android:layout_width="match_parent"
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_event_list"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/eventbtn"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
-                    android:text="PASSPORT"
-                    android:textSize="20sp"
-                    android:paddingTop="30dp"
-                    android:paddingBottom="30dp"/>
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"/>
 
-                <Button
-                    android:id="@+id/leaderbtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/passportbtn"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
-                    android:text="LEADERBOARD"
-                    android:textSize="20sp"
-                    android:paddingTop="30dp"
-                    android:paddingBottom="30dp"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_passport_list"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"/>
 
-                <Button
-                    android:id="@+id/resourcebtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/leaderbtn"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
-                    android:text="RESOURCES"
-                    android:textSize="20sp"
-                    android:paddingTop="30dp"
-                    android:paddingBottom="30dp"/>
-
-                <Button
-                    android:id="@+id/aboutbtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/resourcebtn"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
-                    android:text="ABOUT US"
-                    android:textSize="20sp"
-                    android:paddingTop="30dp"
-                    android:paddingBottom="30dp"/>
-
-
-            </RelativeLayout>
-
-        </ScrollView>
+        </RelativeLayout>
 
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"

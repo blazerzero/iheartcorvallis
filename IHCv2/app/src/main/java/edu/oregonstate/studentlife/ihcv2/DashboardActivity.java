@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -39,8 +41,11 @@ import edu.oregonstate.studentlife.ihcv2.loaders.EventLoader;
 import edu.oregonstate.studentlife.ihcv2.loaders.PassportLoader;
 import edu.oregonstate.studentlife.ihcv2.loaders.UserInfoLoader;
 
+import static edu.oregonstate.studentlife.ihcv2.EventsActivity.EXTRA_EVENT;
+
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
+        EventListAdapter.OnEventClickListener,
         LoaderManager.LoaderCallbacks<String> {
 
     private User currentUser;
@@ -53,12 +58,18 @@ public class DashboardActivity extends AppCompatActivity
     private final static int IHC_PASSPORT_LOADER_ID = 1;
     private final static int IHC_EVENT_LOADER_ID = 2;
 
+    private TextView dashStampCountTV;
+
     private String[] monthShortNames = {"Jan.", "Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."};
     private ArrayList<Event> completedEventList;
     private PassportAdapter mPassportAdapter;
 
     private ArrayList<Event> eventList;
     private EventListAdapter mEventListAdapter;
+    private RecyclerView mEventListRecyclerView;
+
+    private RecyclerView mPassportRecyclerView;
+
 
     boolean gotUser = false;
     boolean gotPassport = false;
@@ -85,15 +96,32 @@ public class DashboardActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        mEventListRecyclerView = (RecyclerView) findViewById(R.id.rv_event_list);
+        mEventListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mEventListRecyclerView.setHasFixedSize(true);
+
+        mEventListAdapter = new EventListAdapter(this);
+        mEventListRecyclerView.setAdapter(mEventListAdapter);
+
+        mPassportRecyclerView = (RecyclerView) findViewById(R.id.rv_passport_list);
+        mPassportRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mPassportRecyclerView.setHasFixedSize(true);
+
+        mPassportAdapter = new PassportAdapter();
+        mPassportRecyclerView.setAdapter(mPassportAdapter);
+
         session = new SessionActivity(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
         email = user.get(SessionActivity.KEY_EMAIL);
+
+        eventList = new ArrayList<Event>();
 
         //new UserInfoReceiver(this).execute(email);
 
         getSupportLoaderManager().initLoader(IHC_USER_LOADER_ID, null, this);
         getUserInfo();
 
+        dashStampCountTV = (TextView)findViewById(R.id.tv_dash_stamp_count);
         progIndicator = (TextView)findViewById(R.id.progIndicator);
 
         progIndicator.setOnClickListener(new View.OnClickListener() {
@@ -105,56 +133,7 @@ public class DashboardActivity extends AppCompatActivity
             }
         });
 
-        Button button1 = (Button)findViewById(R.id.eventbtn);
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DashboardActivity.this, EventsActivity.class);
-                intent.putExtra(DashboardActivity.EXTRA_USER, currentUser);
-                startActivity(intent);
-            }
-        });
 
-
-        Button button2 = (Button)findViewById(R.id.passportbtn);
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DashboardActivity.this, PassportActivity.class);
-                intent.putExtra(DashboardActivity.EXTRA_USER, currentUser);
-                startActivity(intent);
-            }
-        });
-
-        Button button3 = (Button)findViewById(R.id.leaderbtn);
-        button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DashboardActivity.this, LeaderboardActivity.class);
-                intent.putExtra(DashboardActivity.EXTRA_USER, currentUser);
-                startActivity(intent);
-            }
-        });
-
-        Button button4 = (Button)findViewById(R.id.resourcebtn);
-        button4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DashboardActivity.this, ResourcesActivity.class);
-                intent.putExtra(DashboardActivity.EXTRA_USER, currentUser);
-                startActivity(intent);
-            }
-        });
-
-        Button button5 = (Button)findViewById(R.id.aboutbtn);
-        button5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DashboardActivity.this, AboutUsActivity.class);
-                intent.putExtra(DashboardActivity.EXTRA_USER, currentUser);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -189,6 +168,9 @@ public class DashboardActivity extends AppCompatActivity
                     currentUser = new User(firstname, lastname, email, id, stampcount);
                     numStamps = Integer.parseInt(stampcount);
                     progIndicator = initProgIndicator(numStamps, progIndicator);
+
+                    dashStampCountTV.setText("STAMPS: " + String.valueOf(numStamps));
+
                     gotUser = true;
                     getSupportLoaderManager().initLoader(IHC_PASSPORT_LOADER_ID, null,this);
 
@@ -541,6 +523,16 @@ public class DashboardActivity extends AppCompatActivity
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         builder.show();
     }
+
+    // possibly change to just navigate to the events page
+    @Override
+    public void onEventClick(Event event) {
+        Intent eventDetailActivityIntent = new Intent(this, EventDetailActivity.class);
+        eventDetailActivityIntent.putExtra(EXTRA_EVENT, event);
+        eventDetailActivityIntent.putExtra(EXTRA_USER, currentUser);
+        startActivity(eventDetailActivityIntent);
+    }
+
     /*private void onBackgroundTaskDataObtained(String result) {
         if (result != null) {
             try {
