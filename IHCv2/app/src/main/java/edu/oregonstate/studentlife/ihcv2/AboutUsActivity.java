@@ -29,6 +29,8 @@ import android.widget.TextView;
 import java.sql.*;
 import java.util.HashMap;
 
+import edu.oregonstate.studentlife.ihcv2.data.Constants;
+import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.AboutLoader;
 
 /**
@@ -43,6 +45,7 @@ public class AboutUsActivity extends AppCompatActivity
     SessionActivity session;
     private TextView mAboutAppTV;
     private final static int IHC_GETABOUT_ID = 0;
+    private User user;
     DrawerLayout mDrawerLayout;
     ActionBarDrawerToggle mDrawerToggle;
 
@@ -57,6 +60,12 @@ public class AboutUsActivity extends AppCompatActivity
         }
 
         overridePendingTransition(0,0);
+
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra(Constants.EXTRA_USER)) {
+            user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
+            Log.d(TAG, "User ID: " + user.getId());
+        }
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -145,26 +154,33 @@ public class AboutUsActivity extends AppCompatActivity
 
         if (id == R.id.nav_dash) {
             Intent intent = new Intent(AboutUsActivity.this, DashboardActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_events) {
             Intent intent = new Intent(AboutUsActivity.this, EventsActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_passport) {
             Intent intent = new Intent(AboutUsActivity.this, PassportActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_prizes) {
             Intent intent = new Intent(AboutUsActivity.this, PrizesActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_leaderboard) {
             Intent intent = new Intent(AboutUsActivity.this, LeaderboardActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_resources) {
             Intent intent = new Intent(AboutUsActivity.this, ResourcesActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_aboutus) {
             onBackPressed();
         } else if (id == R.id.nav_settings) {
             Intent intent = new Intent(AboutUsActivity.this, SettingsActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_logout) {
             session.logoutUser();

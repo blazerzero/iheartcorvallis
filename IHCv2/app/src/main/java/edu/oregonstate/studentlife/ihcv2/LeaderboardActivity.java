@@ -20,6 +20,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -35,6 +36,7 @@ import java.util.HashMap;
 import java.util.StringTokenizer;
 
 import edu.oregonstate.studentlife.ihcv2.adapters.LeaderboardAdapter;
+import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.LeaderboardLoader;
 
@@ -52,6 +54,7 @@ public class LeaderboardActivity extends AppCompatActivity
 
     private ArrayList<User.LeaderboardUser> leaderboardUserList;
     SessionActivity session;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,12 @@ public class LeaderboardActivity extends AppCompatActivity
         }
 
         overridePendingTransition(0,0);
+
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra(Constants.EXTRA_USER)) {
+            user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
+            Log.d(TAG, "User ID: " + user.getId());
+        }
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -162,26 +171,33 @@ public class LeaderboardActivity extends AppCompatActivity
 
         if (id == R.id.nav_dash) {
             Intent intent = new Intent(LeaderboardActivity.this, DashboardActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_events) {
             Intent intent = new Intent(LeaderboardActivity.this, EventsActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_passport) {
             Intent intent = new Intent(LeaderboardActivity.this, PassportActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_prizes) {
             Intent intent = new Intent(LeaderboardActivity.this, PrizesActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_leaderboard) {
             onBackPressed();
         } else if (id == R.id.nav_resources) {
             Intent intent = new Intent(LeaderboardActivity.this, ResourcesActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_aboutus) {
             Intent intent = new Intent(LeaderboardActivity.this, AboutUsActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_settings) {
             Intent intent = new Intent(LeaderboardActivity.this, SettingsActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_logout) {
             session.logoutUser();

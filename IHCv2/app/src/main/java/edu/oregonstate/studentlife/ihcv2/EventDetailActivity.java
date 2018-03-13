@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.Event;
 import edu.oregonstate.studentlife.ihcv2.data.User;
 
@@ -34,8 +35,6 @@ public class EventDetailActivity extends AppCompatActivity {
     private String[] monthLongNames = {"January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"};
 
-    public static final String EXTRA_EVENT_DETAILED = "Detailed Event";
-    public static final String EXTRA_USER = "User";
     private static final String TAG = EventDetailActivity.class.getSimpleName();
 
     @Override
@@ -69,10 +68,10 @@ public class EventDetailActivity extends AppCompatActivity {
         mEventCheckInTV = (TextView) findViewById(R.id.tv_event_check_in);
 
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(EventsActivity.EXTRA_EVENT) && intent.hasExtra(EventsActivity.EXTRA_USER)) {
-            user = (User) intent.getSerializableExtra(EventsActivity.EXTRA_USER);
+        if (intent != null && intent.hasExtra(Constants.EXTRA_EVENT) && intent.hasExtra(Constants.EXTRA_USER)) {
+            user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
             Log.d(TAG, "User ID: " + user.getId());
-            event = (Event) intent.getSerializableExtra(EventsActivity.EXTRA_EVENT);
+            event = (Event) intent.getSerializableExtra(Constants.EXTRA_EVENT);
             mEventNameTV.setText(event.getName());
             mEventLocationTV.setText(event.getLocation());
             mEventAddressTV.setText(event.getAddress());
@@ -91,8 +90,8 @@ public class EventDetailActivity extends AppCompatActivity {
                 // go to check user geolocation and ask for event verification PIN
                 // go to geolocation first, but goes straight to PIN for now
                 Intent enterEventPINIntent = new Intent(EventDetailActivity.this, CheckLocationActivity.class);
-                enterEventPINIntent.putExtra(EXTRA_EVENT_DETAILED, event);
-                enterEventPINIntent.putExtra(EXTRA_USER, user);
+                enterEventPINIntent.putExtra(Constants.EXTRA_EVENT_DETAILED, event);
+                enterEventPINIntent.putExtra(Constants.EXTRA_USER, user);
                 startActivity(enterEventPINIntent);
             }
         });
@@ -117,7 +116,7 @@ public class EventDetailActivity extends AppCompatActivity {
                 return true;
             case R.id.action_map:
                 Intent mapIntent = new Intent(EventDetailActivity.this, MapsActivity.class);
-                mapIntent.putExtra(EXTRA_EVENT_DETAILED, event);
+                mapIntent.putExtra(Constants.EXTRA_EVENT_DETAILED, event);
                 startActivity(mapIntent);
             default:
                 return super.onOptionsItemSelected(item);

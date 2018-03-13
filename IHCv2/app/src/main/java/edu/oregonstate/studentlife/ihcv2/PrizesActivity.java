@@ -31,7 +31,9 @@ import java.util.HashMap;
 import java.util.StringTokenizer;
 
 import edu.oregonstate.studentlife.ihcv2.adapters.PrizeAdapter;
+import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.Prize;
+import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.PrizeLoader;
 
 public class PrizesActivity extends AppCompatActivity
@@ -57,6 +59,8 @@ public class PrizesActivity extends AppCompatActivity
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
 
+    private User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +73,12 @@ public class PrizesActivity extends AppCompatActivity
         }
 
         overridePendingTransition(0,0);
+
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra(Constants.EXTRA_USER)) {
+            user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
+            Log.d(TAG, "User ID: " + user.getId());
+        }
 
         prizeList = new ArrayList<Prize>();
 
@@ -181,26 +191,33 @@ public class PrizesActivity extends AppCompatActivity
 
         if (id == R.id.nav_dash) {
             Intent intent = new Intent(PrizesActivity.this, DashboardActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_events) {
             Intent intent = new Intent(PrizesActivity.this, EventsActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_passport) {
             Intent intent = new Intent(PrizesActivity.this, PassportActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_prizes) {
             onBackPressed();
         } else if (id == R.id.nav_leaderboard) {
             Intent intent = new Intent(PrizesActivity.this, LeaderboardActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_resources) {
             Intent intent = new Intent(PrizesActivity.this, ResourcesActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_aboutus) {
             Intent intent = new Intent(PrizesActivity.this, AboutUsActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_settings) {
             Intent intent = new Intent(PrizesActivity.this, SettingsActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_logout) {
             session.logoutUser();

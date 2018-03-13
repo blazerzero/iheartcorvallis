@@ -38,7 +38,9 @@ import java.util.HashMap;
 import java.util.StringTokenizer;
 
 import edu.oregonstate.studentlife.ihcv2.adapters.ResourceAdapter;
+import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.Resource;
+import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.ResourceLoader;
 
 /**
@@ -60,6 +62,8 @@ public class ResourcesActivity extends AppCompatActivity
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
 
+    private User user;
+
     private final static int IHC_RESOURCE_LOADER_ID = 0;
 
     @Override
@@ -74,6 +78,12 @@ public class ResourcesActivity extends AppCompatActivity
         }
 
         overridePendingTransition(0,0);
+
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra(Constants.EXTRA_USER)) {
+            user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
+            Log.d(TAG, "User ID: " + user.getId());
+        }
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -197,26 +207,33 @@ public class ResourcesActivity extends AppCompatActivity
 
         if (id == R.id.nav_dash) {
             Intent intent = new Intent(ResourcesActivity.this, DashboardActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_events) {
             Intent intent = new Intent(ResourcesActivity.this, EventsActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_passport) {
             Intent intent = new Intent(ResourcesActivity.this, PassportActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_prizes) {
             Intent intent = new Intent(ResourcesActivity.this, PrizesActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_leaderboard) {
             Intent intent = new Intent(ResourcesActivity.this, LeaderboardActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_resources) {
             onBackPressed();
         } else if (id == R.id.nav_aboutus) {
             Intent intent = new Intent(ResourcesActivity.this, AboutUsActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_settings) {
             Intent intent = new Intent(ResourcesActivity.this, SettingsActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_logout) {
             session.logoutUser();

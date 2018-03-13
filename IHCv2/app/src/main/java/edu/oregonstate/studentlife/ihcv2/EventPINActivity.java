@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.Event;
 import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.AddCompletedEventLoader;
@@ -42,9 +43,9 @@ public class EventPINActivity extends AppCompatActivity implements LoaderManager
         mPINStatusIV = (ImageView) findViewById(R.id.iv_pin_status);
 
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(EventDetailActivity.EXTRA_EVENT_DETAILED) && intent.hasExtra(EventDetailActivity.EXTRA_USER)) {
-            event = (Event) intent.getSerializableExtra(EventDetailActivity.EXTRA_EVENT_DETAILED);
-            user = (User) intent.getSerializableExtra(EventDetailActivity.EXTRA_USER);
+        if (intent != null && intent.hasExtra(Constants.EXTRA_EVENT_DETAILED) && intent.hasExtra(Constants.EXTRA_USER)) {
+            event = (Event) intent.getSerializableExtra(Constants.EXTRA_EVENT_DETAILED);
+            user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
             eventid = event.getEventid();
             userid = user.getId();
 

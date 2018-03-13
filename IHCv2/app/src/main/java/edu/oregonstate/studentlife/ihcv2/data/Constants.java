@@ -16,6 +16,9 @@ public class Constants extends AppCompatActivity {
     private int goldColor = getResources().getColor(R.color.eventGold);
     private int silverColor = getResources().getColor(R.color.eventSilver);
     private int bronzeColor = getResources().getColor(R.color.eventBronze);
+    public static final String EXTRA_EVENT = "Event";
+    public static final String EXTRA_EVENT_DETAILED = "Detailed Event";
+    public static final String EXTRA_USER = "User";
 
     public int getGoldThreshold() {
         return goldThreshold;

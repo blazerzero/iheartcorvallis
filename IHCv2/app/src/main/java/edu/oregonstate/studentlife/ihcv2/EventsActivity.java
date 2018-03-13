@@ -37,6 +37,7 @@ import java.util.StringTokenizer;
 
 import edu.oregonstate.studentlife.ihcv2.adapters.EventCardAdapter;
 import edu.oregonstate.studentlife.ihcv2.adapters.EventListAdapter;
+import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.Event;
 import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.EventLoader;
@@ -66,8 +67,6 @@ public class EventsActivity extends AppCompatActivity
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
 
-    public static final String EXTRA_EVENT = "Event";
-    public static final String EXTRA_USER = "User";
     private final static int IHC_EVENT_LOADER_ID = 0;
 
     @Override
@@ -96,8 +95,8 @@ public class EventsActivity extends AppCompatActivity
 
         eventList = new ArrayList<Event>();
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(DashboardActivity.EXTRA_USER)) {
-            user = (User) intent.getSerializableExtra(DashboardActivity.EXTRA_USER);
+        if (intent != null && intent.hasExtra(Constants.EXTRA_USER)) {
+            user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
             Log.d(TAG, "User ID: " + user.getId());
         }
 
@@ -132,8 +131,8 @@ public class EventsActivity extends AppCompatActivity
     @Override
     public void onEventClick(Event event) {
         Intent eventDetailActivityIntent = new Intent(this, EventDetailActivity.class);
-        eventDetailActivityIntent.putExtra(EXTRA_EVENT, event);
-        eventDetailActivityIntent.putExtra(EXTRA_USER, user);
+        eventDetailActivityIntent.putExtra(Constants.EXTRA_EVENT, event);
+        eventDetailActivityIntent.putExtra(Constants.EXTRA_USER, user);
         startActivity(eventDetailActivityIntent);
     }
 
@@ -212,7 +211,7 @@ public class EventsActivity extends AppCompatActivity
             case R.id.action_map:
                 if (isNetworkAvailable()) {
                     Intent mapIntent = new Intent(this, MapsActivity.class);
-                    mapIntent.putExtra(EXTRA_EVENT, eventList);
+                    mapIntent.putExtra(Constants.EXTRA_EVENT, eventList);
                     startActivity(mapIntent);
                 }
                 else {
@@ -268,26 +267,33 @@ public class EventsActivity extends AppCompatActivity
 
         if (id == R.id.nav_dash) {
             Intent intent = new Intent(EventsActivity.this, DashboardActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_events) {
             onBackPressed();
         } else if (id == R.id.nav_passport) {
             Intent intent = new Intent(EventsActivity.this, PassportActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_prizes) {
             Intent intent = new Intent(EventsActivity.this, PrizesActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_leaderboard) {
             Intent intent = new Intent(EventsActivity.this, LeaderboardActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_resources) {
             Intent intent = new Intent(EventsActivity.this, ResourcesActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_aboutus) {
             Intent intent = new Intent(EventsActivity.this, AboutUsActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_settings) {
             Intent intent = new Intent(EventsActivity.this, SettingsActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         }  else if (id == R.id.nav_logout) {
             session.logoutUser();

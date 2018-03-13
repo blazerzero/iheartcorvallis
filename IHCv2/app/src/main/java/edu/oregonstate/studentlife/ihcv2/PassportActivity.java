@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.StringTokenizer;
 
 import edu.oregonstate.studentlife.ihcv2.adapters.PassportAdapter;
+import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.Event;
 import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.PassportLoader;
@@ -46,11 +47,11 @@ public class PassportActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, LoaderManager.LoaderCallbacks<String> {
 
     private final static String TAG = PassportActivity.class.getSimpleName();
-    private final static int IHC_GETUSERINFO_ID = 0;
-    private final static int IHC_GETCOMPLETEDEVENTS_ID = 1;
+    //private final static int IHC_GETUSERINFO_ID = 0;
+    private final static int IHC_GETCOMPLETEDEVENTS_ID = 0;
     private final static String IHC_USER_EMAIL_KEY = "ihcUserEmail";
     private boolean gotUser = false;
-    private User currentUser;
+    private User user;
     private int numStamps;
 
     private TextView progIndicatorTV;
@@ -93,6 +94,14 @@ public class PassportActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         progIndicatorTV = (TextView) findViewById(R.id.tv_current_user_stamp_count);
+
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra(Constants.EXTRA_USER)) {
+            user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
+            Log.d(TAG, "User ID: " + user.getId());
+        }
+
+        progIndicatorTV.setText("STAMPS: " + user.getStampCount());
 
         mPassportRecyclerView = (RecyclerView) findViewById(R.id.rv_passport_list);
         mPassportRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -181,26 +190,33 @@ public class PassportActivity extends AppCompatActivity
 
         if (id == R.id.nav_dash) {
             Intent intent = new Intent(PassportActivity.this, DashboardActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_events) {
             Intent intent = new Intent(PassportActivity.this, EventsActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_passport) {
             onBackPressed();
         } else if (id == R.id.nav_prizes) {
             Intent intent = new Intent(PassportActivity.this, PrizesActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_leaderboard) {
             Intent intent = new Intent(PassportActivity.this, LeaderboardActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_resources) {
             Intent intent = new Intent(PassportActivity.this, ResourcesActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_aboutus) {
             Intent intent = new Intent(PassportActivity.this, AboutUsActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_settings) {
             Intent intent = new Intent(PassportActivity.this, SettingsActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_logout) {
             session.logoutUser();
@@ -219,9 +235,9 @@ public class PassportActivity extends AppCompatActivity
         if (id == IHC_GETCOMPLETEDEVENTS_ID) {
             return new PassportLoader(this, email);
         }
-        else if (id == IHC_GETUSERINFO_ID) {
+        /*else if (id == IHC_GETUSERINFO_ID) {
             return new UserInfoLoader(this, email);
-        }
+        }*/
         else {
             return null;
         }
@@ -229,7 +245,7 @@ public class PassportActivity extends AppCompatActivity
 
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
-        if (!gotUser) {
+        //if (!gotUser) {
             if (data != null) {
                 try {
                     StringTokenizer stEvents = new StringTokenizer(data, "\\");
@@ -282,8 +298,8 @@ public class PassportActivity extends AppCompatActivity
 
                         if (isNetworkAvailable()) {
                             mPassportAdapter.addEventToPassport(retrievedEvent);
-                            gotUser = true;
-                            getSupportLoaderManager().initLoader(IHC_GETUSERINFO_ID, null, this);
+                            //gotUser = true;
+                            //getSupportLoaderManager().initLoader(IHC_GETUSERINFO_ID, null, this);
                         } else {
                             showNoInternetConnectionMsg();
                         }
@@ -294,7 +310,8 @@ public class PassportActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
             }
-        } else {
+        }
+        /*else {
             if (data != null) {
                 try {
                     JSONObject userJSON = new JSONObject(data);
@@ -343,7 +360,7 @@ public class PassportActivity extends AppCompatActivity
                 builder.show();
             }
         }
-    }
+    }*/
 
     @Override
     public void onLoaderReset(Loader<String> loader) {

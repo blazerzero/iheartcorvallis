@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -24,6 +25,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.UserInfoLoader;
 
@@ -31,11 +33,11 @@ public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         LoaderManager.LoaderCallbacks<String> {
 
-    private User currentUser;
+    //private User currentUser;
     private String email;
     private int numStamps;
     public TextView progIndicator;
-    public static final String EXTRA_USER = "User";
+    //public static final String EXTRA_USER = "User";
     private final static String IHC_USER_EMAIL_KEY = "IHC_USER_EMAIL";
     private final static int IHC_USER_LOADER_ID = 0;
 
@@ -43,7 +45,7 @@ public class DashboardActivity extends AppCompatActivity
     private ActionBarDrawerToggle mDrawerToggle;
 
     private static final String TAG = DashboardActivity.class.getSimpleName();
-
+    private User user;
 
     SessionActivity session;
     @Override
@@ -69,21 +71,31 @@ public class DashboardActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         session = new SessionActivity(getApplicationContext());
-        HashMap<String, String> user = session.getUserDetails();
-        email = user.get(SessionActivity.KEY_EMAIL);
+        HashMap<String, String> userBasics = session.getUserDetails();
+        email = userBasics.get(SessionActivity.KEY_EMAIL);
 
         //new UserInfoReceiver(this).execute(email);
 
-        getSupportLoaderManager().initLoader(IHC_USER_LOADER_ID, null, this);
-        getUserInfo();
-
         progIndicator = (TextView)findViewById(R.id.progIndicator);
+
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra(Constants.EXTRA_USER)) {
+            user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
+            Log.d(TAG, "User ID: " + user.getId());
+            numStamps = Integer.parseInt(user.getStampCount());
+            initProgIndicator();
+        }
+        else {
+            Bundle args = new Bundle();
+            args.putString(IHC_USER_EMAIL_KEY, email);
+            getSupportLoaderManager().initLoader(IHC_USER_LOADER_ID, args, this);
+        }
 
         progIndicator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, PrizesActivity.class);
-                intent.putExtra(DashboardActivity.EXTRA_USER, currentUser);
+                intent.putExtra(Constants.EXTRA_USER, user);
                 startActivity(intent);
             }
         });
@@ -93,7 +105,7 @@ public class DashboardActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, EventsActivity.class);
-                intent.putExtra(DashboardActivity.EXTRA_USER, currentUser);
+                intent.putExtra(Constants.EXTRA_USER, user);
                 startActivity(intent);
             }
         });
@@ -104,7 +116,7 @@ public class DashboardActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, PassportActivity.class);
-                intent.putExtra(DashboardActivity.EXTRA_USER, currentUser);
+                intent.putExtra(Constants.EXTRA_USER, user);
                 startActivity(intent);
             }
         });
@@ -114,7 +126,7 @@ public class DashboardActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, LeaderboardActivity.class);
-                intent.putExtra(DashboardActivity.EXTRA_USER, currentUser);
+                intent.putExtra(Constants.EXTRA_USER, user);
                 startActivity(intent);
             }
         });
@@ -124,7 +136,7 @@ public class DashboardActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, ResourcesActivity.class);
-                intent.putExtra(DashboardActivity.EXTRA_USER, currentUser);
+                intent.putExtra(Constants.EXTRA_USER, user);
                 startActivity(intent);
             }
         });
@@ -134,7 +146,7 @@ public class DashboardActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, AboutUsActivity.class);
-                intent.putExtra(DashboardActivity.EXTRA_USER, currentUser);
+                intent.putExtra(Constants.EXTRA_USER, user);
                 startActivity(intent);
             }
         });
@@ -160,9 +172,9 @@ public class DashboardActivity extends AppCompatActivity
                 String stampcount = userJSON.getString("stampcount");
                 int grade = Integer.parseInt(userJSON.getString("grade"));
                 int age = Integer.parseInt(userJSON.getString("age"));
-                currentUser = new User(firstname, lastname, email, id, stampcount, grade, age);
-                numStamps = Integer.parseInt(stampcount);
-                progIndicator = initProgIndicator(numStamps, progIndicator);
+                user = new User(firstname, lastname, email, id, stampcount, grade, age);
+                numStamps = Integer.parseInt(user.getStampCount());
+                initProgIndicator();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -193,19 +205,13 @@ public class DashboardActivity extends AppCompatActivity
         // Nothing to do...
     }
 
-    public void getUserInfo() {
-        Bundle args = new Bundle();
-        args.putString(IHC_USER_EMAIL_KEY, email);
-        //Toast.makeText(this, email, Toast.LENGTH_LONG).show();
-        getSupportLoaderManager().restartLoader(IHC_USER_LOADER_ID, args, this);
-    }
-
+    @Override
     public void onPause() {
         super.onPause();
         overridePendingTransition(0,0);
     }
 
-    public TextView initProgIndicator(int numStamps, TextView progIndicator) {
+    public void initProgIndicator() {
         String message;
         int eventsToGo;
         int progColor;
@@ -248,7 +254,6 @@ public class DashboardActivity extends AppCompatActivity
         progIndicator.setBackgroundColor(progColor);
         progIndicator.setText(message);
         progIndicator.setTextColor(getResources().getColor(R.color.maroon));
-        return progIndicator;
     }
 
     @Override
@@ -281,6 +286,7 @@ public class DashboardActivity extends AppCompatActivity
         }
         else if (id == R.id.action_settings) {
             Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            settingsIntent.putExtra(Constants.EXTRA_USER, user);
             startActivity(settingsIntent);
             return true;
         }
@@ -326,24 +332,31 @@ public class DashboardActivity extends AppCompatActivity
             onBackPressed();
         } else if (id == R.id.nav_events) {
             Intent intent = new Intent(DashboardActivity.this, EventsActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_passport) {
             Intent intent = new Intent(DashboardActivity.this, PassportActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_prizes) {
             Intent intent = new Intent(DashboardActivity.this, PrizesActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_leaderboard) {
             Intent intent = new Intent(DashboardActivity.this, LeaderboardActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_resources) {
             Intent intent = new Intent(DashboardActivity.this, ResourcesActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_aboutus) {
             Intent intent = new Intent(DashboardActivity.this, AboutUsActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_settings) {
             Intent intent = new Intent(DashboardActivity.this, SettingsActivity.class);
+            intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
         } else if (id == R.id.nav_logout) {
             session.logoutUser();
@@ -353,92 +366,4 @@ public class DashboardActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-    /*private void onBackgroundTaskDataObtained(String result) {
-        if (result != null) {
-            try {
-                JSONObject userJSON = new JSONObject(result);
-                String firstname = userJSON.getString("firstname");
-                String lastname = userJSON.getString("lastname");
-                String email = userJSON.getString("email");
-                String id = userJSON.getString("id");
-                String stampcount = userJSON.getString("stampcount");
-                currentUser = new User(firstname, lastname, email, id, stampcount);
-                numStamps = Integer.parseInt(stampcount);
-                progIndicator = initProgIndicator(numStamps, progIndicator);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        else {
-            android.app.AlertDialog.Builder builder;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                builder = new android.app.AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-            }
-            else {
-                builder = new android.app.AlertDialog.Builder(this);
-            }
-            builder.setTitle("Error");
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // Close alert dialog
-                }
-            });
-            builder.setMessage("Error retrieving user info.");
-            builder.setIcon(android.R.drawable.ic_dialog_alert);
-            builder.show();
-        }
-
-    }
-
-    class UserInfoReceiver extends AsyncTask {
-
-        private Context context;
-        private String email;
-        final static String IHC_GETUSERINFO_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/getuserinfo.php";
-
-        public UserInfoReceiver(Context context) {
-            this.context = context;
-        }
-
-        protected void onPreExecute() {}
-
-        @Override
-        protected Object doInBackground(Object[] objects) {
-            email = (String) objects[0];
-
-            try {
-                URL url = new URL(IHC_GETUSERINFO_URL);
-                String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
-
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-                conn.setRequestMethod("POST");
-                conn.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-                wr.write( data );
-                wr.flush();
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-                StringBuffer sb = new StringBuffer("");
-                String line = null;
-
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
-                    break;
-                }
-
-                return sb.toString();
-            } catch (Exception e) { e.printStackTrace(); return null; }
-        }
-
-
-        @Override
-        protected void onPostExecute(Object result) {
-            String resultString = (String) result;
-            DashboardActivity.this.onBackgroundTaskDataObtained(resultString);
-        }
-    }*/
 }

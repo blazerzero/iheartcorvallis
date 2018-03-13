@@ -32,6 +32,7 @@ import com.google.android.gms.tasks.Task;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.Event;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -101,12 +102,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         eventList = new ArrayList<Event>();
         Intent intent = getIntent();
         if (intent != null) {
-            if (intent.hasExtra(EventDetailActivity.EXTRA_EVENT_DETAILED)) {
-                singleEvent = (Event) intent.getSerializableExtra(EventDetailActivity.EXTRA_EVENT_DETAILED);
+            if (intent.hasExtra(Constants.EXTRA_EVENT_DETAILED)) {
+                singleEvent = (Event) intent.getSerializableExtra(Constants.EXTRA_EVENT_DETAILED);
                 eventList.add(singleEvent);
             }
-            else if (intent.hasExtra(EventsActivity.EXTRA_EVENT)) {
-                eventList = (ArrayList<Event>) intent.getSerializableExtra(EventsActivity.EXTRA_EVENT);
+            else if (intent.hasExtra(Constants.EXTRA_EVENT)) {
+                eventList = (ArrayList<Event>) intent.getSerializableExtra(Constants.EXTRA_EVENT);
             }
         }
     }
