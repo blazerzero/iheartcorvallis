@@ -4,6 +4,18 @@
 
 <?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>
 
+<?php 
+function generatePIN() {
+   $i = 0;
+   $pin = "";
+   while ($i < 4) {
+      $pin .= mt_rand(0, 9);
+      $i++;
+   }
+   return $pin;
+}
+?>
+
 <html>
    <head>
       <title>Add an Event - I Heart Corvallis Administrative Suite</title>
@@ -12,11 +24,17 @@
       <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
       <script>
-      $(document).ready(function() {
+      /*$(document).ready(function() {
          $("#pin_generator").click(function() {
+            alert("Making random pin");
             $("#pin_holder").val((Math.floor((Math.random() * 9000) + 1000)).toString());
          });
-      });
+      });*/
+
+      /*function generatePIN() {
+         alert("PIN!");
+         document.forms["eventForm"]["pin"].value = Math.floor((Math.random() * 9000) + 1000).toString();
+      }*/
 
       function validateForm() {
          var nameField = document.forms["eventForm"]["name"].value;
@@ -149,8 +167,8 @@
             <div class="elem">
                <span class="requirednote">*</span>
                Event PIN:
-               <input class="inputbox" type="text" name="pin" id="pin_holder">
-               <button class="ui button" id="pin_generator" type="button">Generate PIN</button><br><br>
+               <input class="inputbox" type="text" name="pin" id="pin_holder" value="<?php echo generatePIN(); ?>" readonly><br><br>
+               <!--<button class="ui button" id="pin_generator" type="button">Generate PIN</button><br><br>-->
             </div>
             <input class="ui button" type="submit">
          </form>

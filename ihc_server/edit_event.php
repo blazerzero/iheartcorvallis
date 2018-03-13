@@ -158,12 +158,6 @@ if ($result->num_rows > 0) {
             <div class="elem">
                Link 3: <input class="inputbox" type="text" name="link3" value="<?php echo $event['link3']; ?>"><br><br>
             </div>
-            <div class="elem">
-               <span class="requirednote">*</span>
-               Event PIN:
-               <input class="inputbox" type="text" name="pin" id="pin_holder" value="<?php echo $event['pin']; ?>">
-               <button class="ui button" id="pin_generator" type="button">Generate PIN</button><br><br>
-            </div>
             <input class="ui button" type="submit">
          </form>
       </div>
