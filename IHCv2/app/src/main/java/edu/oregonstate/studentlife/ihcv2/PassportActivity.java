@@ -6,9 +6,11 @@ package edu.oregonstate.studentlife.ihcv2;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -47,7 +49,7 @@ public class PassportActivity extends AppCompatActivity
     private final static int IHC_GETUSERINFO_ID = 0;
     private final static int IHC_GETCOMPLETEDEVENTS_ID = 1;
     private final static String IHC_USER_EMAIL_KEY = "ihcUserEmail";
-    private boolean gotUser;
+    private boolean gotUser = false;
     private User currentUser;
     private int numStamps;
 
@@ -60,22 +62,32 @@ public class PassportActivity extends AppCompatActivity
     private String email;
     SessionActivity session;
 
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passport);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        //setSupportActionBar(toolbar);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getSupportActionBar().setElevation(0);
+        }
 
         overridePendingTransition(0,0);
 
         completedEventList = new ArrayList<Event>();
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -116,7 +128,6 @@ public class PassportActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.dashboard, menu);
         return true;
     }
 
@@ -128,7 +139,7 @@ public class PassportActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
 
@@ -136,10 +147,19 @@ public class PassportActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem item = menu.findItem(R.id.action_settings);
-        item.setVisible(false);
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
         // session information is retrieved and displayed on nav menu
         session = new SessionActivity(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
@@ -182,6 +202,8 @@ public class PassportActivity extends AppCompatActivity
         } else if (id == R.id.nav_settings) {
             Intent intent = new Intent(PassportActivity.this, SettingsActivity.class);
             startActivity(intent);
+        } else if (id == R.id.nav_logout) {
+            session.logoutUser();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -208,67 +230,69 @@ public class PassportActivity extends AppCompatActivity
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
         if (!gotUser) {
-            try {
-                StringTokenizer stEvents = new StringTokenizer(data, "\\");
-                while (stEvents.hasMoreTokens()) {
-                    String eventInfoString = stEvents.nextToken();
-                    Log.d(TAG, "eventInfoString: " + eventInfoString);
-                    JSONObject eventJSON = new JSONObject(eventInfoString);
-                    Log.d(TAG, "eventJSON: " + eventJSON);
-                    int eventid = Integer.parseInt(eventJSON.getString("eventid"));
-                    String eventName = eventJSON.getString("name");
-                    String eventLocation = eventJSON.getString("location");
-                    String eventAddress = eventJSON.getString("address");
-                    String eventDateAndTime = eventJSON.getString("dateandtime");
-                    String eventDescription = eventJSON.getString("description");
-                    String eventLink1 = eventJSON.getString("link1");
-                    String eventLink2 = eventJSON.getString("link2");
-                    String eventLink3 = eventJSON.getString("link3");
-                    int eventPin = Integer.parseInt(eventJSON.getString("pin"));
+            if (data != null) {
+                try {
+                    StringTokenizer stEvents = new StringTokenizer(data, "\\");
+                    while (stEvents.hasMoreTokens()) {
+                        String eventInfoString = stEvents.nextToken();
+                        Log.d(TAG, "eventInfoString: " + eventInfoString);
+                        JSONObject eventJSON = new JSONObject(eventInfoString);
+                        Log.d(TAG, "eventJSON: " + eventJSON);
+                        int eventid = Integer.parseInt(eventJSON.getString("eventid"));
+                        String eventName = eventJSON.getString("name");
+                        String eventLocation = eventJSON.getString("location");
+                        String eventAddress = eventJSON.getString("address");
+                        String eventDateAndTime = eventJSON.getString("dateandtime");
+                        String eventDescription = eventJSON.getString("description");
+                        String eventLink1 = eventJSON.getString("link1");
+                        String eventLink2 = eventJSON.getString("link2");
+                        String eventLink3 = eventJSON.getString("link3");
+                        int eventPin = Integer.parseInt(eventJSON.getString("pin"));
 
-                    StringTokenizer dateTimeTokenizer = new StringTokenizer(eventDateAndTime);
-                    String eventYear = dateTimeTokenizer.nextToken("-");
-                    String eventMonth = dateTimeTokenizer.nextToken("-");
-                    String eventDay = dateTimeTokenizer.nextToken(" ");
-                    String eventTime = dateTimeTokenizer.nextToken();
+                        StringTokenizer dateTimeTokenizer = new StringTokenizer(eventDateAndTime);
+                        String eventYear = dateTimeTokenizer.nextToken("-");
+                        String eventMonth = dateTimeTokenizer.nextToken("-");
+                        String eventDay = dateTimeTokenizer.nextToken(" ");
+                        String eventTime = dateTimeTokenizer.nextToken();
 
-                    SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    Date eventDate = sdfEvent.parse(eventDateAndTime);
+                        SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        Date eventDate = sdfEvent.parse(eventDateAndTime);
 
-                    if (eventTime.charAt(0) == '0') {
-                        eventTime = eventTime.substring(1);
-                    }
+                        if (eventTime.charAt(0) == '0') {
+                            eventTime = eventTime.substring(1);
+                        }
 
-                    eventDay = eventDay.substring(1);
-                    if (eventDay.charAt(0) == '0') {
                         eventDay = eventDay.substring(1);
+                        if (eventDay.charAt(0) == '0') {
+                            eventDay = eventDay.substring(1);
+                        }
+
+                        if (eventMonth.charAt(0) == '0') {
+                            eventMonth = eventMonth.substring(1);
+                        }
+
+                        int monthInt = Integer.parseInt(eventMonth);
+                        eventMonth = monthShortNames[monthInt - 1];
+
+                        Event retrievedEvent = new Event(eventid, eventName, eventLocation, eventAddress,
+                                eventDate, eventTime, eventMonth, eventDay, eventYear,
+                                eventDescription, eventLink1, eventLink2, eventLink3, eventPin);
+
+                        completedEventList.add(retrievedEvent);
+
+                        if (isNetworkAvailable()) {
+                            mPassportAdapter.addEventToPassport(retrievedEvent);
+                            gotUser = true;
+                            getSupportLoaderManager().initLoader(IHC_GETUSERINFO_ID, null, this);
+                        } else {
+                            showNoInternetConnectionMsg();
+                        }
                     }
 
-                    if (eventMonth.charAt(0) == '0') {
-                        eventMonth = eventMonth.substring(1);
-                    }
 
-                    int monthInt = Integer.parseInt(eventMonth);
-                    eventMonth = monthShortNames[monthInt - 1];
-
-                    Event retrievedEvent = new Event(eventid, eventName, eventLocation, eventAddress,
-                            eventDate, eventTime, eventMonth, eventDay, eventYear,
-                            eventDescription, eventLink1, eventLink2, eventLink3, eventPin);
-
-                    completedEventList.add(retrievedEvent);
-
-                    if (isNetworkAvailable()) {
-                        mPassportAdapter.addEventToPassport(retrievedEvent);
-                        gotUser = true;
-                        getSupportLoaderManager().initLoader(IHC_GETUSERINFO_ID, null, this);
-                    } else {
-                        showNoInternetConnectionMsg();
-                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         } else {
             if (data != null) {
@@ -279,7 +303,9 @@ public class PassportActivity extends AppCompatActivity
                     String email = userJSON.getString("email");
                     int id = Integer.parseInt(userJSON.getString("id"));
                     String stampcount = userJSON.getString("stampcount");
-                    currentUser = new User(firstname, lastname, email, id, stampcount);
+                    int grade = Integer.parseInt(userJSON.getString("grade"));
+                    int age = Integer.parseInt(userJSON.getString("age"));
+                    currentUser = new User(firstname, lastname, email, id, stampcount, grade, age);
                     numStamps = Integer.parseInt(stampcount);
                     progIndicatorTV.setText("STAMPS: " + String.valueOf(numStamps));
                     if (numStamps >= getResources().getInteger(R.integer.bronzeThreshold)

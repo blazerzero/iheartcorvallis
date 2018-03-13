@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_user_grade_entries">
+        <item>@string/pref_user_grade_freshman</item>
+        <item>@string/pref_user_grade_sophomore</item>
+        <item>@string/pref_user_grade_junior</item>
+        <item>@string/pref_user_grade_senior</item>
+        <item>@string/pref_user_grade_grad</item>
+    </string-array>
+
+    <string-array name="pref_user_grade_values">
+        <item>@string/pref_user_grade_freshman_value</item>
+        <item>@string/pref_user_grade_sophomore_value</item>
+        <item>@string/pref_user_grade_junior_value</item>
+        <item>@string/pref_user_grade_senior_value</item>
+        <item>@string/pref_user_grade_grad_value</item>
+    </string-array>
+</resources>

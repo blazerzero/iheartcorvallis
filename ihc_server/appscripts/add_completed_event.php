@@ -29,7 +29,7 @@
                $stampcount = 1;
             }
             else if ($res2->num_rows > 1){
-               $stampcount = $res2->num_rows + 1;
+               $stampcount = $res2->num_rows;
             }
             $res3 = $mysqli->query("UPDATE ihc_users SET stampcount='$stampcount' WHERE id='$userid'");
             if ($res3 == True) {

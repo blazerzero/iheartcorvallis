@@ -1,6 +1,7 @@
 package edu.oregonstate.studentlife.ihcv2;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -41,8 +42,13 @@ public class EventDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        //setSupportActionBar(toolbar);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getSupportActionBar().setElevation(0);
+        }
+
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -84,7 +90,7 @@ public class EventDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // go to check user geolocation and ask for event verification PIN
                 // go to geolocation first, but goes straight to PIN for now
-                Intent enterEventPINIntent = new Intent(EventDetailActivity.this, EventPINActivity.class);
+                Intent enterEventPINIntent = new Intent(EventDetailActivity.this, CheckLocationActivity.class);
                 enterEventPINIntent.putExtra(EXTRA_EVENT_DETAILED, event);
                 enterEventPINIntent.putExtra(EXTRA_USER, user);
                 startActivity(enterEventPINIntent);

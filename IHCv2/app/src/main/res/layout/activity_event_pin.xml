@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context="edu.oregonstate.studentlife.ihcv2.EventPINActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <!--<android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppBarOverlay"
@@ -23,9 +23,10 @@
             android:background="@color/colorPrimaryDark"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    </android.support.design.widget.AppBarLayout>
+    </android.support.design.widget.AppBarLayout>-->
 
     <TextView
+        android:id="@+id/tv_pin_event_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="25dp"
@@ -35,8 +36,7 @@
         android:textColor="@color/colorPrimaryDark"
         android:background="@color/colorPrimary"
         android:elevation="10dp"
-        android:textStyle="bold"
-        android:text="@string/event_enter_pin"/>
+        android:textStyle="bold"/>
 
     <LinearLayout
         android:layout_width="match_parent"

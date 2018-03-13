@@ -57,6 +57,11 @@
             </div>
             <div style="color: #fff; display: inline;">
                <div class="ui simple dropdown item">
+                  <a href="./manage_about.php">About Page</a>
+               </div>
+            </div>
+            <div style="color: #fff; display: inline;">
+               <div class="ui simple dropdown item">
                   <a style="color: red;" href="./admin_server/logout.php">Logout</a>
                </div>
             </div>
@@ -121,6 +126,15 @@
                <button class="circular ui icon button">
                   <i class="edit icon"></i>
                   <p>Manage Prizes</p>
+               </button>
+            </a>
+         </div>
+         <br>
+         <div>
+            <a href="./manage_about.php">
+               <button class="circular ui icon button">
+                  <i class="plus icon"></i>
+                  <p>Manage About Page</p>
                </button>
             </a>
          </div>

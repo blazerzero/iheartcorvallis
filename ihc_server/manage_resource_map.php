@@ -71,7 +71,7 @@ for ($i = 0; $i < count($markers); $i++) {
 
 <html>
    <head>
-      <title>Manage Map Resources - I Heart Corvallis Administrative Suite</title>
+      <title>Manage Resource Map - I Heart Corvallis Administrative Suite</title>
       <link type="text/css" rel="stylesheet" href="./css/Semantic-UI-CSS-master/semantic.css"/>
       <link type="text/css" rel="stylesheet" href="./css/stylesheet.css"/>
       <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
@@ -122,6 +122,11 @@ for ($i = 0; $i < count($markers); $i++) {
                      <div style="background-color: #dc4405;"><a href="./add_prize.php">Add a Prize</a></div>
                      <div style="background-color: #dc4405;"><a href="./manage_prizes.php">Manage Prizes</a></div>
                   </div>
+               </div>
+            </div>
+            <div style="color: #fff; display: inline;">
+               <div class="ui simple dropdown item">
+                  <a href="./manage_about.php">About Page</a>
                </div>
             </div>
             <div style="color: #fff; display: inline;">

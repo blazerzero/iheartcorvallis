@@ -17,7 +17,7 @@
        echo "Connection failed!<br>";
    }
    else {
-      echo "Connection succesful!<br>";
+      //echo "Connection succesful!<br>";
    }
 
    $eventid = $name = $location = $date = $time = $dateandtime = $description = $image = $link1 = $link2 = $link3 = $pin = $fullAddress = $addressData = $prepAddress = $latLng = $row = "";

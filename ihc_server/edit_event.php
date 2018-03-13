@@ -38,6 +38,7 @@ if ($result->num_rows > 0) {
          var timeField = document.forms["eventForm"]["time"].value;
          var descriptionField = document.forms["eventForm"]["description"].value;
          var imageField = document.forms["eventForm"]["image"].value;
+         var pinField = document.forms["eventForm"]["pin"].value;
          if (nameField == null || nameField == "" ||
             locationField == null || locationField == "" ||
             streetAddressField == null || streetAddressField == "" ||
@@ -46,7 +47,8 @@ if ($result->num_rows > 0) {
             zipField == null || zipField == "" ||
             dateField == null || dateField == "" ||
             timeField == null || timeField == "" ||
-            descriptionField == null || descriptionField == "") {
+            descriptionField == null || descriptionField == ""
+            pinField == null || pinField = "") {
                alert("Please fill all required fields before submitting!");
                return false;
          }
@@ -96,6 +98,11 @@ if ($result->num_rows > 0) {
                      <div style="background-color: #dc4405;"><a href="./add_prize.php">Add a Prize</a></div>
                      <div style="background-color: #dc4405;"><a href="./manage_prizes.php">Manage Prizes</a></div>
                   </div>
+               </div>
+            </div>
+            <div style="color: #fff; display: inline;">
+               <div class="ui simple dropdown item">
+                  <a href="./manage_about.php">About Page</a>
                </div>
             </div>
             <div style="color: #fff; display: inline;">
@@ -150,11 +157,6 @@ if ($result->num_rows > 0) {
             </div>
             <div class="elem">
                Link 3: <input class="inputbox" type="text" name="link3" value="<?php echo $event['link3']; ?>"><br><br>
-            </div>
-            <div class="elem">
-               Event PIN:
-               <input class="inputbox" type="text" name="pin" id="pin_holder" value="<?php echo $event['pin']; ?>">
-               <button class="ui button" id="pin_generator" type="button">Generate PIN</button><br><br>
             </div>
             <input class="ui button" type="submit">
          </form>
