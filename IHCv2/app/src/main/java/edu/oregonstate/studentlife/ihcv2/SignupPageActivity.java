@@ -89,10 +89,8 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_page);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        //setSupportActionBar(toolbar);
-
-        getSupportActionBar().hide();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
 
         overridePendingTransition(0,0);
 
@@ -285,10 +283,8 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
                 StringTokenizer stRes = new StringTokenizer(result);
                 String name = stRes.nextToken("\\");
                 String email = stRes.nextToken("\\");
-                String tid = stRes.nextToken("\\");
-                //int id = Integer.parseInt(tid);
                 session = new SessionActivity(getApplicationContext());
-                session.createLoginSession(name, email, tid);
+                session.createLoginSession(name, email);
                 Intent intent = new Intent(SignupPageActivity.this, DashboardActivity.class);
                 startActivity(intent);
             } catch (Exception e) {

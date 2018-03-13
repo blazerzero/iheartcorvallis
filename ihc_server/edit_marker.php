@@ -82,11 +82,6 @@ if ($result->num_rows > 0) {
             </div>
             <div style="color: #fff; display: inline;">
                <div class="ui simple dropdown item">
-                  <a href="./manage_about.php">About Page</a>
-               </div>
-            </div>
-            <div style="color: #fff; display: inline;">
-               <div class="ui simple dropdown item">
                   <a style="color: red;" href="./admin_server/logout.php">Logout</a>
                </div>
             </div>
@@ -111,16 +106,7 @@ if ($result->num_rows > 0) {
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
-               Resource Type: <select class="ui search dropdown" name="type">
-                  <option value="">Choose a resource type</option>
-                  <option value="1">Activities and Entertainment</option>
-                  <option value="2">Grocery Stores</option>
-                  <option value="3">Restaurants</option>
-                  <option value="4">Shopping</option>
-                  <option value="5">City Offices</option>
-                  <option value="6">OSU Campus</option>
-               </select>
-               <br><br>
+               Resource Type: <input class="inputbox" type="text" name="level" value="<?php echo $marker['type']; ?>"><br><br>
             </div>
             <input class="ui button" type="submit">
          </form>

@@ -26,8 +26,7 @@
                 android:id="@+id/tv_event_month"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/event_elem_height"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp"
+                android:paddingLeft="5dp"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimaryDark"
@@ -39,8 +38,7 @@
                 android:id="@+id/tv_event_day"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/event_elem_height"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp"
+                android:paddingLeft="5dp"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimaryDark"
@@ -59,23 +57,21 @@
                 android:id="@+id/tv_event_name"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/event_elem_height"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp"
+                android:paddingLeft="5dp"
                 android:textSize="17sp"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimaryDark"
-                android:gravity="start|center_vertical"
+                android:gravity="left|center_vertical"
                 android:lines="1"/>
 
             <TextView
                 android:id="@+id/tv_event_location"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/event_elem_height"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp"
+                android:paddingLeft="5dp"
                 android:textSize="16sp"
                 android:textColor="@color/colorPrimaryDark"
-                android:gravity="start|center_vertical"
+                android:gravity="left|center_vertical"
                 android:lines="1"/>
 
         </LinearLayout>

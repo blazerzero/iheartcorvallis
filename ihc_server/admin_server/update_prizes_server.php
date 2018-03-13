@@ -17,7 +17,7 @@
        echo "Connection failed!<br>";
    }
    else {
-      //echo "Connection succesful!<br>";
+      echo "Connection succesful!<br>";
    }
 
    $prizeid = $name = $level = "";

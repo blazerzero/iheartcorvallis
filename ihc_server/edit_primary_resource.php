@@ -80,11 +80,6 @@ if ($result->num_rows > 0) {
             </div>
             <div style="color: #fff; display: inline;">
                <div class="ui simple dropdown item">
-                  <a href="./manage_about.php">About Page</a>
-               </div>
-            </div>
-            <div style="color: #fff; display: inline;">
-               <div class="ui simple dropdown item">
                   <a style="color: red;" href="./admin_server/logout.php">Logout</a>
                </div>
             </div>
@@ -97,7 +92,7 @@ if ($result->num_rows > 0) {
          <p class="requirednote">* Denotes a required field</p><br>
          <form name="resourceForm" onsubmit="return validateForm()" action="./admin_server/update_primary_resource_server.php" method="post">
             <div class="elem" style="display: none;">
-               Resource ID: <input class="inputbox" type="text" name="id" value="<?php echo $resource['id']; ?>"><br><br>
+               Resource ID: <input class="inputbox" type="text" name="title" value="<?php echo $resource['id']; ?>"><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>

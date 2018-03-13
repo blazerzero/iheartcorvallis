@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import edu.oregonstate.studentlife.ihcv2.data.Event;
@@ -26,7 +25,6 @@ public class EventPINActivity extends AppCompatActivity implements LoaderManager
     private int eventid;
     private int userid;
 
-    private TextView mEventNameTV;
     private EditText mEventPINET;
     private ImageView mPINStatusIV;
 
@@ -37,7 +35,6 @@ public class EventPINActivity extends AppCompatActivity implements LoaderManager
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_pin);
 
-        mEventNameTV = (TextView) findViewById(R.id.tv_pin_event_name);
         mEventPINET = (EditText) findViewById(R.id.et_event_pin);
         mPINStatusIV = (ImageView) findViewById(R.id.iv_pin_status);
 
@@ -47,8 +44,6 @@ public class EventPINActivity extends AppCompatActivity implements LoaderManager
             user = (User) intent.getSerializableExtra(EventDetailActivity.EXTRA_USER);
             eventid = event.getEventid();
             userid = user.getId();
-
-            mEventNameTV.setText(event.getName());
 
             mEventPINET.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -103,10 +98,5 @@ public class EventPINActivity extends AppCompatActivity implements LoaderManager
     @Override
     public void onLoaderReset(Loader<String> loader) {
         // Nothing to do...
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 }

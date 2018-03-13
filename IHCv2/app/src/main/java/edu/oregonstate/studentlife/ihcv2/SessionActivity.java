@@ -29,7 +29,7 @@ public class SessionActivity {
 
     public static final String KEY_EMAIL = "email";
 
-    public static final String KEY_ID = "id";
+
     //Constructor
     public SessionActivity(Context context) {
         this._context = context;
@@ -38,7 +38,7 @@ public class SessionActivity {
     }
 
     //create login session
-    public void createLoginSession(String name, String email, String id){
+    public void createLoginSession(String name, String email){
         //store login value as true
         editor.putBoolean(IS_LOGIN, true);
 
@@ -47,8 +47,6 @@ public class SessionActivity {
 
         // Storing email in pref
         editor.putString(KEY_EMAIL, email);
-
-        editor.putString(KEY_ID, id);
 
         //commit changes
 
@@ -88,8 +86,6 @@ public class SessionActivity {
 
         //user email
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
-
-        user.put(KEY_ID, pref.getString(KEY_ID, null));
 
         return user;
     }

@@ -17,7 +17,7 @@ public class Splash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        getSupportActionBar().hide();
+        //tv = (TextView) findViewById(R.id.tv);
         iv = (ImageView) findViewById(R.id.iv_ihc);
         Animation fadeIn = AnimationUtils.loadAnimation(this,R.anim.fade_in);
         //tv.startAnimation(fadeIn);

@@ -12,7 +12,6 @@ public class Constants extends AppCompatActivity {
     private int goldThreshold = 15;
     private int silverThreshold = 10;
     private int bronzeThreshold = 7;
-    //public final int GEOFENCE_RADIUS_IN_METERS = 50;
     private int goldColor = getResources().getColor(R.color.eventGold);
     private int silverColor = getResources().getColor(R.color.eventSilver);
     private int bronzeColor = getResources().getColor(R.color.eventBronze);

@@ -88,11 +88,6 @@ for ($i = 0; $i < count($ihc_prizes)-1; $i++) {
             </div>
             <div style="color: #fff; display: inline;">
                <div class="ui simple dropdown item">
-                  <a href="./manage_about.php">About Page</a>
-               </div>
-            </div>
-            <div style="color: #fff; display: inline;">
-               <div class="ui simple dropdown item">
                   <a style="color: red;" href="./admin_server/logout.php">Logout</a>
                </div>
             </div>
@@ -115,7 +110,7 @@ for ($i = 0; $i < count($ihc_prizes)-1; $i++) {
                      <td><?php echo $prize['name']; ?></td>
                      <td><?php echo $prize['level']; ?></td>
                      <td>
-                        <a href="edit_prize.php?prizeid=<?php echo $prize['prizeid'] ?>" class="ui blue button">Edit</a>
+                        <a href="edit_prize.php?eventid=<?php echo $prize['prizeid'] ?>" class="ui blue button">Edit</a>
                         <a onclick="return confirm('Are you sure you want to delete this prize?')" href="./admin_server/delete_prize.php?prizeid=<?php echo $prize['prizeid'] ?>" class='ui red button'>Delete</a>
                      </td>
                   </tr>
