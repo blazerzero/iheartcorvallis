@@ -34,8 +34,10 @@ if ($result->num_rows > 0) {
          var cityField = document.forms["eventForm"]["city"].value;
          var stateField = document.forms["eventForm"]["state"].value;
          var zipField = document.forms["eventForm"]["zip"].value;
-         var dateField = document.forms["eventForm"]["date"].value;
-         var timeField = document.forms["eventForm"]["time"].value;
+         var startDateField = document.forms["eventForm"]["startdate"].value;
+         var startTimeField = document.forms["eventForm"]["starttime"].value;
+         var endDateField = document.forms["eventForm"]["enddate"].value;
+         var endTimeField = document.forms["eventForm"]["endtime"].value;
          var descriptionField = document.forms["eventForm"]["description"].value;
          var imageField = document.forms["eventForm"]["image"].value;
          var pinField = document.forms["eventForm"]["pin"].value;
@@ -45,9 +47,12 @@ if ($result->num_rows > 0) {
             cityField == null || cityField == "" ||
             stateField == null || stateField == "" ||
             zipField == null || zipField == "" ||
-            dateField == null || dateField == "" ||
-            timeField == null || timeField == "" ||
-            descriptionField == null || descriptionField == ""
+            startDateField == null || startDateField == "" ||
+            startTimeField == null || startTimeField == "" ||
+            endDateField == null || endDateField == "" ||
+            endTimeField == null || endTimeField == "" ||
+            descriptionField == null || descriptionField == "" ||
+            imageField == null || imageField == "" ||
             pinField == null || pinField = "") {
                alert("Please fill all required fields before submitting!");
                return false;
@@ -135,11 +140,19 @@ if ($result->num_rows > 0) {
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
-               Date: <input class="inputbox" type="date" name="date" value="<?php echo substr($event['dateandtime'], 0, 10); ?>"><br><br>
+               Start Date: <input class="inputbox" type="date" name="date" value="<?php echo substr($event['startdt'], 0, 10); ?>"><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
-               Time: <input class="inputbox" type="time" name="time" value="<?php echo substr($event['dateandtime'], 11); ?>"><br><br>
+               Start Time: <input class="inputbox" type="time" name="time" value="<?php echo substr($event['startdt'], 11); ?>"><br><br>
+            </div>
+            <div class="elem">
+               <span class="requirednote">*</span>
+               End Date: <input class="inputbox" type="date" name="date" value="<?php echo substr($event['enddt'], 0, 10); ?>"><br><br>
+            </div>
+            <div class="elem">
+               <span class="requirednote">*</span>
+               End Time: <input class="inputbox" type="time" name="time" value="<?php echo substr($event['enddt'], 11); ?>"><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>

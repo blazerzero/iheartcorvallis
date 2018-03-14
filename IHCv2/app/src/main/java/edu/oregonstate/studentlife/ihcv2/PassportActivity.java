@@ -258,40 +258,71 @@ public class PassportActivity extends AppCompatActivity
                         String eventName = eventJSON.getString("name");
                         String eventLocation = eventJSON.getString("location");
                         String eventAddress = eventJSON.getString("address");
-                        String eventDateAndTime = eventJSON.getString("dateandtime");
+                        String eventStartDT = eventJSON.getString("startdt");
+                        String eventEndDT = eventJSON.getString("enddt");
                         String eventDescription = eventJSON.getString("description");
                         String eventLink1 = eventJSON.getString("link1");
                         String eventLink2 = eventJSON.getString("link2");
                         String eventLink3 = eventJSON.getString("link3");
                         int eventPin = Integer.parseInt(eventJSON.getString("pin"));
 
-                        StringTokenizer dateTimeTokenizer = new StringTokenizer(eventDateAndTime);
-                        String eventYear = dateTimeTokenizer.nextToken("-");
-                        String eventMonth = dateTimeTokenizer.nextToken("-");
-                        String eventDay = dateTimeTokenizer.nextToken(" ");
-                        String eventTime = dateTimeTokenizer.nextToken();
+                        StringTokenizer dateTimeTokenizer = new StringTokenizer(eventStartDT);
+                        String eventStartYear = dateTimeTokenizer.nextToken("-");
+                        String eventStartMonth = dateTimeTokenizer.nextToken("-");
+                        String eventStartDay = dateTimeTokenizer.nextToken(" ");
+                        String eventStartTime = dateTimeTokenizer.nextToken();
+
+                        dateTimeTokenizer = new StringTokenizer(eventEndDT);
+                        String eventEndYear = dateTimeTokenizer.nextToken("-");
+                        String eventEndMonth = dateTimeTokenizer.nextToken("-");
+                        String eventEndDay = dateTimeTokenizer.nextToken(" ");
+                        String eventEndTime = dateTimeTokenizer.nextToken();
 
                         SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        Date eventDate = sdfEvent.parse(eventDateAndTime);
+                        Date eventStartDate = sdfEvent.parse(eventStartDT);
+                        Date eventEndDate = sdfEvent.parse(eventEndDT);
 
-                        if (eventTime.charAt(0) == '0') {
-                            eventTime = eventTime.substring(1);
+                        SimpleDateFormat _24HourFormat = new SimpleDateFormat("HH:mm");
+                        SimpleDateFormat _12HourFormat = new SimpleDateFormat("hh:mm a");
+
+                        Date _24HourEventTime = _24HourFormat.parse(eventStartTime);
+                        eventStartTime = _12HourFormat.format(_24HourEventTime).toString();
+                        if (eventStartTime.charAt(0) == '0') {
+                            eventStartTime = eventStartTime.substring(1);
+                        }
+                        eventStartDay = eventStartDay.substring(1);
+                        if (eventStartDay.charAt(0) == '0') {
+                            eventStartDay = eventStartDay.substring(1);
                         }
 
-                        eventDay = eventDay.substring(1);
-                        if (eventDay.charAt(0) == '0') {
-                            eventDay = eventDay.substring(1);
+                        if (eventStartMonth.charAt(0) == '0') {
+                            eventStartMonth = eventStartMonth.substring(1);
                         }
 
-                        if (eventMonth.charAt(0) == '0') {
-                            eventMonth = eventMonth.substring(1);
+                        int monthInt = Integer.parseInt(eventStartMonth);
+                        eventStartMonth = monthShortNames[monthInt - 1];
+
+                        _24HourEventTime = _24HourFormat.parse(eventEndTime);
+                        eventEndTime = _12HourFormat.format(_24HourEventTime).toString();
+                        if (eventEndTime.charAt(0) == '0') {
+                            eventEndTime = eventEndTime.substring(1);
+                        }
+                        eventEndDay = eventEndDay.substring(1);
+                        if (eventEndDay.charAt(0) == '0') {
+                            eventEndDay = eventEndDay.substring(1);
                         }
 
-                        int monthInt = Integer.parseInt(eventMonth);
-                        eventMonth = monthShortNames[monthInt - 1];
+                        if (eventEndMonth.charAt(0) == '0') {
+                            eventEndMonth = eventEndMonth.substring(1);
+                        }
+
+                        monthInt = Integer.parseInt(eventEndMonth);
+                        eventEndMonth = monthShortNames[monthInt - 1];
 
                         Event retrievedEvent = new Event(eventid, eventName, eventLocation, eventAddress,
-                                eventDate, eventTime, eventMonth, eventDay, eventYear,
+                                eventStartDate, eventEndDate, eventStartTime, eventEndTime,
+                                eventStartMonth, eventStartDay, eventStartYear,
+                                eventEndMonth, eventEndDay, eventEndYear,
                                 eventDescription, eventLink1, eventLink2, eventLink3, eventPin);
 
                         completedEventList.add(retrievedEvent);

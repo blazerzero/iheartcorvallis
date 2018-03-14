@@ -2,11 +2,7 @@ package edu.oregonstate.studentlife.ihcv2.data;
 
 import android.support.v7.app.AppCompatActivity;
 
-import com.google.android.gms.maps.model.LatLng;
-
-import java.io.InputStream;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -19,11 +15,16 @@ public class Event extends AppCompatActivity implements Serializable {
     private String name;
     private String location;
     private String address;
-    private Date dateTime;
-    private String time;
-    private String month;
-    private String day;
-    private String year;
+    private Date startDT;
+    private Date endDT;
+    private String startTime;
+    private String endTime;
+    private String startMonth;
+    private String startDay;
+    private String startYear;
+    private String endMonth;
+    private String endDay;
+    private String endYear;
     private String description;
     private String link1;
     private String link2;
@@ -31,16 +32,24 @@ public class Event extends AppCompatActivity implements Serializable {
     private int pin;
     //private InputStream image;
 
-    public Event(int eventid, String name, String location, String address, Date dateTime, String time, String month, String day, String year, String description, String link1, String link2, String link3, int pin) {
+    public Event(int eventid, String name, String location, String address, Date startDT, Date endDT, String startTime, String endTime,
+                 String startMonth, String startDay, String startYear,
+                 String endMonth, String endDay, String endYear,
+                 String description, String link1, String link2, String link3, int pin) {
         this.eventid = eventid;
         this.name = name;
         this.location = location;
         this.address = address;
-        this.dateTime = dateTime;
-        this.time = time;
-        this.month = month;
-        this.day = day;
-        this.year = year;
+        this.startDT = startDT;
+        this.endDT = endDT;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.startMonth = startMonth;
+        this.startDay = startDay;
+        this.startYear = startYear;
+        this.endMonth = endMonth;
+        this.endDay = endDay;
+        this.endYear = endYear;
         this.description = description;
         this.link1 = link1;
         this.link2 = link2;
@@ -81,44 +90,84 @@ public class Event extends AppCompatActivity implements Serializable {
         this.address = address;
     }
 
-    public Date getDateTime() {
-        return dateTime;
+    public Date getStartDT() {
+        return startDT;
     }
 
-    public void setDateTime(Date dateTime) {
-        this.dateTime = dateTime;
+    public void setStartDT(Date startDT) {
+        this.startDT = startDT;
     }
 
-    public String getTime() {
-        return time;
+    public Date getEndDT() {
+        return endDT;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setEndDT(Date endDT) {
+        this.endDT = endDT;
     }
 
-    public String getMonth() {
-        return month;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setMonth(String month) {
-        this.month = month;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
-    public String getDay() {
-        return day;
+    public String getEndTime() {
+        return endTime;
     }
 
-    public void setDay(String day) {
-        this.day = day;
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
-    public String getYear() {
-        return year;
+    public String getStartMonth() {
+        return startMonth;
     }
 
-    public void setYear(String year) {
-        this.year = year;
+    public void setStartMonth(String startMonth) {
+        this.startMonth = startMonth;
+    }
+
+    public String getStartDay() {
+        return startDay;
+    }
+
+    public void setStartDay(String startDay) {
+        this.startDay = startDay;
+    }
+
+    public String getStartYear() {
+        return startYear;
+    }
+
+    public void setStartYear(String startYear) {
+        this.startYear = startYear;
+    }
+
+    public String getEndMonth() {
+        return endMonth;
+    }
+
+    public void setEndMonth(String endMonth) {
+        this.endMonth = endMonth;
+    }
+
+    public String getEndDay() {
+        return endDay;
+    }
+
+    public void setEndDay(String endDay) {
+        this.endDay = endDay;
+    }
+
+    public String getEndYear() {
+        return endYear;
+    }
+
+    public void setEndYear(String endYear) {
+        this.endYear = endYear;
     }
 
     public String getDescription() {

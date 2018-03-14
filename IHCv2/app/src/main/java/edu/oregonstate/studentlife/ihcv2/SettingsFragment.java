@@ -4,12 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v14.preference.PreferenceFragment;
-import android.support.v4.app.LoaderManager;
 import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.ListPreference;
 import android.util.Log;
-
-import edu.oregonstate.studentlife.ihcv2.data.User;
 
 /**
  * Created by Omeed on 3/9/18.
@@ -23,14 +20,8 @@ public class SettingsFragment extends PreferenceFragment
     private EditTextPreference userAgePref;
     private int userGrade;
     private int userAge;
-    public final static String IHC_USER_GRADE_KEY = "IHC_USER_GRADE";
-    public final static String IHC_USER_AGE_KEY = "IHC_USER_AGE";
-
-    public interface OnDataPass {
-        void onDataPass(User data);
-    }
-
-    public OnDataPass dataPasser;
+    //public final static String IHC_USER_GRADE_KEY = "IHC_USER_GRADE";
+    //public final static String IHC_USER_AGE_KEY = "IHC_USER_AGE";
 
     /*public static SettingsFragment newInstance(User user) {
         SettingsFragment fragment = new SettingsFragment();
@@ -51,9 +42,7 @@ public class SettingsFragment extends PreferenceFragment
         super.onCreate(savedInstanceState);
         userGradePref = (ListPreference) findPreference(getString(R.string.pref_user_grade_key));
         userAgePref = (EditTextPreference) findPreference(getString(R.string.pref_user_age_key));
-        //getLoaderManager().initLoader(IHC_SETTINGS_LOADER_ID, null, new LoaderManager.LoaderCallbacks<String>());
-        //getActivity().getLoaderManager().initLoader(IHC_SETTINGS_LOADER_ID, null, );
-        //if (savedInstanceState != null) {
+
         Bundle args = getArguments();
         userGrade = args.getInt(SettingsActivity.IHC_USER_GRADE_KEY);
         userAge = args.getInt(SettingsActivity.IHC_USER_AGE_KEY);
@@ -73,23 +62,6 @@ public class SettingsFragment extends PreferenceFragment
 
         userAgePref.setSummary(String.valueOf(userAge));
         userAgePref.setText(String.valueOf(userAge));
-        if (args == null) {
-            Log.d(TAG, "args is null");
-        }
-        /*}
-        else {
-            Log.d(TAG, "savedInstanceState is null");
-        }*/
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            dataPasser = (OnDataPass) context;
-        } catch (ClassCastException e) {
-            Log.d(TAG, context.toString() + " must implement OnDataPass");
-        }
     }
 
     @Override
@@ -100,7 +72,7 @@ public class SettingsFragment extends PreferenceFragment
         else if (key.equals(getString(R.string.pref_user_grade_key))) {
             userGradePref.setSummary(userGradePref.getEntry());
         }
-        // SEND UPDATED USER INFO TO DATABASE
+        ((SettingsActivity)getActivity()).onDataPass(String.valueOf(userGradePref.getValue()), userAgePref.getText());
 
     }
 

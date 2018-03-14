@@ -67,13 +67,13 @@ public class EventCardAdapter extends RecyclerView.Adapter<EventCardAdapter.Even
         }
 
         void bind(Event event) {
-            int monthInt = Integer.parseInt(event.getMonth()) - 1;
+            int monthInt = Integer.parseInt(event.getStartMonth()) - 1;
             /*if (event.getImage() != null) {
                 mEventImageIV.setImageBitmap(BitmapFactory.decodeStream(event.getImage()));
             }*/
             mEventNameTV.setText(event.getName());
-            mEventDateTimeTV.setText(monthLongNames[monthInt] + " " + event.getDay() + ", "
-                    + event.getYear() + " @ " + event.getTime());
+            mEventDateTimeTV.setText(monthLongNames[monthInt] + " " + event.getStartDay() + ", "
+                    + event.getStartYear() + ", " + event.getStartTime() + " - " + event.getEndTime());
             mEventLocationTV.setText(event.getLocation());
         }
 

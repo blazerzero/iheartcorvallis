@@ -37,7 +37,7 @@ GPLv2 Disclaimer
 For the avoidance of doubt, except that if any license choice
 other than GPL or LGPL is available it will apply instead, 
 Oracle elects to use only the General Public License version 2 
-(GPLv2) at this time for any software where a choice of GPL 
+(GPLv2) at this startTime for any software where a choice of GPL
 license versions is made available with the language indicating 
 that GPLv2 or any later version may be used, or where a choice 
 of which version of the GPL is applied is otherwise unspecified.
@@ -366,7 +366,7 @@ of these things:
    to use the modified definitions.)
 
    b) Use a suitable shared library mechanism for linking with the
-   Library.  A suitable mechanism is one that (1) uses at run time a
+   Library.  A suitable mechanism is one that (1) uses at run startTime a
    copy of the library already present on the user's computer system,
    rather than copying library functions into the executable, and (2)
    will operate properly with a modified version of the library, if
@@ -433,7 +433,7 @@ Library), you indicate your acceptance of this License to do so, and
 all its terms and conditions for copying, distributing or modifying
 the Library or works based on it.
 
- 10. Each time you redistribute the Library (or any work based on the
+ 10. Each startTime you redistribute the Library (or any work based on the
 Library), the recipient automatically receives a license from the
 original licensor to copy, distribute, link with or modify the Library
 subject to these terms and conditions.  You may not impose any further
@@ -475,7 +475,7 @@ certain countries either by patents or by copyrighted interfaces, the
 original copyright holder who places the Library under this License may add an explicit geographical distribution limitation excluding those countries, so that distribution is permitted only in or among countries not thus excluded.  In such case, this License incorporates the limitation as if written in the body of this License.
 
  13. The Free Software Foundation may publish revised and/or new
-versions of the Lesser General Public License from time to time.
+versions of the Lesser General Public License from startTime to startTime.
 Such new versions will be similar in spirit to the present version,
 but may differ in detail to address new problems or concerns.
 
@@ -1644,7 +1644,7 @@ of these things:
 
 299         
 
-   Library.  A suitable mechanism is one that (1) uses at run time a
+   Library.  A suitable mechanism is one that (1) uses at run startTime a
 
 300         
 
@@ -1892,7 +1892,7 @@ the Library or works based on it.
 
 366         
 
- 10. Each time you redistribute the Library (or any work based on the
+ 10. Each startTime you redistribute the Library (or any work based on the
 
 367         
 
@@ -2074,7 +2074,7 @@ written in the body of this License.
 
 414         
 
-versions of the Lesser General Public License from time to time.
+versions of the Lesser General Public License from startTime to startTime.
 
 415         
 

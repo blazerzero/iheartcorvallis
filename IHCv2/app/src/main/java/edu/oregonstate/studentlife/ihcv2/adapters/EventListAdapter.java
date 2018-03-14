@@ -1,6 +1,5 @@
 package edu.oregonstate.studentlife.ihcv2.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,6 +61,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
        private TextView mEventDayTV;
        private TextView mEventNameTV;
        private TextView mEventLocationTV;
+       private TextView mEventTimeTV;
 
        private String[] monthShortNames = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
 
@@ -72,6 +72,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
            mEventDayTV = (TextView) itemView.findViewById(R.id.tv_event_day);
            mEventNameTV = (TextView) itemView.findViewById(R.id.tv_event_name);
            mEventLocationTV = (TextView) itemView.findViewById(R.id.tv_event_location);
+           mEventTimeTV = (TextView) itemView.findViewById(R.id.tv_event_time);
 
            mEventListingLL.setOnClickListener(new View.OnClickListener() {
                @Override
@@ -82,11 +83,12 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
        }
 
        void bind(Event event) {
-           int monthInt = Integer.parseInt(event.getMonth()) - 1;
+           int monthInt = Integer.parseInt(event.getStartMonth()) - 1;
            mEventMonthTV.setText(monthShortNames[monthInt]);
-           mEventDayTV.setText(event.getDay());
+           mEventDayTV.setText(event.getStartDay());
            mEventNameTV.setText(event.getName());
            mEventLocationTV.setText(event.getLocation());
+           mEventTimeTV.setText(event.getStartTime() + " - " + event.getEndTime());
        }
 
    }

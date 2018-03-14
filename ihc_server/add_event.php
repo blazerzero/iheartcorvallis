@@ -4,7 +4,7 @@
 
 <?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>
 
-<?php 
+<?php
 function generatePIN() {
    $i = 0;
    $pin = "";
@@ -43,8 +43,10 @@ function generatePIN() {
          var cityField = document.forms["eventForm"]["city"].value;
          var stateField = document.forms["eventForm"]["state"].value;
          var zipField = document.forms["eventForm"]["zip"].value;
-         var dateField = document.forms["eventForm"]["date"].value;
-         var timeField = document.forms["eventForm"]["time"].value;
+         var startDateField = document.forms["eventForm"]["startdate"].value;
+         var startTimeField = document.forms["eventForm"]["starttime"].value;
+         var endDateField = document.forms["eventForm"]["enddate"].value;
+         var endTimeField = document.forms["eventForm"]["endtime"].value;
          var descriptionField = document.forms["eventForm"]["description"].value;
          var imageField = document.forms["eventForm"]["image"].value;
          var pinField = document.forms["eventForm"]["pin"].value;
@@ -54,9 +56,12 @@ function generatePIN() {
             cityField == null || cityField == "" ||
             stateField == null || stateField == "" ||
             zipField == null || zipField == "" ||
-            dateField == null || dateField == "" ||
-            timeField == null || timeField == "" ||
-            descriptionField == null || descriptionField == ""
+            startDateField == null || startDateField == "" ||
+            startTimeField == null || startTimeField == "" ||
+            endDateField == null || endDateField == "" ||
+            endTimeField == null || endTimeField == "" ||
+            descriptionField == null || descriptionField == "" ||
+            imageField = null || imageField == "" ||
             pinField == null || pinField = "") {
                alert("Please fill all required fields before submitting!");
                return false;
@@ -141,11 +146,19 @@ function generatePIN() {
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
-               Date: <input class="inputbox" type="date" name="date"><br><br>
+               Start Date: <input class="inputbox" type="date" name="startdate"><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
-               Time: <input class="inputbox" type="time" name="time"><br><br>
+               Start Time: <input class="inputbox" type="time" name="starttime"><br><br>
+            </div>
+            <div class="elem">
+               <span class="requirednote">*</span>
+               End Date: <input class="inputbox" type="date" name="enddate"><br><br>
+            </div>
+            <div class="elem">
+               <span class="requirednote">*</span>
+               End Time: <input class="inputbox" type="time" name="endtime"><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>

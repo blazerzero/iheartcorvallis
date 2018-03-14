@@ -48,11 +48,11 @@ public class PassportAdapter extends RecyclerView.Adapter<PassportAdapter.Passpo
 
         void bind(Event event) {
             mEventNameTextView.setText(event.getName());
-            if (event.getMonth().length() <= 3) {
-                mEventInfoTextView.setText(event.getMonth() + " " + event.getDay() + ", " + event.getYear() + ", " + event.getLocation());
+            if (event.getStartMonth().length() <= 3) {
+                mEventInfoTextView.setText(event.getStartMonth() + " " + event.getStartDay() + ", " + event.getStartYear() + ", " + event.getLocation());
             }
             else {
-                mEventInfoTextView.setText(event.getMonth().substring(0, 3) + ". " + event.getDay() + ", " + event.getYear() + ", " + event.getLocation());
+                mEventInfoTextView.setText(event.getStartMonth().substring(0, 3) + ". " + event.getStartDay() + ", " + event.getStartYear() + ", " + event.getLocation());
             }
         }
 

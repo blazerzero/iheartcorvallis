@@ -13,7 +13,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -102,9 +101,9 @@ public class EventDetailActivity extends AppCompatActivity {
             mEventNameTV.setText(event.getName());
             mEventLocationTV.setText(event.getLocation());
             mEventAddressTV.setText(event.getAddress());
-            int monthInt = Integer.parseInt(event.getMonth()) - 1;
-            mEventDateTimeTV.setText(monthLongNames[monthInt] + " " + event.getDay() + ", "
-                    + event.getYear() + " @ " + event.getTime());
+            int monthInt = Integer.parseInt(event.getStartMonth()) - 1;
+            mEventDateTimeTV.setText(monthLongNames[monthInt] + " " + event.getStartDay() + ", "
+                    + event.getStartYear() + " @ " + event.getStartTime());
             mEventDescriptionTV.setText(event.getDescription());
             mEventLink1TV.setText(event.getLink1());
             mEventLink2TV.setText(event.getLink2());

@@ -20,7 +20,7 @@
        exit;
    }
 
-   $name = $location = $date = $time = $dateandtime = $description = $image = $link1 = $link2 = $link3 = $pin = $fullAddress = $addressData = $prepAddress = $latLng = $row = "";
+   $name = $location = $startdate = $starttime = $startdt = $enddate = $endtime = $enddt = $description = $image = $link1 = $link2 = $link3 = $pin = $fullAddress = $addressData = $prepAddress = $latLng = $row = "";
 
    $events = array();
 
@@ -30,8 +30,10 @@
       $name = $_POST["name"];
       $location = $_POST["location"];
       $fullAddress = $_POST["fulladdress"];
-      $date = $_POST["date"];
-      $time = $_POST["time"];
+      $startdate = $_POST["startdate"];
+      $starttime = $_POST["starttime"];
+      $enddate = $_POST["enddate"];
+      $endtime = $_POST["endtime"];
       $description = $_POST["description"];
       $image = $_POST["image"];
       $link1 = $_POST["link1"];
@@ -39,7 +41,8 @@
       $link3 = $_POST["link3"];
       $pin = $_POST["pin"];
 
-      $dateandtime = $date . " " . $time . ":00";
+      $startdt = $startdate . " " . $starttime . ":00";
+      $enddt = $enddate . " " . $endtime . ":00";
 
       /* GET EVENT COUNT */
       $result = $mysqli->query("SELECT eventid, totalEventCount FROM ihc_events");
@@ -55,7 +58,7 @@
       }
 
       /* ADD EVENT TO DATABASE */
-      $result = $mysqli->query("INSERT INTO ihc_events (eventid, name, location, address, dateandtime, description, image, link1, link2, link3, pin) VALUES ('$totalEventCount', '$name', '$location', '$fullAddress', '$dateandtime', '$description', '$image', '$link1', '$link2', '$link3', '$pin')");
+      $result = $mysqli->query("INSERT INTO ihc_events (eventid, name, location, address, startdt, enddt, description, image, link1, link2, link3, pin) VALUES ('$totalEventCount', '$name', '$location', '$fullAddress', '$startdt', '$enddt', '$description', '$image', '$link1', '$link2', '$link3', '$pin')");
 
       $url = "";
 

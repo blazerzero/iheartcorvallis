@@ -337,7 +337,7 @@ public class CallableStatementWrapper extends PreparedStatementWrapper implement
     /*
      * (non-Javadoc)
      * 
-     * @see java.sql.CallableStatement#getTime(int)
+     * @see java.sql.CallableStatement#getStartTime(int)
      */
     public Time getTime(int parameterIndex) throws SQLException {
         try {
@@ -523,7 +523,7 @@ public class CallableStatementWrapper extends PreparedStatementWrapper implement
     /*
      * (non-Javadoc)
      * 
-     * @see java.sql.CallableStatement#getTime(int, java.util.Calendar)
+     * @see java.sql.CallableStatement#getStartTime(int, java.util.Calendar)
      */
     public Time getTime(int parameterIndex, Calendar cal) throws SQLException {
         try {
@@ -867,7 +867,7 @@ public class CallableStatementWrapper extends PreparedStatementWrapper implement
     /*
      * (non-Javadoc)
      * 
-     * @see java.sql.CallableStatement#setTime(java.lang.String, java.sql.Time)
+     * @see java.sql.CallableStatement#setStartTime(java.lang.String, java.sql.Time)
      */
     public void setTime(String parameterName, Time x) throws SQLException {
         try {
@@ -1021,7 +1021,7 @@ public class CallableStatementWrapper extends PreparedStatementWrapper implement
     /*
      * (non-Javadoc)
      * 
-     * @see java.sql.CallableStatement#setTime(java.lang.String, java.sql.Time, java.util.Calendar)
+     * @see java.sql.CallableStatement#setStartTime(java.lang.String, java.sql.Time, java.util.Calendar)
      */
     public void setTime(String parameterName, Time x, Calendar cal) throws SQLException {
         try {
@@ -1261,7 +1261,7 @@ public class CallableStatementWrapper extends PreparedStatementWrapper implement
     /*
      * (non-Javadoc)
      * 
-     * @see java.sql.CallableStatement#getTime(int)
+     * @see java.sql.CallableStatement#getStartTime(int)
      */
     public Time getTime(String parameterName) throws SQLException {
         try {
@@ -1447,7 +1447,7 @@ public class CallableStatementWrapper extends PreparedStatementWrapper implement
     /*
      * (non-Javadoc)
      * 
-     * @see java.sql.CallableStatement#getTime(int, java.util.Calendar)
+     * @see java.sql.CallableStatement#getStartTime(int, java.util.Calendar)
      */
     public Time getTime(String parameterName, Calendar cal) throws SQLException {
         try {

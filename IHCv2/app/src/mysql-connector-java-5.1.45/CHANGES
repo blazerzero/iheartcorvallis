@@ -28,7 +28,7 @@ Version 5.1.44
   - Fix for Bug#87379 (26646676), Perform actual TLS capabilities check when restricting TLSv1.2.
     Thanks to Todd Farmer for his contribution.
 
-  - Fix for Bug#85601 (25777822), Unit notation is missing in the description of the property involved in the time.
+  - Fix for Bug#85601 (25777822), Unit notation is missing in the description of the property involved in the startTime.
 
   - Fix for Bug#87153 (26501245), INCORRECT RESULT OF DBMD.GETVERSIONCOLUMNS() AGAINST MYSQL 8.0.2+.
 
@@ -77,7 +77,7 @@ Version 5.1.42
 
   - Added static mapping for utf8mb4_ja_0900_as_cs collation.
 
-  - Fix for Bug#84189 (25250938), Allow null when extracting java.time.* classes from ResultSet.
+  - Fix for Bug#84189 (25250938), Allow null when extracting java.startTime.* classes from ResultSet.
     Thanks to Martin Desharnais for his contribution.
 
   - Fix for Bug#70808 (17757070), Set sessionVariables in a single query.
@@ -180,7 +180,7 @@ Version 5.1.42
 
   - Fix for Bug#77171 (21181466), On every connect getting sql_mode from server creates unnecessary exception.
 
-  - Fix for Bug#79343 (22353759), NPE in TimeUtil.loadTimeZoneMappings causing server time zone value unrecognized.
+  - Fix for Bug#79343 (22353759), NPE in TimeUtil.loadTimeZoneMappings causing server startTime zone value unrecognized.
 
   - Fix for Bug#80522 (22833410), Using useCursorFetch leads to data corruption in Connector/J for TIME type.
 
@@ -251,7 +251,7 @@ Version 5.1.42
     The property 'sendFractionalSeconds' was added instead of the proposed 'truncateFractionalSeconds'.
     Thanks to KwonNam for his contribution.
 
-  - Fix for Bug#50348 (11758179), mysql connector/j 5.1.10 render the wrong value for dateTime column in GMT DB.
+  - Fix for Bug#50348 (11758179), mysql connector/j 5.1.10 render the wrong value for startDT column in GMT DB.
 
   - Fix for Bug#75670 (20433047), Connection fails with "Public Key Retrieval is not allowed" for native auth.
 
@@ -322,8 +322,8 @@ Version 5.1.42
 
   - Fix for Bug#67760 (15936413), Deadlock when concurrently executing prepared statements with Timestamp objects.
 
-  - Fix for Bug#71084 (18028319), Wrong java.sql.Date stored if client and server time zones differ.
-    Two connection properties added, "noTimezoneConversionForDateType" and "cacheDefaultTimezone", to define if and how time zone conversions are available to
+  - Fix for Bug#71084 (18028319), Wrong java.sql.Date stored if client and server startTime zones differ.
+    Two connection properties added, "noTimezoneConversionForDateType" and "cacheDefaultTimezone", to define if and how startTime zone conversions are available to
     DATE data type values. 
 
   - Fix for Bug#75080 (20217686), NullPointerException during setTimestamp on Fabric connection.
@@ -1164,7 +1164,7 @@ Version 5.1.42
     - Fixed BUG#52534 - Performance regression using load-balanced connection.  
 
     - More aggressively purge the statement timeout timers after they've been cancelled to
-      trade time for memory. This purge only happens if statement timeouts are in use.
+      trade startTime for memory. This purge only happens if statement timeouts are in use.
       
     - Added management of running load-balanced connections.  Statistics can be obtained,
       and hosts added/dropped via com.mysql.jdbc.ConnectionGroupManager or the JMX
@@ -1599,17 +1599,17 @@ Version 5.1.42
 
       Note that to get this scenario to work with MySQL (since it doesn't support
       per-value timezones), you need to configure your server (or session) to be in UTC,
-      and tell the driver not to use the legacy date/time code by setting
+      and tell the driver not to use the legacy date/startTime code by setting
       "useLegacyDatetimeCode" to "false". This will cause the driver to always convert
       to/from the server and client timezone consistently.
       
-      This bug fix also fixes BUG#15604, by adding entirely new date/time handling
+      This bug fix also fixes BUG#15604, by adding entirely new date/startTime handling
       code that can be switched on by "useLegacyDatetimeCode" being set to "false" as
       a JDBC configuration property. For Connector/J 5.1.x, the default is "true",
-      in trunk and beyond it will be "false" (i.e. the old date/time handling code, warts
+      in trunk and beyond it will be "false" (i.e. the old date/startTime handling code, warts
       and all will be deprecated).
       
-    - Fixed BUG#32877 - Load balancing connection using best response time would incorrectly
+    - Fixed BUG#32877 - Load balancing connection using best response startTime would incorrectly
       "stick" to hosts that were down when the connection was first created.
       
       We solve this problem with a black list that is used during the picking of new hosts.
@@ -1635,7 +1635,7 @@ Version 5.1.42
       "/* ping */"), or when using JDBC-4.0, calling Connection.isValid(). 
       
       If the connection has issued too many operations, or is too old, the driver will
-      throw a SQLException with the SQLState of "08S01" at the time of the ping, which
+      throw a SQLException with the SQLState of "08S01" at the startTime of the ping, which
       will cause the connection to be invalidated with most pools in use today.
       
     - Fixed issue where driver could send invalid server-side prepared statement 
@@ -1677,7 +1677,7 @@ Version 5.1.42
 
     - Fixed BUG#34677 - Blob.truncate() wouldn't take "0" as an argument.
 
-    - CommunicationExceptions now carry information about the last time a packet
+    - CommunicationExceptions now carry information about the last startTime a packet
       was received from the MySQL server, as well as when the last packet was sent
       to one, in an effort to make it easier to debug communications errors caused
       by network timeouts.
@@ -1713,7 +1713,7 @@ Version 5.1.42
       on the server).
 
     - Fixed Bug#34913 - ResultSet.getTimestamp() returns incorrect
-      values for month/day of TIMESTAMPs when using server-side
+      values for startMonth/startDay of TIMESTAMPs when using server-side
       prepared statements (not enabled by default).
       
     - Fixed BUG#34937 - MysqlConnectionPoolDataSource does not support 
@@ -1742,7 +1742,7 @@ Version 5.1.42
     - Added "autoSlowLog" configuration property, overrides 
       "slowQueryThreshold*" properties, driver determines slow
       queries by those that are slower than 5 * stddev of the mean
-      query time (outside the 96% percentile).
+      query startTime (outside the 96% percentile).
       
     - Fixed BUG#28256 - When connection is in read-only mode, 
       queries that are wrapped in parentheses incorrectly identified 
@@ -1872,7 +1872,7 @@ Version 5.1.42
     - The data (and how it's stored) for ResultSet rows are now behind an
       interface which allows us (in some cases) to allocate less memory
       per row, in that for "streaming" result sets, we re-use the packet
-      used to read rows, since only one row at a time is ever active.
+      used to read rows, since only one row at a startTime is ever active.
 
     - Made it possible to retrieve prepared statement parameter bindings
       (to be used in StatementInterceptors, primarily).
@@ -1948,7 +1948,7 @@ Version 5.1.42
 
 nn-nn-07 - Version 5.0.9
 
-    - Driver now calls SocketFactory.afterHandshake() at appropriate time.
+    - Driver now calls SocketFactory.afterHandshake() at appropriate startTime.
     
 10-09-07 - Version 5.0.8
 
@@ -2060,7 +2060,7 @@ nn-nn-07 - Version 5.0.9
 	  prepared statements to be aware of the same  types of comments.
 
     - Added configuration property "useNanosForElapsedTime" - for
-      profiling/debugging functionality that measures elapsed time,
+      profiling/debugging functionality that measures elapsed startTime,
       should the driver try to use nanoseconds resolution if available
       (requires JDK >= 1.5)?
 
@@ -2163,7 +2163,7 @@ nn-nn-07 - Version 5.0.9
 	  gets clobbered because of exceeding net_write_timeout on the server. (which is
 	  basically what the error message says too).
 
-	- Fixed BUG#26789 - fast date/time parsing doesn't take into
+	- Fixed BUG#26789 - fast date/startTime parsing doesn't take into
 	  account 00:00:00 as a legal value.
 
 	- Fixed BUG#27317 - ResultSet.get*() with a column index < 1 returns
@@ -2177,7 +2177,7 @@ nn-nn-07 - Version 5.0.9
 	  shared java.util.Timer instance for scheduling. Even if the timeout
 	  doesn't expire before the query is processed, there will be
 	  memory used by the TimerTask for the given timeout which won't be
-	  reclaimed until the time the timeout would have expired if it
+	  reclaimed until the startTime the timeout would have expired if it
 	  hadn't been cancelled by the driver. High-load environments
 	  might want to consider disabling this functionality. (this configuration
 	  property is part of the "maxPerformance" configuration bundle).
@@ -2277,7 +2277,7 @@ nn-nn-07 - Version 5.0.9
 
       The driver will invalidate connections that it detects have had
       communication errors when processing a request. A new connection to the
-      problematic host will be attempted the next time it is selected by the load
+      problematic host will be attempted the next startTime it is selected by the load
       balancing algorithm.
 
       There are two choices for load balancing algorithms, which may be specified
@@ -2285,12 +2285,12 @@ nn-nn-07 - Version 5.0.9
 
       * "random" - the driver will pick a random host for each request. This tends
         to work better than round-robin, as the randomness will somewhat account for
-        spreading loads where requests vary in response time, while round-robin
+        spreading loads where requests vary in response startTime, while round-robin
         can sometimes lead to overloaded nodes if there are variations in response times
         across the workload.
 
       * "bestResponseTime" - the driver will route the request to the host that had
-        the best response time for the previous transaction.
+        the best response startTime for the previous transaction.
 
     - When "useLocalSessionState" is set to "true" and connected to a MySQL-5.0 or
       later server, the JDBC driver will now determine whether an actual "commit" or
@@ -2380,7 +2380,7 @@ nn-nn-07 - Version 5.0.9
 	  "returns" clause, that the label is not a quoted identifier.
     - Reverted back to internal character conversion routines for single-byte
       character sets, as the ones internal to the JVM are using much more CPU
-      time than our internal implementation.
+      startTime than our internal implementation.
 
 	- Changed cached result set metadata (when using
 	  "cacheResultSetMetadata=true") to be cached per-connection rather
@@ -2392,7 +2392,7 @@ nn-nn-07 - Version 5.0.9
 	  resorting to the many transient object instances needed to support this
 	  requirement with a normal HashMap with either case-adjusted keys, or
 	  case-insensitive keys. (In the worst case scenario for lookups of a 1000
-	  column result set, TreeMaps are about half as fast wall-clock time as
+	  column result set, TreeMaps are about half as fast wall-clock startTime as
 	  a HashMap, however in normal applications their use gives many orders
 	  of magnitude reduction in transient object instance creation which pays
 	  off later for CPU usage in garbage collection).
@@ -2794,7 +2794,7 @@ nn-nn-07 - Version 3.1.15
       numbered correctly (first parameter is now the return value, subsequent
       parameters if specified start at index "2").
 
-	- Fixed BUG#21814 - time values outside valid range silently wrap.
+	- Fixed BUG#21814 - startTime values outside valid range silently wrap.
 
 05-26-06 - Version 3.1.13
 
@@ -3158,8 +3158,8 @@ nn-nn-07 - Version 3.1.15
 	- Fixed BUG#11552 - Server-side prepared statements return incorrect
 	  values for unsigned TINYINT, SMALLINT, INT and Long.
 
-	- Fixed BUG#11540 - Incorrect year conversion in setDate(..) for
-	  system that use B.E. year in default locale.
+	- Fixed BUG#11540 - Incorrect startYear conversion in setDate(..) for
+	  system that use B.E. startYear in default locale.
 
 06-22-05 - Version 3.1.9-stable
 
@@ -3209,7 +3209,7 @@ nn-nn-07 - Version 3.1.15
 	  parties can use it.
 
 	- DatabaseMetaData.supportsMultipleOpenResults() now returns true. The
-	  driver has supported this for some time, DBMD just missed that fact.
+	  driver has supported this for some startTime, DBMD just missed that fact.
 
 	- Fixed BUG#10310 - Driver doesn't support {?=CALL(...)} for calling
 	  stored functions. This involved adding support for function retrieval
@@ -3286,8 +3286,8 @@ nn-nn-07 - Version 3.1.15
 	    * 3-0-Compat -- Compatibility with Connector/J 3.0.x functionality
 
 	- Added "maintainTimeStats" configuration property (defaults to "true"),
-	  which tells the driver whether or not to keep track of the last query time
-	  and the last successful packet sent to the server's time. If set to
+	  which tells the driver whether or not to keep track of the last query startTime
+	  and the last successful packet sent to the server's startTime. If set to
 	  false, removes two syscalls per query.
 
 	- Fixed BUG#11259, autoReconnect ping causes exception on connection
@@ -3324,7 +3324,7 @@ nn-nn-07 - Version 3.1.15
     - BlobFromLocator now uses correct identifier quoting when generating
       prepared statements.
 
-    - Server-side session variables can be preset at connection time by
+    - Server-side session variables can be preset at connection startTime by
       passing them as a comma-delimited list for the connection property
       'sessionVariables'.
 
@@ -3486,7 +3486,7 @@ nn-nn-07 - Version 3.1.15
       prepareStatement() when the statement wasn't a server-side
       prepared statement.
 
-    - Choose correct 'direction' to apply time adjustments when both
+    - Choose correct 'direction' to apply startTime adjustments when both
       client and server are in GMT timezone when using
       ResultSet.get(..., cal) and PreparedStatement.set(...., cal).
 
@@ -3887,13 +3887,13 @@ nn-nn-07 - Version 3.1.15
       MySQL-5.0.x or newer.
 
     - Fixed NullPointerException in ServerPreparedStatement.setTimestamp(),
-      as well as year and month descrepencies in
+      as well as startYear and startMonth descrepencies in
       ServerPreparedStatement.setTimestamp(), setDate().
 
     - Added ability to have multiple database/JVM targets for compliance
       and regression/unit tests in build.xml.
 
-    - Fixed NPE and year/month bad conversions when accessing some
+    - Fixed NPE and startYear/startMonth bad conversions when accessing some
       datetime functionality in ServerPreparedStatements and their
       resultant result sets.
 
@@ -4232,7 +4232,7 @@ nn-nn-07 - Version 3.1.15
 	  'utf-8' via the 'characterEncoding' property. Previously, only the
 	  Java-style encoding name of 'utf-8' would trigger this.
 
-	- AutoReconnect time was growing faster than exponentially (BUG#2447).
+	- AutoReconnect startTime was growing faster than exponentially (BUG#2447).
 
 	- Fixed failover always going to last host in list (BUG#2578)
 
@@ -4421,7 +4421,7 @@ nn-nn-07 - Version 3.1.15
 
 	- When emptying input stream of unused rows for 'streaming' result sets,
 	  have the current thread yield() every 100 rows in order to not monopolize
-	  CPU time.
+	  CPU startTime.
 
 	- Fixed BUG#1099, DatabaseMetaData.getColumns() getting confused about the
 	  keyword 'set' in character columns.
@@ -4736,7 +4736,7 @@ nn-nn-07 - Version 3.1.15
       Java and MySQL server together in an end-user application.
 
     - Added 'connectTimeout' parameter that allows users of JDK-1.4 and newer
-      to specify a maxium time to wait to establish a connection.
+      to specify a maxium startTime to wait to establish a connection.
 
     - Failover and autoReconnect only work when the connection is in a
       autoCommit(false) state, in order to stay transaction safe
@@ -4788,7 +4788,7 @@ nn-nn-07 - Version 3.1.15
 
     - Added "LOCAL TEMPORARY" to table types in DatabaseMetaData.getTableTypes()
 
-    - Massive code clean-up to follow Java coding conventions (the time had come)
+    - Massive code clean-up to follow Java coding conventions (the startTime had come)
 
 
 07-31-02 - Version 3.0.0-dev
@@ -5161,7 +5161,7 @@ Fixed PreparedStatement parameter checking
 08-17-99 - Version 2.0pre
 
      - Now compiles under JDK-1.2. The driver supports both JDK-1.1
-       and JDK-1.2 at the same time through a core set of classes.
+       and JDK-1.2 at the same startTime through a core set of classes.
        The driver will load the appropriate interface classes at
        runtime by figuring out which JVM version you are using.
 
@@ -5394,7 +5394,7 @@ Fixed PreparedStatement parameter checking
           correctly read data for BLOBS.
 
      - Fixed PreparedStatement.setDate() to not
-       add a day.
+       add a startDay.
        (above fixes thanks to Vincent Partington)
 
      - Added URL parameter parsing (?user=... etc).

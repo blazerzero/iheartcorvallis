@@ -5,6 +5,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,18 +16,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.User;
+import edu.oregonstate.studentlife.ihcv2.loaders.SettingsUpdateLoader;
 
 /**
  * Created by Omeed on 12/20/17.
  */
 
 public class SettingsActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        LoaderManager.LoaderCallbacks<String> {
 
     SessionActivity session;
 
@@ -33,7 +38,7 @@ public class SettingsActivity extends AppCompatActivity
     ActionBarDrawerToggle mDrawerToggle;
     SettingsFragment fragment;
     private final static int IHC_SETTINGS_LOADER_ID = 0;
-    public final static String IHC_USER_EMAIL_KEY = "IHC_USER_EMAIL";
+    public final static String IHC_USER_ID_KEY = "IHC_USER_ID";
     public final static String IHC_USER_GRADE_KEY = "IHC_USER_GRADE";
     public final static String IHC_USER_AGE_KEY = "IHC_USER_AGE";
 
@@ -190,5 +195,31 @@ public class SettingsActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void onDataPass(String grade, String age) {
+        Bundle args = new Bundle();
+        args.putString(IHC_USER_ID_KEY, String.valueOf(user.getId()));
+        args.putString(IHC_USER_GRADE_KEY, grade);
+        args.putString(IHC_USER_AGE_KEY, age);
+        getSupportLoaderManager().restartLoader(IHC_SETTINGS_LOADER_ID, args, this);
+    }
+
+    @Override
+    public Loader<String> onCreateLoader(int id, Bundle args) {
+        return new SettingsUpdateLoader(args, this);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<String> loader, String data) {
+        Log.d(TAG, "got return message from loader: " + data);
+        if (data.equals("UPDATEERROR")) {
+            Toast.makeText(this, "There was an error updating your information.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<String> loader) {
+        // Nothing to do...
     }
 }

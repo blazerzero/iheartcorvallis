@@ -20,15 +20,17 @@
       //echo "Connection succesful!<br>";
    }
 
-   $eventid = $name = $location = $date = $time = $dateandtime = $description = $image = $link1 = $link2 = $link3 = $pin = $fullAddress = $addressData = $prepAddress = $latLng = $row = "";
+   $eventid = $name = $location = $startdate = $starttime = $startdt = $enddate = $endtime = $enddt = $description = $image = $link1 = $link2 = $link3 = $pin = $fullAddress = $addressData = $prepAddress = $latLng = $row = "";
 
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $eventid = $_POST["eventid"];
       $name = $_POST["name"];
       $location = $_POST["location"];
       $fullAddress = $_POST["fulladdress"];
-      $date = $_POST["date"];
-      $time = $_POST["time"];
+      $startdate = $_POST["startdate"];
+      $starttime = $_POST["starttime"];
+      $enddate = $_POST["enddate"];
+      $endtime = $_POST["endtime"];
       $description = $_POST["description"];
       $image = $_POST["image"];
       $link1 = $_POST["link1"];
@@ -36,9 +38,13 @@
       $link3 = $_POST["link3"];
       $pin = $_POST["pin"];
 
-      $dateandtime = $date . " " . $time;
-      if (strlen($dateandtime) < 19) {
-         $dateandtime = $dateandtime . ":00";
+      $startdt = $startdate . " " . $starttime . ":00";
+      $enddt = $enddate . " " . $endtime . ":00";
+      if (strlen($startdt) < 19) {
+         $startdt = $startdt . ":00";
+      }
+      if (strlen($enddt) < 19) {
+         $enddt = $enddt . ":00";
       }
 
       /*echo "Event ID: " . $eventid . "<br>";
@@ -53,7 +59,7 @@
       echo "link3 entered: " . $link3 . "<br>";
       echo "Pin entered: " . $pin . "<br>";*/
 
-      $result = $mysqli->query("UPDATE ihc_events SET name='$name', location='$location', address='$fullAddress', dateandtime='$dateandtime', description='$description', image='$image', link1='$link1', link2='$link2', link3='$link3', pin='$pin' WHERE eventid='$eventid'");
+      $result = $mysqli->query("UPDATE ihc_events SET name='$name', location='$location', address='$fullAddress', startdt='$startdt', enddt='$enddt', description='$description', image='$image', link1='$link1', link2='$link2', link3='$link3', pin='$pin' WHERE eventid='$eventid'");
 
       if ($result == True) {
          $message = "Event has been updated!";

@@ -25,10 +25,10 @@
             <TextView
                 android:id="@+id/tv_event_month"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/event_elem_height"
+                android:layout_height="@dimen/event_dt_height"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
-                android:textSize="24sp"
+                android:textSize="26sp"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimaryDark"
                 android:textAlignment="center"
@@ -38,10 +38,10 @@
             <TextView
                 android:id="@+id/tv_event_day"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/event_elem_height"
+                android:layout_height="@dimen/event_dt_height"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
-                android:textSize="24sp"
+                android:textSize="26sp"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimaryDark"
                 android:textAlignment="center"
@@ -58,10 +58,10 @@
             <TextView
                 android:id="@+id/tv_event_name"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/event_elem_height"
+                android:layout_height="@dimen/event_info_height"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
-                android:textSize="17sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimaryDark"
                 android:gravity="start|center_vertical"
@@ -70,7 +70,18 @@
             <TextView
                 android:id="@+id/tv_event_location"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/event_elem_height"
+                android:layout_height="@dimen/event_info_height"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="start|center_vertical"
+                android:lines="1"/>
+
+            <TextView
+                android:id="@+id/tv_event_time"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/event_info_height"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
                 android:textSize="16sp"
