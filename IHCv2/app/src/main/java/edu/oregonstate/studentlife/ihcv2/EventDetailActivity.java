@@ -103,7 +103,7 @@ public class EventDetailActivity extends AppCompatActivity {
             mEventAddressTV.setText(event.getAddress());
             int monthInt = Integer.parseInt(event.getStartMonth()) - 1;
             mEventDateTimeTV.setText(monthLongNames[monthInt] + " " + event.getStartDay() + ", "
-                    + event.getStartYear() + " @ " + event.getStartTime());
+                    + event.getStartYear() + ", " + event.getStartTime() + " - " + event.getEndTime());
             mEventDescriptionTV.setText(event.getDescription());
             mEventLink1TV.setText(event.getLink1());
             mEventLink2TV.setText(event.getLink2());
