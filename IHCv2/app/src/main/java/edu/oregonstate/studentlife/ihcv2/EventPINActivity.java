@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -32,6 +33,7 @@ public class EventPINActivity extends AppCompatActivity implements LoaderManager
     private ImageView mPINStatusIV;
 
     private static final int IHC_COMPLETED_EVENTS_ID = 0;
+    private final static String TAG = EventPINActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,8 @@ public class EventPINActivity extends AppCompatActivity implements LoaderManager
             user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
             eventid = event.getEventid();
             userid = user.getId();
+            Log.d(TAG, "event ID: " + String.valueOf(eventid));
+            Log.d(TAG, "user ID: " + String.valueOf(userid));
 
             mEventNameTV.setText(event.getName());
 

@@ -210,20 +210,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.oregonstate.studentlife.ihcv2.EventDetailActivity" />
         </activity>
-        <activity
-            android:name=".CheckLocationActivity"
-            android:label="Checking Location"
-            android:launchMode="singleTop"
-            android:parentActivityName=".EventDetailActivity"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.oregonstate.studentlife.ihcv2.EventDetailActivity" />
-        </activity>
     </application>
 
 </manifest>
