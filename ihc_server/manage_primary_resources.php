@@ -38,8 +38,8 @@ while ($resource = $result->fetch_assoc()) {
                <div class="ui simple dropdown item">
                   <a href="#">Events</a>
                   <div class="menu">
-                     <div style="background-color: #dc4405;"><a href="./add_event.php">Add an Event</a></div>
-                     <div style="background-color: #dc4405;"><a href="./manage_events.php">Manage Events</a></div>
+                     <div style="background-color: #d73f09;"><a href="./add_event.php">Add an Event</a></div>
+                     <div style="background-color: #d73f09;"><a href="./manage_events.php">Manage Events</a></div>
                   </div>
                </div>
             </div>
@@ -47,10 +47,10 @@ while ($resource = $result->fetch_assoc()) {
                <div class="ui simple dropdown item">
                   <a href="#">Resources</a>
                   <div class="menu">
-                     <div style="background-color: #dc4405;"><a href="./add_primary_resource.php">Add to Resource Page</a></div>
-                     <div style="background-color: #dc4405;"><a href="./manage_primary_resources.php">Manage Resource Page</a></div>
-                     <div style="background-color: #dc4405;"><a href="./add_marker.php">Add Resource to Map </a></div>
-                     <div style="background-color: #dc4405;"><a href="./manage_resource_map.php">Manage Resource Map</a></div>
+                     <div style="background-color: #d73f09;"><a href="./add_primary_resource.php">Add to Resource Page</a></div>
+                     <div style="background-color: #d73f09;"><a href="./manage_primary_resources.php">Manage Resource Page</a></div>
+                     <div style="background-color: #d73f09;"><a href="./add_marker.php">Add Resource to Map </a></div>
+                     <div style="background-color: #d73f09;"><a href="./manage_resource_map.php">Manage Resource Map</a></div>
                   </div>
                </div>
             </div>
@@ -58,8 +58,8 @@ while ($resource = $result->fetch_assoc()) {
                <div class="ui simple dropdown item">
                   <a href="#">Prizes</a>
                   <div class="menu">
-                     <div style="background-color: #dc4405;"><a href="./add_prize.php">Add a Prize</a></div>
-                     <div style="background-color: #dc4405;"><a href="./manage_prizes.php">Manage Prizes</a></div>
+                     <div style="background-color: #d73f09;"><a href="./add_prize.php">Add a Prize</a></div>
+                     <div style="background-color: #d73f09;"><a href="./manage_prizes.php">Manage Prizes</a></div>
                   </div>
                </div>
             </div>
