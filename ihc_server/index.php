@@ -86,7 +86,7 @@
          </div>
          <br>
          <div>
-            <a href="./manage_primary_resources.php">
+            <a href="./add_primary_resource.php">
                <button class="circular ui icon button">
                   <i class="book icon"></i>
                   <p>Add to Resource Page</p>
