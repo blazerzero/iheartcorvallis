@@ -1,5 +1,9 @@
 package edu.oregonstate.studentlife.ihcv2;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.content.Context;
+
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -7,8 +11,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,28 +24,59 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.content.DialogInterface;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.StringTokenizer;
 
+import edu.oregonstate.studentlife.ihcv2.adapters.EventListAdapter;
+import edu.oregonstate.studentlife.ihcv2.adapters.PassportAdapter;
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
+import edu.oregonstate.studentlife.ihcv2.data.Event;
 import edu.oregonstate.studentlife.ihcv2.data.User;
+import edu.oregonstate.studentlife.ihcv2.loaders.EventLoader;
+import edu.oregonstate.studentlife.ihcv2.loaders.PassportLoader;
 import edu.oregonstate.studentlife.ihcv2.loaders.UserInfoLoader;
 
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
+        EventListAdapter.OnEventClickListener,
         LoaderManager.LoaderCallbacks<String> {
 
-    //private User currentUser;
     private String email;
     private int numStamps;
-    public TextView progIndicator;
-    //public static final String EXTRA_USER = "User";
+    public LinearLayout mProgIndicatorLL;
+    public static final String EXTRA_USER = "User";
     private final static String IHC_USER_EMAIL_KEY = "IHC_USER_EMAIL";
     private final static int IHC_USER_LOADER_ID = 0;
+    private final static int IHC_PASSPORT_LOADER_ID = 1;
+    private final static int IHC_EVENT_LOADER_ID = 2;
+
+    private TextView mDashStampCountTV;
+    private TextView mDashProgressTV;
+
+    private String[] monthShortNames = {"Jan.", "Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."};
+
+    private RecyclerView mEventListRecyclerView;
+    private ArrayList<Event> eventList;
+    private EventListAdapter mEventListAdapter;
+
+    private RecyclerView mPassportRecyclerView;
+    private ArrayList<Event> completedEventList;
+    private PassportAdapter mPassportAdapter;
+
+    boolean gotUser = false;
+    boolean gotPassport = false;
+    boolean gotEvents = false;
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -74,9 +111,31 @@ public class DashboardActivity extends AppCompatActivity
         HashMap<String, String> userBasics = session.getUserDetails();
         email = userBasics.get(SessionActivity.KEY_EMAIL);
 
+        mEventListRecyclerView = (RecyclerView) findViewById(R.id.rv_event_list);
+        mEventListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mEventListRecyclerView.setHasFixedSize(true);
+
+        mEventListAdapter = new EventListAdapter(this);
+        mEventListRecyclerView.setAdapter(mEventListAdapter);
+
+        mPassportRecyclerView = (RecyclerView) findViewById(R.id.rv_passport_list);
+        mPassportRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mPassportRecyclerView.setHasFixedSize(true);
+
+        mPassportAdapter = new PassportAdapter();
+        mPassportRecyclerView.setAdapter(mPassportAdapter);
+
+        eventList = new ArrayList<Event>();
+        completedEventList = new ArrayList<Event>();
+
         //new UserInfoReceiver(this).execute(email);
 
-        progIndicator = (TextView)findViewById(R.id.progIndicator);
+
+        getSupportLoaderManager().initLoader(IHC_USER_LOADER_ID, null, this);
+        getUserInfo();
+        mDashStampCountTV = (TextView)findViewById(R.id.tv_dash_stamp_count);
+        mDashProgressTV = (TextView) findViewById(R.id.tv_dash_progress);
+        mProgIndicatorLL = (LinearLayout)findViewById(R.id.progIndicator);
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(Constants.EXTRA_USER)) {
@@ -91,7 +150,7 @@ public class DashboardActivity extends AppCompatActivity
             getSupportLoaderManager().initLoader(IHC_USER_LOADER_ID, args, this);
         }
 
-        progIndicator.setOnClickListener(new View.OnClickListener() {
+        mProgIndicatorLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, PrizesActivity.class);
@@ -100,6 +159,7 @@ public class DashboardActivity extends AppCompatActivity
             }
         });
 
+        /*
         Button button1 = (Button)findViewById(R.id.eventbtn);
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,6 +210,8 @@ public class DashboardActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+        */
     }
 
     @Override
@@ -157,48 +219,290 @@ public class DashboardActivity extends AppCompatActivity
         if (args != null) {
             email = args.getString(IHC_USER_EMAIL_KEY);
         }
-        return new UserInfoLoader(this, email);
+        if (id == IHC_USER_LOADER_ID) {
+            return new UserInfoLoader(this, email);
+        }
+        else if (id == IHC_PASSPORT_LOADER_ID) {
+            return new PassportLoader(this, email);
+        }
+        else if (id == IHC_EVENT_LOADER_ID){
+            return new EventLoader(this);
+        }
+        else
+            return null;
     }
 
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
-        if (data != null) {
+        if (!gotUser && !gotPassport && !gotEvents) {
+            if (data != null) {
+                try {
+                    JSONObject userJSON = new JSONObject(data);
+                    String firstname = userJSON.getString("firstname");
+                    String lastname = userJSON.getString("lastname");
+                    String email = userJSON.getString("email");
+                    int id = Integer.parseInt(userJSON.getString("id"));
+                    String stampcount = userJSON.getString("stampcount");
+                    int grade = Integer.parseInt(userJSON.getString("grade"));
+                    int age = Integer.parseInt(userJSON.getString("age"));
+                    user = new User(firstname, lastname, email, id, stampcount, grade, age);
+                    numStamps = Integer.parseInt(stampcount);
+                    initProgIndicator();
+
+
+                    mDashStampCountTV.setText("STAMPS: " + String.valueOf(numStamps));
+
+                    gotUser = true;
+                    getSupportLoaderManager().initLoader(IHC_PASSPORT_LOADER_ID, null, this);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+                } else {
+                    builder = new AlertDialog.Builder(this);
+                }
+                builder.setTitle("Error");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Close alert dialog
+                    }
+                });
+                builder.setMessage("Error retrieving user info.");
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.show();
+            }
+        }
+        else if (gotUser && gotPassport && !gotEvents) {
+            // event stuff
+            Log.d(TAG, "got results from loader");
             try {
-                JSONObject userJSON = new JSONObject(data);
-                String firstname = userJSON.getString("firstname");
-                String lastname = userJSON.getString("lastname");
-                String email = userJSON.getString("email");
-                int id = Integer.parseInt(userJSON.getString("id"));
-                String stampcount = userJSON.getString("stampcount");
-                int grade = Integer.parseInt(userJSON.getString("grade"));
-                int age = Integer.parseInt(userJSON.getString("age"));
-                user = new User(firstname, lastname, email, id, stampcount, grade, age);
-                numStamps = Integer.parseInt(user.getStampCount());
-                initProgIndicator();
+                StringTokenizer stEvents = new StringTokenizer(data, "\\");
+                while (stEvents.hasMoreTokens()) {
+                    String eventInfoString = stEvents.nextToken();
+                    Log.d(TAG, "eventInfoString: " + eventInfoString);
+                    JSONObject eventJSON = new JSONObject(eventInfoString);
+                    Log.d(TAG, "eventJSON: " + eventJSON);
+                    int eventid = Integer.parseInt(eventJSON.getString("eventid"));
+                    String eventName = eventJSON.getString("name");
+                    String eventLocation = eventJSON.getString("location");
+                    String eventAddress = eventJSON.getString("address");
+                    String eventStartDT = eventJSON.getString("startdt");
+                    String eventEndDT = eventJSON.getString("enddt");
+                    String eventDescription = eventJSON.getString("description");
+                    String eventLink1 = eventJSON.getString("link1");
+                    String eventLink2 = eventJSON.getString("link2");
+                    String eventLink3 = eventJSON.getString("link3");
+                    int eventPin = Integer.parseInt(eventJSON.getString("pin"));
+
+                    StringTokenizer dateTimeTokenizer = new StringTokenizer(eventStartDT);
+                    String eventStartYear = dateTimeTokenizer.nextToken("-");
+                    String eventStartMonth = dateTimeTokenizer.nextToken("-");
+                    String eventStartDay = dateTimeTokenizer.nextToken(" ");
+                    String eventStartTime = dateTimeTokenizer.nextToken();
+
+                    dateTimeTokenizer = new StringTokenizer(eventEndDT);
+                    String eventEndYear = dateTimeTokenizer.nextToken("-");
+                    String eventEndMonth = dateTimeTokenizer.nextToken("-");
+                    String eventEndDay = dateTimeTokenizer.nextToken(" ");
+                    String eventEndTime = dateTimeTokenizer.nextToken();
+
+                    SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date eventStartDate = sdfEvent.parse(eventStartDT);
+                    Date eventEndDate = sdfEvent.parse(eventEndDT);
+
+                    SimpleDateFormat _24HourFormat = new SimpleDateFormat("HH:mm");
+                    SimpleDateFormat _12HourFormat = new SimpleDateFormat("hh:mm a");
+
+                    Date _24HourEventTime = _24HourFormat.parse(eventStartTime);
+                    eventStartTime = _12HourFormat.format(_24HourEventTime).toString();
+                    if (eventStartTime.charAt(0) == '0') {
+                        eventStartTime = eventStartTime.substring(1);
+                    }
+                    eventStartDay = eventStartDay.substring(1);
+                    if (eventStartDay.charAt(0) == '0') {
+                        eventStartDay = eventStartDay.substring(1);
+                    }
+
+                    if (eventStartMonth.charAt(0) == '0') {
+                        eventStartMonth = eventStartMonth.substring(1);
+                    }
+
+                    int monthInt = Integer.parseInt(eventStartMonth);
+                    eventStartMonth = monthShortNames[monthInt - 1];
+
+                    _24HourEventTime = _24HourFormat.parse(eventEndTime);
+                    eventEndTime = _12HourFormat.format(_24HourEventTime).toString();
+                    if (eventEndTime.charAt(0) == '0') {
+                        eventEndTime = eventEndTime.substring(1);
+                    }
+                    eventEndDay = eventEndDay.substring(1);
+                    if (eventEndDay.charAt(0) == '0') {
+                        eventEndDay = eventEndDay.substring(1);
+                    }
+
+                    if (eventEndMonth.charAt(0) == '0') {
+                        eventEndMonth = eventEndMonth.substring(1);
+                    }
+
+                    monthInt = Integer.parseInt(eventEndMonth);
+                    eventEndMonth = monthShortNames[monthInt - 1];
+
+                    Event retrievedEvent = new Event(eventid, eventName, eventLocation, eventAddress,
+                            eventStartDate, eventEndDate, eventStartTime, eventEndTime,
+                            eventStartMonth, eventStartDay, eventStartYear,
+                            eventEndMonth, eventEndDay, eventEndYear,
+                            eventDescription, eventLink1, eventLink2, eventLink3, eventPin);
+
+                    eventList.add(retrievedEvent);
+                }
+
+
+                sortEventsByDate();
+
+                Toast.makeText(this, "GOT EVENTS!", Toast.LENGTH_LONG).show();
+
+                mEventListAdapter.addEvent(eventList.get(0));
+                mEventListAdapter.addEvent(eventList.get(1));
+
+                /*for (Event event : eventList) {
+                    if (isNetworkAvailable()) {
+                        mEventListAdapter.addEvent(event);
+                        //mEventCardAdapter.addEvent(event);
+                    } else {
+                        showNoInternetConnectionMsg();
+                    }
+                }*/
+                gotEvents = true;
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        else {
-            AlertDialog.Builder builder;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-            }
-            else {
-                builder = new AlertDialog.Builder(this);
-            }
-            builder.setTitle("Error");
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // Close alert dialog
+        else if (gotUser && !gotPassport && !gotEvents) {
+            // passport stuff
+            try {
+                StringTokenizer stEvents = new StringTokenizer(data, "\\");
+                while (stEvents.hasMoreTokens()) {
+                    String eventInfoString = stEvents.nextToken();
+                    JSONObject eventJSON = new JSONObject(eventInfoString);
+                    int eventid = Integer.parseInt(eventJSON.getString("eventid"));
+                    String eventName = eventJSON.getString("name");
+                    String eventLocation = eventJSON.getString("location");
+                    String eventAddress = eventJSON.getString("address");
+                    String eventStartDT = eventJSON.getString("startdt");
+                    String eventEndDT = eventJSON.getString("enddt");
+                    String eventDescription = eventJSON.getString("description");
+                    String eventLink1 = eventJSON.getString("link1");
+                    String eventLink2 = eventJSON.getString("link2");
+                    String eventLink3 = eventJSON.getString("link3");
+                    int eventPin = Integer.parseInt(eventJSON.getString("pin"));
+
+                    StringTokenizer dateTimeTokenizer = new StringTokenizer(eventStartDT);
+                    String eventStartYear = dateTimeTokenizer.nextToken("-");
+                    String eventStartMonth = dateTimeTokenizer.nextToken("-");
+                    String eventStartDay = dateTimeTokenizer.nextToken(" ");
+                    String eventStartTime = dateTimeTokenizer.nextToken();
+
+                    dateTimeTokenizer = new StringTokenizer(eventEndDT);
+                    String eventEndYear = dateTimeTokenizer.nextToken("-");
+                    String eventEndMonth = dateTimeTokenizer.nextToken("-");
+                    String eventEndDay = dateTimeTokenizer.nextToken(" ");
+                    String eventEndTime = dateTimeTokenizer.nextToken();
+
+                    SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date eventStartDate = sdfEvent.parse(eventStartDT);
+                    Date eventEndDate = sdfEvent.parse(eventEndDT);
+
+                    SimpleDateFormat _24HourFormat = new SimpleDateFormat("HH:mm");
+                    SimpleDateFormat _12HourFormat = new SimpleDateFormat("hh:mm a");
+
+                    Date _24HourEventTime = _24HourFormat.parse(eventStartTime);
+                    eventStartTime = _12HourFormat.format(_24HourEventTime).toString();
+                    if (eventStartTime.charAt(0) == '0') {
+                        eventStartTime = eventStartTime.substring(1);
+                    }
+                    eventStartDay = eventStartDay.substring(1);
+                    if (eventStartDay.charAt(0) == '0') {
+                        eventStartDay = eventStartDay.substring(1);
+                    }
+
+                    _24HourEventTime = _24HourFormat.parse(eventEndTime);
+                    eventEndTime = _12HourFormat.format(_24HourEventTime).toString();
+                    if (eventEndTime.charAt(0) == '0') {
+                        eventEndTime = eventEndTime.substring(1);
+                    }
+                    eventEndDay = eventEndDay.substring(1);
+                    if (eventEndDay.charAt(0) == '0') {
+                        eventEndDay = eventEndDay.substring(1);
+                    }
+
+                    Date currentDate = new Date();
+                    if (eventEndDate.after(currentDate)) {
+
+                        Event retrievedEvent = new Event(eventid, eventName, eventLocation, eventAddress,
+                                eventStartDate, eventEndDate, eventStartTime, eventEndTime,
+                                eventStartMonth, eventStartDay, eventStartYear,
+                                eventEndMonth, eventEndDay, eventEndYear,
+                                eventDescription, eventLink1, eventLink2, eventLink3, eventPin);
+
+                        completedEventList.add(retrievedEvent);
+                    }
                 }
-            });
-            builder.setMessage("Error retrieving user info.");
-            builder.setIcon(android.R.drawable.ic_dialog_alert);
-            builder.show();
+                /*for (int i = 0; i < completedEventList.size()-2; i++) {
+                    completedEventList.remove(i);
+                }
+                for (Event event : completedEventList) {
+                    mPassportAdapter.addEventToPassport(event);
+                }*/
+                mPassportAdapter.addEventToPassport(completedEventList.get(completedEventList.size()-1));
+                mPassportAdapter.addEventToPassport(completedEventList.get(completedEventList.size()-2));
+
+                gotPassport = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
+
+    public void sortEventsByDate() {
+        Event temp;
+        int indexLeft = 0;
+        int indexRight = 1;
+        int pointer = 0;
+
+        for (int i = 0; i < eventList.size() - 1; i++) {
+            while (indexLeft >= 0 && compareDates(eventList.get(indexLeft), eventList.get(indexRight)) > 0) {
+                Collections.swap(eventList, indexLeft, indexRight);
+                indexLeft--;
+                indexRight--;
+            }
+            pointer++;
+            indexLeft = pointer;
+            indexRight = pointer + 1;
+        }
+    }
+
+    public int compareDates(Event eLeft, Event eRight) {
+        return eLeft.getStartDT().compareTo(eRight.getStartDT());
+    }
+
+    public void getUserInfo() {
+        Bundle args = new Bundle();
+        args.putString(IHC_USER_EMAIL_KEY, email);
+        //Toast.makeText(this, email, Toast.LENGTH_LONG).show();
+        getSupportLoaderManager().restartLoader(IHC_USER_LOADER_ID, args, this);
+    }
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+    }
+
 
     @Override
     public void onLoaderReset(Loader<String> loader) {
@@ -251,9 +555,9 @@ public class DashboardActivity extends AppCompatActivity
                 message = "Only " + eventsToGo + " events away from reaching bronze status!\nCLICK HERE TO VIEW PRIZES";
             }
         }
-        progIndicator.setBackgroundColor(progColor);
-        progIndicator.setText(message);
-        progIndicator.setTextColor(getResources().getColor(R.color.maroon));
+        mProgIndicatorLL.setBackgroundColor(progColor);
+        mDashProgressTV.setText(message);
+        mDashProgressTV.setTextColor(getResources().getColor(R.color.maroon));
     }
 
     @Override
@@ -320,6 +624,35 @@ public class DashboardActivity extends AppCompatActivity
         sesEmail.setText(email);
 
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    public void showNoInternetConnectionMsg() {
+        android.app.AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new android.app.AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        }
+        else {
+            builder = new android.app.AlertDialog.Builder(this);
+        }
+        builder.setTitle("No Internet Connection");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Close alert. User can try action again.
+            }
+        });
+        builder.setMessage(getResources().getString(R.string.no_internet_connection_msg));
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+        builder.show();
+    }
+
+    // possibly change to just navigate to the events page
+    @Override
+    public void onEventClick(Event event) {
+        Intent eventDetailActivityIntent = new Intent(this, EventDetailActivity.class);
+        eventDetailActivityIntent.putExtra(Constants.EXTRA_EVENT, event);
+        eventDetailActivityIntent.putExtra(Constants.EXTRA_USER, user);
+        startActivity(eventDetailActivityIntent);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
