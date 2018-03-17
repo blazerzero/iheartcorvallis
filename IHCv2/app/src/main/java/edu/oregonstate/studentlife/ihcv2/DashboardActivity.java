@@ -128,11 +128,6 @@ public class DashboardActivity extends AppCompatActivity
         eventList = new ArrayList<Event>();
         completedEventList = new ArrayList<Event>();
 
-        //new UserInfoReceiver(this).execute(email);
-
-
-        getSupportLoaderManager().initLoader(IHC_USER_LOADER_ID, null, this);
-        getUserInfo();
         mDashStampCountTV = (TextView)findViewById(R.id.tv_dash_stamp_count);
         mDashProgressTV = (TextView) findViewById(R.id.tv_dash_progress);
         mProgIndicatorLL = (LinearLayout)findViewById(R.id.progIndicator);
@@ -158,60 +153,6 @@ public class DashboardActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-
-        /*
-        Button button1 = (Button)findViewById(R.id.eventbtn);
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DashboardActivity.this, EventsActivity.class);
-                intent.putExtra(Constants.EXTRA_USER, user);
-                startActivity(intent);
-            }
-        });
-
-
-        Button button2 = (Button)findViewById(R.id.passportbtn);
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DashboardActivity.this, PassportActivity.class);
-                intent.putExtra(Constants.EXTRA_USER, user);
-                startActivity(intent);
-            }
-        });
-
-        Button button3 = (Button)findViewById(R.id.leaderbtn);
-        button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DashboardActivity.this, LeaderboardActivity.class);
-                intent.putExtra(Constants.EXTRA_USER, user);
-                startActivity(intent);
-            }
-        });
-
-        Button button4 = (Button)findViewById(R.id.resourcebtn);
-        button4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DashboardActivity.this, ResourcesActivity.class);
-                intent.putExtra(Constants.EXTRA_USER, user);
-                startActivity(intent);
-            }
-        });
-
-        Button button5 = (Button)findViewById(R.id.aboutbtn);
-        button5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DashboardActivity.this, AboutUsActivity.class);
-                intent.putExtra(Constants.EXTRA_USER, user);
-                startActivity(intent);
-            }
-        });
-
-        */
     }
 
     @Override
@@ -234,7 +175,10 @@ public class DashboardActivity extends AppCompatActivity
 
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
+        Bundle args = new Bundle();
+        args.putString(IHC_USER_EMAIL_KEY, email);
         if (!gotUser && !gotPassport && !gotEvents) {
+            // user stuff
             if (data != null) {
                 try {
                     JSONObject userJSON = new JSONObject(data);
@@ -253,7 +197,7 @@ public class DashboardActivity extends AppCompatActivity
                     mDashStampCountTV.setText("STAMPS: " + String.valueOf(numStamps));
 
                     gotUser = true;
-                    getSupportLoaderManager().initLoader(IHC_PASSPORT_LOADER_ID, null, this);
+                    getSupportLoaderManager().initLoader(IHC_PASSPORT_LOADER_ID, args, this);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -277,8 +221,8 @@ public class DashboardActivity extends AppCompatActivity
                 builder.show();
             }
         }
-        else if (gotUser && gotPassport && !gotEvents) {
-            // event stuff
+        else if (gotUser && !gotPassport && !gotEvents) {
+            // passport stuff
             Log.d(TAG, "got results from loader");
             try {
                 StringTokenizer stEvents = new StringTokenizer(data, "\\");
@@ -358,31 +302,22 @@ public class DashboardActivity extends AppCompatActivity
                             eventEndMonth, eventEndDay, eventEndYear,
                             eventDescription, eventLink1, eventLink2, eventLink3, eventPin);
 
-                    eventList.add(retrievedEvent);
+                    completedEventList.add(retrievedEvent);
                 }
 
 
                 sortEventsByDate();
 
-                Toast.makeText(this, "GOT EVENTS!", Toast.LENGTH_LONG).show();
+                mPassportAdapter.addEventToPassport(completedEventList.get(completedEventList.size()-1));
+                mPassportAdapter.addEventToPassport(completedEventList.get(completedEventList.size()-2));
 
-                mEventListAdapter.addEvent(eventList.get(0));
-                mEventListAdapter.addEvent(eventList.get(1));
-
-                /*for (Event event : eventList) {
-                    if (isNetworkAvailable()) {
-                        mEventListAdapter.addEvent(event);
-                        //mEventCardAdapter.addEvent(event);
-                    } else {
-                        showNoInternetConnectionMsg();
-                    }
-                }*/
-                gotEvents = true;
+                gotPassport = true;
+                getSupportLoaderManager().initLoader(IHC_EVENT_LOADER_ID, null, this);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        else if (gotUser && !gotPassport && !gotEvents) {
+        else if (gotUser && gotPassport && !gotEvents) {
             // passport stuff
             try {
                 StringTokenizer stEvents = new StringTokenizer(data, "\\");
@@ -449,19 +384,16 @@ public class DashboardActivity extends AppCompatActivity
                                 eventEndMonth, eventEndDay, eventEndYear,
                                 eventDescription, eventLink1, eventLink2, eventLink3, eventPin);
 
-                        completedEventList.add(retrievedEvent);
+                        eventList.add(retrievedEvent);
                     }
                 }
-                /*for (int i = 0; i < completedEventList.size()-2; i++) {
-                    completedEventList.remove(i);
-                }
-                for (Event event : completedEventList) {
-                    mPassportAdapter.addEventToPassport(event);
-                }*/
-                mPassportAdapter.addEventToPassport(completedEventList.get(completedEventList.size()-1));
-                mPassportAdapter.addEventToPassport(completedEventList.get(completedEventList.size()-2));
 
-                gotPassport = true;
+                sortEventsByDate();
+
+                mEventListAdapter.addEvent(eventList.get(0));
+                mEventListAdapter.addEvent(eventList.get(1));
+
+                gotEvents = true;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -488,13 +420,6 @@ public class DashboardActivity extends AppCompatActivity
 
     public int compareDates(Event eLeft, Event eRight) {
         return eLeft.getStartDT().compareTo(eRight.getStartDT());
-    }
-
-    public void getUserInfo() {
-        Bundle args = new Bundle();
-        args.putString(IHC_USER_EMAIL_KEY, email);
-        //Toast.makeText(this, email, Toast.LENGTH_LONG).show();
-        getSupportLoaderManager().restartLoader(IHC_USER_LOADER_ID, args, this);
     }
 
     public boolean isNetworkAvailable() {
@@ -698,5 +623,13 @@ public class DashboardActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Bundle args = new Bundle();
+        args.putString(IHC_USER_EMAIL_KEY, email);
+        getSupportLoaderManager().initLoader(IHC_USER_LOADER_ID, args, this);
     }
 }
