@@ -25,9 +25,19 @@
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $prizeid = $_POST["prizeid"];
       $name = $_POST["name"];
-      $level = $_POST["level"];
+      $levelVal = $_POST["level"];
 
-      $result = $mysqli->query("UPDATE ihc_prizes SET name='$name', level='$level' WHERE eventid='$eventid'");
+      if ($levelVal == "1") {
+         $level = "gold";
+      }
+      else if ($levelVal == "2") {
+         $level = "silver";
+      }
+      else if ($levelVal == "3") {
+         $level = "bronze";
+      }
+
+      $result = $mysqli->query("UPDATE ihc_prizes SET name='$name', level='$level' WHERE prizeid='$prizeid'");
 
       if ($result == True) {
          $message = "Prize has been updated!";

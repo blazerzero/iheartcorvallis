@@ -140,19 +140,19 @@ if ($result->num_rows > 0) {
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
-               Start Date: <input class="inputbox" type="date" name="date" value="<?php echo substr($event['startdt'], 0, 10); ?>"><br><br>
+               Start Date: <input class="inputbox" type="date" name="startdate" value="<?php echo substr($event['startdt'], 0, 10); ?>"><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
-               Start Time: <input class="inputbox" type="time" name="time" value="<?php echo substr($event['startdt'], 11); ?>"><br><br>
+               Start Time: <input class="inputbox" type="time" name="starttime" value="<?php echo substr($event['startdt'], 11); ?>"><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
-               End Date: <input class="inputbox" type="date" name="date" value="<?php echo substr($event['enddt'], 0, 10); ?>"><br><br>
+               End Date: <input class="inputbox" type="date" name="enddate" value="<?php echo substr($event['enddt'], 0, 10); ?>"><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
-               End Time: <input class="inputbox" type="time" name="time" value="<?php echo substr($event['enddt'], 11); ?>"><br><br>
+               End Time: <input class="inputbox" type="time" name="endtime" value="<?php echo substr($event['enddt'], 11); ?>"><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>

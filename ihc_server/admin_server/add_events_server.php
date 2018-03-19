@@ -67,7 +67,7 @@
          echo "<script type='text/javascript'>alert('$message');</script>";
       }
       else {
-         $message = "Error adding event!<br>"; # error adding event to database
+         $message = "Error adding event!"; # error adding event to database
          $url = "../add_event.php";
          echo "<script type='text/javascript'>alert('$message');</script>";
          $mysqli->close();
@@ -81,7 +81,7 @@
          $url = "../index.php";
       }
       else {
-         $message = "Error updating total event count!<br>";
+         $message = "Error updating total event count!";
          echo "<script type='text/javascript'>alert('$message');</script>";
          $url = "../add_event.php";
       }
