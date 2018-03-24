@@ -16,7 +16,7 @@ $result = $mysqli->query("SELECT * FROM ihc_completed_events WHERE eventid='$eve
 $numAttendees = $result->num_rows;
 $numFreshmen = $numSophomores = $numJuniors = $numSeniors = $numGrad = 0;
 $numDomStudents = $numIntlStudents = $numNonStudents = 0;
-$ages = $students = $allRatings = $studentRatings = array();
+$ages = $allAttendees = $students = $allRatings = $studentRatings = $comments = $studentComments = array();
 $minAge = $maxAge = $minAllRating = $maxAllRating = $minStudentRating = $maxStudentRating = 0;
 $avgAllRating = $avgStudentRating = 0;
 while ($row = $result->fetch_assoc()) {
@@ -24,11 +24,14 @@ while ($row = $result->fetch_assoc()) {
    $res = $mysqli->query("SELECT * FROM ihc_users WHERE id='$userid'");
    if ($res->num_rows > 0) {
       $user = $res->fetch_assoc();
-      $students[] = $user;
+      $allAttendees[] = $user;
       $grade = (int)$user['grade'];
       $ages[] = (int)$user['age'];
-      $allRatings[] = $row['rating'];
+      $allRatings[] = $user['rating'];
       $studenttype = (int)$user['studenttype'];
+      if (strlen($user['comment']) > 0) {
+         $comments[] = $user['comment'];
+      }
       if ($grade == 1) { $numFreshmen++; }
       else if ($grade == 2) { $numSophomores++; }
       else if ($grade == 3) { $numJuniors++; }
@@ -37,11 +40,19 @@ while ($row = $result->fetch_assoc()) {
 
       if ($studenttype == 0) {
          $numDomStudents++;
-         $studentRatings[] = $row['rating'];
+         $students[] = $user;
+         $studentRatings[] = $user['rating'];
+         if (strlen($user['comment']) > 0) {
+            $studentComments[] = $user['comment'];
+         }
       }
       else if ($studenttype == 1) {
          $numIntlStudents++;
-         $studentRatings[] = $row['rating'];
+         $students[] = $user;
+         $studentRatings[] = $user['rating'];
+         if (strlen($user['comment']) > 0) {
+            $studentComments[] = $user['comment'];
+         }
       }
       else if ($studenttype == 2) { $numNonStudents++; }
    }
@@ -82,7 +93,7 @@ $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
             ]);
 
             var options = {
-               title: 'Attendee Type',
+               title: 'Attendees by Type',
                pieHole: 0.4,
             };
 
@@ -98,7 +109,7 @@ $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
             ]);
 
             var options = {
-               title: 'Student Attendee Type',
+               title: 'Student Attendees by Student Type',
                pieHole: 0.4,
             };
 
@@ -117,7 +128,7 @@ $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
             ]);
 
             var options = {
-               title: 'Student Statuses',
+               title: 'Student Attendees by Status',
                pieHole: 0.4,
             };
 
@@ -221,8 +232,12 @@ $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
                   <tr>
                      <td><div id="all_attendees_donutchart" style="width: 50em; height: 30em;"></div></td>
                      <td>
-                        <span>Students: <?php echo $numStudents . "<br>"; ?></span>
-                        <span>Non-Students: <?php echo $numNonStudents . "<br>"; ?></span>
+                        <!--<span>Students: <?php echo $numStudents . "<br>"; ?></span>
+                        <span>Non-Students: <?php echo $numNonStudents . "<br>"; ?></span>-->
+                        <h4>All Attendees</h4>
+                        <?php foreach($allAttendees as $attendee) { ?>
+                           <span><?php echo $attendee['firstname'] . " " . $attendee['lastname'] . "<br>"; ?></span>
+                        <?php } ?>
                      </td>
                   </tr>
                   <tr>
@@ -236,15 +251,14 @@ $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
                   </tr>
                   <tr>
                      <td><div id="student_status_donutchart" style="width: 50em; height: 30em;"></div></td>
-                     <td>
-                        <div>
-                           <span>Freshmen: <?php echo $numFreshmen . "<br>"; ?></span>
-                           <span>Sophomores: <?php echo $numSophomores . "<br>"; ?></span>
-                           <span>Juniors: <?php echo $numJuniors . "<br>"; ?></span>
-                           <span>Seniors: <?php echo $numSeniors . "<br>"; ?></span>
-                           <span>Gradaute Students: <?php echo $numGrad . "<br>"; ?></span>
-                        </div>
-                     </td>
+                     <!--<td>
+                        <h4>Student Status Breakdown</h4>
+                        <span>Freshmen: <?php echo $numFreshmen . "<br>"; ?></span>
+                        <span>Sophomores: <?php echo $numSophomores . "<br>"; ?></span>
+                        <span>Juniors: <?php echo $numJuniors . "<br>"; ?></span>
+                        <span>Seniors: <?php echo $numSeniors . "<br>"; ?></span>
+                        <span>Gradaute Students: <?php echo $numGrad . "<br>"; ?></span>
+                     </td>-->
                   </tr>
                </table>
                <div id="student_ages_columnchart" style="width: 50em; height: 30em;"></div>
@@ -254,6 +268,14 @@ $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
                      <td><div id="student_ratings_columnchart" style="width: 50em; height: 30em;"></div></td>
                   </tr>
                </table>
+
+               <!-- EVENT FEEDBACK -->
+               <?php if (count($comments) > 0) { ?>
+                  <h2>Event Feedback</h2>
+                  <?php foreach ($comments as $comment): ?>
+                     <span><?php echo "\"" . $comment . "\"<br>"; ?></span>
+                  <?php endforeach; ?>
+               <?php } ?>
 
             <?php } ?>
          </div>
