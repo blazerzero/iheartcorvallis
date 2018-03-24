@@ -30,7 +30,8 @@
       # ADD ACCOUNT IF IT DOESN'T ALREADY EXIST
       if ($alreadyExists == False) {
          $result = $mysqli->query("SELECT id FROM ihc_users");
-         $id = $result->num_rows + 1;
+         $row = $result[$result->num_rows - 1]->fetch_assoc();
+         $id = $row['id'] + 1;
 
 		 /*$stmt = $mysqli->prepare("INSERT INTO ihc_users (student, firstname, lastname, email, password, id) VALUES (?, ?, ?, ?, ?, ?)");
          $stmt->bind_param("issssi", $student, $firstname, $lastname, $email, $password, $id);

@@ -35,61 +35,14 @@ if ($result->num_rows > 0) {
          }
       }
       </script>
+      <script>
+      $(document).ready(function() {
+         $("#siteheader").load("siteheader.html");
+      });
+      </script>
    </head>
    <body>
-      <div class="siteheader">
-         <br><br>
-         <left class="sitenametop">I HEART CORVALLIS</left>
-         <br><br>
-         <left class="sitenamebottom">Administrative Suite</left>
-         <br><br>
-         <ul>
-            <div style="color: #fff; display: inline;">
-               <div class="ui simple dropdown item">
-                  <a href="./index.php">Home</a>
-               </div>
-            </div>
-            <div style="color: #fff; display: inline;">
-               <div class="ui simple dropdown item">
-                  <a href="#">Events</a>
-                  <div class="menu">
-                     <div style="background-color: #d73f09;"><a href="./add_event.php">Add an Event</a></div>
-                     <div style="background-color: #d73f09;"><a href="./manage_events.php">Manage Events</a></div>
-                  </div>
-               </div>
-            </div>
-            <div style="color: #fff; display: inline;">
-               <div class="ui simple dropdown item">
-                  <a href="#">Resources</a>
-                  <div class="menu">
-                     <div style="background-color: #d73f09;"><a href="./add_primary_resource.php">Add to Resource Page</a></div>
-                     <div style="background-color: #d73f09;"><a href="./manage_primary_resources.php">Manage Resource Page</a></div>
-                     <div style="background-color: #d73f09;"><a href="./add_marker.php">Add Resource to Map </a></div>
-                     <div style="background-color: #d73f09;"><a href="./manage_resource_map.php">Manage Resource Map</a></div>
-                  </div>
-               </div>
-            </div>
-            <div style="color: #fff; display: inline;">
-               <div class="ui simple dropdown item">
-                  <a href="#">Prizes</a>
-                  <div class="menu">
-                     <div style="background-color: #d73f09;"><a href="./add_prize.php">Add a Prize</a></div>
-                     <div style="background-color: #d73f09;"><a href="./manage_prizes.php">Manage Prizes</a></div>
-                  </div>
-               </div>
-            </div>
-            <div style="color: #fff; display: inline;">
-               <div class="ui simple dropdown item">
-                  <a href="./manage_about.php">About Page</a>
-               </div>
-            </div>
-            <div style="color: #fff; display: inline;">
-               <div class="ui simple dropdown item">
-                  <a style="color: red;" href="./admin_server/logout.php">Logout</a>
-               </div>
-            </div>
-         </ul>
-      </div>
+      <div class="siteheader" id="siteheader"></div>
 
       <div class="mainbody">
          <left class="sectionheader"><h1>Edit Resource</h1></left>
