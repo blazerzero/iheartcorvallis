@@ -24,17 +24,6 @@ function generatePIN() {
       <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
       <script>
-      /*$(document).ready(function() {
-         $("#pin_generator").click(function() {
-            alert("Making random pin");
-            $("#pin_holder").val((Math.floor((Math.random() * 9000) + 1000)).toString());
-         });
-      });*/
-
-      /*function generatePIN() {
-         alert("PIN!");
-         document.forms["eventForm"]["pin"].value = Math.floor((Math.random() * 9000) + 1000).toString();
-      }*/
 
       function validateForm() {
          var nameField = document.forms["eventForm"]["name"].value;
@@ -81,8 +70,9 @@ function generatePIN() {
       <div class="siteheader" id="siteheader"></div>
 
       <div class="mainbody">
-         <left class="sectionheader"><h1>Add an Event</h1></left>
-         <br><br>
+         <left class="sectionheader"><h1>Add an Event</h1></left><br>
+         <div class="ui divider"></div><br>
+
          <p class="requirednote">* Denotes a required field</p><br>
          <form name="eventForm" onsubmit="return validateForm()" action="./admin_server/add_events_server.php" method="post">
             <div class="elem">

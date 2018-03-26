@@ -53,7 +53,9 @@ for ($i = 0; $i < count($ihc_prizes)-1; $i++) {
       <div class="siteheader" id="siteheader"></div>
 
       <div class="mainbody">
-         <left class="sectionheader"><h1>Manage Prizes</h1></left>
+         <left class="sectionheader"><h1>Manage Prizes</h1></left><br>
+         <div class="ui divider"></div><br>
+
          <table class="ui celled padded table">
             <thead>
                <tr>

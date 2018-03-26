@@ -6,7 +6,7 @@
 
 <html>
    <head>
-      <title>Add a User - I Heart Corvallis Administrative Suite</title>
+      <title>Authorize a New User - I Heart Corvallis Administrative Suite</title>
       <link type="text/css" rel="stylesheet" href="./css/Semantic-UI-CSS-master/semantic.css"/>
       <link type="text/css" rel="stylesheet" href="./css/stylesheet.css"/>
       <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
@@ -36,8 +36,9 @@
       <div class="siteheader" id="siteheader"></div>
 
       <div class="mainbody">
-         <left class="sectionheader"><h1>Add a User</h1></left>
-         <br><br>
+         <left class="sectionheader"><h1>Authorize a New User</h1></left><br>
+         <div class="ui divider"></div><br>
+
          <p class="requirednote">* Denotes a required field</p><br>
          <form name="prizeForm" onsubmit="return validateForm()" action="./admin_server/add_users_server.php" method="post">
             <div class="elem">

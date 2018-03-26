@@ -36,8 +36,9 @@
       <div class="siteheader" id="siteheader"></div>
 
       <div class="mainbody">
-         <left class="sectionheader"><h1>Add a Resource to the Resource Page</h1></left>
-         <br><br>
+         <left class="sectionheader"><h1>Add a Resource to the Resource Page</h1></left><br>
+         <div class="ui divider"></div><br>
+
          <p class="requirednote">* Denotes a required field</p><br>
          <form name="resourceForm" onsubmit="return validateForm()" action="./admin_server/add_primary_resource_server.php" method="post">
             <div class="elem">

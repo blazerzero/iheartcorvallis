@@ -7,28 +7,28 @@
 <?php
 require './admin_server/db.php';
 $id = $_GET['id'];
-$result = $mysqli->query("SELECT * FROM ihc_resource_info WHERE id='$id'");
+$result = $mysqli->query("SELECT * FROM ihc_survey WHERE id='$id'");
 if ($result->num_rows > 0) {
-   $resource = $result->fetch_assoc();
+   $question = $result->fetch_assoc();
 }
 ?>
 
 <html>
    <head>
-      <title>Edit Resource - I Heart Corvallis Administrative Suite</title>
+      <title>Edit Survey Question - I Heart Corvallis Administrative Suite</title>
       <link type="text/css" rel="stylesheet" href="./css/Semantic-UI-CSS-master/semantic.css"/>
       <link type="text/css" rel="stylesheet" href="./css/stylesheet.css"/>
       <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
       <script>
+
       function validateForm() {
-         var titleField = document.forms["resourceForm"]["title"].value;
-         var descriptionField = document.forms["resourceForm"]["description"].value;
-         if (titleField == null || titleField == "" ||
-            descriptionField == null || descriptionField == "") {
+         var questionField = document.forms["questionForm"]["question"].value;
+         var choicesField = document.forms["questionForm"]["choices"].value;
+         if (questionField == null || questionField == "" ||
+            choicesField == null || choicesField == "" ||) {
                alert("Please fill all required fields before submitting!");
                return false;
-            }
          }
          else {
             return true;
@@ -45,24 +45,22 @@ if ($result->num_rows > 0) {
       <div class="siteheader" id="siteheader"></div>
 
       <div class="mainbody">
-         <left class="sectionheader"><h1>Edit Resource</h1></left><br>
+         <left class="sectionheader"><h1>Edit Survey Question</h1></left><br>
          <div class="ui divider"></div><br>
 
          <p class="requirednote">* Denotes a required field</p><br>
-         <form name="resourceForm" onsubmit="return validateForm()" action="./admin_server/update_primary_resource_server.php" method="post">
-            <div class="elem" style="display: none;">
-               Resource ID: <input class="inputbox" type="text" name="id" value="<?php echo $resource['id']; ?>"><br><br>
+         <form name="questionForm" onsubmit="return validateForm()" action="./admin_server/update_survey_server.php" method="post">
+            <div class="elem" style="display: none">
+               ID: <input class="inputbox" type="text" name="id" value="<?php echo $question['id']; ?>" readonly><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
-               Resource Title: <input class="inputbox" type="text" name="title" value="<?php echo $resource['title']; ?>"><br><br>
+               Question: <textarea class="inputbox" rows="4" cols="70" name="question"><?php echo $question['question']; ?></textarea><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
-               Description: <textarea class="inputbox" rows="4" cols="50" name="description"><?php echo $resource['description']; ?></textarea><br><br>
-            </div>
-            <div class="elem">
-               Link: <input class="inputbox" type="text" name="link" value="<?php echo $resource['link']; ?>"><br><br>
+               Choices: <textarea class="inputbox" rows="4" cols="70" name="choices"><?php echo $question['choices']; ?></textarea><br>
+               <span class="requirednote"><strong>Please separate answer choices with a comma.</strong></span><br><br>
             </div>
             <input class="ui button" type="submit">
          </form>

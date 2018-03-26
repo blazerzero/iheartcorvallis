@@ -21,11 +21,6 @@ if ($result->num_rows > 0) {
       <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
       <script>
-      /*$(document).ready(function() {
-         $("#pin_generator").click(function() {
-            $("#pin_holder").val((Math.floor((Math.random() * 9000) + 1000)).toString());
-         });
-      });*/
 
       function validateForm() {
          var nameField = document.forms["eventForm"]["name"].value;
@@ -72,9 +67,10 @@ if ($result->num_rows > 0) {
       <div class="siteheader" id="siteheader"></div>
 
       <div class="mainbody">
-         <left class="sectionheader"><h1>Edit Event</h1></left>
-         <br>
-         <br><p class="requirednote">* Denotes a required field</p><br>
+         <left class="sectionheader"><h1>Edit Event</h1></left><br>
+         <div class="ui divider"></div><br>
+
+         <p class="requirednote">* Denotes a required field</p><br>
          <form name="eventForm" onsubmit="return validateForm()" action="./admin_server/update_events_server.php" method="post">
             <div class="elem" style="display: none">
                Event ID: <input class="inputbox" type="text" name="eventid" value="<?php echo $event['eventid']; ?>" readonly><br><br>

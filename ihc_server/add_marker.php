@@ -38,8 +38,9 @@
       <div class="siteheader" id="siteheader"></div>
 
       <div class="mainbody">
-         <left class="sectionheader"><h1>Add a Resource to the Map</h1></left>
-         <br><br>
+         <left class="sectionheader"><h1>Add a Resource to the Map</h1></left><br>
+         <div class="ui divider"></div><br>
+
          <p class="requirednote">* Denotes a required field</p><br>
          <form name="markerForm" onsubmit="return validateForm()" action="./admin_server/add_marker_server.php" method="post">
             <div class="elem">

@@ -6,16 +6,18 @@
 
 <?php
 require './admin_server/db.php';
-$result = $mysqli->query("SELECT * FROM ihc_resource_info");
-$ihc_resources = array();
-while ($resource = $result->fetch_assoc()) {
-   $ihc_resources[] = $resource;
+$result = $mysqli->query("SELECT * FROM ihc_events");
+$ihc_orgs = array();
+while ($org = $result->fetch_assoc()) {
+   if (!in_array($org['host'], $ihc_orgs)) {
+      $ihc_orgs[] = $org['host'];
+   }
 }
 ?>
 
 <html>
    <head>
-      <title>Manage Resource Page Content - I Heart Corvallis Administrative Suite</title>
+      <title>View Organizations - I Heart Corvallis Administrative Suite</title>
       <link type="text/css" rel="stylesheet" href="./css/Semantic-UI-CSS-master/semantic.css"/>
       <link type="text/css" rel="stylesheet" href="./css/stylesheet.css"/>
       <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
@@ -30,27 +32,22 @@ while ($resource = $result->fetch_assoc()) {
       <div class="siteheader" id="siteheader"></div>
 
       <div class="mainbody">
-         <left class="sectionheader"><h1>Manage Resource Page Content</h1></left><br>
+         <left class="sectionheader"><h1>View Organizations</h1></left><br>
          <div class="ui divider"></div><br>
 
          <table class="ui celled padded table">
             <thead>
                <tr>
-                  <th class="single line">Title</th>
-                  <th>Description</th>
-                  <th>Link</th>
+                  <th class="single line">Organization</th>
                   <th>Action</th>
                </tr>
             </thead>
             <tbody>
-               <?php foreach($ihc_resources as $resource): ?>
+               <?php foreach($ihc_orgs as $org): ?>
                   <tr>
-                     <td><?php echo $resource['title']; ?></td>
-                     <td><?php echo $resource['description']; ?></td>
-                     <td><?php echo $resource['link']; ?></td>
+                     <td><?php echo $org; ?></td>
                      <td>
-                        <a href="edit_primary_resource.php?id=<?php echo $resource['id'] ?>" class="ui blue button">Edit</a>
-                        <a onclick="return confirm('Are you sure you want to delete this resource?')" href="./admin_server/delete_primary_resource.php?id=<?php echo $resource['id'] ?>" class='ui red button'>Delete</a>
+                        <a href="view_org_summary.php?host=<?php echo $org; ?>" class="ui green button">View Summary</a>
                      </td>
                   </tr>
                <?php endforeach; ?>

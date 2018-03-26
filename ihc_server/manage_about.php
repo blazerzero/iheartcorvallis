@@ -30,7 +30,9 @@ while ($about = $result->fetch_assoc()) {
       <div class="siteheader" id="siteheader"></div>
 
       <div class="mainbody">
-         <left class="sectionheader"><h1>Manage About Page</h1></left>
+         <left class="sectionheader"><h1>Manage About Page</h1></left><br>
+         <div class="ui divider"></div><br>
+
          <table class="ui celled padded table">
             <thead>
                <tr>

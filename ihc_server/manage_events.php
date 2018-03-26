@@ -6,7 +6,7 @@
 
 <?php
 require './admin_server/db.php';
-$result = $mysqli->query("SELECT eventid, name, location, startdt, enddt FROM ihc_events");
+$result = $mysqli->query("SELECT * FROM ihc_events");
 $ihc_events = array();
 while ($event = $result->fetch_assoc()) {
    $ihc_events[] = $event;
@@ -30,11 +30,14 @@ while ($event = $result->fetch_assoc()) {
       <div class="siteheader" id="siteheader"></div>
 
       <div class="mainbody">
-         <left class="sectionheader"><h1>Manage Events</h1></left>
+         <left class="sectionheader"><h1>Manage Events</h1></left><br>
+         <div class="ui divider"></div><br>
+         
          <table class="ui celled padded table">
             <thead>
                <tr>
                   <th class="single line">Name</th>
+                  <th>Host</th>
                   <th>Location</th>
                   <th>Date and Time</th>
                   <th>Action</th>
@@ -44,10 +47,11 @@ while ($event = $result->fetch_assoc()) {
                <?php foreach($ihc_events as $event): ?>
                   <tr>
                      <td><?php echo $event['name']; ?></td>
+                     <td><?php echo $event['host']; ?></td>
                      <td><?php echo $event['location']; ?></td>
                      <td><?php echo $event['startdt'] . " - " . $event['enddt']; ?></td>
                      <td>
-                        <a href="summarize_event.php?eventid=<?php echo $event['eventid'] ?>" class="ui green button">Summary</a>
+                        <a href="summarize_event.php?eventid=<?php echo $event['eventid'] ?>" class="ui green button">View Summary</a>
                         <a href="edit_event.php?eventid=<?php echo $event['eventid'] ?>" class="ui blue button">Edit</a>
                         <a onclick="return confirm('Are you sure you want to delete this event?')" href="./admin_server/delete_event.php?eventid=<?php echo $event['eventid'] ?>" class='ui red button'>Delete</a>
                      </td>

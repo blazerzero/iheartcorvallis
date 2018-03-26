@@ -27,10 +27,10 @@ while ($row = $result->fetch_assoc()) {
       $allAttendees[] = $user;
       $grade = (int)$user['grade'];
       $ages[] = (int)$user['age'];
-      $allRatings[] = $user['rating'];
+      $allRatings[] = $row['rating'];
       $studenttype = (int)$user['studenttype'];
       if (strlen($user['comment']) > 0) {
-         $comments[] = $user['comment'];
+         $comments[] = $row['comment'];
       }
       if ($grade == 1) { $numFreshmen++; }
       else if ($grade == 2) { $numSophomores++; }
@@ -41,17 +41,17 @@ while ($row = $result->fetch_assoc()) {
       if ($studenttype == 0) {
          $numDomStudents++;
          $students[] = $user;
-         $studentRatings[] = $user['rating'];
+         $studentRatings[] = $row['rating'];
          if (strlen($user['comment']) > 0) {
-            $studentComments[] = $user['comment'];
+            $studentComments[] = $row['comment'];
          }
       }
       else if ($studenttype == 1) {
          $numIntlStudents++;
          $students[] = $user;
-         $studentRatings[] = $user['rating'];
+         $studentRatings[] = $row['rating'];
          if (strlen($user['comment']) > 0) {
-            $studentComments[] = $user['comment'];
+            $studentComments[] = $row['comment'];
          }
       }
       else if ($studenttype == 2) { $numNonStudents++; }
@@ -70,7 +70,7 @@ $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
 
 <html>
    <head>
-      <title>Summarize Event - I Heart Corvallis Administrative Suite</title>
+      <title>Event Summary: <?php echo $event['name']; ?> - I Heart Corvallis Administrative Suite</title>
       <link type="text/css" rel="stylesheet" href="./css/Semantic-UI-CSS-master/semantic.css"/>
       <link type="text/css" rel="stylesheet" href="./css/stylesheet.css"/>
       <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
@@ -151,7 +151,8 @@ $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
               bar: {groupWidth: "80%"},
               legend: {position: "none"},
               colors: ['#d73f09'],
-              vAxis: {gridlines: {count: 4}}
+              hAxis: {title: 'Age'},
+              vAxis: {title: 'Number of Users', gridlines: {count: 5}}
             };
 
             var chart = new google.visualization.ColumnChart(document.getElementById('student_ages_columnchart'));
@@ -159,46 +160,46 @@ $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
          }
 
          function drawAllRatingsChart() {
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Rating');
-            data.addColumn('number', 'Users');
-            <?php foreach (range($minAllRating, $maxAllRating) as $i): ?>
-               data.addRows([
-                  ['<?php echo $i; ?>', <?php echo count(array_keys($allRatings, $i)); ?>]
-               ]);
-            <?php endforeach; ?>
+            var data = new google.visualization.arrayToDataTable([
+               ['Rating', 'Users'],
+               ['5', <?php echo count(array_keys($allRatings, 5)); ?>],
+               ['4', <?php echo count(array_keys($allRatings, 4)); ?>],
+               ['3', <?php echo count(array_keys($allRatings, 3)); ?>],
+               ['2', <?php echo count(array_keys($allRatings, 2)); ?>],
+               ['1', <?php echo count(array_keys($allRatings, 1)); ?>]
+            ]);
 
             var options = {
               title: 'Overall Event Rating Spread',
               bar: {groupWidth: "80%"},
               legend: {position: "none"},
               colors: ['#0d5257'],
-              vAxis: {gridlines: {count: 4}}
+              hAxis: {title: 'Number of Users', gridlines: {count: 5}},
             };
 
-            var chart = new google.visualization.ColumnChart(document.getElementById('all_ratings_columnchart'));
+            var chart = new google.visualization.BarChart(document.getElementById('all_ratings_columnchart'));
             chart.draw(data, options);
          }
 
          function drawStudentRatingsChart() {
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Rating');
-            data.addColumn('number', 'Students');
-            <?php foreach (range($minStudentRating, $maxStudentRating) as $i): ?>
-               data.addRows([
-                  ['<?php echo $i; ?>', <?php echo count(array_keys($studentRatings, $i)); ?>]
-               ]);
-            <?php endforeach; ?>
+            var data = new google.visualization.arrayToDataTable([
+               ['Rating', 'Students'],
+               ['5', <?php echo count(array_keys($studentRatings, 5)); ?>],
+               ['4', <?php echo count(array_keys($studentRatings, 4)); ?>],
+               ['3', <?php echo count(array_keys($studentRatings, 3)); ?>],
+               ['2', <?php echo count(array_keys($studentRatings, 2)); ?>],
+               ['1', <?php echo count(array_keys($studentRatings, 1)); ?>]
+            ]);
 
             var options = {
               title: 'Student Event Rating Spread',
               bar: {groupWidth: "80%"},
               legend: {position: "none"},
               colors: ['#003b5c'],
-              vAxis: {gridlines: {count: 4}}
+              hAxis: {title: 'Number of Students', gridlines: {count: 5}},
             };
 
-            var chart = new google.visualization.ColumnChart(document.getElementById('student_ratings_columnchart'));
+            var chart = new google.visualization.BarChart(document.getElementById('student_ratings_columnchart'));
             chart.draw(data, options);
          }
       </script>
@@ -212,10 +213,11 @@ $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
       <div class="siteheader" id="siteheader"></div>
 
       <div class="mainbody">
-         <left class="sectionheader"><h1>Summarize Event</h1></left><br><br>
+         <left class="sectionheader"><h1>Event Summary: <?php echo $event['name']; ?></h1></left><br>
+         <div class="ui divider"></div><br>
+
          <div>
             <h2>Event Information</h2>
-            <h4>Name: <?php echo $event['name']; ?></h4>
             <h4>Location: <?php echo $event['location']; ?></h4>
             <h4>Date and Time: <?php echo $event['startdt'] . " - " . $event['enddt']; ?></h4>
          </div>
@@ -230,7 +232,7 @@ $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
                <h4>Average Student Rating: <?php echo $avgStudentRating; ?></h4>
                <table>
                   <tr>
-                     <td><div id="all_attendees_donutchart" style="width: 50em; height: 30em;"></div></td>
+                     <td><div id="all_attendees_donutchart" style="width: 50vw; height: 30vw;"></div></td>
                      <td>
                         <!--<span>Students: <?php echo $numStudents . "<br>"; ?></span>
                         <span>Non-Students: <?php echo $numNonStudents . "<br>"; ?></span>-->
@@ -241,7 +243,7 @@ $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
                      </td>
                   </tr>
                   <tr>
-                     <td><div id="student_attendees_donutchart" style="width: 50em; height: 30em;"></div></td>
+                     <td><div id="student_attendees_donutchart" style="width: 50vw; height: 30vw;"></div></td>
                      <td>
                         <h4>Student Attendees</h4>
                         <?php foreach($students as $student) { ?>
@@ -250,7 +252,7 @@ $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
                      </td>
                   </tr>
                   <tr>
-                     <td><div id="student_status_donutchart" style="width: 50em; height: 30em;"></div></td>
+                     <td><div id="student_status_donutchart" style="width: 50vw; height: 30vw;"></div></td>
                      <!--<td>
                         <h4>Student Status Breakdown</h4>
                         <span>Freshmen: <?php echo $numFreshmen . "<br>"; ?></span>
@@ -261,11 +263,11 @@ $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
                      </td>-->
                   </tr>
                </table>
-               <div id="student_ages_columnchart" style="width: 50em; height: 30em;"></div>
+               <div id="student_ages_columnchart" style="width: 50vw; height: 30em;"></div>
                <table>
                   <tr>
-                     <td><div id="all_ratings_columnchart" style="width: 50em; height: 30em;"></div></td>
-                     <td><div id="student_ratings_columnchart" style="width: 50em; height: 30em;"></div></td>
+                     <td><div id="all_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td>
+                     <td><div id="student_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td>
                   </tr>
                </table>
 

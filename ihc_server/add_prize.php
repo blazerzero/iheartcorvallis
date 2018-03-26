@@ -36,8 +36,9 @@
       <div class="siteheader" id="siteheader"></div>
 
       <div class="mainbody">
-         <left class="sectionheader"><h1>Add a Prize</h1></left>
-         <br><br>
+         <left class="sectionheader"><h1>Add a Prize</h1></left><br>
+         <div class="ui divider"></div><br>
+
          <p class="requirednote">* Denotes a required field</p><br>
          <form name="prizeForm" onsubmit="return validateForm()" action="./admin_server/add_prizes_server.php" method="post">
             <div class="elem">

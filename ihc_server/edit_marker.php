@@ -47,9 +47,10 @@ if ($result->num_rows > 0) {
       <div class="siteheader" id="siteheader"></div>
 
       <div class="mainbody">
-         <left class="sectionheader"><h1>Edit Map Resource</h1></left>
-         <br>
-         <br><p class="requirednote">* Denotes a required field</p><br>
+         <left class="sectionheader"><h1>Edit Map Resource</h1></left><br>
+         <div class="ui divider"></div><br>
+
+         <p class="requirednote">* Denotes a required field</p><br>
          <form name="markerForm" onsubmit="return validateForm()" action="./admin_server/update_marker_server.php" method="post">
             <div class="elem" style="display: none">
                Marker ID: <input class="inputbox" type="text" name="eventid" value="<?php echo $prizes['eventid']; ?>" readonly><br><br>
