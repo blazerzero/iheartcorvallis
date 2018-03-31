@@ -120,18 +120,12 @@ function getStudentRating($eventid) {
             <?php if (count($attendees) > 0) { ?>
                <h4>Average Rating: <?php echo $avgAllRating; ?></h4>
                <div id="all_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td><br>
-               <h2>Event Summaries</h2>
-               <table class="ui celled padded table">
-                  <thead>
-                     <tr>
-                        <th class="single line">Name</th>
-                        <th>Location</th>
-                        <th>Date and Time</th>
-                        <th>Summary</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <?php foreach ($events as $event) { ?>
+
+               <div class="ui divider"></div><br>
+               <div>
+                  <h2>Event Summaries</h2>
+                  <table class="ui celled padded table">
+                     <thead>
                         <tr>
                            <th class="single line">Name</th>
                            <th>Location</th>
