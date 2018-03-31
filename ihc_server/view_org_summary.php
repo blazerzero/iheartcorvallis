@@ -33,6 +33,38 @@ $maxAllRating = max($allRatings);
 
 ?>
 
+<?php
+function getOverallRating($eventid) {
+   $ratingsArr = array();
+   $result = $mysqli->query("SELECT * FROM ihc_completed_events WHERE eventid='$eventid'");
+   while ($row = $result->fetch_assoc()) {
+      $ratingsArr[] = $row['rating'];
+   }
+   $rating = array_sum($ratingsArr) / count($ratingsArr);
+   return $rating;
+}
+
+function getStudentRating($eventid) {
+   $ratingsArr = array();
+   $ratings = 0;
+   $result = $mysqli->query("SELECT * FROM ihc_completed_events WHERE eventid='$eventid'");
+   while ($row = $result->fetch_assoc()) {
+      $userid = $row['userid'];
+      $res = $mysqli->query("SELECT * FROM ihc_users WHERE id='$userid'");
+      if ($res->num_rows > 0) {
+         $user = $res->fetch_assoc();
+         $studenttype = (int)$user['studenttype'];
+         if ($studenttype < 2) {
+            $ratingsArr[] = $row['rating'];
+         }
+      }
+   }
+   if (count($ratingsArr) > 0) $rating = array_sum($ratingsArr) / count($ratingsArr);
+   else $rating = "-";
+   return $rating;
+}
+?>
+
 <html>
    <head>
       <title>Organization Summary: <?php echo $host; ?> - I Heart Corvallis Administrative Suite</title>
@@ -101,14 +133,24 @@ $maxAllRating = max($allRatings);
                   <tbody>
                      <?php foreach ($events as $event) { ?>
                         <tr>
-                           <td><?php echo $event['name'] ?></td>
-                           <td><?php echo $event['location']; ?></td>
-                           <td><?php echo $event['startdt'] . " - " . $event['enddt']; ?></td>
-                           <td><a href="summarize_event.php?eventid=<?php echo $event['eventid'] ?>" class="ui green button">View</a></td>
+                           <th class="single line">Name</th>
+                           <th>Location</th>
+                           <th>Date and Time</th>
+                           <th>Summary</th>
                         </tr>
-                     <?php } ?>
-                  </tbody>
-               </table>
+                     </thead>
+                     <tbody>
+                        <?php foreach ($events as $event) { ?>
+                           <tr>
+                              <td><?php echo $event['name'] ?></td>
+                              <td><?php echo $event['location']; ?></td>
+                              <td><?php echo $event['startdt'] . " - " . $event['enddt']; ?></td>
+                              <td><a href="summarize_event.php?eventid=<?php echo $event['eventid'] ?>" class="ui green button">View</a></td>
+                           </tr>
+                        <?php } ?>
+                     </tbody>
+                  </table>
+               </div>
             <?php } ?>
          </div>
    </body>

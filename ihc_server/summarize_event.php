@@ -220,8 +220,9 @@ $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
             <h2>Event Information</h2>
             <h4>Location: <?php echo $event['location']; ?></h4>
             <h4>Date and Time: <?php echo $event['startdt'] . " - " . $event['enddt']; ?></h4>
-         </div>
-         <br><br>
+         </div><br>
+         <div class="ui divider"></div><br>
+
          <div>
             <h2>General Statistics</h2>
             <h4>Number of Attendees: <?php echo $numAttendees; ?></h4>
