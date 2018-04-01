@@ -24,12 +24,14 @@ public class SettingsUpdateLoader extends AsyncTaskLoader<String> {
     final static String IHC_UPDATE_USER_INFO_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/update_prefs.php";
 
     private String userid;
+    private String type;
     private String grade;
     private String age;
 
     public SettingsUpdateLoader(Bundle args, Context context) {
         super(context);
         userid = args.getString(SettingsActivity.IHC_USER_ID_KEY);
+        type = args.getString(SettingsActivity.IHC_USER_TYPE_KEY);
         grade = args.getString(SettingsActivity.IHC_USER_GRADE_KEY);
         age = args.getString(SettingsActivity.IHC_USER_AGE_KEY);
     }
@@ -44,6 +46,7 @@ public class SettingsUpdateLoader extends AsyncTaskLoader<String> {
         try {
             URL url = new URL(IHC_UPDATE_USER_INFO_URL);
             String data = URLEncoder.encode("userid", "UTF-8") + "=" + URLEncoder.encode(userid, "UTF-8");
+            data += "&" + URLEncoder.encode("type", "UTF-8") + "=" + URLEncoder.encode(type, "UTF-8");
             data += "&" + URLEncoder.encode("grade", "UTF-8") + "=" + URLEncoder.encode(grade, "UTF-8");
             data += "&" + URLEncoder.encode("age", "UTF-8") + "=" + URLEncoder.encode(age, "UTF-8");
 

@@ -100,6 +100,17 @@
     <string name="pref_user_age_key" translatable="false">pref_age</string>
     <string name="pref_user_age_title">Age</string>
 
+    <string name="pref_user_type_key" translatable="false">pref_user_type</string>
+    <string name="pref_user_type_title">User Type</string>
+    <string name="pref_user_type_dom_student">Domestic Student</string>
+    <string name="pref_user_type_intl_student">International Student</string>
+    <string name="pref_user_type_resident">Resident</string>
+    <string name="pref_user_type_visitor">Visitor</string>
+    <string name="pref_user_type_dom_student_value">0</string>
+    <string name="pref_user_type_intl_student_value">1</string>
+    <string name="pref_user_type_resident_value">2</string>
+    <string name="pref_user_type_visitor_value">3</string>
+
     <!-- CheckLocationActivity -->
     <string name="checking_location">Checking Location</string>
 

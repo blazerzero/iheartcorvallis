@@ -53,8 +53,8 @@ function getStudentRating($eventid) {
       $res = $mysqli->query("SELECT * FROM ihc_users WHERE id='$userid'");
       if ($res->num_rows > 0) {
          $user = $res->fetch_assoc();
-         $studenttype = (int)$user['studenttype'];
-         if ($studenttype < 2) {
+         $usertype = (int)$user['type'];
+         if ($usertype < 2) {
             $ratingsArr[] = $row['rating'];
          }
       }

@@ -39,6 +39,7 @@ public class SettingsActivity extends AppCompatActivity
     SettingsFragment fragment;
     private final static int IHC_SETTINGS_LOADER_ID = 0;
     public final static String IHC_USER_ID_KEY = "IHC_USER_ID";
+    public final static String IHC_USER_TYPE_KEY = "IHC_USER_TYPE";
     public final static String IHC_USER_GRADE_KEY = "IHC_USER_GRADE";
     public final static String IHC_USER_AGE_KEY = "IHC_USER_AGE";
 
@@ -80,6 +81,7 @@ public class SettingsActivity extends AppCompatActivity
         }
 
         Bundle args = new Bundle();
+        args.putInt(IHC_USER_TYPE_KEY, user.getType());
         args.putInt(IHC_USER_GRADE_KEY, user.getGrade());
         args.putInt(IHC_USER_AGE_KEY, user.getAge());
         fragment = new SettingsFragment();
@@ -197,9 +199,10 @@ public class SettingsActivity extends AppCompatActivity
         return true;
     }
 
-    public void onDataPass(String grade, String age) {
+    public void onDataPass(String type, String grade, String age) {
         Bundle args = new Bundle();
         args.putString(IHC_USER_ID_KEY, String.valueOf(user.getId()));
+        args.putString(IHC_USER_TYPE_KEY, type);
         args.putString(IHC_USER_GRADE_KEY, grade);
         args.putString(IHC_USER_AGE_KEY, age);
         getSupportLoaderManager().restartLoader(IHC_SETTINGS_LOADER_ID, args, this);

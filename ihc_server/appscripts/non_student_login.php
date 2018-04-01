@@ -30,7 +30,7 @@
 		 $res = $stmt2->get_result();
 		 $row = $res->fetch_assoc();
 		 $data = json_encode($row);*/
-         $result = $mysqli->query("SELECT firstname, lastname, email, id, stampcount FROM ihc_users WHERE email='$email'");
+         $result = $mysqli->query("SELECT * FROM ihc_users WHERE email='$email'");
          $row = $result->fetch_assoc();
          $data = json_encode($row);
          echo $data;

@@ -21,15 +21,15 @@
 	   $stmt->execute();
 	   $result = $stmt->get_result();
 
-      //$result = $mysqli->query("SELECT firstname, lastname, email, id, stampcount FROM ihc_users WHERE email = '$email'");
+      //$result = $mysqli->query("SELECT * FROM ihc_users WHERE email = '$email'");
       if ($result->num_rows > 0) {
          while ($row = $result->fetch_assoc()) {
             $data = json_encode($row);
             echo $data;
          }
       }
-	  $result->close();
+      $result->close();
    }
 
-   mysqli_close($con);
+   $mysqli->close();
 ?>

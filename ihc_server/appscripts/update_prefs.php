@@ -14,12 +14,13 @@
 
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $userid = $_POST["userid"];
+      $type = $_POST["type"];
       $grade = $_POST["grade"];
       $age = $_POST["age"];
 	   //$stmt = $mysqli->prepare("INSERT INTO ihc_completed_events (userid, eventid) VALUES (?, ?)");
 	   //$stmt->bind_param('ii', $userid, $eventid);
 	   //$result = $stmt->execute();
-      $result = $mysqli->query("UPDATE ihc_users SET grade='$grade', age='$age' WHERE id='$userid'");
+      $result = $mysqli->query("UPDATE ihc_users SET grade='$grade', age='$age', type='$type' WHERE id='$userid'");
       if ($result == True) {
          echo "UPDATESUCCESS";
       }

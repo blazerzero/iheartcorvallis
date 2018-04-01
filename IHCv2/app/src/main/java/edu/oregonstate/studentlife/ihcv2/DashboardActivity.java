@@ -137,13 +137,14 @@ public class DashboardActivity extends AppCompatActivity
             user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
             Log.d(TAG, "User ID: " + user.getId());
             numStamps = Integer.parseInt(user.getStampCount());
-            initProgIndicator();
         }
         else {
             Bundle args = new Bundle();
             args.putString(IHC_USER_EMAIL_KEY, email);
             getSupportLoaderManager().initLoader(IHC_USER_LOADER_ID, args, this);
         }
+
+        initProgIndicator();
 
         mProgIndicatorLL.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,7 +190,8 @@ public class DashboardActivity extends AppCompatActivity
                     String stampcount = userJSON.getString("stampcount");
                     int grade = Integer.parseInt(userJSON.getString("grade"));
                     int age = Integer.parseInt(userJSON.getString("age"));
-                    user = new User(firstname, lastname, email, id, stampcount, grade, age);
+                    int type = Integer.parseInt(userJSON.getString("type"));
+                    user = new User(firstname, lastname, email, id, stampcount, grade, age, type);
                     numStamps = Integer.parseInt(stampcount);
                     initProgIndicator();
 
@@ -480,9 +482,11 @@ public class DashboardActivity extends AppCompatActivity
                 message = "Only " + eventsToGo + " events away from reaching bronze status!\nCLICK HERE TO VIEW PRIZES";
             }
         }
-        mProgIndicatorLL.setBackgroundColor(progColor);
+        //mProgIndicatorLL.setBackgroundColor(progColor);
         mDashProgressTV.setText(message);
         mDashProgressTV.setTextColor(getResources().getColor(R.color.maroon));
+        mDashProgressTV.setBackgroundColor(progColor);
+        mDashStampCountTV.setBackgroundColor(progColor);
     }
 
     @Override

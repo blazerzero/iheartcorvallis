@@ -28,7 +28,7 @@ while ($row = $result->fetch_assoc()) {
       $grade = (int)$user['grade'];
       $ages[] = (int)$user['age'];
       $allRatings[] = $row['rating'];
-      $studenttype = (int)$user['studenttype'];
+      $usertype = (int)$user['type'];
       if (strlen($user['comment']) > 0) {
          $comments[] = $row['comment'];
       }
@@ -38,7 +38,7 @@ while ($row = $result->fetch_assoc()) {
       else if ($grade == 4) { $numSeniors++; }
       else if ($grade == 5) { $numGrad++; }
 
-      if ($studenttype == 0) {
+      if ($usertype == 0) {
          $numDomStudents++;
          $students[] = $user;
          $studentRatings[] = $row['rating'];
@@ -46,7 +46,7 @@ while ($row = $result->fetch_assoc()) {
             $studentComments[] = $row['comment'];
          }
       }
-      else if ($studenttype == 1) {
+      else if ($usertype == 1) {
          $numIntlStudents++;
          $students[] = $user;
          $studentRatings[] = $row['rating'];
@@ -54,7 +54,7 @@ while ($row = $result->fetch_assoc()) {
             $studentComments[] = $row['comment'];
          }
       }
-      else if ($studenttype == 2) { $numNonStudents++; }
+      else if ($usertype >= 2) { $numNonStudents++; }
    }
 }
 $numStudents = $numDomStudents + $numIntlStudents;

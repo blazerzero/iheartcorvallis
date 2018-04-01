@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+type<!DOCTYPE HTML>
 
 <?php require "./admin_server/login.php"; ?>
 
@@ -20,7 +20,7 @@ if ($userResult->num_rows > 0) {
    while ($user = $userResult->fetch_assoc()) {
       $users[] = $user;
       $allRatings[] = $user['apprating'];
-      if ($user['studenttype'] < 2) {
+      if ($user['type'] < 2) {
          $studentRatings[] = $user['apprating'];
       }
    }
@@ -133,8 +133,8 @@ function getUserInfo($id) {
                      <?php foreach($feedback as $comment) {
                         $user = getUserInfo($comment['userid']);
                         $usertype = "";
-                        if ($user['studenttype'] == 0) $usertype = "Domestic Student";
-                        else if ($user['studenttype'] == 1) $usertype = "International Student";
+                        if ($user['type'] == 0) $usertype = "Domestic Student";
+                        else if ($user['type'] == 1) $usertype = "International Student";
                         else $usertype = "Non-Student";
                      ?>
                         <tr>

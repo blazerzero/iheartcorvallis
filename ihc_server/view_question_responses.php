@@ -30,7 +30,7 @@ if ($surveyres->num_rows > 0) {
       $userres = $mysqli->query("SELECT * FROM ihc_users WHERE id='$userid'");
       if ($userres->num_rows > 0) {
          $user = $userres->fetch_assoc();
-         if ((int)$user['studenttype'] < 2) {
+         if ((int)$user['type'] < 2) {
             $studentResponses[] = $row;
          }
       }

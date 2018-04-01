@@ -2,6 +2,12 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
+        android:key="@string/pref_user_type_key"
+        android:title="@string/pref_user_type_title"
+        android:summary="%s"
+        android:dialogTitle="@string/pref_user_type_title"/>
+
+    <ListPreference
         android:key="@string/pref_user_grade_key"
         android:title="@string/pref_user_grade_title"
         android:summary="%s"
