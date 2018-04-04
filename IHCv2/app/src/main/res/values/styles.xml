@@ -18,4 +18,14 @@
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
+    <style name="TextInputLayoutLabelGrey" parent="Widget.Design.TextInputLayout">
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">@color/dark_gray</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+        <item name="colorAccent">@color/dark_gray</item>
+        <item name="colorControlNormal">@color/dark_gray</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>
+
 </resources>
