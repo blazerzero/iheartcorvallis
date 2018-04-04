@@ -48,6 +48,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.StringTokenizer;
 
 import edu.oregonstate.studentlife.ihcv2.data.PBKDF2;
@@ -82,6 +83,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
     private EditText mLastNameView;
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
+    private EditText mPasswordConfirmView;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -112,6 +114,8 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.passwordfield);
+        mPasswordConfirmView = (EditText) findViewById(R.id.passwordconfirmfield);
+
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -212,6 +216,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
         String lastname = mLastNameView.getText().toString();
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
+        String passwordconform = mPasswordConfirmView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -237,6 +242,13 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
             cancel = true;
         }
 
+        //Check if the second input password is empty
+        if (TextUtils.isEmpty(passwordconform)) {
+            mPasswordConfirmView.setError("This field is required!");
+            focusView = mPasswordConfirmView;
+            cancel = true;
+        }
+
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && password.length() < 7) {
             mPasswordView.setError(getString(R.string.error_short_password));
@@ -246,6 +258,13 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
         if (!isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
+            cancel = true;
+        }
+
+        // Check if both of the entered passwords are equal
+        if (!Objects.equals(password, passwordconform)) {
+            mPasswordConfirmView.setError("Your Passwords do not match");
+            focusView = mPasswordConfirmView;
             cancel = true;
         }
 
