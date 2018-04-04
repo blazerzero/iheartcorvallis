@@ -27,8 +27,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="150dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/corvallis_aerial"
-                android:contentDescription="@string/corvallis_aerial_description"/>
+                android:src="@drawable/mu_sunset"
+                android:contentDescription="@string/mu_sunset_description"/>
 
             <TextView
                 android:id="@+id/tv_event_name"

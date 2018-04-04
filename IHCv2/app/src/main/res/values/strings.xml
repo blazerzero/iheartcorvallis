@@ -70,7 +70,7 @@
 
     <!-- Accessibility strings -->
     <string name="acc_stamp">Passport Stamp</string>
-    <string name="corvallis_aerial_description">Aerial view of Corvallis</string>
+    <string name="mu_sunset_description">Aerial view of Corvallis</string>
     <string name="ihc_group_description">The development group for the I Heart Corvallis app</string>
 
     <!-- Navigation bar titles -->

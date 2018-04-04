@@ -16,7 +16,7 @@
         android:layout_below="@+id/mapbtn"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        app:srcCompat="@drawable/heartt2"
+        app:srcCompat="@drawable/osu_icon_heart_02"
         android:layout_gravity="center"/>
 
     <TextView

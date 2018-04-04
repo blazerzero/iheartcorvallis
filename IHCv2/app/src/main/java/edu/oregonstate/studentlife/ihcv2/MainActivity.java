@@ -4,6 +4,8 @@ package edu.oregonstate.studentlife.ihcv2;
 
 import android.content.Intent;
 
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -34,8 +36,14 @@ public class MainActivity extends AppCompatActivity {
         ImageView iv = (ImageView) findViewById(R.id.iv_ihc);
         TextView tv = (TextView) findViewById(R.id.tv_main_title);
 
-
-
+        Drawable image = iv.getDrawable();
+        float[] negative = {
+                -1, 0, 0, 0, 255,
+                0, -1, 0, 0, 255,
+                0, 0, -1, 0, 255,
+                0, 0, 0, 1, 0
+        };
+        image.setColorFilter(new ColorMatrixColorFilter(negative));
 
         Button loginButton = (Button) findViewById(R.id.btn_login);
         loginButton.setOnClickListener(new View.OnClickListener() {

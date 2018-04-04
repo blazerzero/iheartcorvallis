@@ -1,5 +1,6 @@
 package edu.oregonstate.studentlife.ihcv2;
 
+import android.annotation.SuppressLint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.content.Context;
@@ -9,6 +10,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.internal.BottomNavigationItemView;
+import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -33,6 +36,7 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -87,6 +91,7 @@ public class DashboardActivity extends AppCompatActivity
     private User user;
 
     SessionActivity session;
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +115,22 @@ public class DashboardActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+        BottomNavigationMenuView bottomMenuView = (BottomNavigationMenuView) bottomNavigationView.getChildAt(0);
+        try {
+            Field shiftingMode = bottomMenuView.getClass().getDeclaredField("mShiftingMode");
+
+            shiftingMode.setAccessible(true);
+            shiftingMode.setBoolean(bottomMenuView, false);
+            shiftingMode.setAccessible(false);
+            for (int i = 0; i < bottomMenuView.getChildCount(); i++) {
+                BottomNavigationItemView bottomItemView = (BottomNavigationItemView) bottomMenuView.getChildAt(i);
+                bottomItemView.setShiftingMode(false);
+                bottomItemView.setChecked(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -119,6 +140,11 @@ public class DashboardActivity extends AppCompatActivity
                 }
                 else if (id == R.id.bottom_nav_events) {
                     Intent intent = new Intent(DashboardActivity.this, EventsActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                }
+                else if (id == R.id.bottom_nav_passport) {
+                    Intent intent = new Intent(DashboardActivity.this, PassportActivity.class);
                     intent.putExtra(Constants.EXTRA_USER, user);
                     startActivity(intent);
                 }

@@ -1,6 +1,10 @@
 package edu.oregonstate.studentlife.ihcv2;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.animation.Animation;
@@ -19,6 +23,14 @@ public class Splash extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         getSupportActionBar().hide();
         iv = (ImageView) findViewById(R.id.iv_ihc);
+        Drawable image = iv.getDrawable();
+        float[] negative = {
+                -1, 0, 0, 0, 255,
+                0, -1, 0, 0, 255,
+                0, 0, -1, 0, 255,
+                0, 0, 0, 1, 0
+        };
+        image.setColorFilter(new ColorMatrixColorFilter(negative));
         Animation fadeIn = AnimationUtils.loadAnimation(this,R.anim.fade_in);
         //tv.startAnimation(fadeIn);
         iv.startAnimation(fadeIn);

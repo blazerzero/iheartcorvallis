@@ -3,9 +3,9 @@
     <color name="colorPrimary">#D73F09</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#FFFFFF</color>
-    <color name="eventBronze">#CD7F32</color>
-    <color name="eventSilver">#C0C0C0</color>
-    <color name="eventGold">#DAA520</color>
+    <color name="eventBronze">#D3832B</color>
+    <color name="eventSilver">#A7ACA2</color>
+    <color name="eventGold">#FFB500</color>
     <color name="maroon">#8B0000</color>
     <color name="white">#ffffff</color>
     <color name="marker_blue">#0080ff</color>

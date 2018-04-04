@@ -2,6 +2,8 @@ package edu.oregonstate.studentlife.ihcv2;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -24,6 +27,7 @@ import java.util.HashMap;
 public class LoginPageActivity extends AppCompatActivity {
 
     SessionActivity session;
+    private ImageView iv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,16 @@ public class LoginPageActivity extends AppCompatActivity {
 
         // session information is retrieved and displayed on nav menu
         session = new SessionActivity(getApplicationContext());
+
+        iv = (ImageView) findViewById(R.id.iv_ihc);
+        Drawable image = iv.getDrawable();
+        float[] negative = {
+                -1, 0, 0, 0, 255,
+                0, -1, 0, 0, 255,
+                0, 0, -1, 0, 255,
+                0, 0, 0, 1, 0
+        };
+        image.setColorFilter(new ColorMatrixColorFilter(negative));
 
         /*myToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
         myToolbar.setNavigationOnClickListener(new View.OnClickListener() {

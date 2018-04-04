@@ -11,6 +11,10 @@
         android:icon="@drawable/ic_next_week_black_24dp"
         android:title="@string/nav_events" />
     <item
+        android:id="@+id/bottom_nav_passport"
+        android:icon="@drawable/ic_book_black_24dp"
+        android:title="@string/nav_passport" />
+    <item
         android:id="@+id/bottom_nav_resources"
         android:icon="@drawable/ic_import_contacts_black_24dp"
         android:title="@string/nav_resources" />

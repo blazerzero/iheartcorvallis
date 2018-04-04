@@ -17,19 +17,19 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/corvallis_aerial"/>
+            android:src="@drawable/mu_sunset"/>
 
         <ImageView
             android:id="@+id/iv_ihc"
             android:layout_alignBottom="@+id/iv_aerial"
-            android:layout_alignLeft="@+id/iv_aerial"
-            android:layout_alignRight="@+id/iv_aerial"
+            android:layout_alignStart="@+id/iv_aerial"
+            android:layout_alignEnd="@+id/iv_aerial"
             android:layout_alignTop="@+id/iv_aerial"
             android:padding="100dp"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
-            android:src="@drawable/heartt2" />
+            android:src="@drawable/osu_icon_heart_02"/>
 
     </RelativeLayout>
 
