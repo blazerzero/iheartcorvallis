@@ -68,7 +68,7 @@ public class SettingsFragment extends PreferenceFragment
         userBirthDatePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                new DatePickerDialog(getActivity(), birthDateListener, userBdYear, userBdMonth, userBdDay).show();
+                new DatePickerDialog(getActivity(), R.style.DialogTheme, birthDateListener, userBdYear, userBdMonth, userBdDay).show();
                 return true;
             }
         });
