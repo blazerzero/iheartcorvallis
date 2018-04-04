@@ -14,17 +14,19 @@ public class User extends AppCompatActivity implements Serializable {
     private String email;
     private int id;
     private String stampCount;
+    private int didSurvey;
     private int grade;
     private int age;
     private int type;
     //private LeaderboardUser leaderboardUser;
 
-    public User(String firstName, String lastName, String email, int id, String stampCount, int grade, int age, int type) {
+    public User(String firstName, String lastName, String email, int id, String stampCount, int didSurvey, int grade, int age, int type) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.id = id;
         this.stampCount = stampCount;
+        this.didSurvey = didSurvey;
         this.grade = grade;
         this.age = age;
         this.type = type;
@@ -69,6 +71,14 @@ public class User extends AppCompatActivity implements Serializable {
 
     public void setStampCount(String stampCount) {
         this.stampCount = stampCount;
+    }
+
+    public int getDidSurvey() {
+        return didSurvey;
+    }
+
+    public void setDidSurvey(int didSurvey) {
+        this.didSurvey = didSurvey;
     }
 
     public int getGrade() {

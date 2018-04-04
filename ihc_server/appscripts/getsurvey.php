@@ -12,20 +12,15 @@
        die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
    }
 
-   $email = "";
-
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      $email = $_POST['email'];
-	   $stmt = $mysqli->prepare("SELECT * FROM ihc_users WHERE email = ?");
-	   $stmt->bind_param('s', $email);
-	   $stmt->execute();
-	   $result = $stmt->get_result();
+	   $result = $mysqli->query("SELECT * FROM ihc_survey");
 
-      //$result = $mysqli->query("SELECT * FROM ihc_users WHERE email = '$email'");
       if ($result->num_rows > 0) {
-         $row = $result->fetch_assoc();
-         $data = json_encode($row);
-         echo $data;
+         while ($row = $result->fetch_assoc()) {
+            $data = json_encode($row);
+            echo $data;
+            echo "\\";
+         }
       }
       $result->close();
    }

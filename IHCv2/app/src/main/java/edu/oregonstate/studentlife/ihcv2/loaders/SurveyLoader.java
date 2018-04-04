@@ -12,27 +12,25 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 /**
- * Created by Omeed on 2/22/18.
+ * Created by Omeed on 4/3/18.
  */
 
-public class UserInfoLoader extends AsyncTaskLoader<String> {
+public class SurveyLoader extends AsyncTaskLoader<String> {
 
-    private final static String TAG = UserInfoLoader.class.getSimpleName();
+    private final static String TAG = SurveyLoader.class.getSimpleName();
 
-    private String userJSON;
-    private String email;
-    final static String IHC_GETUSERINFO_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/getuserinfo.php";
+    private String surveyJSON;
+    final static String IHC_GETSURVEY_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/getsurvey.php";
 
-    public UserInfoLoader(Context context, String email) {
+    public SurveyLoader(Context context) {
         super(context);
-        this.email = email;
     }
 
     @Override
     public void onStartLoading() {
-        if (userJSON != null) {
-            Log.d(TAG, "loader returning cached user information");
-            deliverResult(userJSON);
+        if (surveyJSON != null) {
+            Log.d(TAG, "loader returning cached survey information");
+            deliverResult(surveyJSON);
         } else {
             forceLoad();
         }
@@ -40,22 +38,15 @@ public class UserInfoLoader extends AsyncTaskLoader<String> {
 
     @Override
     public String loadInBackground() {
-        Log.d(TAG, "getting user information with URL: " + IHC_GETUSERINFO_URL);
+        Log.d(TAG, "getting survey information with URL: " + IHC_GETSURVEY_URL);
 
         try {
-            URL url = new URL(IHC_GETUSERINFO_URL);
-            String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
+            URL url = new URL(IHC_GETSURVEY_URL);
 
-            //Log.d(TAG, "About to open connection.");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            wr.write( data );
-            wr.flush();
-
-            Log.d(TAG, "about to read");
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
@@ -64,7 +55,6 @@ public class UserInfoLoader extends AsyncTaskLoader<String> {
 
             while ((line = reader.readLine()) != null) {
                 sb.append(line);
-                break;
             }
 
             return sb.toString();
@@ -73,7 +63,8 @@ public class UserInfoLoader extends AsyncTaskLoader<String> {
 
     @Override
     public void deliverResult(String data) {
-        userJSON = data;
+        surveyJSON = data;
         super.deliverResult(data);
     }
+
 }

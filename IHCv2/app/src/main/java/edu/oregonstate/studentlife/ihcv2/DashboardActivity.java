@@ -188,10 +188,16 @@ public class DashboardActivity extends AppCompatActivity
                     String email = userJSON.getString("email");
                     int id = Integer.parseInt(userJSON.getString("id"));
                     String stampcount = userJSON.getString("stampcount");
+                    int didsurvey = Integer.parseInt(userJSON.getString("didsurvey"));
+                    if (didsurvey == 0) {
+                        Intent surveyIntent = new Intent(this, SurveyActivity.class);
+                        surveyIntent.putExtra(Constants.EXTRA_USER_ID, id);
+                        startActivity(surveyIntent);
+                    }
                     int grade = Integer.parseInt(userJSON.getString("grade"));
                     int age = Integer.parseInt(userJSON.getString("age"));
                     int type = Integer.parseInt(userJSON.getString("type"));
-                    user = new User(firstname, lastname, email, id, stampcount, grade, age, type);
+                    user = new User(firstname, lastname, email, id, stampcount, didsurvey, grade, age, type);
                     numStamps = Integer.parseInt(stampcount);
                     initProgIndicator();
 
@@ -556,12 +562,12 @@ public class DashboardActivity extends AppCompatActivity
     }
 
     public void showNoInternetConnectionMsg() {
-        android.app.AlertDialog.Builder builder;
+        AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new android.app.AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
         }
         else {
-            builder = new android.app.AlertDialog.Builder(this);
+            builder = new AlertDialog.Builder(this);
         }
         builder.setTitle("No Internet Connection");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -635,5 +641,10 @@ public class DashboardActivity extends AppCompatActivity
         Bundle args = new Bundle();
         args.putString(IHC_USER_EMAIL_KEY, email);
         getSupportLoaderManager().initLoader(IHC_USER_LOADER_ID, args, this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
     }
 }

@@ -48,6 +48,8 @@ public class HashReceiverLoader extends AsyncTaskLoader<String> {
             wr.write( data );
             wr.flush();
 
+            Log.d(TAG, "about to read");
+
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
             StringBuffer sb = new StringBuffer("");

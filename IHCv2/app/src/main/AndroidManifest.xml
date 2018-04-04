@@ -210,6 +210,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.oregonstate.studentlife.ihcv2.EventDetailActivity" />
         </activity>
+        <activity
+            android:name=".SurveyActivity"
+            android:label="A Few Questions"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
