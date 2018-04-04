@@ -11,6 +11,8 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import edu.oregonstate.studentlife.ihcv2.SettingsActivity;
 
@@ -26,14 +28,27 @@ public class SettingsUpdateLoader extends AsyncTaskLoader<String> {
     private String userid;
     private String type;
     private String grade;
-    private String age;
+    private int bdDay;
+    private int bdMonth;
+    private int bdYear;
+    private String birthdate;
 
     public SettingsUpdateLoader(Bundle args, Context context) {
         super(context);
         userid = args.getString(SettingsActivity.IHC_USER_ID_KEY);
         type = args.getString(SettingsActivity.IHC_USER_TYPE_KEY);
         grade = args.getString(SettingsActivity.IHC_USER_GRADE_KEY);
-        age = args.getString(SettingsActivity.IHC_USER_AGE_KEY);
+        bdDay = args.getInt(SettingsActivity.IHC_USER_BD_DAY_KEY);
+        bdMonth = args.getInt(SettingsActivity.IHC_USER_BD_MONTH_KEY);
+        bdYear = args.getInt(SettingsActivity.IHC_USER_BD_YEAR_KEY);
+
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, bdYear);
+        c.set(Calendar.MONTH, bdMonth);
+        c.set(Calendar.DATE, bdDay);
+        SimpleDateFormat sdfBirthDate = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+        birthdate = sdfBirthDate.format(c.getTime());
+        Log.d(TAG, "birthdate: " + birthdate);
     }
 
     @Override
@@ -48,7 +63,7 @@ public class SettingsUpdateLoader extends AsyncTaskLoader<String> {
             String data = URLEncoder.encode("userid", "UTF-8") + "=" + URLEncoder.encode(userid, "UTF-8");
             data += "&" + URLEncoder.encode("type", "UTF-8") + "=" + URLEncoder.encode(type, "UTF-8");
             data += "&" + URLEncoder.encode("grade", "UTF-8") + "=" + URLEncoder.encode(grade, "UTF-8");
-            data += "&" + URLEncoder.encode("age", "UTF-8") + "=" + URLEncoder.encode(age, "UTF-8");
+            data += "&" + URLEncoder.encode("birthdate", "UTF-8") + "=" + URLEncoder.encode(birthdate, "UTF-8");
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 

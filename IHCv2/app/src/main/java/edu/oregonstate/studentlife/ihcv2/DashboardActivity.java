@@ -224,9 +224,14 @@ public class DashboardActivity extends AppCompatActivity
                         startActivity(surveyIntent);
                     }
                     int grade = Integer.parseInt(userJSON.getString("grade"));
-                    int age = Integer.parseInt(userJSON.getString("age"));
+                    //int age = Integer.parseInt(userJSON.getString("age"));
+                    String birthDateString = userJSON.getString("birthdate");
                     int type = Integer.parseInt(userJSON.getString("type"));
-                    user = new User(firstname, lastname, email, id, stampcount, didsurvey, grade, age, type);
+
+                    SimpleDateFormat sdfBirthDate = new SimpleDateFormat("yyyy-MM-dd");
+                    Date birthDate = sdfBirthDate.parse(birthDateString);
+
+                    user = new User(firstname, lastname, email, id, stampcount, didsurvey, grade, birthDate, type);
                     numStamps = Integer.parseInt(stampcount);
                     initProgIndicator();
 

@@ -26,7 +26,9 @@ while ($row = $result->fetch_assoc()) {
       $user = $res->fetch_assoc();
       $allAttendees[] = $user;
       $grade = (int)$user['grade'];
-      $ages[] = (int)$user['age'];
+      echo date("Y") . "<br>";
+      echo date("Y", strtotime($user['birthdate'])) . "<br>";
+      $ages[] = date("Y") - date("Y", strtotime($user['birthdate']));
       $allRatings[] = $row['rating'];
       $usertype = (int)$user['type'];
       if (strlen($user['comment']) > 0) {

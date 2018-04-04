@@ -15,8 +15,8 @@
         android:entries="@array/pref_user_grade_entries"
         android:entryValues="@array/pref_user_grade_values" />
 
-    <EditTextPreference
-        android:key="@string/pref_user_age_key"
-        android:title="@string/pref_user_age_title" />
+    <Preference
+        android:key="@string/pref_user_birthdate_key"
+        android:title="@string/pref_user_birthdate_title" />
 
 </PreferenceScreen>

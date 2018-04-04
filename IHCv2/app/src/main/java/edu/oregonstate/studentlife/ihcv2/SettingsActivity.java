@@ -12,12 +12,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Date;
 import java.util.HashMap;
 
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
@@ -41,7 +43,10 @@ public class SettingsActivity extends AppCompatActivity
     public final static String IHC_USER_ID_KEY = "IHC_USER_ID";
     public final static String IHC_USER_TYPE_KEY = "IHC_USER_TYPE";
     public final static String IHC_USER_GRADE_KEY = "IHC_USER_GRADE";
-    public final static String IHC_USER_AGE_KEY = "IHC_USER_AGE";
+    public final static String IHC_USER_BIRTHDATE_KEY = "IHC_USER_BIRTHDATE";
+    public final static String IHC_USER_BD_DAY_KEY = "IHC_USER_BD_DAY";
+    public final static String IHC_USER_BD_MONTH_KEY = "IHC_USER_BD_MONTH_DAY";
+    public final static String IHC_USER_BD_YEAR_KEY = "IHC_USER_BD_YEAR_DAY";
 
     private final static String TAG = SettingsActivity.class.getSimpleName();
 
@@ -80,10 +85,17 @@ public class SettingsActivity extends AppCompatActivity
             Log.d(TAG, "User ID: " + user.getId());
         }
 
+        Date birthDate = user.getBirthDate();
+        int bdDay = Integer.valueOf((String) DateFormat.format("d", birthDate));
+        int bdMonth = Integer.valueOf((String) DateFormat.format("M", birthDate));
+        int bdYear = Integer.valueOf((String) DateFormat.format("yyyy", birthDate));
+
         Bundle args = new Bundle();
         args.putInt(IHC_USER_TYPE_KEY, user.getType());
         args.putInt(IHC_USER_GRADE_KEY, user.getGrade());
-        args.putInt(IHC_USER_AGE_KEY, user.getAge());
+        args.putInt(IHC_USER_BD_DAY_KEY, bdDay);
+        args.putInt(IHC_USER_BD_MONTH_KEY, bdMonth);
+        args.putInt(IHC_USER_BD_YEAR_KEY, bdYear);
         fragment = new SettingsFragment();
         fragment.setArguments(args);
         getFragmentManager().beginTransaction().replace(R.id.settings_frame, fragment).commit();
@@ -199,12 +211,14 @@ public class SettingsActivity extends AppCompatActivity
         return true;
     }
 
-    public void onDataPass(String type, String grade, String age) {
+    public void onDataPass(String type, String grade, int day, int month, int year) {
         Bundle args = new Bundle();
         args.putString(IHC_USER_ID_KEY, String.valueOf(user.getId()));
         args.putString(IHC_USER_TYPE_KEY, type);
         args.putString(IHC_USER_GRADE_KEY, grade);
-        args.putString(IHC_USER_AGE_KEY, age);
+        args.putInt(IHC_USER_BD_DAY_KEY, day);
+        args.putInt(IHC_USER_BD_MONTH_KEY, month);
+        args.putInt(IHC_USER_BD_YEAR_KEY, year);
         getSupportLoaderManager().restartLoader(IHC_SETTINGS_LOADER_ID, args, this);
     }
 

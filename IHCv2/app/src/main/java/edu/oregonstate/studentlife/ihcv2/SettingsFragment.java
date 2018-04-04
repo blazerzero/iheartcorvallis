@@ -1,13 +1,18 @@
 package edu.oregonstate.studentlife.ihcv2;
 
-import android.content.Context;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v14.preference.PreferenceFragment;
 import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceScreen;
-import android.util.Log;
+import android.widget.DatePicker;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * Created by Omeed on 3/9/18.
@@ -19,10 +24,14 @@ public class SettingsFragment extends PreferenceFragment
     private final static String TAG = SettingsFragment.class.getSimpleName();
     private ListPreference userTypePref;
     private ListPreference userGradePref;
-    private EditTextPreference userAgePref;
+    private Preference userBirthDatePref;
+    private DatePicker birthDatePicker;
+
     private int userType;
     private int userGrade;
-    private int userAge;
+    private int userBdDay;
+    private int userBdMonth;
+    private int userBdYear;
     //public final static String IHC_USER_GRADE_KEY = "IHC_USER_GRADE";
     //public final static String IHC_USER_AGE_KEY = "IHC_USER_AGE";
 
@@ -47,12 +56,22 @@ public class SettingsFragment extends PreferenceFragment
         PreferenceScreen screen = getPreferenceScreen();
         userTypePref = (ListPreference) findPreference(getString(R.string.pref_user_type_key));
         userGradePref = (ListPreference) findPreference(getString(R.string.pref_user_grade_key));
-        userAgePref = (EditTextPreference) findPreference(getString(R.string.pref_user_age_key));
+        userBirthDatePref = (Preference) findPreference(getString(R.string.pref_user_birthdate_key));
 
         Bundle args = getArguments();
         userType = args.getInt(SettingsActivity.IHC_USER_TYPE_KEY);
         userGrade = args.getInt(SettingsActivity.IHC_USER_GRADE_KEY);
-        userAge = args.getInt(SettingsActivity.IHC_USER_AGE_KEY);
+        userBdDay = args.getInt(SettingsActivity.IHC_USER_BD_DAY_KEY);
+        userBdMonth = args.getInt(SettingsActivity.IHC_USER_BD_MONTH_KEY);
+        userBdYear = args.getInt(SettingsActivity.IHC_USER_BD_YEAR_KEY);
+
+        userBirthDatePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                new DatePickerDialog(getActivity(), birthDateListener, userBdYear, userBdMonth, userBdDay).show();
+                return true;
+            }
+        });
 
         if (userType < 2) {
             userTypePref.setEntries(R.array.pref_user_type_entries_student);
@@ -89,8 +108,27 @@ public class SettingsFragment extends PreferenceFragment
             screen.removePreference(userGradePref);
         }
 
-        userAgePref.setSummary(String.valueOf(userAge));
-        userAgePref.setText(String.valueOf(userAge));
+        setBirthDateSummary(userBdDay, userBdMonth - 1, userBdYear);
+    }
+
+    private DatePickerDialog.OnDateSetListener birthDateListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            setBirthDateSummary(dayOfMonth, month, year);
+            ((SettingsActivity)getActivity()).onDataPass(String.valueOf(userTypePref.getValue()), String.valueOf(userGradePref.getValue()), userBdDay, userBdMonth, userBdYear);
+        }
+    };
+
+    public void setBirthDateSummary(int dayOfMonth, int month, int year) {
+        Calendar cal = Calendar.getInstance();
+        userBdDay = dayOfMonth;
+        userBdMonth = month;
+        userBdYear = year;
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month);
+        cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        SimpleDateFormat sdfBirthDate = new SimpleDateFormat("MM/dd/yy");
+        userBirthDatePref.setSummary(sdfBirthDate.format(cal.getTime()));
     }
 
     @Override
@@ -98,13 +136,10 @@ public class SettingsFragment extends PreferenceFragment
         if (key.equals(getString(R.string.pref_user_type_key))) {
             userTypePref.setSummary(userTypePref.getEntry());
         }
-        if (key.equals(getString(R.string.pref_user_age_key))) {
-            userAgePref.setSummary(userAgePref.getText());
-        }
         else if (key.equals(getString(R.string.pref_user_grade_key))) {
             userGradePref.setSummary(userGradePref.getEntry());
         }
-        ((SettingsActivity)getActivity()).onDataPass(String.valueOf(userTypePref.getValue()), String.valueOf(userGradePref.getValue()), userAgePref.getText());
+        ((SettingsActivity)getActivity()).onDataPass(String.valueOf(userTypePref.getValue()), String.valueOf(userGradePref.getValue()), userBdDay, userBdMonth, userBdYear);
 
     }
 
