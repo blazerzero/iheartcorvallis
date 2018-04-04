@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottom_nav_dash"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/nav_dashboard" />
+    <item
+        android:id="@+id/bottom_nav_events"
+        android:icon="@drawable/ic_next_week_black_24dp"
+        android:title="@string/nav_events" />
+    <item
+        android:id="@+id/bottom_nav_resources"
+        android:icon="@drawable/ic_import_contacts_black_24dp"
+        android:title="@string/nav_resources" />
+    <item
+        android:id="@+id/bottom_nav_aboutus"
+        android:icon="@drawable/ic_info_outline_black_24dp"
+        android:title="@string/nav_aboutus" />
+</menu>

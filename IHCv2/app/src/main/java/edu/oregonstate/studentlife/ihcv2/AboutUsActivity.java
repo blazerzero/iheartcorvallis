@@ -5,7 +5,9 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -77,6 +79,34 @@ public class AboutUsActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.bottom_nav_dash) {
+                    Intent intent = new Intent(AboutUsActivity.this, DashboardActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                }
+                else if (id == R.id.bottom_nav_events) {
+                    Intent intent = new Intent(AboutUsActivity.this, EventsActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                }
+                else if (id == R.id.bottom_nav_resources) {
+                    Intent intent = new Intent(AboutUsActivity.this, ResourcesActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                }
+                else if (id == R.id.bottom_nav_aboutus) {
+                    // Do nothing, you're already here
+
+                }
+                return false;
+            }
+        });
 
         mAboutAppTV = (TextView) findViewById(R.id.tv_about_app);
 
@@ -152,11 +182,11 @@ public class AboutUsActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_dash) {
+        if (id == R.id.nav_dash || id == R.id.bottom_nav_dash) {
             Intent intent = new Intent(AboutUsActivity.this, DashboardActivity.class);
             intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
-        } else if (id == R.id.nav_events) {
+        } else if (id == R.id.nav_events || id == R.id.bottom_nav_events) {
             Intent intent = new Intent(AboutUsActivity.this, EventsActivity.class);
             intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
@@ -172,11 +202,11 @@ public class AboutUsActivity extends AppCompatActivity
             Intent intent = new Intent(AboutUsActivity.this, LeaderboardActivity.class);
             intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
-        } else if (id == R.id.nav_resources) {
+        } else if (id == R.id.nav_resources || id == R.id.bottom_nav_resources) {
             Intent intent = new Intent(AboutUsActivity.this, ResourcesActivity.class);
             intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
-        } else if (id == R.id.nav_aboutus) {
+        } else if (id == R.id.nav_aboutus || id == R.id.bottom_nav_aboutus) {
             onBackPressed();
         } else if (id == R.id.nav_settings) {
             Intent intent = new Intent(AboutUsActivity.this, SettingsActivity.class);

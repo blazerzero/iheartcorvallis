@@ -7,7 +7,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -91,6 +93,33 @@ public class EventsActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.bottom_nav_dash) {
+                    Intent intent = new Intent(EventsActivity.this, EventsActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                }
+                else if (id == R.id.bottom_nav_events) {
+                    // Do nothing, you're already here
+                }
+                else if (id == R.id.bottom_nav_resources) {
+                    Intent intent = new Intent(EventsActivity.this, ResourcesActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                }
+                else if (id == R.id.bottom_nav_aboutus) {
+                    Intent intent = new Intent(EventsActivity.this, AboutUsActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
 
         eventList = new ArrayList<Event>();
         Intent intent = getIntent();
@@ -264,11 +293,11 @@ public class EventsActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_dash) {
+        if (id == R.id.nav_dash || id == R.id.bottom_nav_dash) {
             Intent intent = new Intent(EventsActivity.this, DashboardActivity.class);
             intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
-        } else if (id == R.id.nav_events) {
+        } else if (id == R.id.nav_events || id == R.id.bottom_nav_events) {
             onBackPressed();
         } else if (id == R.id.nav_passport) {
             Intent intent = new Intent(EventsActivity.this, PassportActivity.class);
@@ -282,11 +311,11 @@ public class EventsActivity extends AppCompatActivity
             Intent intent = new Intent(EventsActivity.this, LeaderboardActivity.class);
             intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
-        } else if (id == R.id.nav_resources) {
+        } else if (id == R.id.nav_resources || id == R.id.bottom_nav_resources) {
             Intent intent = new Intent(EventsActivity.this, ResourcesActivity.class);
             intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);
-        } else if (id == R.id.nav_aboutus) {
+        } else if (id == R.id.nav_aboutus || id == R.id.bottom_nav_aboutus) {
             Intent intent = new Intent(EventsActivity.this, AboutUsActivity.class);
             intent.putExtra(Constants.EXTRA_USER, user);
             startActivity(intent);

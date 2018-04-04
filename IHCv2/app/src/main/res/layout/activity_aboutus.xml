@@ -36,6 +36,10 @@
         android:background="@color/colorPrimary"
         tools:openDrawer="start">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -123,14 +127,28 @@
 
         </ScrollView>
 
+    <android.support.design.widget.BottomNavigationView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        app:itemBackground="@color/colorAccent"
+        app:itemIconTint="@color/colorPrimaryDark"
+        app:itemTextColor="@color/colorPrimaryDark"
+        app:menu="@menu/bottm_nav_items" />
+
+    </RelativeLayout>
+
         <android.support.design.widget.NavigationView
-            android:id="@+id/nav_view"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:fitsSystemWindows="false"
-            app:headerLayout="@layout/nav_header"
-            app:menu="@menu/drawer_content" />
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="false"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/drawer_content" />
 
     </android.support.v4.widget.DrawerLayout>
 
