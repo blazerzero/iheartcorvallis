@@ -26,9 +26,12 @@ while ($row = $result->fetch_assoc()) {
       $user = $res->fetch_assoc();
       $allAttendees[] = $user;
       $grade = (int)$user['grade'];
-      echo date("Y") . "<br>";
-      echo date("Y", strtotime($user['birthdate'])) . "<br>";
-      $ages[] = date("Y") - date("Y", strtotime($user['birthdate']));
+      //echo date("Y") . "<br>";
+      //echo date("Y", strtotime($user['birthdate'])) . "<br>";
+      $today = date("Y-m-d h:i:s");
+      $birthdate = date("Y-m-d h:i:s", strtotime($user['birthdate']));
+      $userAge = $today - $birthdate;
+      $ages[] = $userAge;
       $allRatings[] = $row['rating'];
       $usertype = (int)$user['type'];
       if (strlen($user['comment']) > 0) {
