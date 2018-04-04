@@ -15,4 +15,5 @@
     <color name="marker_yellow">#ffff00</color>
     <color name="marker_red">#ff0000</color>
     <color name="dark_gray">#696969</color>
+    <color name="light_gray">#d0d0d0</color>
 </resources>

@@ -92,7 +92,8 @@
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.5">
+                        android:layout_weight="0.5"
+                        app:theme="@style/TextInputLayoutLabelGrey">
 
                         <EditText
                             android:id="@+id/firstnamefield"
@@ -113,7 +114,8 @@
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.5">
+                        android:layout_weight="0.5"
+                        app:theme="@style/TextInputLayoutLabelGrey">
 
                         <EditText
                             android:id="@+id/lastnamefield"
@@ -132,7 +134,8 @@
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:theme="@style/TextInputLayoutLabelGrey">
 
                     <AutoCompleteTextView
                         android:id="@+id/emailfield"
@@ -149,7 +152,8 @@
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:theme="@style/TextInputLayoutLabelGrey">
 
                     <EditText
                         android:id="@+id/passwordfield"
@@ -167,7 +171,8 @@
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:theme="@style/TextInputLayoutLabelGrey">
 
                     <EditText
                         android:id="@+id/passwordconfirmfield"
