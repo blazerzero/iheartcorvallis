@@ -12,16 +12,25 @@
        die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
    }
 
-   $userid = $dateandtime = $response1 = $response2 = $response3 = "";
+   $userid = $dateandtime = $questionid = $response = "";
 
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $userid = $_POST['userid'];
       $dateandtime = date("Y-m-d H:i:s");
-      $response1 = $_POST['response1'];
-      $response2 = $_POST['response2'];
-      $response3 = $_POST['response3'];
-	   $stmt = $mysqli->prepare("INSERT INTO ihc_survey_responses (userid, dateandtime, a1, a2, a3) VALUES (?, ?, ?, ?, ?)");
-	   $stmt->bind_param('issss', $userid, $dateandtime, $response1, $response2, $response3);
+      /*for ($i = 1; $i <= count($_POST) / 2; $i++) {
+         $questionid = $_POST["questionid" . "$i"];
+         $response = $_POST["responseid" . "$i"];
+         $stmt = $mysqli->prepare("INSERT INTO ihc_survey_responses (userid, dateandtime, questionid, response) VALUES (?, ?, ?, ?)");
+   	   $stmt->bind_param('isis', $userid, $dateandtime, $questionid, $response);
+   	   $stmt->execute();
+   	   $result = $stmt->get_result();
+      }*/
+
+      $questionid = $_POST['questionid'];
+      $dateandtime = date("Y-m-d H:i:s");
+      $response = $_POST['response'];
+	   $stmt = $mysqli->prepare("INSERT INTO ihc_survey_responses (userid, dateandtime, questionid, response) VALUES (?, ?, ?, ?)");
+	   $stmt->bind_param('isis', $userid, $dateandtime, $questionid, $response);
 	   $stmt->execute();
 	   $result = $stmt->get_result();
 

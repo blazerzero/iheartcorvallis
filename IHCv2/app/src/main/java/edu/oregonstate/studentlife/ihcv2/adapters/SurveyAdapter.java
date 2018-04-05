@@ -101,6 +101,10 @@ public class SurveyAdapter extends RecyclerView.Adapter<SurveyAdapter.SurveyView
         return mSurveyContents.get(position);
     }
 
+    public int getQuestionID(int position) {
+        return mSurveyContents.get(position).getId();
+    }
+
     public String getResponse(int position) {
         return mSurveyContents.get(position).getResponse();
     }

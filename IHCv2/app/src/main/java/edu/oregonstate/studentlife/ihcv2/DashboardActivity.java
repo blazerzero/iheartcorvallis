@@ -376,8 +376,12 @@ public class DashboardActivity extends AppCompatActivity
 
                 sortEventsByDate();
 
-                mPassportAdapter.addEventToPassport(completedEventList.get(completedEventList.size()-1));
-                mPassportAdapter.addEventToPassport(completedEventList.get(completedEventList.size()-2));
+                if (completedEventList.size() > 0) {
+                    mPassportAdapter.addEventToPassport(completedEventList.get(completedEventList.size() - 1));
+                }
+                if (completedEventList.size() > 1) {
+                    mPassportAdapter.addEventToPassport(completedEventList.get(completedEventList.size() - 2));
+                }
 
                 gotPassport = true;
                 getSupportLoaderManager().initLoader(IHC_EVENT_LOADER_ID, null, this);

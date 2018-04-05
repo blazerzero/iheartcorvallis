@@ -11,13 +11,23 @@ import java.util.ArrayList;
 
 public class Survey extends AppCompatActivity implements Serializable {
 
+    private int id;
     private String question;
     private ArrayList<String> choices;
     private String response;
 
-    public Survey(String question, ArrayList<String> choices) {
+    public Survey(int id, String question, ArrayList<String> choices) {
+        this.id = id;
         this.question = question;
         this.choices = choices;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getQuestion() {

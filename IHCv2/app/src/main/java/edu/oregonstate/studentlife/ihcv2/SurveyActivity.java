@@ -23,9 +23,8 @@ import java.util.StringTokenizer;
 import edu.oregonstate.studentlife.ihcv2.adapters.SurveyAdapter;
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.Survey;
-import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.SurveyLoader;
-import edu.oregonstate.studentlife.ihcv2.loaders.UpdateSurveyLoader;
+import edu.oregonstate.studentlife.ihcv2.loaders.RecordSurveyResponseLoader;
 
 public class SurveyActivity extends AppCompatActivity
     implements SurveyAdapter.OnSurveyListingClickListener,
@@ -36,16 +35,19 @@ public class SurveyActivity extends AppCompatActivity
     //SessionActivity session;
     private RecyclerView mSurveyContentsRV;
     private SurveyAdapter mSurveyAdapter;
-    private ArrayList<String> surveyResponses;
     private Button submitSurveyBtn;
 
     private int userID;
+    private ArrayList<Integer> questionIDs;
+    private ArrayList<String> responses;
+
     private Boolean gotSurvey = false;
 
     private final static int IHC_SURVEY_LOADER_ID = 0;
     private final static int IHC_UPDATE_ANSWERS_LOADER_ID = 1;
 
     public final static String IHC_USERID_KEY = "userid";
+    public final static String IHC_QUESTIONIDS_KEY = "questionids";
     public final static String IHC_RESPONSES_KEY = "responses";
 
     @Override
@@ -62,21 +64,27 @@ public class SurveyActivity extends AppCompatActivity
             Log.d(TAG, "User ID: " + userID);
         }
 
-        surveyResponses = new ArrayList<String>();
+        questionIDs = new ArrayList<Integer>();
+        responses = new ArrayList<String>();
+
         submitSurveyBtn = (Button) findViewById(R.id.btn_submit_survey);
         submitSurveyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 for (int i = 0; i < mSurveyAdapter.getItemCount(); i++) {
-                    surveyResponses.add(mSurveyAdapter.getResponse(i));
+                    responses.add(mSurveyAdapter.getResponse(i));
+                    questionIDs.add(mSurveyAdapter.getQuestionID(i));
                 }
-                if (surveyResponses.contains(" ")) {
+                if (responses.contains(" ")) {
                     Toast.makeText(SurveyActivity.this, "Must respond to every question before continuing!", Toast.LENGTH_LONG).show();
                 }
                 Bundle args = new Bundle();
                 args.putInt(IHC_USERID_KEY, userID);
-                args.putStringArrayList(IHC_RESPONSES_KEY, surveyResponses);
+                args.putIntegerArrayList(IHC_QUESTIONIDS_KEY, questionIDs);
+                args.putStringArrayList(IHC_RESPONSES_KEY, responses);
+                Log.d(TAG, "before init loader");
                 getSupportLoaderManager().initLoader(IHC_UPDATE_ANSWERS_LOADER_ID, args, SurveyActivity.this);
+                Log.d(TAG, "after init loader");
             }
         });
 
@@ -96,7 +104,7 @@ public class SurveyActivity extends AppCompatActivity
             return new SurveyLoader(this);
         }
         else if (id == IHC_UPDATE_ANSWERS_LOADER_ID) {
-            return new UpdateSurveyLoader(this, args);
+            return new RecordSurveyResponseLoader(this, args);
         }
         else {
             return null;
@@ -113,6 +121,7 @@ public class SurveyActivity extends AppCompatActivity
                 while (stSurvey.hasMoreTokens()) {
                     String surveyListingString = stSurvey.nextToken();
                     JSONObject surveyJSON = new JSONObject(surveyListingString);
+                    int id = Integer.valueOf(surveyJSON.getString("id"));
                     String question = surveyJSON.getString("question");
                     Log.d(TAG, "question: " + question);
                     String choices = surveyJSON.getString("choices");
@@ -123,8 +132,8 @@ public class SurveyActivity extends AppCompatActivity
                         String choice = stChoices.nextToken();
                         choiceList.add(choice);
                     }
-                    Survey s = new Survey(question, choiceList);
-                    //surveyResponses.add(s);
+                    Survey s = new Survey(id, question, choiceList);
+                    //response.add(s);
                     mSurveyAdapter.addSurveyListing(s);
                 }
             } catch (Exception e) {
