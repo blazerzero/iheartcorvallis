@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onPause() {
         super.onPause();
-        this.overridePendingTransition(R.anim.push_left,R.anim.push_right);
+        //this.overridePendingTransition(R.anim.push_left,R.anim.push_right);
     }
 
 

@@ -34,7 +34,8 @@
         android:text="I HEART CORVALLIS"
         android:textColor="@color/colorAccent"
         android:textSize="35sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:fontFamily="@font/stratum2_medium"/>
 
     <Button
         android:id="@+id/btn_login"
@@ -46,7 +47,8 @@
         android:background="@color/colorAccent"
         android:drawablePadding="-20dp"
         android:text="Log In"
-        android:textSize="16sp" />
+        android:textSize="20sp"
+        android:fontFamily="@font/stratum2_bold"/>
 
     <Button
         android:id="@+id/btn_signup"
@@ -58,6 +60,7 @@
         android:background="@color/colorAccent"
         android:drawablePadding="-20dp"
         android:text="Sign Up"
-        android:textSize="16sp" />
+        android:textSize="20sp"
+        android:fontFamily="@font/stratum2_bold"/>
 
 </RelativeLayout>

@@ -51,4 +51,10 @@ public class Splash extends AppCompatActivity {
                 timer.start();
 
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        this.overridePendingTransition(R.anim.push_left,R.anim.push_right);
+    }
 }
