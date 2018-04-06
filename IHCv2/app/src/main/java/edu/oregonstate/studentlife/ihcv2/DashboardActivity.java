@@ -187,7 +187,7 @@ public class DashboardActivity extends AppCompatActivity
         mDashStampCountTV = (TextView) findViewById(R.id.tv_dash_stamp_count);
         mDashProgressTV = (TextView) findViewById(R.id.tv_dash_progress);
         mProgIndicatorLL = (LinearLayout) findViewById(R.id.progIndicator);
-        mDashPassportLL = (LinearLayout) findViewById(R.id.ll_dash_passport);
+       // mDashPassportLL = (LinearLayout) findViewById(R.id.ll_dash_passport);
 
         Bundle args = new Bundle();
         args.putString(IHC_USER_EMAIL_KEY, email);
