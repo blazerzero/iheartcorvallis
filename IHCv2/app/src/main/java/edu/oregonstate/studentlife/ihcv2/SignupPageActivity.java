@@ -12,11 +12,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
 import android.content.CursorLoader;
-import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -52,13 +53,14 @@ import java.util.Objects;
 import java.util.StringTokenizer;
 
 import edu.oregonstate.studentlife.ihcv2.data.PBKDF2;
+import edu.oregonstate.studentlife.ihcv2.loaders.SignupLoader;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class SignupPageActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class SignupPageActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -66,6 +68,11 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
     private static final int REQUEST_READ_CONTACTS = 0;
 
     SessionActivity session;
+    public final static String IHC_FIRSTNAME_KEY = "firstname";
+    public final static String IHC_LASTNAME_KEY = "lastname";
+    public final static String IHC_EMAIL_KEY = "email";
+    public final static String IHC_PASSWORD_KEY = "password";
+    private final static int IHC_SIGNUP_LOADER_ID = 0;
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -157,7 +164,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
             return;
         }
 
-        getLoaderManager().initLoader(0, null, this);
+        //getLoaderManager().initLoader(0, null, this);
     }
 
     private boolean mayRequestContacts() {
@@ -216,7 +223,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
         String lastname = mLastNameView.getText().toString();
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
-        String passwordconform = mPasswordConfirmView.getText().toString();
+        String passwordconfirm = mPasswordConfirmView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -243,7 +250,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
         }
 
         //Check if the second input password is empty
-        if (TextUtils.isEmpty(passwordconform)) {
+        if (TextUtils.isEmpty(passwordconfirm)) {
             mPasswordConfirmView.setError("This field is required!");
             focusView = mPasswordConfirmView;
             cancel = true;
@@ -262,7 +269,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
         }
 
         // Check if both of the entered passwords are equal
-        if (!Objects.equals(password, passwordconform)) {
+        if (!Objects.equals(password, passwordconfirm)) {
             mPasswordConfirmView.setError("Your Passwords do not match");
             focusView = mPasswordConfirmView;
             cancel = true;
@@ -290,7 +297,13 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
                 View view = this.getCurrentFocus();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                new SignupAuthProcess(this).execute(firstname, lastname, email, password);
+                Bundle args = new Bundle();
+                args.putString(IHC_FIRSTNAME_KEY, firstname);
+                args.putString(IHC_LASTNAME_KEY, lastname);
+                args.putString(IHC_EMAIL_KEY, email);
+                args.putString(IHC_PASSWORD_KEY, password);
+                getSupportLoaderManager().initLoader(IHC_SIGNUP_LOADER_ID, args, this);
+                //new SignupAuthProcess(this).execute(firstname, lastname, email, password);
             }
             else {
                 showNoInternetConnectionMsg();
@@ -298,7 +311,66 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
         }
     }
 
-    private void onBackgroundTaskDataObtained(String result) {
+    @Override
+    public Loader<String> onCreateLoader(int id, final Bundle args) {
+        return new SignupLoader(this, args);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<String> loader, String data) {
+        if (data.contains("SIGNUPSUCCESS")) {
+            try {
+                StringTokenizer stRes = new StringTokenizer(data);
+                String name = stRes.nextToken("\\");
+                String email = stRes.nextToken("\\");
+                String tid = stRes.nextToken("\\");
+                //int id = Integer.parseInt(tid);
+                session = new SessionActivity(getApplicationContext());
+                session.createLoginSession(name, email, tid);
+                Intent intent = new Intent(SignupPageActivity.this, DashboardActivity.class);
+                startActivity(intent);
+            } catch (Exception e) {
+                Toast.makeText(this, "Exception: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+        else {
+            mPasswordView.setText("");
+            mPasswordConfirmView.setText("");
+            showProgress(false);
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            }
+            else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("Sign Up Error");
+            builder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Try signing up again
+                }
+            });
+            if (data.equals("DUPACCOUNTERROR")) {
+                builder.setMessage("An account with this email already exists.");
+            }
+            else if (data.equals("SIGNUPERROR")) {
+                builder.setMessage("Error signing up.");
+            }
+            else {
+                builder.setMessage(data);
+            }
+            builder.setIcon(android.R.drawable.ic_dialog_alert);
+            builder.show();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<String> loader) {
+        // Nothing to do...
+    }
+
+    /*private void onBackgroundTaskDataObtained(String result) {
         if (result.contains("SIGNUPSUCCESS")) {
             try {
                 StringTokenizer stRes = new StringTokenizer(result);
@@ -344,7 +416,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
             builder.show();
         }
 
-    }
+    }*/
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
@@ -416,7 +488,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
         }
     }
 
-    @Override
+    /*@Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return new CursorLoader(this,
                 // Retrieve data rows for the device user's 'profile' contact.
@@ -448,7 +520,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
 
-    }
+    }*/
 
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
@@ -470,7 +542,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
         int IS_PRIMARY = 1;
     }
 
-    class SignupAuthProcess extends AsyncTask {
+    /*class SignupAuthProcess extends AsyncTask {
 
         private Context context;
         private String firstname;
@@ -537,7 +609,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderCallb
             String resultString = (String) result;
             SignupPageActivity.this.onBackgroundTaskDataObtained(resultString);
         }
-    }
+    }*/
 
     public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

@@ -22,23 +22,20 @@
       $password = $_POST["password"];
 
       # CHECK IF ACCOUNT ALREADY EXISTS
-      $result = $mysqli->query("SELECT email FROM ihc_users WHERE email='$email'");
+      /*$result = $mysqli->query("SELECT email FROM ihc_users WHERE email='$email'");
       if ($result->num_rows > 0) {
          $alreadyExists = True;
-      }
+      }*/
 
       # ADD ACCOUNT IF IT DOESN'T ALREADY EXIST
-      if ($alreadyExists == False) {
-         $result = $mysqli->query("SELECT id FROM ihc_users");
-         $row = $result[$result->num_rows - 1]->fetch_assoc();
-         $id = $row['id'] + 1;
+      //if ($alreadyExists == False) {
 
 		 /*$stmt = $mysqli->prepare("INSERT INTO ihc_users (student, firstname, lastname, email, password, id) VALUES (?, ?, ?, ?, ?, ?)");
          $stmt->bind_param("issssi", $student, $firstname, $lastname, $email, $password, $id);
 
 		 $stmt->execute();*/
 
-		 $result = $mysqli->query("INSERT INTO ihc_users (student, firstname, lastname, email, password, id) VALUES ('$student', '$firstname', '$lastname', '$email', '$password', '$id')");
+		   $result = $mysqli->query("INSERT INTO ihc_users (firstname, lastname, email, password) VALUES ('$firstname', '$lastname', '$email', '$password')");
 
          if ($result == True) {
             echo "SIGNUPSUCCESS"; # account successfully added to database
@@ -47,12 +44,12 @@
             echo "SIGNUPERROR"; # error adding account to database
          }
 		  //$stmt->close();
-      }
+      /*}
       else {
          echo "DUPACCOUNTERROR"; # account already exists
-      }
+      }*/
 
-   }
+   //}
 
-   mysqli_close($con);
+   $mysqli->close();
 ?>
