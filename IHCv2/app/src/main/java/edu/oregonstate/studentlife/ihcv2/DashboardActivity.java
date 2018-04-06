@@ -61,6 +61,7 @@ public class DashboardActivity extends AppCompatActivity
     private String email;
     private int numStamps;
     public LinearLayout mProgIndicatorLL;
+    public LinearLayout mDashPassportLL;
     public static final String EXTRA_USER = "User";
     private final static String IHC_USER_EMAIL_KEY = "IHC_USER_EMAIL";
     private final static int IHC_USER_LOADER_ID = 0;
@@ -72,11 +73,11 @@ public class DashboardActivity extends AppCompatActivity
 
     private String[] monthShortNames = {"Jan.", "Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."};
 
-    private RecyclerView mEventListRecyclerView;
+    private RecyclerView mEventListRV;
     private ArrayList<Event> eventList;
     private EventListAdapter mEventListAdapter;
 
-    private RecyclerView mPassportRecyclerView;
+    private RecyclerView mPassportRV;
     private ArrayList<Event> completedEventList;
     private PassportAdapter mPassportAdapter;
 
@@ -166,26 +167,27 @@ public class DashboardActivity extends AppCompatActivity
         HashMap<String, String> userBasics = session.getUserDetails();
         email = userBasics.get(Session.KEY_EMAIL);
 
-        mEventListRecyclerView = (RecyclerView) findViewById(R.id.rv_event_list);
-        mEventListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mEventListRecyclerView.setHasFixedSize(true);
+        mEventListRV = (RecyclerView) findViewById(R.id.rv_event_list);
+        mEventListRV.setLayoutManager(new LinearLayoutManager(this));
+        mEventListRV.setHasFixedSize(true);
 
         mEventListAdapter = new EventListAdapter(this);
-        mEventListRecyclerView.setAdapter(mEventListAdapter);
+        mEventListRV.setAdapter(mEventListAdapter);
 
-        mPassportRecyclerView = (RecyclerView) findViewById(R.id.rv_passport_list);
-        mPassportRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mPassportRecyclerView.setHasFixedSize(true);
+        mPassportRV = (RecyclerView) findViewById(R.id.rv_passport_list);
+        mPassportRV.setLayoutManager(new LinearLayoutManager(this));
+        mPassportRV.setHasFixedSize(true);
 
         mPassportAdapter = new PassportAdapter();
-        mPassportRecyclerView.setAdapter(mPassportAdapter);
+        mPassportRV.setAdapter(mPassportAdapter);
 
         eventList = new ArrayList<Event>();
         completedEventList = new ArrayList<Event>();
 
-        mDashStampCountTV = (TextView)findViewById(R.id.tv_dash_stamp_count);
+        mDashStampCountTV = (TextView) findViewById(R.id.tv_dash_stamp_count);
         mDashProgressTV = (TextView) findViewById(R.id.tv_dash_progress);
-        mProgIndicatorLL = (LinearLayout)findViewById(R.id.progIndicator);
+        mProgIndicatorLL = (LinearLayout) findViewById(R.id.progIndicator);
+        mDashPassportLL = (LinearLayout) findViewById(R.id.ll_dash_passport);
 
         Bundle args = new Bundle();
         args.putString(IHC_USER_EMAIL_KEY, email);
@@ -193,7 +195,7 @@ public class DashboardActivity extends AppCompatActivity
         if (intent != null && intent.hasExtra(Constants.EXTRA_USER)) {
             user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
             Log.d(TAG, "User ID: " + user.getId());
-            numStamps = Integer.parseInt(user.getStampCount());
+            numStamps = user.getStampCount();
             gotUser = true;
             getSupportLoaderManager().initLoader(IHC_PASSPORT_LOADER_ID, args, this);
         }
@@ -202,16 +204,35 @@ public class DashboardActivity extends AppCompatActivity
             getSupportLoaderManager().initLoader(IHC_USER_LOADER_ID, args, this);
         }
 
-        initProgIndicator();
-
         mProgIndicatorLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DashboardActivity.this, PrizesActivity.class);
-                intent.putExtra(Constants.EXTRA_USER, user);
-                startActivity(intent);
+                Intent prizeIntent = new Intent(DashboardActivity.this, PrizesActivity.class);
+                prizeIntent.putExtra(Constants.EXTRA_USER, user);
+                startActivity(prizeIntent);
             }
         });
+
+        /*mDashPassportLL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent passportIntent = new Intent(DashboardActivity.this, PassportActivity.class);
+                passportIntent.putExtra(Constants.EXTRA_USER, user);
+                startActivity(passportIntent);
+            }
+        });*/
+
+        if (intent != null && intent.hasExtra(Constants.EXTRA_CALLING_ACTIVITY_ID)) {
+            String callingActivity = (String) intent.getSerializableExtra(Constants.EXTRA_CALLING_ACTIVITY_ID);
+            if (callingActivity.equals(EventPINActivity.class.getSimpleName())
+                    && user.getStampCount() == getResources().getInteger(R.integer.bronzeThreshold)
+                    || user.getStampCount() == getResources().getInteger(R.integer.silverThreshold)
+                    || user.getStampCount() == getResources().getInteger(R.integer.goldThreshold)) {
+                Intent surveyIntent = new Intent (this, SurveyActivity.class);
+                surveyIntent.putExtra(Constants.EXTRA_USER, user);
+                startActivity(surveyIntent);
+            }
+        }
     }
 
     @Override
@@ -245,13 +266,8 @@ public class DashboardActivity extends AppCompatActivity
                     String lastname = userJSON.getString("lastname");
                     String email = userJSON.getString("email");
                     int id = Integer.parseInt(userJSON.getString("id"));
-                    String stampcount = userJSON.getString("stampcount");
+                    numStamps = Integer.parseInt(userJSON.getString("stampcount"));
                     int didsurvey = Integer.parseInt(userJSON.getString("didsurvey"));
-                    if (didsurvey == 0) {
-                        Intent surveyIntent = new Intent(this, SurveyActivity.class);
-                        surveyIntent.putExtra(Constants.EXTRA_USER_ID, id);
-                        startActivity(surveyIntent);
-                    }
                     int grade = Integer.parseInt(userJSON.getString("grade"));
                     //int age = Integer.parseInt(userJSON.getString("age"));
                     String birthDateString = userJSON.getString("birthdate");
@@ -260,12 +276,14 @@ public class DashboardActivity extends AppCompatActivity
                     SimpleDateFormat sdfBirthDate = new SimpleDateFormat("yyyy-MM-dd");
                     Date birthDate = sdfBirthDate.parse(birthDateString);
 
-                    user = new User(firstname, lastname, email, id, stampcount, didsurvey, grade, birthDate, type);
-                    numStamps = Integer.parseInt(stampcount);
-                    initProgIndicator();
+                    user = new User(firstname, lastname, email, id, numStamps, didsurvey, grade, birthDate, type);
+                    if (didsurvey == 0) {
+                        Intent surveyIntent = new Intent(this, SurveyActivity.class);
+                        surveyIntent.putExtra(Constants.EXTRA_USER, user);
+                        startActivity(surveyIntent);
+                    }
 
-
-                    mDashStampCountTV.setText("STAMPS: " + String.valueOf(numStamps));
+                    //mDashStampCountTV.setText("STAMPS: " + String.valueOf(numStamps));
 
                     gotUser = true;
                     getSupportLoaderManager().initLoader(IHC_PASSPORT_LOADER_ID, args, this);
@@ -457,7 +475,12 @@ public class DashboardActivity extends AppCompatActivity
                     Date currentDate = new Date();
                     Log.d(TAG, "currentDate: " + currentDate);
                     Log.d(TAG, "eventEndDate " + eventEndDate);
-                    if (eventEndDate.after(currentDate)) {
+
+                    ArrayList<Integer> completedEventIDs = new ArrayList<Integer>();
+                    for (Event event : completedEventList) {
+                        completedEventIDs.add(event.getEventid());
+                    }
+                    if (eventEndDate.after(currentDate) && !completedEventIDs.contains(eventid)) {  // if the event can still be attended and has not already been attended
 
                         Event retrievedEvent = new Event(eventid, eventName, eventLocation, eventAddress,
                                 eventStartDate, eventEndDate, eventStartTime, eventEndTime,
@@ -471,8 +494,12 @@ public class DashboardActivity extends AppCompatActivity
 
                 sortEventsByDate();
 
-                mEventListAdapter.addEvent(eventList.get(0));
-                mEventListAdapter.addEvent(eventList.get(1));
+                if (eventList.size() > 0) {
+                    mEventListAdapter.addEvent(eventList.get(0));
+                }
+                if (eventList.size() > 1) {
+                    mEventListAdapter.addEvent(eventList.get(1));
+                }
 
                 gotEvents = true;
 
@@ -480,6 +507,7 @@ public class DashboardActivity extends AppCompatActivity
                 e.printStackTrace();
             }
         }
+        initProgIndicator();
     }
 
     public void sortEventsByDate() {
@@ -526,10 +554,11 @@ public class DashboardActivity extends AppCompatActivity
         String message;
         int eventsToGo;
         int progColor;
-        if (numStamps >= getResources().getInteger(R.integer.bronzeThreshold)
-                && numStamps < getResources().getInteger(R.integer.silverThreshold)) {
+        mDashStampCountTV.setText("STAMPS: " + String.valueOf(user.getStampCount()));
+        if (user.getStampCount() >= getResources().getInteger(R.integer.bronzeThreshold)
+                && user.getStampCount() < getResources().getInteger(R.integer.silverThreshold)) {
             progColor = getResources().getColor(R.color.eventBronze);
-            eventsToGo = getResources().getInteger(R.integer.silverThreshold) - numStamps;
+            eventsToGo = getResources().getInteger(R.integer.silverThreshold) - user.getStampCount();
             if (eventsToGo == 1) {
                 message = "Only " + eventsToGo + " event away from reaching silver status!\nCLICK HERE TO VIEW PRIZES";
             }
@@ -537,9 +566,9 @@ public class DashboardActivity extends AppCompatActivity
                 message = "Only " + eventsToGo + " events away from reaching silver status!\nCLICK HERE TO VIEW PRIZES";
             }
         }
-        else if (numStamps >= getResources().getInteger(R.integer.silverThreshold)
-                && numStamps < getResources().getInteger(R.integer.goldThreshold)) {
-            eventsToGo = getResources().getInteger(R.integer.goldThreshold) - numStamps;
+        else if (user.getStampCount() >= getResources().getInteger(R.integer.silverThreshold)
+                && user.getStampCount() < getResources().getInteger(R.integer.goldThreshold)) {
+            eventsToGo = getResources().getInteger(R.integer.goldThreshold) - user.getStampCount();
             progColor = getResources().getColor(R.color.eventSilver);
             if (eventsToGo == 1) {
                 message = "Only " + eventsToGo + " event away from reaching gold status!\nCLICK HERE TO VIEW PRIZES";
@@ -548,12 +577,12 @@ public class DashboardActivity extends AppCompatActivity
                 message = "Only " + eventsToGo + " events away from reaching gold status!\nCLICK HERE TO VIEW PRIZES";
             }
         }
-        else if (numStamps >= getResources().getInteger(R.integer.goldThreshold)) {
+        else if (user.getStampCount() >= getResources().getInteger(R.integer.goldThreshold)) {
             progColor = getResources().getColor(R.color.eventGold);
             message = "Congratulations on achieving gold status!\nCLICK HERE TO VIEW PRIZES";
         }
         else {
-            eventsToGo = getResources().getInteger(R.integer.bronzeThreshold) - numStamps;
+            eventsToGo = getResources().getInteger(R.integer.bronzeThreshold) - user.getStampCount();
             progColor = getResources().getColor(R.color.colorAccent);
             if (eventsToGo == 1) {
                 message = "Only " + eventsToGo + " event away from reaching bronze status!\nCLICK HERE TO VIEW PRIZES";

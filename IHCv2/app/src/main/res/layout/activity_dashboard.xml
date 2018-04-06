@@ -64,12 +64,20 @@
 
                 </LinearLayout>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_passport_list"
-                    android:layout_width="fill_parent"
+                <!--<LinearLayout
+                    android:id="@+id/ll_dash_passport"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="30dp"
-                    android:paddingBottom="15dp"/>
+                    android:orientation="vertical">-->
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_passport_list"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="30dp"
+                        android:paddingBottom="15dp"/>
+
+                <!--</LinearLayout>-->
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_event_list"

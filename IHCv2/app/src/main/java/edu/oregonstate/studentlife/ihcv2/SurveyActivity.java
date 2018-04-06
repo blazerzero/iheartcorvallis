@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -23,6 +24,7 @@ import java.util.StringTokenizer;
 import edu.oregonstate.studentlife.ihcv2.adapters.SurveyAdapter;
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.Survey;
+import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.SurveyLoader;
 import edu.oregonstate.studentlife.ihcv2.loaders.RecordSurveyResponseLoader;
 
@@ -33,11 +35,12 @@ public class SurveyActivity extends AppCompatActivity
     private final static String TAG = SurveyActivity.class.getSimpleName();
 
     //Session session;
+    private TextView mSurveyHeaderTV;
     private RecyclerView mSurveyContentsRV;
     private SurveyAdapter mSurveyAdapter;
-    private Button submitSurveyBtn;
+    private Button mSubmitSurveyBtn;
 
-    private int userID;
+    private User user;
     private ArrayList<Integer> questionIDs;
     private ArrayList<String> responses;
 
@@ -59,16 +62,22 @@ public class SurveyActivity extends AppCompatActivity
 
         overridePendingTransition(0, 0);
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(Constants.EXTRA_USER_ID)) {
-            userID = (int) intent.getSerializableExtra(Constants.EXTRA_USER_ID);
-            Log.d(TAG, "User ID: " + userID);
+        if (intent != null && intent.hasExtra(Constants.EXTRA_USER)) {
+            user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
+            Log.d(TAG, "User ID: " + user.getId());
         }
 
         questionIDs = new ArrayList<Integer>();
         responses = new ArrayList<String>();
 
-        submitSurveyBtn = (Button) findViewById(R.id.btn_submit_survey);
-        submitSurveyBtn.setOnClickListener(new View.OnClickListener() {
+        mSurveyHeaderTV = (TextView) findViewById(R.id.tv_survey_header);
+        if (user.getStampCount() == getResources().getInteger(R.integer.bronzeThreshold)
+                || user.getStampCount() == getResources().getInteger(R.integer.silverThreshold)
+                || user.getStampCount() == getResources().getInteger(R.integer.goldThreshold)) {
+            mSurveyHeaderTV.setText(getString(R.string.survey_update_msg));
+        }
+        mSubmitSurveyBtn = (Button) findViewById(R.id.btn_submit_survey);
+        mSubmitSurveyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 for (int i = 0; i < mSurveyAdapter.getItemCount(); i++) {
@@ -79,7 +88,7 @@ public class SurveyActivity extends AppCompatActivity
                     Toast.makeText(SurveyActivity.this, "Must respond to every question before continuing!", Toast.LENGTH_LONG).show();
                 }
                 Bundle args = new Bundle();
-                args.putInt(IHC_USERID_KEY, userID);
+                args.putInt(IHC_USERID_KEY, user.getId());
                 args.putIntegerArrayList(IHC_QUESTIONIDS_KEY, questionIDs);
                 args.putStringArrayList(IHC_RESPONSES_KEY, responses);
                 Log.d(TAG, "before init loader");

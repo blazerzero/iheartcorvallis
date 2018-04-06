@@ -8,11 +8,11 @@
     tools:context="edu.oregonstate.studentlife.ihcv2.SurveyActivity">
 
     <TextView
-        android:id="@+id/tv_survey_header_message"
+        android:id="@+id/tv_survey_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
-        android:text="@string/survey_header_message"
+        android:text="@string/survey_fill_msg"
         android:textSize="18sp"
         android:textColor="@color/colorPrimaryDark"/>
 

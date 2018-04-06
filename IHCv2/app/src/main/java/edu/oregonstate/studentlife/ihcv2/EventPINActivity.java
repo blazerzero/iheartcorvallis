@@ -134,6 +134,7 @@ public class EventPINActivity extends AppCompatActivity implements LoaderManager
         if (data.equals("COMPLETED EVENT ADDED")) {
             Toast.makeText(this, "Congratulations! Another event done!", Toast.LENGTH_SHORT).show();
             Intent returnToDashboardIntent = new Intent(this, DashboardActivity.class);
+            returnToDashboardIntent.putExtra(Constants.EXTRA_CALLING_ACTIVITY_ID, EventPINActivity.class.getSimpleName());
             startActivity(returnToDashboardIntent);
         }
     }

@@ -92,11 +92,13 @@
     <string name="pref_user_grade_junior">Junior</string>
     <string name="pref_user_grade_senior">Senior</string>
     <string name="pref_user_grade_grad">Graduate Student</string>
+    <string name="pref_user_grade_doc">Doctoral Student</string>
     <string name="pref_user_grade_freshman_value" translatable="false">1</string>
     <string name="pref_user_grade_sophomore_value" translatable="false">2</string>
     <string name="pref_user_grade_junior_value" translatable="false">3</string>
     <string name="pref_user_grade_senior_value" translatable="false">4</string>
     <string name="pref_user_grade_grad_value" translatable="false">5</string>
+    <string name="pref_user_grade_doc_value" translatable="false">6</string>
 
     <string name="pref_user_birthdate_key" translatable="false">pref_birthdate</string>
     <string name="pref_user_birthdate_title">Birthday</string>
@@ -116,7 +118,8 @@
     <string name="checking_location">Checking Location</string>
 
     <!-- Survey -->
-    <string name="survey_header_message">Your account has been created! We just have a few quick questions for you before we get started!</string>
+    <string name="survey_fill_msg">Your account has been created! We just have a few quick questions for you before we get started!</string>
+    <string name="survey_update_msg"></string>
     <string name="submit_survey_message">Submit Responses</string>
     <string name="add_survey_responses_error">Error saving survey responses.</string>
     <string name="track_survey_status_error">Error saving your survey response status.</string>

@@ -14,7 +14,7 @@ if ($result->num_rows > 0) {
 
 $result = $mysqli->query("SELECT * FROM ihc_completed_events WHERE eventid='$eventid'");
 $numAttendees = $result->num_rows;
-$numFreshmen = $numSophomores = $numJuniors = $numSeniors = $numGrad = 0;
+$numFreshmen = $numSophomores = $numJuniors = $numSeniors = $numGrad = $numDoc = 0;
 $numDomStudents = $numIntlStudents = $numNonStudents = 0;
 $ages = $allAttendees = $students = $allRatings = $studentRatings = $comments = $studentComments = array();
 $minAge = $maxAge = $minAllRating = $maxAllRating = $minStudentRating = $maxStudentRating = 0;
@@ -42,6 +42,7 @@ while ($row = $result->fetch_assoc()) {
       else if ($grade == 3) { $numJuniors++; }
       else if ($grade == 4) { $numSeniors++; }
       else if ($grade == 5) { $numGrad++; }
+      else if ($grade == 6) { $numDoc++; }
 
       if ($usertype == 0) {
          $numDomStudents++;
@@ -129,7 +130,8 @@ $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
                ['Sophomores', <?php echo $numSophomores; ?>],
                ['Juniors', <?php echo $numJuniors; ?>],
                ['Seniors', <?php echo $numSeniors; ?>],
-               ['Graduate Students', <?php echo $numGrad; ?>]
+               ['Graduate Students', <?php echo $numGrad; ?>],
+               ['Doctoral Students', <?php echo $numDoc; ?>]
             ]);
 
             var options = {
