@@ -222,7 +222,7 @@ public class DashboardActivity extends AppCompatActivity
             }
         });*/
 
-        if (intent != null && intent.hasExtra(Constants.EXTRA_CALLING_ACTIVITY_ID)) {
+        /*if (intent != null && intent.hasExtra(Constants.EXTRA_CALLING_ACTIVITY_ID)) {
             String callingActivity = (String) intent.getSerializableExtra(Constants.EXTRA_CALLING_ACTIVITY_ID);
             if (callingActivity.equals(EventPINActivity.class.getSimpleName())
                     && user.getStampCount() == getResources().getInteger(R.integer.bronzeThreshold)
@@ -232,7 +232,7 @@ public class DashboardActivity extends AppCompatActivity
                 surveyIntent.putExtra(Constants.EXTRA_USER, user);
                 startActivity(surveyIntent);
             }
-        }
+        }*/
     }
 
     @Override
@@ -508,6 +508,18 @@ public class DashboardActivity extends AppCompatActivity
             }
         }
         initProgIndicator();
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra(Constants.EXTRA_CALLING_ACTIVITY_ID)) {
+            String callingActivity = (String) intent.getSerializableExtra(Constants.EXTRA_CALLING_ACTIVITY_ID);
+            if (callingActivity.equals(EventPINActivity.class.getSimpleName())
+                    && user.getStampCount() == getResources().getInteger(R.integer.bronzeThreshold)
+                    || user.getStampCount() == getResources().getInteger(R.integer.silverThreshold)
+                    || user.getStampCount() == getResources().getInteger(R.integer.goldThreshold)) {
+                Intent surveyIntent = new Intent (this, SurveyActivity.class);
+                surveyIntent.putExtra(Constants.EXTRA_USER, user);
+                startActivity(surveyIntent);
+            }
+        }
     }
 
     public void sortEventsByDate() {

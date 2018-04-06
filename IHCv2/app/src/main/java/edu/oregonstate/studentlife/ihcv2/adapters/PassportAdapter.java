@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -36,23 +37,25 @@ public class PassportAdapter extends RecyclerView.Adapter<PassportAdapter.Passpo
     class PassportViewHolder extends RecyclerView.ViewHolder {
 
         //private ImageView mPassportStampImageView;
-        private TextView mEventNameTextView;
-        private TextView mEventInfoTextView;
+        private TextView mEventNameTV;
+        private TextView mEventInfoTV;
+        private LinearLayout mPassportListingLL;
 
         public PassportViewHolder(View itemView) {
             super(itemView);
             //mPassportStampImageView = (ImageView) itemView.findViewById(R.id.iv_passport_stamp);
-            mEventNameTextView = (TextView) itemView.findViewById(R.id.tv_event_name);
-            mEventInfoTextView = (TextView) itemView.findViewById(R.id.tv_passport_event_info);
+            mEventNameTV = (TextView) itemView.findViewById(R.id.tv_event_name);
+            mEventInfoTV = (TextView) itemView.findViewById(R.id.tv_passport_event_info);
+            mPassportListingLL = (LinearLayout) itemView.findViewById(R.id.ll_passport_listing);
         }
 
         void bind(Event event) {
-            mEventNameTextView.setText(event.getName());
+            mEventNameTV.setText(event.getName());
             if (event.getStartMonth().length() <= 3) {
-                mEventInfoTextView.setText(event.getStartMonth() + " " + event.getStartDay() + ", " + event.getStartYear() + ", " + event.getLocation());
+                mEventInfoTV.setText(event.getStartMonth() + " " + event.getStartDay() + ", " + event.getStartYear() + ", " + event.getLocation());
             }
             else {
-                mEventInfoTextView.setText(event.getStartMonth().substring(0, 3) + ". " + event.getStartDay() + ", " + event.getStartYear() + ", " + event.getLocation());
+                mEventInfoTV.setText(event.getStartMonth().substring(0, 3) + ". " + event.getStartDay() + ", " + event.getStartYear() + ", " + event.getLocation());
             }
         }
 
