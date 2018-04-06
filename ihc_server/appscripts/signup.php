@@ -27,6 +27,7 @@
 		else {
 			echo "SIGNUPERROR";
 		}
-		
+	}
+	
 	$mysqli->close();
 ?>
