@@ -17,10 +17,12 @@
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $userid = $_POST["userid"];
       $eventid = $_POST["eventid"];
+      $rating = $_POST["rating"];
+      $comment = $_POST["comment"];
 	   //$stmt = $mysqli->prepare("INSERT INTO ihc_completed_events (userid, eventid) VALUES (?, ?)");
 	   //$stmt->bind_param('ii', $userid, $eventid);
 	   //$result = $stmt->execute();
-      $result = $mysqli->query("INSERT INTO ihc_completed_events (userid, eventid) VALUES ('$userid', '$eventid')");
+      $result = $mysqli->query("INSERT INTO ihc_completed_events (userid, eventid, rating, comment) VALUES ('$userid', '$eventid', '$rating', '$comment')");
       if ($result == True) {
          $res2 = $mysqli->query("SELECT * FROM ihc_completed_events WHERE userid='$userid'");
          if ($res2 == True) {

@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
+import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.SettingsUpdateLoader;
 
@@ -34,7 +35,7 @@ public class SettingsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         LoaderManager.LoaderCallbacks<String> {
 
-    SessionActivity session;
+    Session session;
 
     DrawerLayout mDrawerLayout;
     ActionBarDrawerToggle mDrawerToggle;
@@ -75,9 +76,9 @@ public class SettingsActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        session = new SessionActivity(getApplicationContext());
+        session = new Session(getApplicationContext());
         HashMap<String, String> userBasics = session.getUserDetails();
-        email = userBasics.get(SessionActivity.KEY_EMAIL);
+        email = userBasics.get(Session.KEY_EMAIL);
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(Constants.EXTRA_USER)) {
@@ -151,12 +152,12 @@ public class SettingsActivity extends AppCompatActivity
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        session = new SessionActivity(getApplicationContext());
+        session = new Session(getApplicationContext());
 
         HashMap<String, String> user = session.getUserDetails();
 
-        String name = user.get(SessionActivity.KEY_NAME);
-        String email = user.get(SessionActivity.KEY_EMAIL);
+        String name = user.get(Session.KEY_NAME);
+        String email = user.get(Session.KEY_EMAIL);
 
 
         TextView sesName = (TextView) findViewById(R.id.sesName);

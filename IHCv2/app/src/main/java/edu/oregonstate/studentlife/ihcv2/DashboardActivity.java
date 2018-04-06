@@ -28,11 +28,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.content.DialogInterface;
-import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -43,11 +41,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.StringTokenizer;
+import java.util.TimeZone;
 
 import edu.oregonstate.studentlife.ihcv2.adapters.EventListAdapter;
 import edu.oregonstate.studentlife.ihcv2.adapters.PassportAdapter;
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.Event;
+import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.EventLoader;
 import edu.oregonstate.studentlife.ihcv2.loaders.PassportLoader;
@@ -90,7 +90,7 @@ public class DashboardActivity extends AppCompatActivity
     private static final String TAG = DashboardActivity.class.getSimpleName();
     private User user;
 
-    SessionActivity session;
+    Session session;
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,9 +162,9 @@ public class DashboardActivity extends AppCompatActivity
             }
         });
 
-        session = new SessionActivity(getApplicationContext());
+        session = new Session(getApplicationContext());
         HashMap<String, String> userBasics = session.getUserDetails();
-        email = userBasics.get(SessionActivity.KEY_EMAIL);
+        email = userBasics.get(Session.KEY_EMAIL);
 
         mEventListRecyclerView = (RecyclerView) findViewById(R.id.rv_event_list);
         mEventListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -187,14 +187,17 @@ public class DashboardActivity extends AppCompatActivity
         mDashProgressTV = (TextView) findViewById(R.id.tv_dash_progress);
         mProgIndicatorLL = (LinearLayout)findViewById(R.id.progIndicator);
 
+        Bundle args = new Bundle();
+        args.putString(IHC_USER_EMAIL_KEY, email);
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(Constants.EXTRA_USER)) {
             user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
             Log.d(TAG, "User ID: " + user.getId());
             numStamps = Integer.parseInt(user.getStampCount());
+            gotUser = true;
+            getSupportLoaderManager().initLoader(IHC_PASSPORT_LOADER_ID, args, this);
         }
         else {
-            Bundle args = new Bundle();
             args.putString(IHC_USER_EMAIL_KEY, email);
             getSupportLoaderManager().initLoader(IHC_USER_LOADER_ID, args, this);
         }
@@ -297,19 +300,19 @@ public class DashboardActivity extends AppCompatActivity
                 while (stEvents.hasMoreTokens()) {
                     String eventInfoString = stEvents.nextToken();
                     Log.d(TAG, "eventInfoString: " + eventInfoString);
-                    JSONObject eventJSON = new JSONObject(eventInfoString);
-                    Log.d(TAG, "eventJSON: " + eventJSON);
-                    int eventid = Integer.parseInt(eventJSON.getString("eventid"));
-                    String eventName = eventJSON.getString("name");
-                    String eventLocation = eventJSON.getString("location");
-                    String eventAddress = eventJSON.getString("address");
-                    String eventStartDT = eventJSON.getString("startdt");
-                    String eventEndDT = eventJSON.getString("enddt");
-                    String eventDescription = eventJSON.getString("description");
-                    String eventLink1 = eventJSON.getString("link1");
-                    String eventLink2 = eventJSON.getString("link2");
-                    String eventLink3 = eventJSON.getString("link3");
-                    int eventPin = Integer.parseInt(eventJSON.getString("pin"));
+                    JSONObject passportEventJSON = new JSONObject(eventInfoString);
+                    Log.d(TAG, "passportEventJSON: " + passportEventJSON);
+                    int eventid = Integer.parseInt(passportEventJSON.getString("eventid"));
+                    String eventName = passportEventJSON.getString("name");
+                    String eventLocation = passportEventJSON.getString("location");
+                    String eventAddress = passportEventJSON.getString("address");
+                    String eventStartDT = passportEventJSON.getString("startdt");
+                    String eventEndDT = passportEventJSON.getString("enddt");
+                    String eventDescription = passportEventJSON.getString("description");
+                    String eventLink1 = passportEventJSON.getString("link1");
+                    String eventLink2 = passportEventJSON.getString("link2");
+                    String eventLink3 = passportEventJSON.getString("link3");
+                    int eventPin = Integer.parseInt(passportEventJSON.getString("pin"));
 
                     StringTokenizer dateTimeTokenizer = new StringTokenizer(eventStartDT);
                     String eventStartYear = dateTimeTokenizer.nextToken("-");
@@ -396,6 +399,7 @@ public class DashboardActivity extends AppCompatActivity
                 while (stEvents.hasMoreTokens()) {
                     String eventInfoString = stEvents.nextToken();
                     JSONObject eventJSON = new JSONObject(eventInfoString);
+                    Log.d(TAG, "eventJSON: " + eventJSON);
                     int eventid = Integer.parseInt(eventJSON.getString("eventid"));
                     String eventName = eventJSON.getString("name");
                     String eventLocation = eventJSON.getString("location");
@@ -421,11 +425,14 @@ public class DashboardActivity extends AppCompatActivity
                     String eventEndTime = dateTimeTokenizer.nextToken();
 
                     SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    sdfEvent.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
                     Date eventStartDate = sdfEvent.parse(eventStartDT);
                     Date eventEndDate = sdfEvent.parse(eventEndDT);
 
                     SimpleDateFormat _24HourFormat = new SimpleDateFormat("HH:mm");
+                    _24HourFormat.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
                     SimpleDateFormat _12HourFormat = new SimpleDateFormat("hh:mm a");
+                    _12HourFormat.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
 
                     Date _24HourEventTime = _24HourFormat.parse(eventStartTime);
                     eventStartTime = _12HourFormat.format(_24HourEventTime).toString();
@@ -448,6 +455,8 @@ public class DashboardActivity extends AppCompatActivity
                     }
 
                     Date currentDate = new Date();
+                    Log.d(TAG, "currentDate: " + currentDate);
+                    Log.d(TAG, "eventEndDate " + eventEndDate);
                     if (eventEndDate.after(currentDate)) {
 
                         Event retrievedEvent = new Event(eventid, eventName, eventLocation, eventAddress,
@@ -466,6 +475,7 @@ public class DashboardActivity extends AppCompatActivity
                 mEventListAdapter.addEvent(eventList.get(1));
 
                 gotEvents = true;
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -613,10 +623,10 @@ public class DashboardActivity extends AppCompatActivity
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // session information is retrieved and displayed on nav menu
-        //session = new SessionActivity(getApplicationContext());
+        //session = new Session(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
-        String name = user.get(SessionActivity.KEY_NAME);
-        String email = user.get(SessionActivity.KEY_EMAIL);
+        String name = user.get(Session.KEY_NAME);
+        String email = user.get(Session.KEY_EMAIL);
         TextView sesName = (TextView) findViewById(R.id.sesName);
         TextView sesEmail = (TextView) findViewById(R.id.sesEmail);
         sesName.setText(name);

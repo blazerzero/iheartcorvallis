@@ -43,6 +43,7 @@ import edu.oregonstate.studentlife.ihcv2.adapters.EventCardAdapter;
 import edu.oregonstate.studentlife.ihcv2.adapters.EventListAdapter;
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.Event;
+import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.EventLoader;
 ;
@@ -66,7 +67,7 @@ public class EventsActivity extends AppCompatActivity
     private ArrayList<Event> eventList;
     private User user;
 
-    SessionActivity session;
+    Session session;
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -118,7 +119,7 @@ public class EventsActivity extends AppCompatActivity
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.bottom_nav_dash) {
-                    Intent intent = new Intent(EventsActivity.this, EventsActivity.class);
+                    Intent intent = new Intent(EventsActivity.this, DashboardActivity.class);
                     intent.putExtra(Constants.EXTRA_USER, user);
                     startActivity(intent);
                 }
@@ -299,10 +300,10 @@ public class EventsActivity extends AppCompatActivity
     public boolean onPrepareOptionsMenu(Menu menu) {
 
         // session information is retrieved and displayed on nav menu
-        session = new SessionActivity(getApplicationContext());
+        session = new Session(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
-        String name = user.get(SessionActivity.KEY_NAME);
-        String email = user.get(SessionActivity.KEY_EMAIL);
+        String name = user.get(Session.KEY_NAME);
+        String email = user.get(Session.KEY_EMAIL);
         TextView sesName = (TextView) findViewById(R.id.sesName);
         TextView sesEmail = (TextView) findViewById(R.id.sesEmail);
         sesName.setText(name);

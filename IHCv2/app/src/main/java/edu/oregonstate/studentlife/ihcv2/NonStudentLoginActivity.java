@@ -13,12 +13,9 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 
-import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -34,14 +31,9 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-
+import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.PBKDF2;
+import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.loaders.HashReceiverLoader;
 import edu.oregonstate.studentlife.ihcv2.loaders.NonStudentAuthLoader;
 
@@ -50,7 +42,7 @@ import edu.oregonstate.studentlife.ihcv2.loaders.NonStudentAuthLoader;
  */
 public class NonStudentLoginActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
 
-    SessionActivity session;
+    Session session;
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -96,7 +88,7 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
         //setSupportActionBar(toolbar);
         getSupportActionBar().hide();
 
-        session = new SessionActivity(getApplicationContext());
+        session = new Session(getApplicationContext());
 
         overridePendingTransition(0,0);
 
@@ -442,6 +434,7 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
                     //int id = Integer.parseInt(tokeId);
                     session.createLoginSession(name, email, tokeId);
                     Intent intent = new Intent(NonStudentLoginActivity.this, DashboardActivity.class);
+                    intent.putExtra(Constants.EXTRA_CALLING_ACTIVITY_ID, NonStudentLoginActivity.class.getSimpleName());
                     startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();

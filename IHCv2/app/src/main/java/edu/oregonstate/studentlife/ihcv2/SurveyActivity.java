@@ -32,7 +32,7 @@ public class SurveyActivity extends AppCompatActivity
 
     private final static String TAG = SurveyActivity.class.getSimpleName();
 
-    //SessionActivity session;
+    //Session session;
     private RecyclerView mSurveyContentsRV;
     private SurveyAdapter mSurveyAdapter;
     private Button submitSurveyBtn;

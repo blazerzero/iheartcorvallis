@@ -15,17 +15,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -41,18 +34,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringTokenizer;
 
-import edu.oregonstate.studentlife.ihcv2.data.PBKDF2;
+import edu.oregonstate.studentlife.ihcv2.data.Constants;
+import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.loaders.SignupLoader;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -67,7 +54,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderManag
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    SessionActivity session;
+    Session session;
     public final static String IHC_FIRSTNAME_KEY = "firstname";
     public final static String IHC_LASTNAME_KEY = "lastname";
     public final static String IHC_EMAIL_KEY = "email";
@@ -325,9 +312,10 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderManag
                 String email = stRes.nextToken("\\");
                 String tid = stRes.nextToken("\\");
                 //int id = Integer.parseInt(tid);
-                session = new SessionActivity(getApplicationContext());
+                session = new Session(getApplicationContext());
                 session.createLoginSession(name, email, tid);
                 Intent intent = new Intent(SignupPageActivity.this, DashboardActivity.class);
+                intent.putExtra(Constants.EXTRA_CALLING_ACTIVITY_ID, SignupPageActivity.class.getSimpleName());
                 startActivity(intent);
             } catch (Exception e) {
                 Toast.makeText(this, "Exception: " + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -378,7 +366,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderManag
                 String email = stRes.nextToken("\\");
                 String tid = stRes.nextToken("\\");
                 //int id = Integer.parseInt(tid);
-                session = new SessionActivity(getApplicationContext());
+                session = new Session(getApplicationContext());
                 session.createLoginSession(name, email, tid);
                 Intent intent = new Intent(SignupPageActivity.this, DashboardActivity.class);
                 startActivity(intent);

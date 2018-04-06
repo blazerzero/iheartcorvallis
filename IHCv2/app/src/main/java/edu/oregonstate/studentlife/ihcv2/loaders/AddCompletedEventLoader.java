@@ -1,6 +1,7 @@
 package edu.oregonstate.studentlife.ihcv2.loaders;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
@@ -10,6 +11,8 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+
+import edu.oregonstate.studentlife.ihcv2.EventPINActivity;
 
 /**
  * Created by Omeed on 2/28/18.
@@ -22,11 +25,15 @@ public class AddCompletedEventLoader extends AsyncTaskLoader<String> {
 
     private String userid;
     private String eventid;
+    private String rating;
+    private String comment;
 
-    public AddCompletedEventLoader(Context context, int userid, int eventid) {
+    public AddCompletedEventLoader(Context context, Bundle args) {
         super(context);
-        this.userid = String.valueOf(userid);
-        this.eventid = String.valueOf(eventid);
+        this.userid = String.valueOf(args.getInt(EventPINActivity.IHC_COMPLETED_EVENT_USERID_KEY));
+        this.eventid = String.valueOf(args.getInt(EventPINActivity.IHC_COMPLETED_EVENT_EVENTID_KEY));
+        this.rating = String.valueOf(args.getInt(EventPINActivity.IHC_COMPLETED_EVENT_RATING_KEY));
+        this.comment = String.valueOf(args.getString(EventPINActivity.IHC_COMPLETED_EVENT_COMMENT_KEY));
     }
 
     @Override
@@ -40,6 +47,9 @@ public class AddCompletedEventLoader extends AsyncTaskLoader<String> {
             URL url = new URL(IHC_ADD_COMPLETED_EVENT_URL);
             String data = URLEncoder.encode("userid", "UTF-8") + "=" + URLEncoder.encode(userid, "UTF-8");
             data += "&" + URLEncoder.encode("eventid", "UTF-8") + "=" + URLEncoder.encode(eventid, "UTF-8");
+            data += "&" + URLEncoder.encode("rating", "UTF-8") + "=" + URLEncoder.encode(rating, "UTF-8");
+            data += "&" + URLEncoder.encode("comment", "UTF-8") + "=" + URLEncoder.encode(comment, "UTF-8");
+            Log.d(TAG, "data: " + data);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 

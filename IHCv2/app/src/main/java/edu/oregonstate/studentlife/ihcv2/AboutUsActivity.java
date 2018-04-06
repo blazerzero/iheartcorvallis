@@ -1,8 +1,6 @@
 package edu.oregonstate.studentlife.ihcv2;
 
-import android.content.DialogInterface;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,25 +14,18 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.lang.reflect.Field;
-import java.sql.*;
 import java.util.HashMap;
 
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
+import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.AboutLoader;
 
@@ -47,7 +38,7 @@ public class AboutUsActivity extends AppCompatActivity
         LoaderManager.LoaderCallbacks<String> {
 
     private final static String TAG = AboutUsActivity.class.getSimpleName();
-    SessionActivity session;
+    Session session;
     private TextView mAboutAppTV;
     private final static int IHC_GETABOUT_ID = 0;
     private User user;
@@ -188,10 +179,10 @@ public class AboutUsActivity extends AppCompatActivity
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // session information is retrieved and displayed on nav menu
-        session = new SessionActivity(getApplicationContext());
+        session = new Session(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
-        String name = user.get(SessionActivity.KEY_NAME);
-        String email = user.get(SessionActivity.KEY_EMAIL);
+        String name = user.get(Session.KEY_NAME);
+        String email = user.get(Session.KEY_EMAIL);
         TextView sesName = (TextView) findViewById(R.id.sesName);
         TextView sesEmail = (TextView) findViewById(R.id.sesEmail);
         sesName.setText(name);

@@ -1,4 +1,4 @@
-package edu.oregonstate.studentlife.ihcv2;
+package edu.oregonstate.studentlife.ihcv2.data;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,12 +7,15 @@ import android.content.SharedPreferences.Editor;
 
 import java.util.HashMap;
 
+import edu.oregonstate.studentlife.ihcv2.DashboardActivity;
+import edu.oregonstate.studentlife.ihcv2.MainActivity;
+
 /**
  * Created by dylan on 2/1/2018.
  */
 
 
-public class SessionActivity {
+public class Session {
     SharedPreferences pref;
 
     Editor editor;
@@ -31,7 +34,7 @@ public class SessionActivity {
 
     public static final String KEY_ID = "id";
     //Constructor
-    public SessionActivity(Context context) {
+    public Session(Context context) {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();

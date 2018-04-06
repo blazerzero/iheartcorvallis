@@ -125,4 +125,9 @@
     <string name="bottom_nav_resource">Resource</string>
     <string name="bottom_nav_aboutus">About Us</string>
 
+    <!-- Event PIN Page -->
+    <string name="event_feedback_msg">We\'d Love Your Feedback</string>
+    <string name="event_rating">Rate the Event</string>
+    <string name="event_comment_hint">Leave a Comment</string>
+
 </resources>

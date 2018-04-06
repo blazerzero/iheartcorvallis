@@ -21,11 +21,9 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -44,9 +42,9 @@ import java.util.StringTokenizer;
 import edu.oregonstate.studentlife.ihcv2.adapters.PassportAdapter;
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.Event;
+import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.PassportLoader;
-import edu.oregonstate.studentlife.ihcv2.loaders.UserInfoLoader;
 
 public class PassportActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, LoaderManager.LoaderCallbacks<String> {
@@ -66,7 +64,7 @@ public class PassportActivity extends AppCompatActivity
 
     private ArrayList<Event> completedEventList;
     private String email;
-    SessionActivity session;
+    Session session;
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -161,9 +159,9 @@ public class PassportActivity extends AppCompatActivity
         mPassportAdapter = new PassportAdapter();
         mPassportRecyclerView.setAdapter(mPassportAdapter);
 
-        session = new SessionActivity(getApplicationContext());
+        session = new Session(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
-        email = user.get(SessionActivity.KEY_EMAIL);
+        email = user.get(Session.KEY_EMAIL);
         Bundle args = new Bundle();
         args.putString(IHC_USER_EMAIL_KEY, email);
         //new CompletedEventReceiver(this).execute(email);
@@ -221,10 +219,10 @@ public class PassportActivity extends AppCompatActivity
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // session information is retrieved and displayed on nav menu
-        session = new SessionActivity(getApplicationContext());
+        session = new Session(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
-        String name = user.get(SessionActivity.KEY_NAME);
-        String email = user.get(SessionActivity.KEY_EMAIL);
+        String name = user.get(Session.KEY_NAME);
+        String email = user.get(Session.KEY_EMAIL);
         TextView sesName = (TextView) findViewById(R.id.sesName);
         TextView sesEmail = (TextView) findViewById(R.id.sesEmail);
         sesName.setText(name);

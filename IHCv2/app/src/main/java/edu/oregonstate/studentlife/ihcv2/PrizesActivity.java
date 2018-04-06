@@ -21,7 +21,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
@@ -38,6 +37,7 @@ import java.util.StringTokenizer;
 import edu.oregonstate.studentlife.ihcv2.adapters.PrizeAdapter;
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.Prize;
+import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.PrizeLoader;
 
@@ -49,7 +49,7 @@ public class PrizesActivity extends AppCompatActivity
 
     private final static int IHC_GETPRIZES_ID = 0;
 
-    SessionActivity session;
+    Session session;
 
     private RecyclerView goldPrizeRV;
     private RecyclerView silverPrizeRV;
@@ -224,10 +224,10 @@ public class PrizesActivity extends AppCompatActivity
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // session information is retrieved and displayed on nav menu
-        session = new SessionActivity(getApplicationContext());
+        session = new Session(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
-        String name = user.get(SessionActivity.KEY_NAME);
-        String email = user.get(SessionActivity.KEY_EMAIL);
+        String name = user.get(Session.KEY_NAME);
+        String email = user.get(Session.KEY_EMAIL);
         TextView sesName = (TextView) findViewById(R.id.sesName);
         TextView sesEmail = (TextView) findViewById(R.id.sesEmail);
         sesName.setText(name);

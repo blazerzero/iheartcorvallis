@@ -9,16 +9,14 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.content.Intent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import java.util.HashMap;
+import edu.oregonstate.studentlife.ihcv2.data.Session;
 
 /**
  * Created by Omeed on 12/20/17.
@@ -26,7 +24,7 @@ import java.util.HashMap;
 
 public class LoginPageActivity extends AppCompatActivity {
 
-    SessionActivity session;
+    Session session;
     private ImageView iv;
 
     @Override
@@ -39,7 +37,7 @@ public class LoginPageActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         // session information is retrieved and displayed on nav menu
-        session = new SessionActivity(getApplicationContext());
+        session = new Session(getApplicationContext());
 
         iv = (ImageView) findViewById(R.id.iv_ihc);
         Drawable image = iv.getDrawable();

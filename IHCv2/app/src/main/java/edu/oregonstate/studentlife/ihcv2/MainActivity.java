@@ -16,12 +16,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.HashMap;
+import edu.oregonstate.studentlife.ihcv2.data.Session;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    SessionActivity session;
+    Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         // session information is retrieved and displayed on nav menu
-        session = new SessionActivity(getApplicationContext());
+        session = new Session(getApplicationContext());
         session.checkLogin();  // check this
 
         ImageView iv = (ImageView) findViewById(R.id.iv_ihc);

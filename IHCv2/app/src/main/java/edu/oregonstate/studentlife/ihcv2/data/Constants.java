@@ -20,6 +20,7 @@ public class Constants extends AppCompatActivity {
     public static final String EXTRA_EVENT_DETAILED = "Detailed Event";
     public static final String EXTRA_USER = "User";
     public static final String EXTRA_USER_ID = "User ID";
+    public static final String EXTRA_CALLING_ACTIVITY_ID = "Login Activity";
 
 
     public int getGoldThreshold() {

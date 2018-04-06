@@ -33,7 +33,7 @@
             android:value="AIzaSyBYbpLA_XmLpBF31OVt91u1K3z2pAVyvrM" />
 
         <activity
-            android:name=".Splash"
+            android:name=".SplashActivity"
             android:label="I Heart Corvallis"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
