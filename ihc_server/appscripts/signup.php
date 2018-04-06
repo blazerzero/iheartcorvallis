@@ -49,7 +49,7 @@
          echo "DUPACCOUNTERROR"; # account already exists
       }*/
 
-   //}
+   }
 
    $mysqli->close();
 ?>

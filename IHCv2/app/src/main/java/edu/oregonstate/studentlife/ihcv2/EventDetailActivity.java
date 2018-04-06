@@ -183,7 +183,10 @@ public class EventDetailActivity extends AppCompatActivity {
                 getLocationPermission();
                 if (mLocationPermissionGranted) {
                     try {
+                        // TODO: implement location manager to get location updates from user, as getLastLocation can return null
+                        // TODO: Or if getLastLocation return null then exit the verify location function
                         Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
+                       // locationResult = mFusedLocationProviderClient.requestLocationUpdates();
                         locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
                             @Override
                             public void onComplete(@NonNull Task<Location> task) {
