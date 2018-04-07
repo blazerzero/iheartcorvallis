@@ -15,25 +15,45 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_current_user_stamp_count"
+        <ScrollView
+            android:id="@+id/passport_sv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="#ffffff"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:elevation="4dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textAlignment="center"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"/>
+            android:layout_height="wrap_content">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_passport_list"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_current_user_stamp_count"/>
+            <LinearLayout
+                android:id="@+id/ll_passport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_current_user_stamp_count"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="#ffffff"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:elevation="4dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textAlignment="center"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_passport_list"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_current_user_stamp_count"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_below="@+id/passport_sv" />
+
+            </LinearLayout>
+
+        </ScrollView>
 
         <android.support.design.widget.BottomNavigationView
             xmlns:android="http://schemas.android.com/apk/res/android"

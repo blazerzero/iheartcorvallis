@@ -18,10 +18,10 @@
 	  $stmt->execute();
 	  $result = $stmt->get_result();
 	 if ($result->num_rows > 0) {
-		 
+
          $row = $result->fetch_assoc();
          echo $row['password'];
-		 
+
       }
       else {
          echo "NOACCOUNTERROR";
@@ -29,5 +29,5 @@
 	$result->close();
    }
 
-   mysqli_close($con);
+   $mysqli->close();
 ?>

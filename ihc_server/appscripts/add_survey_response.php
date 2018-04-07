@@ -27,7 +27,6 @@
       }*/
 
       $questionid = $_POST['questionid'];
-      $dateandtime = date("Y-m-d H:i:s");
       $response = $_POST['response'];
 	   $stmt = $mysqli->prepare("INSERT INTO ihc_survey_responses (userid, dateandtime, questionid, response) VALUES (?, ?, ?, ?)");
 	   $stmt->bind_param('isis', $userid, $dateandtime, $questionid, $response);

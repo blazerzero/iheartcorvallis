@@ -13,6 +13,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +27,7 @@ import edu.oregonstate.studentlife.ihcv2.adapters.SurveyAdapter;
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.Survey;
 import edu.oregonstate.studentlife.ihcv2.data.User;
+import edu.oregonstate.studentlife.ihcv2.loaders.RecordFeedbackLoader;
 import edu.oregonstate.studentlife.ihcv2.loaders.SurveyLoader;
 import edu.oregonstate.studentlife.ihcv2.loaders.RecordSurveyResponseLoader;
 
@@ -36,6 +39,8 @@ public class SurveyActivity extends AppCompatActivity
 
     //Session session;
     private TextView mSurveyHeaderTV;
+    private RatingBar mAppRatingRB;
+    private EditText mAppCommentET;
     private RecyclerView mSurveyContentsRV;
     private SurveyAdapter mSurveyAdapter;
     private Button mSubmitSurveyBtn;
@@ -45,13 +50,18 @@ public class SurveyActivity extends AppCompatActivity
     private ArrayList<String> responses;
 
     private Boolean gotSurvey = false;
+    private Boolean recordedResponses = false;
+    private Boolean recordedFeedback = false;
 
     private final static int IHC_SURVEY_LOADER_ID = 0;
-    private final static int IHC_UPDATE_ANSWERS_LOADER_ID = 1;
+    private final static int IHC_RECORD_RESPONSES_LOADER_ID = 1;
+    private final static int IHC_RECORD_FEEDBACK_LOADER_ID = 2;
 
     public final static String IHC_USERID_KEY = "userid";
     public final static String IHC_QUESTIONIDS_KEY = "questionids";
     public final static String IHC_RESPONSES_KEY = "responses";
+    public final static String IHC_APPRATING_KEY = "app rating";
+    public final static String IHC_APPCOMMENT_KEY = "app comment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +86,9 @@ public class SurveyActivity extends AppCompatActivity
                 || user.getStampCount() == getResources().getInteger(R.integer.goldThreshold)) {
             mSurveyHeaderTV.setText(getString(R.string.survey_update_msg));
         }
+
+        mAppRatingRB = (RatingBar) findViewById(R.id.rb_app_rating);
+        mAppCommentET = (EditText) findViewById(R.id.et_app_comment);
         mSubmitSurveyBtn = (Button) findViewById(R.id.btn_submit_survey);
         mSubmitSurveyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +105,7 @@ public class SurveyActivity extends AppCompatActivity
                 args.putIntegerArrayList(IHC_QUESTIONIDS_KEY, questionIDs);
                 args.putStringArrayList(IHC_RESPONSES_KEY, responses);
                 Log.d(TAG, "before init loader");
-                getSupportLoaderManager().initLoader(IHC_UPDATE_ANSWERS_LOADER_ID, args, SurveyActivity.this);
+                getSupportLoaderManager().initLoader(IHC_RECORD_RESPONSES_LOADER_ID, args, SurveyActivity.this);
                 Log.d(TAG, "after init loader");
             }
         });
@@ -112,8 +125,11 @@ public class SurveyActivity extends AppCompatActivity
         if (id == IHC_SURVEY_LOADER_ID) {
             return new SurveyLoader(this);
         }
-        else if (id == IHC_UPDATE_ANSWERS_LOADER_ID) {
+        else if (id == IHC_RECORD_RESPONSES_LOADER_ID) {
             return new RecordSurveyResponseLoader(this, args);
+        }
+        else if (id == IHC_RECORD_FEEDBACK_LOADER_ID) {
+            return new RecordFeedbackLoader(this, args);
         }
         else {
             return null;
@@ -122,7 +138,7 @@ public class SurveyActivity extends AppCompatActivity
 
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
-        if (!gotSurvey) {
+        if (!gotSurvey && !recordedResponses && !recordedFeedback) {
             Log.d(TAG, "got survey questions from loader");
             Log.d(TAG, "data: " + data);
             try {
@@ -150,7 +166,7 @@ public class SurveyActivity extends AppCompatActivity
             }
             gotSurvey = true;
         }
-        else {
+        else if (gotSurvey && !recordedResponses && !recordedFeedback) {
             // check return message from update survey loader
             AlertDialog.Builder builder;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -175,6 +191,43 @@ public class SurveyActivity extends AppCompatActivity
                 builder.setMessage(getResources().getString(R.string.track_survey_status_error));
             }
             else if (data.equals("ADDSUCCESS")) {
+                /*Intent dashIntent = new Intent(this, DashboardActivity.class);
+                startActivityForResult(dashIntent, 1);*/
+                recordedResponses = true;
+                Bundle args = new Bundle();
+                args.putInt(IHC_USERID_KEY, user.getId());
+                args.putInt(IHC_APPRATING_KEY, (int)mAppRatingRB.getRating());
+                args.putString(IHC_APPCOMMENT_KEY, mAppCommentET.getText().toString());
+                getSupportLoaderManager().initLoader(IHC_RECORD_FEEDBACK_LOADER_ID, args, this);
+
+            }
+        }
+        else if (gotSurvey && recordedResponses && !recordedFeedback) {
+            // check return message from update survey loader
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            }
+            else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("Error");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Close alert. User can try action again.
+                }
+            });
+            builder.setIcon(android.R.drawable.ic_dialog_alert);
+
+            if (data.equals("ADDERROR")) {
+                builder.setMessage(getResources().getString(R.string.add_survey_responses_error));
+                builder.show();
+            } else if (data.equals("TRACKERROR")) {
+                builder.setMessage(getResources().getString(R.string.track_survey_status_error));
+            }
+            else if (data.equals("ADDSUCCESS")) {
+                recordedFeedback = true;
                 Intent dashIntent = new Intent(this, DashboardActivity.class);
                 startActivityForResult(dashIntent, 1);
             }

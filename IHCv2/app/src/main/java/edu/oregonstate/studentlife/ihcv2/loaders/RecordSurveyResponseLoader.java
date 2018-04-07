@@ -45,7 +45,7 @@ public class RecordSurveyResponseLoader extends AsyncTaskLoader<String> {
 
     @Override
     public String loadInBackground() {
-        Log.d(TAG, "updating survey responses with URL: " + IHC_UPDATE_RESPONSE_URL);
+        Log.d(TAG, "adding survey responses with URL: " + IHC_UPDATE_RESPONSE_URL);
 
         try {
             URL url = new URL(IHC_UPDATE_RESPONSE_URL);
@@ -74,7 +74,7 @@ public class RecordSurveyResponseLoader extends AsyncTaskLoader<String> {
                     break;
                 }
 
-                Log.d(TAG, "Received script response: " + sb.toString());
+                Log.d(TAG, "Received script1 response: " + sb.toString());
             }
 
             return sb.toString();

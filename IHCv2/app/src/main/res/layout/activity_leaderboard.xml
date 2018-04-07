@@ -16,57 +16,74 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/ll_leaderboard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@color/colorPrimaryDark">
+            android:orientation="vertical">
 
-            <TableLayout
+            <LinearLayout
+                android:id="@+id/ll_leaderboard_table_header"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/leaderboard_item_height"
-                android:orientation="vertical"
-                android:stretchColumns="0,1">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/colorPrimaryDark">
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/leaderboard_item_height">
-                <TextView
-                    android:id="@+id/user_name_header"
+                <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/leaderboard_item_height"
-                    android:paddingLeft="10dp"
-                    android:text="NAME"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorAccent"
-                    android:gravity="start|center_vertical"
-                    android:lines="1"/>
+                    android:orientation="vertical"
+                    android:stretchColumns="0,1">
 
-                <TextView
-                    android:id="@+id/user_stamp_count_header"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/leaderboard_item_height"
-                    android:paddingRight="10dp"
-                    android:text="STAMPS"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorAccent"
-                    android:gravity="end|center_vertical"
-                    android:lines="1"/>
-                </TableRow>
-            </TableLayout>
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/leaderboard_item_height">
+                        <TextView
+                            android:id="@+id/user_name_header"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/leaderboard_item_height"
+                            android:paddingLeft="10dp"
+                            android:text="NAME"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorAccent"
+                            android:gravity="start|center_vertical"
+                            android:lines="1"/>
+
+                        <TextView
+                            android:id="@+id/user_stamp_count_header"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/leaderboard_item_height"
+                            android:paddingRight="10dp"
+                            android:text="STAMPS"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorAccent"
+                            android:gravity="end|center_vertical"
+                            android:lines="1"/>
+                    </TableRow>
+                </TableLayout>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/v_leaderboard_header"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_below="@id/ll_leaderboard_table_header"
+                android:background="@color/colorPrimaryDark"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_leaderboard_list"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/v_leaderboard_header"/>
 
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="@color/colorPrimaryDark"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_leaderboard_list"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="56dp"
+            android:layout_below="@id/ll_leaderboard" />
 
         <android.support.design.widget.BottomNavigationView
             xmlns:android="http://schemas.android.com/apk/res/android"

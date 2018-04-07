@@ -28,10 +28,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:background="@color/dark_gray"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="@string/app_rating"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20sp"
+        android:fontFamily="@font/stratum2_medium"/>
+
+    <RatingBar
+        android:id="@+id/rb_app_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:numStars="5"
+        android:stepSize="1.0"/>
+
+    <EditText
+        android:id="@+id/et_app_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:hint="@string/event_comment_hint"/>
+
     <Button
         android:id="@+id/btn_submit_survey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/submit_survey_message"/>
+        android:text="@string/submit_survey_message"
+        android:textSize="15sp"
+        android:fontFamily="@font/stratum2_medium"/>
 
 </LinearLayout>
