@@ -40,15 +40,15 @@
          $level = "bronze";
       }
 
-      $result = $mysqli->query("SELECT prizeid FROM ihc_prizes");
+      /*$result = $mysqli->query("SELECT prizeid FROM ihc_prizes");
       while ($row = $result->fetch_assoc()) {
          $prizeids[] = $row;
       }
 
-      $newprizeid = $prizeids[count($prizeids)-1]['prizeid'] + 1;
+      $newprizeid = $prizeids[count($prizeids)-1]['prizeid'] + 1;*/
 
       /* ADD EVENT TO DATABASE */
-      $result = $mysqli->query("INSERT INTO ihc_prizes (prizeid, name, level) VALUES ('$newprizeid', '$name', '$level')");
+      $result = $mysqli->query("INSERT INTO ihc_prizes (name, level) VALUES ('$name', '$level')");
 
       $url = "";
 

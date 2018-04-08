@@ -12,7 +12,7 @@
       <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
       <script>
-      
+
       function validateForm() {
          var questionField = document.forms["questionForm"]["question"].value;
          var choicesField = document.forms["questionForm"]["choices"].value;
@@ -41,14 +41,15 @@
          <div class="ui divider"></div><br>
 
          <p class="requirednote">* Denotes a required field</p><br>
-            <form name="questionForm" onsubmit="return validateForm()" action="./admin_server/add_survey_server.php" method="post"  <div class="elem">
-                  <span class="requirednote">*</span>
-                  Question: <input class="inputbox" type="text" name="question"><br><br>
+         <form name="questionForm" onsubmit="return validateForm()" action="./admin_server/add_survey_server.php" method="post">
+            <div class="elem">
+               <span class="requirednote">*</span>
+               Question: <input class="inputbox" type="text" name="question"><br><br>
             </div>
             <div class="elem">
-                  <span class="requirednote">*</span>
-                  Choices: <input class="inputbox" type="text" name="choices"><br><br>
-                  <span class="requirednote"><strong>Please separate answer choices with a comma.</strong></span><br><br>
+               <span class="requirednote">*</span>
+               Choices: <input class="inputbox" type="text" name="choices"><br><br>
+               <span class="requirednote"><strong>Please separate answer choices with a comma.</strong></span><br><br>
             </div>
             <input class="ui button" type="submit">
          </form>

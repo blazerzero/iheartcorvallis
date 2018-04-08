@@ -31,15 +31,15 @@
       $description = $_POST["description"];
       $link = $_POST["link"];
 
-      $result = $mysqli->query("SELECT id FROM ihc_resource_info");
+      /*$result = $mysqli->query("SELECT id FROM ihc_resource_info");
       while ($row = $result->fetch_assoc()) {
          $resourceids[] = $row;
       }
 
-      $newresourceid = $resourceids[count($resourceids)-1]['id'] + 1;
+      $newresourceid = $resourceids[count($resourceids)-1]['id'] + 1;*/
 
       /* ADD RESOURCE TO DATABASE */
-      $result = $mysqli->query("INSERT INTO ihc_resource_info (id, title, description, link) VALUES ('$newresourceid', '$title', '$description', '$link')");
+      $result = $mysqli->query("INSERT INTO ihc_resource_info (title, description, link) VALUES ('$title', '$description', '$link')");
 
       $url = "";
 

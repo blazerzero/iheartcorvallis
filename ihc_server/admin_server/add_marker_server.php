@@ -50,15 +50,15 @@
          $type = "OSU Campus";
       }
 
-      $result = $mysqli->query("SELECT id FROM ihc_resources");
+      /*$result = $mysqli->query("SELECT id FROM ihc_resources");
       while ($row = $result->fetch_assoc()) {
          $markerids[] = $row;
       }
 
-      $newmarkerid = $markerids[count($markerids)-1]['id'] + 1;
+      $newmarkerid = $markerids[count($markerids)-1]['id'] + 1;*/
 
       /* ADD EVENT TO DATABASE */
-      $result = $mysqli->query("INSERT INTO ihc_resources (id, name, address, type) VALUES ('$newmarkerid', '$name', '$address', '$type')");
+      $result = $mysqli->query("INSERT INTO ihc_resources (name, address, type) VALUES ('$name', '$address', '$type')");
 
       $url = "";
 
