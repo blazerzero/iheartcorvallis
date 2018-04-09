@@ -26,6 +26,7 @@ public class LoginPageActivity extends AppCompatActivity {
 
     Session session;
     private ImageView iv;
+    public final static String IHC_STATUS_KEY = "login";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

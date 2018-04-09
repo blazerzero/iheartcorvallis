@@ -41,13 +41,15 @@ import java.util.StringTokenizer;
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.loaders.SignupLoader;
+import edu.oregonstate.studentlife.ihcv2.loaders.StudentSignupLoader;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class SignupPageActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
+public class SignupPageActivity extends AppCompatActivity
+        implements LoaderManager.LoaderCallbacks<String> {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -59,7 +61,9 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderManag
     public final static String IHC_LASTNAME_KEY = "lastname";
     public final static String IHC_EMAIL_KEY = "email";
     public final static String IHC_PASSWORD_KEY = "password";
-    private final static int IHC_SIGNUP_LOADER_ID = 0;
+    public final static String IHC_STATUS_KEY = "signup";
+    private final static int IHC_NONSTUDENT_SIGNUP_LOADER_ID = 0;
+    private final static int IHC_STUDENT_SIGNUP_LOADER_ID = 1;
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -80,6 +84,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderManag
     private EditText mPasswordConfirmView;
     private View mProgressView;
     private View mLoginFormView;
+    private TextView mStudentLoginLinkTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,12 +97,13 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderManag
 
         overridePendingTransition(0,0);
 
-        TextView studentLink = (TextView) findViewById(R.id.studentlink);
-        studentLink.setOnClickListener(new View.OnClickListener() {
+        mStudentLoginLinkTV = (TextView) findViewById(R.id.studentlink);
+        mStudentLoginLinkTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SignupPageActivity.this, DashboardActivity.class);
-                startActivity(intent);
+                /*Intent intent = new Intent(SignupPageActivity.this, DashboardActivity.class);
+                startActivity(intent);*/
+                getSupportLoaderManager().initLoader(IHC_STUDENT_SIGNUP_LOADER_ID, null, SignupPageActivity.this);
             }
         });
 
@@ -289,7 +295,7 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderManag
                 args.putString(IHC_LASTNAME_KEY, lastname);
                 args.putString(IHC_EMAIL_KEY, email);
                 args.putString(IHC_PASSWORD_KEY, password);
-                getSupportLoaderManager().initLoader(IHC_SIGNUP_LOADER_ID, args, this);
+                getSupportLoaderManager().initLoader(IHC_NONSTUDENT_SIGNUP_LOADER_ID, args, this);
                 //new SignupAuthProcess(this).execute(firstname, lastname, email, password);
             }
             else {
@@ -300,7 +306,15 @@ public class SignupPageActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     public Loader<String> onCreateLoader(int id, final Bundle args) {
+      if (id == IHC_NONSTUDENT_SIGNUP_LOADER_ID) {
         return new SignupLoader(this, args);
+      }
+      else if (id == IHC_STUDENT_SIGNUP_LOADER_ID) {
+        return new StudentSignupLoader(this);
+      }
+      else {
+          return null;
+      }
     }
 
     @Override
