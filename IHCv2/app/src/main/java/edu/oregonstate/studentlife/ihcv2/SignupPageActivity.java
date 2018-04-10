@@ -103,7 +103,9 @@ public class SignupPageActivity extends AppCompatActivity
             public void onClick(View v) {
                 /*Intent intent = new Intent(SignupPageActivity.this, DashboardActivity.class);
                 startActivity(intent);*/
-                getSupportLoaderManager().initLoader(IHC_STUDENT_SIGNUP_LOADER_ID, null, SignupPageActivity.this);
+                Intent intent = new Intent(SignupPageActivity.this, CASSWebView.class);
+                startActivity(intent);
+                //getSupportLoaderManager().initLoader(IHC_STUDENT_SIGNUP_LOADER_ID, null, SignupPageActivity.this);
             }
         });
 
