@@ -220,7 +220,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CASSWebView"
+            android:name=".CASWebViewActivity"
             android:label="OSU Student Login"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">

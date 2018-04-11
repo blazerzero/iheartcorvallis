@@ -27,6 +27,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -85,6 +86,7 @@ public class SignupPageActivity extends AppCompatActivity
     private View mProgressView;
     private View mLoginFormView;
     private TextView mStudentLoginLinkTV;
+    private WebView mONIDSignupWV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,14 +99,19 @@ public class SignupPageActivity extends AppCompatActivity
 
         overridePendingTransition(0,0);
 
+        mONIDSignupWV = (WebView) findViewById(R.id.wv_cas_signup);
+        mONIDSignupWV.setVisibility(View.GONE);
+
         mStudentLoginLinkTV = (TextView) findViewById(R.id.studentlink);
         mStudentLoginLinkTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /*Intent intent = new Intent(SignupPageActivity.this, DashboardActivity.class);
                 startActivity(intent);*/
-                Intent intent = new Intent(SignupPageActivity.this, CASSWebView.class);
-                startActivity(intent);
+                //Intent intent = new Intent(SignupPageActivity.this, CASWebViewActivity.class);
+                //startActivity(intent);
+                mONIDSignupWV.setVisibility(View.VISIBLE);
+                mONIDSignupWV.loadUrl("https://login.oregonstate.edu/idp/profile/cas/login?service=http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/studentsignup.php");
                 //getSupportLoaderManager().initLoader(IHC_STUDENT_SIGNUP_LOADER_ID, null, SignupPageActivity.this);
             }
         });

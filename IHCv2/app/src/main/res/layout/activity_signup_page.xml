@@ -8,6 +8,11 @@
     android:scrollbars="vertical"
     android:orientation="vertical">
 
+    <WebView
+        android:id="@+id/wv_cas_signup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <ImageView
         android:id="@+id/iv_aerial"
         android:layout_width="fill_parent"
