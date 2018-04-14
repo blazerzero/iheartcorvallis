@@ -95,7 +95,6 @@ public class SettingsFragment extends PreferenceFragment
                 userGradePref.setSummary("Graduate Student");
             }
             userGradePref.setValue(String.valueOf(userGrade));
-            screen.removePreference(userBirthDatePref);
         }
         else {
             userTypePref.setEntries(R.array.pref_user_type_entries_resident);
@@ -107,8 +106,8 @@ public class SettingsFragment extends PreferenceFragment
             }
             userTypePref.setValue(String.valueOf(userType));
             screen.removePreference(userGradePref);
-            setBirthDateSummary(userBdDay, userBdMonth - 1, userBdYear);
         }
+        setBirthDateSummary(userBdDay, userBdMonth - 1, userBdYear);
 
     }
 

@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,6 +36,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringTokenizer;
@@ -88,6 +90,8 @@ public class SignupPageActivity extends AppCompatActivity
     private TextView mStudentLoginLinkTV;
     private WebView mONIDSignupWV;
 
+    private final static String TAG = SignupPageActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,9 +114,10 @@ public class SignupPageActivity extends AppCompatActivity
                 startActivity(intent);*/
                 //Intent intent = new Intent(SignupPageActivity.this, CASWebViewActivity.class);
                 //startActivity(intent);
+                Log.d(TAG, new Date().toString());
                 mONIDSignupWV.setVisibility(View.VISIBLE);
                 mONIDSignupWV.loadUrl("https://login.oregonstate.edu/idp/profile/cas/login?service=http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/studentsignup.php");
-                //getSupportLoaderManager().initLoader(IHC_STUDENT_SIGNUP_LOADER_ID, null, SignupPageActivity.this);
+                getSupportLoaderManager().initLoader(IHC_STUDENT_SIGNUP_LOADER_ID, null, SignupPageActivity.this);
             }
         });
 

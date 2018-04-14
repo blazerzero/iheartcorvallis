@@ -6,57 +6,56 @@
 
   <?php
   require './admin_server/db.php';
-  $users = $comments = array();
-  $allRatings = $studentRatings = array();
-  $allNames = $studentNames = array();
-  $allTypes = $studentTypes = array();
+  $allTuples = $studentTuples = array();
+  $sumAllRating = $sumStudentRating = 0;
+  $avgAllRating = $avgStudentRating = 0;
+  $numAllZeroes = $numStudentZeroes = 0;
 
   $fbResult = $mysqli->query("SELECT * FROM ihc_feedback");
   if ($fbResult->num_rows > 0) {
-    while($row = $fbResult->fetch_assoc()) {
-      if ($row['comment'] != "") {
-        $comments[] = $row['comment'];
-      }
-      if ($row['rating'] > 0) {
-        $allRatings[] = $row['rating'];
-      }
-      $id = $row['userid'];
-      $stmt = $mysqli->prepare("SELECT * FROM ihc_users WHERE id=?");
-      $stmt->bind_param('s', $id);
+    while($fbRow = $fbResult->fetch_assoc()) {
+      $userid = $fbRow['userid'];
+      $dateandtime = $fbRow['dateandtime'];
+      $rating = $fbRow['rating'];
+      $sumAllRating += $rating;
+      if ($rating == 0) $numAllZeroes++;
+      $comment = $fbRow['comment'];
+      //$allTuples[] = array();
+
+      $stmt->bind_param('i', $userid);
       $stmt->execute();
-      $userResult = $stmt->get_result();
-      if ($userResult->num_rows > 0) {
-        $user = $userResult->fetch_assoc();
-        $allNames[] = $user['firstname'] . " " . $user['lastname'];
-        $allTypes[] = $user['type'];
-        if ($user['type'] < 2) {
-          if ($row['rating'] > 0) {
-            $studentRatings[] = $row['rating'];
-            $studentTypes[] = $user['type'];
-          }
-          $studentNames[] = $user['firstname'] . " " . $user['lastname'];
+      $userRes = $stmt->get_result();
+      if ($userRes->num_rows() > 0) {
+        $userRow = $userRes->fetch_assoc();
+        $name = $userRow['firstname'] . " " . $userRow['lastname'];
+        //$allTuples[][] += ["name" => $name];
+        $type = "";
+        if ($userRow['type'] == 0) $type = "Domestic Student";
+        else if ($userRow['type'] == 1) $type = "International Student";
+        else if ($userRow['type'] == 2) $type = "Resident";
+        else if ($userRow['type'] == 3) $type = "Visitor";
+        $allTuples[] = array("userid" => $userid, "dateandtime" => $dateandtime, "name" => $name, "type" => $type, "comment" => $comment);
+        if ($userRow['type'] < 2) {
+          $sumStudentRating += $rating;
+          if ($rating == 0)$numStudentZeroes++;
+          //$studentTuples[] = array();
+          $studentTuples[] = array("userid" => $userid, "dateandtime" => $dateandtime, "name" => $name, "type" => $type, "comment" => $comment);
         }
       }
     }
+
+    $avgAllRating = $sumAllRating / (count($allTuples) - $numAllZeroes);
+    $avgStudentRating = $sumStudentRating / (count($studentTuples) - $numStudentZeroes);
+    $allRatingCounts = array_count_values(array_column($allTuples, 'rating'));
+    $studentRatingCounts = array_count_values(array_column($studentTuples, 'rating'));
+
   }
 
-  $avgAllRating = array_sum($allRatings) / count($allRatings);
-  $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
-  ?>
-
-  <?php
-  function getUserInfo($id) {
-    $result = $mysqli->query("SELECT * FROM ihc_users WHERE id='$id'");
-    if ($result->num_rows > 0) {
-      $user = $result->fetch_assoc();
-      return $user;
-    }
-  }
   ?>
 
   <html>
   <head>
-    <title>Event Summary: <?php echo $event['name']; ?> - I Heart Corvallis Administrative Suite</title>
+    <title>View App Feedback - I Heart Corvallis Administrative Suite</title>
     <link type="text/css" rel="stylesheet" href="./css/Semantic-UI-CSS-master/semantic.css"/>
     <link type="text/css" rel="stylesheet" href="./css/stylesheet.css"/>
     <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
@@ -67,13 +66,18 @@
     google.charts.setOnLoadCallback(drawAllRatingsChart);
     google.charts.setOnLoadCallback(drawStudentRatingsChart);
     function drawAllRatingsChart() {
+      var numFive = <?php echo $allRatingCounts[5]; ?>;
+      var numFour = <?php echo $allRatingCounts[4]; ?>;
+      var numThree = <?php echo $allRatingCounts[3]; ?>;
+      var numTwo = <?php echo $allRatingCounts[2]; ?>;
+      var numOne = <?php echo $allRatingCounts[1]; ?>;
       var data = new google.visualization.arrayToDataTable([
         ['Rating', 'Users'],
-        ['5', <?php echo count(array_keys($allRatings, 5)); ?>],
-        ['4', <?php echo count(array_keys($allRatings, 4)); ?>],
-        ['3', <?php echo count(array_keys($allRatings, 3)); ?>],
-        ['2', <?php echo count(array_keys($allRatings, 2)); ?>],
-        ['1', <?php echo count(array_keys($allRatings, 1)); ?>]
+        ['5', numFive],
+        ['4', numFour],
+        ['3', numThree],
+        ['2', numTwo],
+        ['1', numOne]
       ]);
 
       var options = {
@@ -89,13 +93,18 @@
     }
 
     function drawStudentRatingsChart() {
+      var numFive = <?php echo $studentRatingCounts[5]; ?>;
+      var numFour = <?php echo $studentRatingCounts[4]; ?>;
+      var numThree = <?php echo $studentRatingCounts[3]; ?>;
+      var numTwo = <?php echo $studentRatingCounts[2]; ?>;
+      var numOne = <?php echo $studentRatingCounts[1]; ?>;
       var data = new google.visualization.arrayToDataTable([
         ['Rating', 'Students'],
-        ['5', <?php echo count(array_keys($studentRatings, 5)); ?>],
-        ['4', <?php echo count(array_keys($studentRatings, 4)); ?>],
-        ['3', <?php echo count(array_keys($studentRatings, 3)); ?>],
-        ['2', <?php echo count(array_keys($studentRatings, 2)); ?>],
-        ['1', <?php echo count(array_keys($studentRatings, 1)); ?>]
+        ['5', numFive],
+        ['4', numFour],
+        ['3', numThree],
+        ['2', numTwo],
+        ['1', numOne]
       ]);
 
       var options = {
@@ -122,10 +131,12 @@
     <div class="mainbody">
       <left class="sectionheader"><h1>View App Feedback</h1></left><br>
       <div class="ui divider"></div><br>
+
       <div>
         <h2>App Rating</h2>
         <h4>All Users: <?php echo $avgAllRating; ?></h4>
-        <h4>Students: <?php echo $avgStudentRating; ?></h4>
+        <h4>Students Only: <?php echo $avgStudentRating; ?></h4>
+
         <table>
           <tr>
             <td><div id="all_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td>
@@ -133,37 +144,33 @@
           </tr>
         </table>
       </div>
+
       <div>
-        <?php if (count($comments) > 0) { ?>
-          <h2>User Feedback</h2>
+        <?php if (count($allTuples) > 0) { ?>
+          <h2>Feedback: All Users</h2>
           <table class="ui celled padded table">
             <thead>
               <tr>
                 <th class="single line">Name</th>
+                <th>Date and Time</th>
                 <th>Status</th>
+                <th>Rating</th>
                 <th>Comment</th>
               </tr>
             </thead>
             <tbody>
-              <?php
-              for($i = 0; $i < max(count($allRatings), count($comments)); $i++) {
-                $usertype = "";
-                if ($allTypes[$i] == 0) $usertype = "Domestic Student";
-                else if ($allTypes[$i] == 1) $usertype = "International Student";
-                else if ($allTypes[$i] == 2) $usertype = "Resident";
-                else $allTypes[$i] = "Visitor";
-                ?>
+              <?php foreach ($allTuples as $tuple) { ?>
                 <tr>
-                  <td><?php echo $allNames[$i]; ?></td>
-                  <td><?php echo $usertype; ?></td>
-                  <td><?php echo $comments[$i]; ?></td>
+                  <td><?php echo $tuple['name']; ?></td>
+                  <td><?php echo $tuple['dateandtime']; ?></td>
+                  <td><?php echo $tuple['type']; ?></td>
+                  <td><?php echo $tuple['rating']; ?></td>
+                  <td><?php echo $tuple['comment']; ?></td>
                 </tr>
               <?php } ?>
             </tbody>
-          </table>
         <?php } ?>
       </div>
-
     </div>
   </body>
   </html>

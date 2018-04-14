@@ -1,5 +1,6 @@
 package edu.oregonstate.studentlife.ihcv2;
 
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -13,14 +14,19 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.StringTokenizer;
 
 import edu.oregonstate.studentlife.ihcv2.adapters.SurveyAdapter;
@@ -44,6 +50,17 @@ public class SurveyActivity extends AppCompatActivity
     private RecyclerView mSurveyContentsRV;
     private SurveyAdapter mSurveyAdapter;
     private Button mSubmitSurveyBtn;
+    private TextView mSkipSurveyTV;
+
+    private TextView mUserBirthDateTV;
+    private TextView mUserTypeTV;
+    private Spinner mUserTypeSP;
+    private TextView mUserGradeTV;
+    private DatePicker mUserBirthDateDPListener;
+
+    private int userBdDay = 1;
+    private int userBdMonth = 1;
+    private int userBdYear = 2000;
 
     private User user;
     private ArrayList<Integer> questionIDs;
@@ -62,6 +79,25 @@ public class SurveyActivity extends AppCompatActivity
     public final static String IHC_RESPONSES_KEY = "responses";
     public final static String IHC_APPRATING_KEY = "app rating";
     public final static String IHC_APPCOMMENT_KEY = "app comment";
+
+    private DatePickerDialog.OnDateSetListener birthDateListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            mUserBirthDateTV.setText(createDate(year, month, dayOfMonth));
+        }
+    };
+
+    public String createDate(int year, int month, int dayOfMonth) {
+        Calendar cal = Calendar.getInstance();
+        userBdDay = dayOfMonth;
+        userBdMonth = month;
+        userBdYear = year;
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month);
+        cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        SimpleDateFormat sdfBirthDate = new SimpleDateFormat("MM/dd/yy");
+        return "Birthdate: " + sdfBirthDate.format(cal.getTime());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +123,18 @@ public class SurveyActivity extends AppCompatActivity
             mSurveyHeaderTV.setText(getString(R.string.survey_update_msg));
         }
 
+        mUserBirthDateTV = (TextView) findViewById(R.id.tv_user_age);
+        mUserTypeTV = (TextView) findViewById(R.id.tv_user_type);
+        mUserTypeSP = (Spinner) findViewById(R.id.sp_user_type);
+        mUserGradeTV = (TextView) findViewById(R.id.tv_user_grade);
+
+        mUserBirthDateTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(SurveyActivity.this, R.style.DialogTheme, birthDateListener, userBdYear, userBdMonth, userBdDay).show();
+            }
+        });
+
         mAppRatingRB = (RatingBar) findViewById(R.id.rb_app_rating);
         mAppCommentET = (EditText) findViewById(R.id.et_app_comment);
         mSubmitSurveyBtn = (Button) findViewById(R.id.btn_submit_survey);
@@ -107,6 +155,14 @@ public class SurveyActivity extends AppCompatActivity
                 Log.d(TAG, "before init loader");
                 getSupportLoaderManager().initLoader(IHC_RECORD_RESPONSES_LOADER_ID, args, SurveyActivity.this);
                 Log.d(TAG, "after init loader");
+            }
+        });
+
+        mSkipSurveyTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent dashIntent = new Intent(SurveyActivity.this, DashboardActivity.class);
+                startActivity(dashIntent);
             }
         });
 

@@ -124,6 +124,7 @@
     <string name="add_survey_responses_error">Error saving your responses.</string>
     <string name="track_survey_status_error">Error saving your response status.</string>
     <string name="app_rating">Rate the App</string>
+    <string name="survey_skip_message">SKIP</string>
 
     <!-- Bottom Navigation Buttons -->
     <string name="bottom_nav_events">Events</string>
