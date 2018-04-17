@@ -74,7 +74,7 @@ function generatePIN() {
          <div class="ui divider"></div><br>
 
          <p class="requirednote">* Denotes a required field</p><br>
-         <form name="eventForm" onsubmit="return validateForm()" action="./admin_server/add_events_server.php" method="post">
+         <form name="eventForm" onsubmit="return validateForm()" action="./admin_server/add_events_server.php" method="post" enctype="multipart/form-data">
             <div class="elem">
                <span class="requirednote">*</span>
                Name of Event: <input class="inputbox" type="text" name="name"><br><br>
