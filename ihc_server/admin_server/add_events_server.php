@@ -88,7 +88,7 @@
       }
    
       /* ADD EVENT TO DATABASE */
-      $result = $mysqli->query("INSERT INTO ihc_events (eventid, name, location, address, startdt, enddt, description, image, link1, link2, link3, pin) VALUES ('$totalEventCount', '$name', '$location', '$fullAddress', '$startdt', '$enddt', '$description', '$image', '$link1', '$link2', '$link3', '$pin')");
+      $result = $mysqli->query("INSERT INTO ihc_events (eventid, name, location, address, startdt, enddt, description, image, link1, link2, link3, pin) VALUES ('$totalEventCount', '$name', '$location', '$fullAddress', '$startdt', '$enddt', '$description', '$file_name', '$link1', '$link2', '$link3', '$pin')");
 
       $url = "";
 
