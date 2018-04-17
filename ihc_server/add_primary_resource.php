@@ -40,7 +40,7 @@
          <div class="ui divider"></div><br>
 
          <p class="requirednote">* Denotes a required field</p><br>
-         <form name="resourceForm" onsubmit="return validateForm()" action="./admin_server/add_primary_resource_server.php" method="post">
+         <form name="resourceForm" onsubmit="return validateForm()" action="./admin_server/add_primary_resource_server.php" method="post" enctype="multipart/form-data">
             <div class="elem">
                <span class="requirednote">*</span>
                Resource Title: <input class="inputbox" type="text" name="title"><br><br>
@@ -48,6 +48,10 @@
             <div class="elem">
                <span class="requirednote">*</span>
                Description: <textarea class="inputbox" rows="4" cols="50" name="description"></textarea><br><br>
+            </div>
+            <div class="elem">
+               <span class="requirednote">*</span>
+               Cover Image: <input class="ui button" type="file" name="image"><br><br>
             </div>
             <div class="elem">
                Link: <input class="inputbox" type="text" name="link"><br><br>

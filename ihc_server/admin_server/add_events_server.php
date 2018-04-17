@@ -68,7 +68,7 @@
       
       $expensions= array("jpeg","jpg","png");
       
-	  $new_dir = "../images/".$file_name;
+	  $new_dir = "../images/events_images".$file_name;
 	  
       if(in_array($file_ext,$expensions)=== false){
          $errors[]="extension not allowed, please choose a JPEG or PNG file.";

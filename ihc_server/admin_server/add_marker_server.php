@@ -57,6 +57,8 @@
 
       $newmarkerid = $markerids[count($markerids)-1]['id'] + 1;*/
 
+
+
       /* ADD EVENT TO DATABASE */
       $result = $mysqli->query("INSERT INTO ihc_resources (name, address, type) VALUES ('$name', '$address', '$type')");
 
