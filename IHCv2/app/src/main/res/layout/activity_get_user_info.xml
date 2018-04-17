@@ -5,25 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="edu.oregonstate.studentlife.ihcv2.SurveyActivity">
+    tools:context="edu.oregonstate.studentlife.ihcv2.GetUserInfoActivity">
 
     <TextView
-        android:id="@+id/tv_survey_header"
+        android:id="@+id/tv_userinfo_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
-        android:text="@string/survey_fill_msg"
+        android:text="@string/userinfo_fill_msg"
         android:textSize="18sp"
         android:textColor="@color/colorPrimaryDark"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:background="@color/dark_gray"/>
-
-    <!--<TextView
+    <TextView
         android:id="@+id/tv_user_age"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,7 +39,8 @@
         android:layout_height="wrap_content"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
-        android:paddingTop="15dp"/>
+        android:paddingTop="15dp"
+        android:text="@string/userinfo_type_prompt"/>
 
     <Spinner
         android:id="@+id/sp_user_type"
@@ -66,7 +60,8 @@
         android:layout_height="wrap_content"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
-        android:paddingTop="15dp"/>
+        android:paddingTop="15dp"
+        android:text="@string/userinfo_grade_prompt"/>
 
     <Spinner
         android:id="@+id/sp_user_grade"
@@ -78,61 +73,27 @@
         android:layout_height="1dp"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
-        android:background="@color/light_gray"/>-->
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_survey_contents"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:background="@color/dark_gray"/>
+        android:background="@color/light_gray"/>
 
     <TextView
+        android:id="@+id/tv_pick_profilepic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:text="@string/app_rating"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="20sp"
-        android:fontFamily="@font/stratum2_medium"/>
-
-    <RatingBar
-        android:id="@+id/rb_app_rating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:numStars="5"
-        android:stepSize="1.0"/>
-
-    <EditText
-        android:id="@+id/et_app_comment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:hint="@string/event_comment_hint"/>
+        android:paddingTop="15dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="5dp"
+        android:text="@string/pick_profilepic_msg"
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimaryDark"/>
 
     <Button
-        android:id="@+id/btn_submit_survey"
+        android:id="@+id/btn_submit_userinfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/submit_survey_message"
+        android:layout_margin="5dp"
+        android:text="@string/submit_userinfo"
         android:textSize="15sp"
-        android:fontFamily="@font/stratum2_medium"/>
-
-    <TextView
-        android:id="@+id/tv_skip_survey"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/survey_skip_message"
-        android:textSize="13sp"
         android:fontFamily="@font/stratum2_medium"/>
 
 </LinearLayout>

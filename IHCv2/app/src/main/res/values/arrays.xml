@@ -28,12 +28,12 @@
         <item>@string/pref_user_type_intl_student_value</item>
     </string-array>
 
-    <string-array name="pref_user_type_entries_resident">
+    <string-array name="pref_user_type_entries_nonstudent">
         <item>@string/pref_user_type_dom_student</item>
         <item>@string/pref_user_type_intl_student</item>
     </string-array>
 
-    <string-array name="pref_user_type_values_resident">
+    <string-array name="pref_user_type_values_nonstudent">
         <item>@string/pref_user_type_resident_value</item>
         <item>@string/pref_user_type_visitor_value</item>
     </string-array>

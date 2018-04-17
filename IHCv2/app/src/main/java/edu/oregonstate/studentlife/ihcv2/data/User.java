@@ -2,6 +2,7 @@ package edu.oregonstate.studentlife.ihcv2.data;
 
 import android.support.v7.app.AppCompatActivity;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,7 +20,6 @@ public class User extends AppCompatActivity implements Serializable {
     private int grade;
     private Date birthDate;
     private int type;
-    //private LeaderboardUser leaderboardUser;
 
     public User(String firstName, String lastName, String email, int id, int stampCount, int didSurvey, int grade, Date birthDate, int type) {
         this.firstName = firstName;
@@ -31,7 +31,6 @@ public class User extends AppCompatActivity implements Serializable {
         this.grade = grade;
         this.birthDate = birthDate;
         this.type = type;
-        //this.leaderboardUser = new LeaderboardUser(firstName, lastName, stampCount);
     }
 
     public String getFirstName() {

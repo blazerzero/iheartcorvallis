@@ -1,11 +1,16 @@
 package edu.oregonstate.studentlife.ihcv2;
 
 import android.annotation.SuppressLint;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.content.Context;
 
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,12 +33,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.content.DialogInterface;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,6 +54,8 @@ import edu.oregonstate.studentlife.ihcv2.adapters.EventListAdapter;
 import edu.oregonstate.studentlife.ihcv2.adapters.PassportAdapter;
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.Event;
+import edu.oregonstate.studentlife.ihcv2.data.IHCDBContract;
+import edu.oregonstate.studentlife.ihcv2.data.IHCDBHelper;
 import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.EventLoader;
@@ -60,8 +69,8 @@ public class DashboardActivity extends AppCompatActivity
 
     private String email;
     private int numStamps;
-    public LinearLayout mProgIndicatorLL;
-    public LinearLayout mDashPassportLL;
+    private ImageView mProfilePictureIV;
+    private LinearLayout mProgIndicatorLL;
     public static final String EXTRA_USER = "User";
     private final static String IHC_USER_EMAIL_KEY = "IHC_USER_EMAIL";
     private final static int IHC_USER_LOADER_ID = 0;
@@ -90,8 +99,13 @@ public class DashboardActivity extends AppCompatActivity
 
     private static final String TAG = DashboardActivity.class.getSimpleName();
     private User user;
+    private File profilePicture;
 
     Session session;
+
+    private SQLiteDatabase mDB;
+    private String userStatus = null;
+
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +115,9 @@ public class DashboardActivity extends AppCompatActivity
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getSupportActionBar().setElevation(0);
         }
+
+        IHCDBHelper dbHelper = new IHCDBHelper(this);
+        mDB = dbHelper.getWritableDatabase();
 
         overridePendingTransition(0,0);
 
@@ -187,11 +204,13 @@ public class DashboardActivity extends AppCompatActivity
         mDashStampCountTV = (TextView) findViewById(R.id.tv_dash_stamp_count);
         mDashProgressTV = (TextView) findViewById(R.id.tv_dash_progress);
         mProgIndicatorLL = (LinearLayout) findViewById(R.id.progIndicator);
-       // mDashPassportLL = (LinearLayout) findViewById(R.id.ll_dash_passport);
 
         Bundle args = new Bundle();
         args.putString(IHC_USER_EMAIL_KEY, email);
         Intent intent = getIntent();
+        if (intent != null && intent.hasExtra(Constants.EXTRA_USER_STATUS)) {
+            userStatus = (String) intent.getSerializableExtra(Constants.EXTRA_USER_STATUS);
+        }
         if (intent != null && intent.hasExtra(Constants.EXTRA_USER)) {
             user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
             Log.d(TAG, "User ID: " + user.getId());
@@ -212,27 +231,6 @@ public class DashboardActivity extends AppCompatActivity
                 startActivity(prizeIntent);
             }
         });
-
-        /*mDashPassportLL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent passportIntent = new Intent(DashboardActivity.this, PassportActivity.class);
-                passportIntent.putExtra(Constants.EXTRA_USER, user);
-                startActivity(passportIntent);
-            }
-        });*/
-
-        /*if (intent != null && intent.hasExtra(Constants.EXTRA_CALLING_ACTIVITY_ID)) {
-            String callingActivity = (String) intent.getSerializableExtra(Constants.EXTRA_CALLING_ACTIVITY_ID);
-            if (callingActivity.equals(EventPINActivity.class.getSimpleName())
-                    && user.getStampCount() == getResources().getInteger(R.integer.bronzeThreshold)
-                    || user.getStampCount() == getResources().getInteger(R.integer.silverThreshold)
-                    || user.getStampCount() == getResources().getInteger(R.integer.goldThreshold)) {
-                Intent surveyIntent = new Intent (this, SurveyActivity.class);
-                surveyIntent.putExtra(Constants.EXTRA_USER, user);
-                startActivity(surveyIntent);
-            }
-        }*/
     }
 
     @Override
@@ -276,14 +274,23 @@ public class DashboardActivity extends AppCompatActivity
                     SimpleDateFormat sdfBirthDate = new SimpleDateFormat("yyyy-MM-dd");
                     Date birthDate = sdfBirthDate.parse(birthDateString);
 
+                    Log.d(TAG, "birthdate: " + birthDate.toString());
+                    Log.d(TAG, "grade: " + grade);
+
+                    if (birthDate.toString().equals("0000-00-00") || grade == 0) {
+                        Log.d(TAG, "about to get information from user");
+                        Intent getUserInfoIntent = new Intent(this, GetUserInfoActivity.class);
+                        getUserInfoIntent.putExtra(Constants.EXTRA_USER_STATUS, userStatus);
+                        getUserInfoIntent.putExtra(Constants.EXTRA_USER, user);
+                        startActivity(getUserInfoIntent);
+                    }
+                    
                     user = new User(firstname, lastname, email, id, numStamps, didsurvey, grade, birthDate, type);
                     if (didsurvey == 0) {
                         Intent surveyIntent = new Intent(this, SurveyActivity.class);
                         surveyIntent.putExtra(Constants.EXTRA_USER, user);
                         startActivity(surveyIntent);
                     }
-
-                    //mDashStampCountTV.setText("STAMPS: " + String.valueOf(numStamps));
 
                     gotUser = true;
                     getSupportLoaderManager().initLoader(IHC_PASSPORT_LOADER_ID, args, this);
@@ -665,9 +672,12 @@ public class DashboardActivity extends AppCompatActivity
     public boolean onPrepareOptionsMenu(Menu menu) {
         // session information is retrieved and displayed on nav menu
         //session = new Session(getApplicationContext());
-        HashMap<String, String> user = session.getUserDetails();
-        String name = user.get(Session.KEY_NAME);
-        String email = user.get(Session.KEY_EMAIL);
+        HashMap<String, String> userHash = session.getUserDetails();
+        String name = userHash.get(Session.KEY_NAME);
+        String email = userHash.get(Session.KEY_EMAIL);
+        mProfilePictureIV = (ImageView) findViewById(R.id.iv_profile_picture);
+        getProfilePicture();
+
         TextView sesName = (TextView) findViewById(R.id.sesName);
         TextView sesEmail = (TextView) findViewById(R.id.sesEmail);
         sesName.setText(name);
@@ -761,5 +771,42 @@ public class DashboardActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
+    }
+
+    private void getProfilePicture() {
+        Cursor cursor = mDB.query(
+                IHCDBContract.SavedImages.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                IHCDBContract.SavedImages.COLUMN_TIMESTAMP + " DESC"
+        );
+
+        ArrayList<File> savedImagesList = new ArrayList<File>();
+        while (cursor.moveToNext()) {
+            File savedImage;
+            Uri fileUri = Uri.parse(cursor.getString(
+                    cursor.getColumnIndex(IHCDBContract.SavedImages.COLUMN_IMAGE)
+            ));
+            savedImage = new File(fileUri.getPath());
+            savedImagesList.add(savedImage);
+        }
+        cursor.close();
+        Log.d(TAG, "number of images: " + savedImagesList.size());
+        if (savedImagesList.size() == 0) {
+            Log.d(TAG, "about to get information from user");
+            Intent getUserInfoIntent = new Intent(this, GetUserInfoActivity.class);
+            getUserInfoIntent.putExtra(Constants.EXTRA_USER_STATUS, userStatus);
+            getUserInfoIntent.putExtra(Constants.EXTRA_USER, user);
+            startActivity(getUserInfoIntent);
+        }
+        else {
+            profilePicture = savedImagesList.get(0);
+            Log.d(TAG, "path of image: " + profilePicture.getAbsolutePath());
+            Bitmap profilePictureBitmap = BitmapFactory.decodeFile(profilePicture.getAbsolutePath());
+            mProfilePictureIV.setImageBitmap(profilePictureBitmap);
+        }
     }
 }

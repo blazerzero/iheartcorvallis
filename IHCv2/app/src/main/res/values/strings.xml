@@ -85,6 +85,12 @@
     <string name="nav_logout">Logout</string>
 
     <!-- Preference (settings) strings -->
+    <string name="pref_user_firstname_key" translatable="false">pref_user_firstname</string>
+    <string name="pref_user_firstname_title">First Name</string>
+    <string name="pref_user_lastname_key" translatable="false">pref_user_lastname</string>
+    <string name="pref_user_lastname_title">Last Name</string>
+    <string name="pref_user_email_key" translatable="false">pref_user_email</string>
+    <string name="pref_user_email_title">Email</string>
     <string name="pref_user_grade_key" translatable="false">pref_user_grade</string>
     <string name="pref_user_grade_title">Grade</string>
     <string name="pref_user_grade_freshman">Freshman</string>
@@ -101,7 +107,7 @@
     <string name="pref_user_grade_doc_value" translatable="false">6</string>
 
     <string name="pref_user_birthdate_key" translatable="false">pref_birthdate</string>
-    <string name="pref_user_birthdate_title">Birthday</string>
+    <string name="pref_user_birthdate_title">Birthdate</string>
 
     <string name="pref_user_type_key" translatable="false">pref_user_type</string>
     <string name="pref_user_type_title">User Type</string>
@@ -136,5 +142,18 @@
     <string name="event_feedback_msg">We\'d Love Your Feedback</string>
     <string name="event_rating">Rate the Event</string>
     <string name="event_comment_hint">Leave a Comment</string>
+
+    <!--- Get User Info Page -->
+    <string name="userinfo_fill_msg">We\'re almost there! We just need some basic information.</string>
+    <string name="pick_profilepic_msg">Tap to Pick a Profile Picture</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="choose_photo">Choose Photo</string>
+    <string name="enter_birthdate">Enter Birthdate</string>
+    <string name="choose_grade">Choose Grade</string>
+    <string name="nonstudent_choose_type">Are You a Resident or a Visitor?</string>
+    <string name="student_choose_type">Choose Student Type</string>
+    <string name="userinfo_type_prompt">Type:</string>
+    <string name="userinfo_grade_prompt">Grade:</string>
+    <string name="submit_userinfo">Next</string>
 
 </resources>

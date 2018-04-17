@@ -47,7 +47,7 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
      * Id to identity READ_CONTACTS permission request.
      */
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = NonStudentLoginActivity.class.getSimpleName();
 
     private static final int REQUEST_READ_CONTACTS = 0;
     final static String IHC_LOGIN_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/non_student_login.php";
@@ -383,13 +383,13 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
             String resultString = (String) data;
 
             if (!resultString.equals("NOACCOUNTERROR")) {
-                Log.d("HashReceiver", "Account found!");
+                Log.d(TAG, "Account found!");
 
                 try {
                     PBKDF2 pHash = new PBKDF2();
                     pHash.validatePassword(password, resultString);
                     if (pHash.isMatch) {
-                        Log.d("HashReceiver", "Password matched!");
+                        Log.d(TAG, "Password matched!");
                         //new NonStudentAuthProcess(NonStudentLoginActivity.this).execute(email);
                         isAuth = true;
                         getSupportLoaderManager().initLoader(NS_LOGIN_PASS_ID, null, this);
@@ -422,7 +422,7 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
             }
         }
         else {
-            Log.d("NonStudentLoginActivity", "result: " + data);
+            Log.d(TAG, "result: " + data);
             if (!data.equals("AUTHERROR")) {
                 try {
                     JSONObject userJSON = new JSONObject(data);
@@ -435,6 +435,7 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
                     session.createLoginSession(name, email, tokeId);
                     Intent intent = new Intent(NonStudentLoginActivity.this, DashboardActivity.class);
                     intent.putExtra(Constants.EXTRA_CALLING_ACTIVITY_ID, NonStudentLoginActivity.class.getSimpleName());
+                    intent.putExtra(Constants.EXTRA_USER_STATUS, "Non-Student");
                     startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -483,57 +484,6 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
         int IS_PRIMARY = 1;
     }
 
-    /*class NonStudentAuthProcess extends AsyncTask {
-
-        private Context context;
-        private String email;
-        private String password;
-        final static String IHC_NS_LOGIN_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/non_student_login.php";
-
-        public NonStudentAuthProcess(Context context) {
-            this.context = context;
-        }
-
-        protected void onPreExecute() {}
-
-        @Override
-        protected Object doInBackground(Object[] objects) {
-            email = (String) objects[0];
-
-            try {
-                URL url = new URL(IHC_NS_LOGIN_URL);
-                String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
-
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-                conn.setRequestMethod("POST");
-                conn.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-                wr.write( data );
-                wr.flush();
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-                StringBuffer sb = new StringBuffer("");
-                String line = null;
-
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
-                    break;
-                }
-
-                return sb.toString();
-            } catch (Exception e) { return new String("Exception: " + e.getMessage()); }
-        }
-
-
-        @Override
-        protected void onPostExecute(Object result) {
-            String resultString = (String) result;
-            NonStudentLoginActivity.this.onBackgroundTaskDataObtained(resultString);
-        }
-    }*/
-
     public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
@@ -559,99 +509,6 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         builder.show();
     }
-
-
-
-    /*class HashReceiver extends AsyncTask {
-
-        Context context;
-        private String email;
-        private String password;
-
-        final static String IHC_PASS_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/gethash.php";
-
-        public HashReceiver(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        protected void onPreExecute() {showProgress(true);}
-
-        @Override
-        protected Object doInBackground(Object[] objects) {
-            email = (String) objects[0];
-            password = (String) objects[1];
-
-            try{
-                URL url = new URL(IHC_PASS_URL);
-
-                String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
-
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-                conn.setRequestMethod("POST");
-                conn.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-                wr.write( data );
-                wr.flush();
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-                StringBuffer sb = new StringBuffer("");
-                String line = null;
-
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
-                    break;
-                }
-
-                return sb.toString();
-            } catch (Exception e) { return new String("Exception: " + e.getMessage()); }
-
-        }
-        @Override
-        protected void onPostExecute(Object result) {
-            String resultString = (String) result;
-
-            if (!resultString.equals("NOACCOUNTERROR")) {
-                Log.d("HashReceiver", "Account found!");
-
-                try {
-                    PBKDF2 pHash = new PBKDF2();
-                    pHash.validatePassword(password, resultString);
-                    if (pHash.isMatch) {
-                        Log.d("HashReceiver", "Password matched!");
-                        new NonStudentAuthProcess(NonStudentLoginActivity.this).execute(email);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            else {
-                mEmailView.setText("");
-                mPasswordView.setText("");
-                showProgress(false);
-                AlertDialog.Builder builder;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    builder = new AlertDialog.Builder(NonStudentLoginActivity.this, android.R.style.Theme_Material_Dialog_Alert);
-                }
-                else {
-                    builder = new AlertDialog.Builder(NonStudentLoginActivity.this);
-                }
-                builder.setTitle("Login Error");
-                builder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Try logging in again
-                    }
-                });
-                builder.setMessage("Incorrect email/password combination.");
-                builder.setIcon(android.R.drawable.ic_dialog_alert);
-                builder.show();
-            }
-
-        }
-    }*/
 
 }
 

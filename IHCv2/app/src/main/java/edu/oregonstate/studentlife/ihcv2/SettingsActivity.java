@@ -1,6 +1,11 @@
 package edu.oregonstate.studentlife.ihcv2;
 
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,13 +21,18 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
+import edu.oregonstate.studentlife.ihcv2.data.IHCDBContract;
+import edu.oregonstate.studentlife.ihcv2.data.IHCDBHelper;
 import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.SettingsUpdateLoader;
@@ -37,11 +47,16 @@ public class SettingsActivity extends AppCompatActivity
 
     Session session;
 
+    private ImageView mProfilePictureIV;
+
     DrawerLayout mDrawerLayout;
     ActionBarDrawerToggle mDrawerToggle;
     SettingsFragment fragment;
     private final static int IHC_SETTINGS_LOADER_ID = 0;
     public final static String IHC_USER_ID_KEY = "IHC_USER_ID";
+    public final static String IHC_USER_FIRST_NAME_KEY = "IHC_USER_FIRST_NAME";
+    public final static String IHC_USER_LAST_NAME_KEY = "IHC_USER_LAST_NAME";
+    public final static String IHC_USER_EMAIL_KEY = "IHC_USER_EMAIL";
     public final static String IHC_USER_TYPE_KEY = "IHC_USER_TYPE";
     public final static String IHC_USER_GRADE_KEY = "IHC_USER_GRADE";
     public final static String IHC_USER_BIRTHDATE_KEY = "IHC_USER_BIRTHDATE";
@@ -53,6 +68,7 @@ public class SettingsActivity extends AppCompatActivity
 
     private User user;
     private String email;
+    private SQLiteDatabase mDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +78,9 @@ public class SettingsActivity extends AppCompatActivity
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getSupportActionBar().setElevation(0);
         }
+
+        IHCDBHelper dbHelper = new IHCDBHelper(this);
+        mDB = dbHelper.getWritableDatabase();
 
         overridePendingTransition(0,0);
 
@@ -92,6 +111,9 @@ public class SettingsActivity extends AppCompatActivity
         int bdYear = Integer.valueOf((String) DateFormat.format("yyyy", birthDate));
 
         Bundle args = new Bundle();
+        args.putString(IHC_USER_FIRST_NAME_KEY, user.getFirstName());
+        args.putString(IHC_USER_LAST_NAME_KEY, user.getLastName());
+        args.putString(IHC_USER_EMAIL_KEY, user.getEmail());
         args.putInt(IHC_USER_TYPE_KEY, user.getType());
         args.putInt(IHC_USER_GRADE_KEY, user.getGrade());
         args.putInt(IHC_USER_BD_DAY_KEY, bdDay);
@@ -158,7 +180,8 @@ public class SettingsActivity extends AppCompatActivity
 
         String name = user.get(Session.KEY_NAME);
         String email = user.get(Session.KEY_EMAIL);
-
+        mProfilePictureIV = (ImageView) findViewById(R.id.iv_profile_picture);
+        getProfilePicture();
 
         TextView sesName = (TextView) findViewById(R.id.sesName);
         TextView sesEmail = (TextView) findViewById(R.id.sesEmail);
@@ -212,14 +235,14 @@ public class SettingsActivity extends AppCompatActivity
         return true;
     }
 
-    public void onDataPass(String type, String grade, int day, int month, int year) {
-        Bundle args = new Bundle();
+    public void onDataPass(Bundle args) {
+        /*Bundle args = new Bundle();
         args.putString(IHC_USER_ID_KEY, String.valueOf(user.getId()));
         args.putString(IHC_USER_TYPE_KEY, type);
         args.putString(IHC_USER_GRADE_KEY, grade);
         args.putInt(IHC_USER_BD_DAY_KEY, day);
         args.putInt(IHC_USER_BD_MONTH_KEY, month);
-        args.putInt(IHC_USER_BD_YEAR_KEY, year);
+        args.putInt(IHC_USER_BD_YEAR_KEY, year);*/
         getSupportLoaderManager().restartLoader(IHC_SETTINGS_LOADER_ID, args, this);
     }
 
@@ -239,5 +262,34 @@ public class SettingsActivity extends AppCompatActivity
     @Override
     public void onLoaderReset(Loader<String> loader) {
         // Nothing to do...
+    }
+
+    private void getProfilePicture() {
+        Cursor cursor = mDB.query(
+                IHCDBContract.SavedImages.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                IHCDBContract.SavedImages.COLUMN_TIMESTAMP + " DESC"
+        );
+
+        ArrayList<File> savedImagesList = new ArrayList<File>();
+        while (cursor.moveToNext()) {
+            File savedImage;
+            Uri fileUri = Uri.parse(cursor.getString(
+                    cursor.getColumnIndex(IHCDBContract.SavedImages.COLUMN_IMAGE)
+            ));
+            savedImage = new File(fileUri.getPath());
+            savedImagesList.add(savedImage);
+        }
+        cursor.close();
+        Log.d(TAG, "number of images: " + savedImagesList.size());
+        File profilePicture = savedImagesList.get(0);
+        Log.d(TAG, "path of image: " + profilePicture.getAbsolutePath());
+        Bitmap profilePictureBitmap = BitmapFactory.decodeFile(profilePicture.getAbsolutePath());
+        mProfilePictureIV.setImageBitmap(profilePictureBitmap);
+
     }
 }

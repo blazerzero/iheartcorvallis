@@ -1,6 +1,11 @@
 package edu.oregonstate.studentlife.ihcv2;
 
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,12 +24,17 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
+import edu.oregonstate.studentlife.ihcv2.data.IHCDBContract;
+import edu.oregonstate.studentlife.ihcv2.data.IHCDBHelper;
 import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.AboutLoader;
@@ -39,11 +49,13 @@ public class AboutUsActivity extends AppCompatActivity
 
     private final static String TAG = AboutUsActivity.class.getSimpleName();
     Session session;
+    private ImageView mProfilePictureIV;
     private TextView mAboutAppTV;
     private final static int IHC_GETABOUT_ID = 0;
     private User user;
     DrawerLayout mDrawerLayout;
     ActionBarDrawerToggle mDrawerToggle;
+    private SQLiteDatabase mDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +66,9 @@ public class AboutUsActivity extends AppCompatActivity
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getSupportActionBar().setElevation(0);
         }
+
+        IHCDBHelper dbHelper = new IHCDBHelper(this);
+        mDB = dbHelper.getWritableDatabase();
 
         overridePendingTransition(0,0);
 
@@ -183,6 +198,9 @@ public class AboutUsActivity extends AppCompatActivity
         HashMap<String, String> user = session.getUserDetails();
         String name = user.get(Session.KEY_NAME);
         String email = user.get(Session.KEY_EMAIL);
+        mProfilePictureIV = (ImageView) findViewById(R.id.iv_profile_picture);
+        getProfilePicture();
+
         TextView sesName = (TextView) findViewById(R.id.sesName);
         TextView sesEmail = (TextView) findViewById(R.id.sesEmail);
         sesName.setText(name);
@@ -252,5 +270,34 @@ public class AboutUsActivity extends AppCompatActivity
     @Override
     public void onLoaderReset(Loader<String> loader) {
         // Nothing to do...
+    }
+
+    private void getProfilePicture() {
+        Cursor cursor = mDB.query(
+                IHCDBContract.SavedImages.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                IHCDBContract.SavedImages.COLUMN_TIMESTAMP + " DESC"
+        );
+
+        ArrayList<File> savedImagesList = new ArrayList<File>();
+        while (cursor.moveToNext()) {
+            File savedImage;
+            Uri fileUri = Uri.parse(cursor.getString(
+                    cursor.getColumnIndex(IHCDBContract.SavedImages.COLUMN_IMAGE)
+            ));
+            savedImage = new File(fileUri.getPath());
+            savedImagesList.add(savedImage);
+        }
+        cursor.close();
+        Log.d(TAG, "number of images: " + savedImagesList.size());
+        File profilePicture = savedImagesList.get(0);
+        Log.d(TAG, "path of image: " + profilePicture.getAbsolutePath());
+        Bitmap profilePictureBitmap = BitmapFactory.decodeFile(profilePicture.getAbsolutePath());
+        mProfilePictureIV.setImageBitmap(profilePictureBitmap);
+
     }
 }

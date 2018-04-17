@@ -10,17 +10,20 @@
        die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
    }
 
-   $userid = $eventid = "";
+   $userid = $firstname = $lastname = $email = $type = $grade = $birthdate$eventid = "";
 
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $userid = $_POST["userid"];
+      $firstname = $_POST["firstname"];
+      $lastname = $_POST["lastname"];
+      $email = $_POST["email"];
       $type = $_POST["type"];
       $grade = $_POST["grade"];
       $birthdate = $_POST["birthdate"];
-	   //$stmt = $mysqli->prepare("INSERT INTO ihc_completed_events (userid, eventid) VALUES (?, ?)");
-	   //$stmt->bind_param('ii', $userid, $eventid);
-	   //$result = $stmt->execute();
-      $result = $mysqli->query("UPDATE ihc_users SET grade='$grade', birthdate='$birthdate', type='$type' WHERE id='$userid'");
+      $stmt = $mysqli->prepare("UPDATE ihc_users SET firstname=?, lastname=?, email=?, grade=?, type=?, birthdate=?, WHERE id=?");
+      $stmt->bind_param('sssiis', $firstname, $lastname, $email, $grade, $type, $birthdate);
+      $stmt->execute();
+      $result = $stmt->get_result();
       if ($result == True) {
          echo "UPDATESUCCESS";
       }

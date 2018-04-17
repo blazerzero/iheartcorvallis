@@ -3,8 +3,13 @@ package edu.oregonstate.studentlife.ihcv2;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,10 +31,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,6 +50,8 @@ import edu.oregonstate.studentlife.ihcv2.adapters.EventCardAdapter;
 import edu.oregonstate.studentlife.ihcv2.adapters.EventListAdapter;
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.Event;
+import edu.oregonstate.studentlife.ihcv2.data.IHCDBContract;
+import edu.oregonstate.studentlife.ihcv2.data.IHCDBHelper;
 import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.EventLoader;
@@ -60,12 +69,15 @@ public class EventsActivity extends AppCompatActivity
 
     private final static String TAG = EventsActivity.class.getSimpleName();
 
-    private RecyclerView mEventListRecyclerView;
-    private RecyclerView mEventCardRecyclerView;
+    private ImageView mProfilePictureIV;
+
+    private RecyclerView mEventListRV;
+    private RecyclerView mEventCardRV;
     private EventListAdapter mEventListAdapter;
     private EventCardAdapter mEventCardAdapter;
     private ArrayList<Event> eventList;
     private User user;
+    private SQLiteDatabase mDB;
 
     Session session;
 
@@ -83,6 +95,9 @@ public class EventsActivity extends AppCompatActivity
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getSupportActionBar().setElevation(0);
         }
+
+        IHCDBHelper dbHelper = new IHCDBHelper(this);
+        mDB = dbHelper.getWritableDatabase();
 
         overridePendingTransition(0,0);
 
@@ -152,23 +167,23 @@ public class EventsActivity extends AppCompatActivity
             Log.d(TAG, "User ID: " + user.getId());
         }
 
-        mEventListRecyclerView = (RecyclerView) findViewById(R.id.rv_event_list);
-        mEventListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mEventListRecyclerView.setHasFixedSize(true);
+        mEventListRV = (RecyclerView) findViewById(R.id.rv_event_list);
+        mEventListRV.setLayoutManager(new LinearLayoutManager(this));
+        mEventListRV.setHasFixedSize(true);
 
         mEventListAdapter = new EventListAdapter(this);
-        mEventListRecyclerView.setAdapter(mEventListAdapter);
+        mEventListRV.setAdapter(mEventListAdapter);
 
-        mEventCardRecyclerView = (RecyclerView) findViewById(R.id.rv_event_card);
-        mEventCardRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mEventCardRecyclerView.setHasFixedSize(true);
+        mEventCardRV = (RecyclerView) findViewById(R.id.rv_event_card);
+        mEventCardRV.setLayoutManager(new LinearLayoutManager(this));
+        mEventCardRV.setHasFixedSize(true);
 
         mEventCardAdapter = new EventCardAdapter(this);
-        mEventCardRecyclerView.setAdapter(mEventCardAdapter);
+        mEventCardRV.setAdapter(mEventCardAdapter);
 
         //eventList = mergeSortEventList(eventList);
 
-        mEventCardRecyclerView.setVisibility(View.GONE);
+        mEventCardRV.setVisibility(View.GONE);
 
         if (isNetworkAvailable()) {
             //new EventReceiver(this).execute();
@@ -271,12 +286,12 @@ public class EventsActivity extends AppCompatActivity
                 }
                 return true;
             case R.id.action_switch_view:
-                if (mEventListRecyclerView.getVisibility() == View.VISIBLE && mEventCardRecyclerView.getVisibility() == View.GONE) {
-                    mEventListRecyclerView.setVisibility(View.GONE);
-                    mEventCardRecyclerView.setVisibility(View.VISIBLE);
-                } else if (mEventListRecyclerView.getVisibility() == View.GONE && mEventCardRecyclerView.getVisibility() == View.VISIBLE) {
-                    mEventCardRecyclerView.setVisibility(View.GONE);
-                    mEventListRecyclerView.setVisibility(View.VISIBLE);
+                if (mEventListRV.getVisibility() == View.VISIBLE && mEventCardRV.getVisibility() == View.GONE) {
+                    mEventListRV.setVisibility(View.GONE);
+                    mEventCardRV.setVisibility(View.VISIBLE);
+                } else if (mEventListRV.getVisibility() == View.GONE && mEventCardRV.getVisibility() == View.VISIBLE) {
+                    mEventCardRV.setVisibility(View.GONE);
+                    mEventListRV.setVisibility(View.VISIBLE);
                 }
                 return true;
             default:
@@ -304,6 +319,9 @@ public class EventsActivity extends AppCompatActivity
         HashMap<String, String> user = session.getUserDetails();
         String name = user.get(Session.KEY_NAME);
         String email = user.get(Session.KEY_EMAIL);
+        mProfilePictureIV = (ImageView) findViewById(R.id.iv_profile_picture);
+        getProfilePicture();
+
         TextView sesName = (TextView) findViewById(R.id.sesName);
         TextView sesEmail = (TextView) findViewById(R.id.sesEmail);
         sesName.setText(name);
@@ -480,5 +498,34 @@ public class EventsActivity extends AppCompatActivity
         builder.setMessage(getResources().getString(R.string.no_internet_connection_msg));
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         builder.show();
+    }
+
+    private void getProfilePicture() {
+        Cursor cursor = mDB.query(
+                IHCDBContract.SavedImages.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                IHCDBContract.SavedImages.COLUMN_TIMESTAMP + " DESC"
+        );
+
+        ArrayList<File> savedImagesList = new ArrayList<File>();
+        while (cursor.moveToNext()) {
+            File savedImage;
+            Uri fileUri = Uri.parse(cursor.getString(
+                    cursor.getColumnIndex(IHCDBContract.SavedImages.COLUMN_IMAGE)
+            ));
+            savedImage = new File(fileUri.getPath());
+            savedImagesList.add(savedImage);
+        }
+        cursor.close();
+        Log.d(TAG, "number of images: " + savedImagesList.size());
+        File profilePicture = savedImagesList.get(0);
+        Log.d(TAG, "path of image: " + profilePicture.getAbsolutePath());
+        Bitmap profilePictureBitmap = BitmapFactory.decodeFile(profilePicture.getAbsolutePath());
+        mProfilePictureIV.setImageBitmap(profilePictureBitmap);
+
     }
 }

@@ -5,6 +5,11 @@ package edu.oregonstate.studentlife.ihcv2;
  */
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,10 +29,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +42,8 @@ import java.util.StringTokenizer;
 
 import edu.oregonstate.studentlife.ihcv2.adapters.LeaderboardAdapter;
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
+import edu.oregonstate.studentlife.ihcv2.data.IHCDBContract;
+import edu.oregonstate.studentlife.ihcv2.data.IHCDBHelper;
 import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.LeaderboardLoader;
@@ -46,7 +55,9 @@ public class LeaderboardActivity extends AppCompatActivity
     private final static String TAG = LeaderboardActivity.class.getSimpleName();
     private final static int IHC_PASSPORT_LOADER_ID = 0;
 
-    private RecyclerView mLeaderboardRecyclerView;
+    private ImageView mProfilePictureIV;
+
+    private RecyclerView mLeaderboardRV;
     private LeaderboardAdapter mLeaderboardAdapter;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -54,6 +65,8 @@ public class LeaderboardActivity extends AppCompatActivity
     private ArrayList<User.LeaderboardUser> leaderboardUserList;
     Session session;
     private User user;
+
+    private SQLiteDatabase mDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +78,9 @@ public class LeaderboardActivity extends AppCompatActivity
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getSupportActionBar().setElevation(0);
         }
+
+        IHCDBHelper dbHelper = new IHCDBHelper(this);
+        mDB = dbHelper.getWritableDatabase();
 
         overridePendingTransition(0,0);
 
@@ -136,12 +152,12 @@ public class LeaderboardActivity extends AppCompatActivity
 
         leaderboardUserList = new ArrayList<User.LeaderboardUser>();
 
-        mLeaderboardRecyclerView = (RecyclerView) findViewById(R.id.rv_leaderboard_list);
-        mLeaderboardRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mLeaderboardRecyclerView.setHasFixedSize(true);
+        mLeaderboardRV = (RecyclerView) findViewById(R.id.rv_leaderboard_list);
+        mLeaderboardRV.setLayoutManager(new LinearLayoutManager(this));
+        mLeaderboardRV.setHasFixedSize(true);
 
         mLeaderboardAdapter = new LeaderboardAdapter();
-        mLeaderboardRecyclerView.setAdapter(mLeaderboardAdapter);
+        mLeaderboardRV.setAdapter(mLeaderboardAdapter);
 
         //new StampCountReceiver(this).execute();
 
@@ -200,9 +216,12 @@ public class LeaderboardActivity extends AppCompatActivity
 
         // session information is retrieved and displayed on nav menu
         session = new Session(getApplicationContext());
-        HashMap<String, String> user = session.getUserDetails();
-        String name = user.get(Session.KEY_NAME);
-        String email = user.get(Session.KEY_EMAIL);
+        HashMap<String, String> userHash = session.getUserDetails();
+        String name = userHash.get(Session.KEY_NAME);
+        String email = userHash.get(Session.KEY_EMAIL);
+        mProfilePictureIV = (ImageView) findViewById(R.id.iv_profile_picture);
+        getProfilePicture();
+
         TextView sesName = (TextView) findViewById(R.id.sesName);
         TextView sesEmail = (TextView) findViewById(R.id.sesEmail);
         sesName.setText(name);
@@ -332,47 +351,32 @@ public class LeaderboardActivity extends AppCompatActivity
         }
     }
 
-    /*class StampCountReceiver extends AsyncTask {
+    private void getProfilePicture() {
+        Cursor cursor = mDB.query(
+                IHCDBContract.SavedImages.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                IHCDBContract.SavedImages.COLUMN_TIMESTAMP + " DESC"
+        );
 
-        private Context context;
-        final static String IHC_GET_STAMPCOUNT_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/getusers_stampcount.php";
-
-        public StampCountReceiver(Context context) {
-            this.context = context;
+        ArrayList<File> savedImagesList = new ArrayList<File>();
+        while (cursor.moveToNext()) {
+            File savedImage;
+            Uri fileUri = Uri.parse(cursor.getString(
+                    cursor.getColumnIndex(IHCDBContract.SavedImages.COLUMN_IMAGE)
+            ));
+            savedImage = new File(fileUri.getPath());
+            savedImagesList.add(savedImage);
         }
+        cursor.close();
+        Log.d(TAG, "number of images: " + savedImagesList.size());
+        File profilePicture = savedImagesList.get(0);
+        Log.d(TAG, "path of image: " + profilePicture.getAbsolutePath());
+        Bitmap profilePictureBitmap = BitmapFactory.decodeFile(profilePicture.getAbsolutePath());
+        mProfilePictureIV.setImageBitmap(profilePictureBitmap);
 
-        protected void onPreExecute() {
-        }
-
-        @Override
-        protected Object doInBackground(Object[] objects) {
-
-            try {
-                URL url = new URL(IHC_GET_STAMPCOUNT_URL);
-
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-                conn.setRequestMethod("POST");
-                conn.setDoOutput(true);
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-                StringBuffer sb = new StringBuffer("");
-                String line = null;
-
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
-                }
-
-                return sb.toString();
-            } catch (Exception e) { return new String("Exception: " + e.getMessage()); }
-        }
-
-
-        @Override
-        protected void onPostExecute(Object result) {
-            String resultString = (String) result;
-            LeaderboardActivity.this.onBackgroundTaskDataObtained(resultString);
-        }
-    }*/
+    }
 }
