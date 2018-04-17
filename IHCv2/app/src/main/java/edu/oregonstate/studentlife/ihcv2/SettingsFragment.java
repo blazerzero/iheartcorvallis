@@ -97,9 +97,9 @@ public class SettingsFragment extends PreferenceFragment
         });
 
         if (userType < 2) {
-            /*userFirstNamePref.setVisible(false);
+            userFirstNamePref.setVisible(false);
             userLastNamePref.setVisible(false);
-            userEmailPref.setVisible(false);*/
+            userEmailPref.setVisible(false);
             userTypePref.setEntries(R.array.pref_user_type_entries_student);
             userTypePref.setEntryValues(R.array.pref_user_type_values_student);
             if (userType == 0) {
