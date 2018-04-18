@@ -112,7 +112,7 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
             if (intent.hasExtra(Constants.EXTRA_USER_STATUS)) {
                 userStatus = (String) intent.getSerializableExtra(Constants.EXTRA_USER_STATUS);
             }
-            if (intent.hasExtra(Constants.EXTRA_USER_ID)) {
+            if (intent.hasExtra(Constants.EXTRA_USER)) {
                 user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
             }
         }
@@ -292,10 +292,12 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = data.getData();
                     String filePath = getPath(this, selectedImage);
-                    Log.d(TAG, "Row: " + addImageToDB(filePath));
+                    addImageToDB(filePath);
                 }
                 break;
         }
+        Intent surveyIntent = new Intent(this, SurveyActivity.class);
+        startActivity(surveyIntent);
     }
 
     /* INITIALIZE IMAGE FILE AND LET USER TAKE PHOTO */

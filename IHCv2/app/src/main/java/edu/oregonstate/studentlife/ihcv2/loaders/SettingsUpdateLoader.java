@@ -41,6 +41,7 @@ public class SettingsUpdateLoader extends AsyncTaskLoader<String> {
         super(context);
         userid = args.getString(SettingsActivity.IHC_USER_ID_KEY);
         firstname = args.getString(SettingsFragment.IHC_USER_FIRST_NAME_KEY);
+        lastname = args.getString(SettingsFragment.IHC_USER_LAST_NAME_KEY);
         email = args.getString(SettingsFragment.IHC_USER_EMAIL_KEY);
         type = args.getString(SettingsFragment.IHC_USER_TYPE_KEY);
         grade = args.getString(SettingsFragment.IHC_USER_GRADE_KEY);

@@ -1,5 +1,7 @@
 package edu.oregonstate.studentlife.ihcv2;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,9 +10,12 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -26,6 +31,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -69,6 +76,10 @@ public class SettingsActivity extends AppCompatActivity
     private User user;
     private String email;
     private SQLiteDatabase mDB;
+    private String mCurrentPhotoPath;
+    private File file;
+    private int ACTIVITYRESULT_ID;
+    private static final int REQUEST_TAKE_PHOTO = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -236,9 +247,9 @@ public class SettingsActivity extends AppCompatActivity
     }
 
     public void onDataPass(Bundle args) {
-        /*Bundle args = new Bundle();
+        //Bundle args = new Bundle();
         args.putString(IHC_USER_ID_KEY, String.valueOf(user.getId()));
-        args.putString(IHC_USER_TYPE_KEY, type);
+        /*args.putString(IHC_USER_TYPE_KEY, type);
         args.putString(IHC_USER_GRADE_KEY, grade);
         args.putInt(IHC_USER_BD_DAY_KEY, day);
         args.putInt(IHC_USER_BD_MONTH_KEY, month);
@@ -264,7 +275,7 @@ public class SettingsActivity extends AppCompatActivity
         // Nothing to do...
     }
 
-    private void getProfilePicture() {
+    public void getProfilePicture() {
         Cursor cursor = mDB.query(
                 IHCDBContract.SavedImages.TABLE_NAME,
                 null,
@@ -291,5 +302,102 @@ public class SettingsActivity extends AppCompatActivity
         Bitmap profilePictureBitmap = BitmapFactory.decodeFile(profilePicture.getAbsolutePath());
         mProfilePictureIV.setImageBitmap(profilePictureBitmap);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch(ACTIVITYRESULT_ID) {
+            case 1:
+                if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+                    file = new File(mCurrentPhotoPath);
+                    if (file.exists()) {
+                        Uri uri;
+                        uri = Uri.fromFile(file);
+                        String filePath = uri.toString();
+                        Log.d(TAG, "Row: " + addImageToDB(filePath));
+                    }
+
+                }
+                break;
+
+            case 2:
+                if (resultCode == RESULT_OK) {
+                    Uri selectedImage = data.getData();
+                    String filePath = getPath(this, selectedImage);
+                    addImageToDB(filePath);
+                }
+                break;
+        }
+    }
+
+    /* INITIALIZE IMAGE FILE AND LET USER TAKE PHOTO */
+    public void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                ex.printStackTrace();
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                try {
+                    Uri photoURI = FileProvider.getUriForFile(this,
+                            "edu.oregonstate.studentlife.ihcv2.fileprovider",
+                            photoFile);
+
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /* INITIALIZE IMAGE FILE */
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    public static String getPath(Context context, Uri uri) {
+        String result = null;
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int column_index = cursor.getColumnIndexOrThrow(proj[0]);
+                result = cursor.getString(column_index);
+            }
+            cursor.close();
+        }
+        if (result == null) {
+            Log.d(TAG, "File not found!");
+        }
+        return result;
+    }
+
+    private long addImageToDB(String url) {
+        ContentValues row = new ContentValues();
+        row.put(IHCDBContract.SavedImages.COLUMN_IMAGE, url);
+        return mDB.insert(IHCDBContract.SavedImages.TABLE_NAME, null, row);
     }
 }

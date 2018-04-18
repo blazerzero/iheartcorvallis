@@ -19,7 +19,7 @@
      $birthdate = $_POST['birthdate'];
 
      $stmt = $mysqli->prepare("UPDATE ihc_users SET grade=?, type=?, birthdate=? WHERE id=?");
-     $stmt->bind_param('iisi', $id, $grade, $type, $birthdate);
+     $stmt->bind_param('iisi', $grade, $type, $birthdate, $id);
      $stmt->execute();
      $result = $stmt->get_result();
      if ($result == True) {

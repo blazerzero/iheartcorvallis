@@ -1,14 +1,20 @@
 package edu.oregonstate.studentlife.ihcv2;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v14.preference.PreferenceFragment;
 import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceScreen;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.DatePicker;
+import android.widget.PopupMenu;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -27,6 +33,7 @@ public class SettingsFragment extends PreferenceFragment
     private ListPreference userTypePref;
     private ListPreference userGradePref;
     private Preference userBirthDatePref;
+    private Preference userProfilePicturePref;
     private DatePicker birthDatePicker;
 
     private String userFirstName;
@@ -46,6 +53,10 @@ public class SettingsFragment extends PreferenceFragment
     public final static String IHC_USER_BD_DAY_KEY = "IHC_USER_BIRTHDATE_DAY";
     public final static String IHC_USER_BD_MONTH_KEY = "IHC_USER_BIRTHDATE_MONTH";
     public final static String IHC_USER_BD_YEAR_KEY = "IHC_USER_BIRTHDATE_YEAR";
+    public final static String IHC_USER_PROFILE_PICTURE_KEY = "IHC_USER_PROFILE_PICTURE";
+
+    private int ACTIVITYRESULT_ID;
+
 
     //public final static String IHC_USER_GRADE_KEY = "IHC_USER_GRADE";
     //public final static String IHC_USER_AGE_KEY = "IHC_USER_AGE";
@@ -76,6 +87,7 @@ public class SettingsFragment extends PreferenceFragment
         userTypePref = (ListPreference) findPreference(getString(R.string.pref_user_type_key));
         userGradePref = (ListPreference) findPreference(getString(R.string.pref_user_grade_key));
         userBirthDatePref = (Preference) findPreference(getString(R.string.pref_user_birthdate_key));
+        userProfilePicturePref = (Preference) findPreference(getString(R.string.pref_user_profile_picture_key));
 
         Bundle args = getArguments();
 
@@ -95,6 +107,21 @@ public class SettingsFragment extends PreferenceFragment
                 return true;
             }
         });
+
+        userFirstNamePref.setSummary(userFirstName);
+        userFirstNamePref.setText(userFirstName);
+        userLastNamePref.setSummary(userLastName);
+        userLastNamePref.setText(userLastName);
+        userEmailPref.setSummary(userEmail);
+        userEmailPref.setText(userEmail);
+        userProfilePicturePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                showMenu(preference);
+                return true;
+            }
+        });
+        setBirthDateSummary(userBdDay, userBdMonth - 1, userBdYear);
 
         if (userType < 2) {
             userFirstNamePref.setVisible(false);
@@ -123,12 +150,6 @@ public class SettingsFragment extends PreferenceFragment
             userGradePref.setValue(String.valueOf(userGrade));
         }
         else {
-            userFirstNamePref.setSummary(userFirstName);
-            userFirstNamePref.setText(userFirstName);
-            userLastNamePref.setSummary(userLastName);
-            userLastNamePref.setText(userLastName);
-            userEmailPref.setSummary(userEmail);
-            userEmailPref.setText(userEmail);
             userTypePref.setEntries(R.array.pref_user_type_entries_nonstudent);
             userTypePref.setEntries(R.array.pref_user_type_entries_nonstudent);
             if (userType == 2) {
@@ -139,7 +160,6 @@ public class SettingsFragment extends PreferenceFragment
             userTypePref.setValue(String.valueOf(userType));
             screen.removePreference(userGradePref);
         }
-        setBirthDateSummary(userBdDay, userBdMonth - 1, userBdYear);
 
     }
 
@@ -152,6 +172,7 @@ public class SettingsFragment extends PreferenceFragment
             userBdYear = year;
             Bundle args = createBundle();
             ((SettingsActivity)getActivity()).onDataPass(args);
+            ((SettingsActivity)getActivity()).getProfilePicture();
         }
     };
 
@@ -159,12 +180,38 @@ public class SettingsFragment extends PreferenceFragment
         Bundle args = new Bundle();
         args.putString(IHC_USER_FIRST_NAME_KEY, userFirstNamePref.getText());
         args.putString(IHC_USER_LAST_NAME_KEY, userLastNamePref.getText());
+        args.putString(IHC_USER_EMAIL_KEY, userEmailPref.getText());
         args.putString(IHC_USER_TYPE_KEY, userTypePref.getValue());
         args.putString(IHC_USER_GRADE_KEY, userGradePref.getValue());
         args.putInt(IHC_USER_BD_DAY_KEY, userBdDay);
         args.putInt(IHC_USER_BD_MONTH_KEY, userBdMonth);
         args.putInt(IHC_USER_BD_YEAR_KEY, userBdYear);
         return args;
+    }
+
+    public void showMenu(Preference preference) {
+        preference.setViewId(0);
+        PopupMenu popupMenu = new PopupMenu((SettingsActivity)getActivity(), ((SettingsActivity)getActivity()).findViewById(R.id.settings_frame));
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.i_take_photo) {
+                    ACTIVITYRESULT_ID = 1;
+                    ((SettingsActivity)getActivity()).dispatchTakePictureIntent();
+                }
+                else if (id == R.id.i_choose_photo) {
+                    ACTIVITYRESULT_ID = 2;
+                    Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(pickPhoto, 1);
+                }
+                return true;
+            }
+        });
+        MenuInflater inflater = popupMenu.getMenuInflater();
+        inflater.inflate(R.menu.choose_profilepic, popupMenu.getMenu());
+        popupMenu.show();
     }
 
     public void setBirthDateSummary(int dayOfMonth, int month, int year) {

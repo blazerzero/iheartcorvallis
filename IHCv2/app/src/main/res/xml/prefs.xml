@@ -31,4 +31,8 @@
         android:key="@string/pref_user_birthdate_key"
         android:title="@string/pref_user_birthdate_title" />
 
+    <Preference
+        android:key="@string/pref_user_profile_picture_key"
+        android:title="@string/pref_user_profile_picture_title" />
+
 </PreferenceScreen>

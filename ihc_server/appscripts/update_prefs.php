@@ -10,7 +10,7 @@
        die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
    }
 
-   $userid = $firstname = $lastname = $email = $type = $grade = $birthdate$eventid = "";
+   $userid = $firstname = $lastname = $email = $type = $grade = $birthdate = "";
 
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $userid = $_POST["userid"];
@@ -20,16 +20,17 @@
       $type = $_POST["type"];
       $grade = $_POST["grade"];
       $birthdate = $_POST["birthdate"];
-      $stmt = $mysqli->prepare("UPDATE ihc_users SET firstname=?, lastname=?, email=?, grade=?, type=?, birthdate=?, WHERE id=?");
-      $stmt->bind_param('sssiis', $firstname, $lastname, $email, $grade, $type, $birthdate);
+      $stmt = $mysqli->prepare("UPDATE ihc_users SET firstname=?, lastname=?, email=?, grade=?, type=?, birthdate=? WHERE id=?");
+      $stmt->bind_param('sssiisi', $firstname, $lastname, $email, $grade, $type, $birthdate, $userid);
       $stmt->execute();
       $result = $stmt->get_result();
-      if ($result == True) {
+      //$result = $mysqli->query("UPDATE ihc_users SET firstname='$firstname', lastname='$lastname', email='$email', grade='$grade', type='$type', birthdate='$birthdate' WHERE id='$id'");
+      //if ($result == True) {
          echo "UPDATESUCCESS";
-      }
+      /*}
       else {
          echo "UPDATEERROR";
-      }
+      }*/
 	   //$stmt->close();
    }
 

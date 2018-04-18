@@ -106,8 +106,10 @@
     <string name="pref_user_grade_grad_value" translatable="false">5</string>
     <string name="pref_user_grade_doc_value" translatable="false">6</string>
 
-    <string name="pref_user_birthdate_key" translatable="false">pref_birthdate</string>
+    <string name="pref_user_birthdate_key" translatable="false">pref_user_birthdate</string>
     <string name="pref_user_birthdate_title">Birthdate</string>
+    <string name="pref_user_profile_picture_key" translatable="false">pref_user_profile_picture</string>
+    <string name="pref_user_profile_picture_title">Change Profile Picture</string>
 
     <string name="pref_user_type_key" translatable="false">pref_user_type</string>
     <string name="pref_user_type_title">User Type</string>
