@@ -50,7 +50,7 @@ while ($resource = $result->fetch_assoc()) {
                      <td><?php echo $resource['link']; ?></td>
                      <td>
                         <a href="edit_primary_resource.php?id=<?php echo $resource['id'] ?>" class="ui blue button">Edit</a>
-                        <a onclick="return confirm('Are you sure you want to delete this resource?')" href="./admin_server/delete_primary_resource.php?id=<?php echo $resource['id'] ?>" class='ui red button'>Delete</a>
+                        <a onclick="return confirm('Are you sure you want to delete this resource?')" href="./admin_server/delete_primary_resource.php?id=<?php echo $resource['id'] ?>&image=<?php echo $resource['image'] ?>" class='ui red button'>Delete</a>
                      </td>
                   </tr>
                <?php endforeach; ?>

@@ -53,7 +53,7 @@ while ($event = $result->fetch_assoc()) {
                      <td>
                         <a href="summarize_event.php?eventid=<?php echo $event['eventid'] ?>" class="ui green button">View Summary</a>
                         <a href="edit_event.php?eventid=<?php echo $event['eventid'] ?>" class="ui blue button">Edit</a>
-                        <a onclick="return confirm('Are you sure you want to delete this event?')" href="./admin_server/delete_event.php?eventid=<?php echo $event['eventid'] ?>" class='ui red button'>Delete</a>
+                        <a onclick="return confirm('Are you sure you want to delete this event?')" href="./admin_server/delete_event.php?eventid=<?php echo $event['eventid'] ?>&image=<?php echo $event['image'] ?>" class='ui red button'>Delete</a>
                      </td>
                   </tr>
                <?php endforeach; ?>
