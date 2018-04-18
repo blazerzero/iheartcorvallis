@@ -1,12 +1,17 @@
 package edu.oregonstate.studentlife.ihcv2.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import java.net.URL;
 import java.util.ArrayList;
 
 import edu.oregonstate.studentlife.ihcv2.data.Event;
@@ -18,10 +23,14 @@ import edu.oregonstate.studentlife.ihcv2.R;
 
 public class EventCardAdapter extends RecyclerView.Adapter<EventCardAdapter.EventCardViewHolder> {
 
+    private final static String TAG = EventCardAdapter.class.getSimpleName();
+
     private ArrayList<Event> mEventList;
     private OnEventClickListener mOnEventClickListener;
+    private Context context;
 
-    public EventCardAdapter(OnEventClickListener onEventClickListener) {
+    public EventCardAdapter(Context context, OnEventClickListener onEventClickListener) {
+        this.context = context;
         mOnEventClickListener = onEventClickListener;
         mEventList = new ArrayList<Event>();
     }
@@ -68,9 +77,22 @@ public class EventCardAdapter extends RecyclerView.Adapter<EventCardAdapter.Even
 
         void bind(Event event) {
             int monthInt = Integer.parseInt(event.getStartMonth()) - 1;
-            /*if (event.getImage() != null) {
-                mEventImageIV.setImageBitmap(BitmapFactory.decodeStream(event.getImage()));
+            /*if (event.getImagePath() != null) {
+                mEventImageIV.setImageBitmap(BitmapFactory.decodeStream(event.getImagePath()));
             }*/
+            //mEventImageIV.setImageBitmap(event.getImagePath());
+            Log.d(TAG, "image path: " + event.getImagePath());
+            try {
+                URL url = new URL(event.getImagePath());
+                if (event.getImagePath().contains(".jpg") || event.getImagePath().contains(".jpeg") || event.getImagePath().contains(".png")) {
+                    Picasso.with(context)
+                            .load(event.getImagePath())
+                            .into(mEventImageIV);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             mEventNameTV.setText(event.getName());
             mEventDateTimeTV.setText(monthLongNames[monthInt] + " " + event.getStartDay() + ", "
                     + event.getStartYear() + ", " + event.getStartTime() + " - " + event.getEndTime());

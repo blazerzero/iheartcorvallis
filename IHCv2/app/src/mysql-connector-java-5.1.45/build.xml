@@ -600,8 +600,8 @@ Java 8 (for JDBC 4+ implementation) is also required. Set the full path to this 
             depends="dist, -make-packages, -create-archives" />
 
 
-    <!-- Build a distribution 'image' that include docs. -->
-    <target name="full-dist" description="Builds driver, binary .jar file and docs, basically a distribution 'image'." depends="dist, -bundle-docs" />
+    <!-- Build a distributiimageNamemage' that include docs. -->
+    <target name="full-dist" description="Builds driver, binary .jar file and docs, basically a distribution 'imagePath'." depends="dist, -bundle-docs" />
 
 
     <!-- Build and install the driver jar into the local maven repository. -->
@@ -616,8 +616,8 @@ Java 8 (for JDBC 4+ implementation) is also required. Set the full path to this 
     </target>
 
 
-    <!-- Build a distribution 'image' that doesn't include docs. -->
-    <target name="dist" description="Builds driver and binary .jar file, basically a distribution 'image' without docs." depends="init, compile">
+    <!-- Build a distributiimageNamemage' that doesn't include docs. -->
+    <target name="dist" description="Builds driver and binary .jar file, basically a distribution 'imagePath' without docs." depends="init, compile">
         <delete file="${buildDir}/${fullProdName}-bin.jar" />
 
         <mkdir dir="${buildDir}/META-INF" />

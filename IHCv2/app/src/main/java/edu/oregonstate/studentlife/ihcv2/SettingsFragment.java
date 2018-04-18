@@ -1,11 +1,14 @@
 package edu.oregonstate.studentlife.ihcv2;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v14.preference.PreferenceFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
@@ -117,7 +120,7 @@ public class SettingsFragment extends PreferenceFragment
         userProfilePicturePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                showMenu(preference);
+                showMenu();
                 return true;
             }
         });
@@ -189,29 +192,37 @@ public class SettingsFragment extends PreferenceFragment
         return args;
     }
 
-    public void showMenu(Preference preference) {
-        preference.setViewId(0);
-        PopupMenu popupMenu = new PopupMenu((SettingsActivity)getActivity(), ((SettingsActivity)getActivity()).findViewById(R.id.settings_frame));
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+    public void showMenu() {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(getActivity(), android.R.style.Theme_Material_Dialog_Alert);
+        }
+        else {
+            builder = new AlertDialog.Builder(getActivity());
+        }
+        builder.setTitle("Change Profile Picture");
+        builder.setPositiveButton("Take Photo", new DialogInterface.OnClickListener() {
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int id = item.getItemId();
-                if (id == R.id.i_take_photo) {
-                    ACTIVITYRESULT_ID = 1;
-                    ((SettingsActivity)getActivity()).dispatchTakePictureIntent();
-                }
-                else if (id == R.id.i_choose_photo) {
-                    ACTIVITYRESULT_ID = 2;
-                    Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(pickPhoto, 1);
-                }
-                return true;
+            public void onClick(DialogInterface dialog, int which) {
+                ACTIVITYRESULT_ID = 1;
+                ((SettingsActivity)getActivity()).onProfilePictureMenuItemClick(ACTIVITYRESULT_ID);
             }
         });
-        MenuInflater inflater = popupMenu.getMenuInflater();
-        inflater.inflate(R.menu.choose_profilepic, popupMenu.getMenu());
-        popupMenu.show();
+        builder.setNegativeButton("Choose Photo", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ACTIVITYRESULT_ID = 2;
+                ((SettingsActivity)getActivity()).onProfilePictureMenuItemClick(ACTIVITYRESULT_ID);
+            }
+        });
+        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Close dialog
+            }
+        });
+        builder.show();
+
     }
 
     public void setBirthDateSummary(int dayOfMonth, int month, int year) {

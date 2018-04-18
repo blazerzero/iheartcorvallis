@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.content.Context;
@@ -41,7 +42,9 @@ import android.content.DialogInterface;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -334,6 +337,7 @@ public class DashboardActivity extends AppCompatActivity
                     String eventStartDT = passportEventJSON.getString("startdt");
                     String eventEndDT = passportEventJSON.getString("enddt");
                     String eventDescription = passportEventJSON.getString("description");
+                    String eventImageName = passportEventJSON.getString("image");
                     String eventLink1 = passportEventJSON.getString("link1");
                     String eventLink2 = passportEventJSON.getString("link2");
                     String eventLink3 = passportEventJSON.getString("link3");
@@ -392,11 +396,13 @@ public class DashboardActivity extends AppCompatActivity
                     monthInt = Integer.parseInt(eventEndMonth);
                     eventEndMonth = monthShortNames[monthInt - 1];
 
+                    String eventImagePath = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/images/events/" + eventImageName;
+
                     Event retrievedEvent = new Event(eventid, eventName, eventLocation, eventAddress,
                             eventStartDate, eventEndDate, eventStartTime, eventEndTime,
                             eventStartMonth, eventStartDay, eventStartYear,
                             eventEndMonth, eventEndDay, eventEndYear,
-                            eventDescription, eventLink1, eventLink2, eventLink3, eventPin);
+                            eventDescription, eventImagePath, eventLink1, eventLink2, eventLink3, eventPin);
 
                     completedEventList.add(retrievedEvent);
                 }
@@ -432,6 +438,7 @@ public class DashboardActivity extends AppCompatActivity
                     String eventStartDT = eventJSON.getString("startdt");
                     String eventEndDT = eventJSON.getString("enddt");
                     String eventDescription = eventJSON.getString("description");
+                    String eventImageName = eventJSON.getString("image");
                     String eventLink1 = eventJSON.getString("link1");
                     String eventLink2 = eventJSON.getString("link2");
                     String eventLink3 = eventJSON.getString("link3");
@@ -487,13 +494,16 @@ public class DashboardActivity extends AppCompatActivity
                     for (Event event : completedEventList) {
                         completedEventIDs.add(event.getEventid());
                     }
+
+                    String eventImagePath = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/images/events/" + eventImageName;
+
                     if (eventEndDate.after(currentDate) && !completedEventIDs.contains(eventid)) {  // if the event can still be attended and has not already been attended
 
                         Event retrievedEvent = new Event(eventid, eventName, eventLocation, eventAddress,
                                 eventStartDate, eventEndDate, eventStartTime, eventEndTime,
                                 eventStartMonth, eventStartDay, eventStartYear,
                                 eventEndMonth, eventEndDay, eventEndYear,
-                                eventDescription, eventLink1, eventLink2, eventLink3, eventPin);
+                                eventDescription, eventImagePath, eventLink1, eventLink2, eventLink3, eventPin);
 
                         eventList.add(retrievedEvent);
                     }
@@ -809,4 +819,5 @@ public class DashboardActivity extends AppCompatActivity
             mProfilePictureIV.setImageBitmap(profilePictureBitmap);
         }
     }
+
 }

@@ -140,18 +140,18 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
         });
 
         mUserBirthDateTV.setText(getResources().getString(R.string.enter_birthdate));
-/*        if (userStatus.equals("Student")) {
+        if (userStatus.equals("Student")) {
             typeChoices = getResources().getStringArray(R.array.pref_user_type_entries_student);
             typeValueChoices = getResources().getIntArray(R.array.pref_user_type_values_student);
             mUserTypeTV.setText(getResources().getString(R.string.student_choose_type));
         }
-        else if (userStatus.equals("Non-Student")) {*/
+        else if (userStatus.equals("Non-Student")) {
             mUserGradeTV.setVisibility(View.GONE);
             mUserGradeSP.setVisibility(View.GONE);
             typeChoices = getResources().getStringArray(R.array.pref_user_type_entries_nonstudent);
             typeValueChoices = getResources().getIntArray(R.array.pref_user_type_values_nonstudent);
             mUserTypeTV.setText(getResources().getString(R.string.nonstudent_choose_type));
-        //}
+        }
 
         ArrayAdapter<String> mUserTypeAdapter = new ArrayAdapter<String>(
                 this, android.R.layout.simple_spinner_item, typeChoices);
@@ -161,12 +161,12 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 userType = mUserTypeSP.getSelectedItem().toString();
-                /*if (userStatus.equals("Student")) {
+                if (userStatus.equals("Student")) {
                     userTypeValue = typeValueChoices[position];
                 }
-                else if (userStatus.equals("Non-Student")) {*/
+                else if (userStatus.equals("Non-Student")) {
                     userTypeValue = typeValueChoices[position] + 2;
-                //}
+                }
             }
 
             @Override

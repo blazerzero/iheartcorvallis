@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -39,7 +40,9 @@ import android.widget.TextView;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -329,6 +332,7 @@ public class PassportActivity extends AppCompatActivity
                         String eventStartDT = eventJSON.getString("startdt");
                         String eventEndDT = eventJSON.getString("enddt");
                         String eventDescription = eventJSON.getString("description");
+                        String eventImageName = eventJSON.getString("image");
                         String eventLink1 = eventJSON.getString("link1");
                         String eventLink2 = eventJSON.getString("link2");
                         String eventLink3 = eventJSON.getString("link3");
@@ -387,11 +391,13 @@ public class PassportActivity extends AppCompatActivity
                         monthInt = Integer.parseInt(eventEndMonth);
                         eventEndMonth = monthShortNames[monthInt - 1];
 
+                        String eventImagePath = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/images/events/" + eventImageName;
+
                         Event retrievedEvent = new Event(eventid, eventName, eventLocation, eventAddress,
                                 eventStartDate, eventEndDate, eventStartTime, eventEndTime,
                                 eventStartMonth, eventStartDay, eventStartYear,
                                 eventEndMonth, eventEndDay, eventEndYear,
-                                eventDescription, eventLink1, eventLink2, eventLink3, eventPin);
+                                eventDescription, eventImagePath, eventLink1, eventLink2, eventLink3, eventPin);
 
                         completedEventList.add(retrievedEvent);
 

@@ -26,16 +26,16 @@ public class Event extends AppCompatActivity implements Serializable {
     private String endDay;
     private String endYear;
     private String description;
+    private String imagePath;
     private String link1;
     private String link2;
     private String link3;
     private int pin;
-    //private InputStream image;
 
     public Event(int eventid, String name, String location, String address, Date startDT, Date endDT, String startTime, String endTime,
                  String startMonth, String startDay, String startYear,
                  String endMonth, String endDay, String endYear,
-                 String description, String link1, String link2, String link3, int pin) {
+                 String description, String imagePath, String link1, String link2, String link3, int pin) {
         this.eventid = eventid;
         this.name = name;
         this.location = location;
@@ -51,11 +51,11 @@ public class Event extends AppCompatActivity implements Serializable {
         this.endDay = endDay;
         this.endYear = endYear;
         this.description = description;
+        this.imagePath = imagePath;
         this.link1 = link1;
         this.link2 = link2;
         this.link3 = link3;
         this.pin = pin;
-        //this.image = image;
     }
 
     public int getEventid() {
@@ -178,6 +178,14 @@ public class Event extends AppCompatActivity implements Serializable {
         this.description = description;
     }
 
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
     public String getLink1() {
         return link1;
     }
@@ -210,11 +218,4 @@ public class Event extends AppCompatActivity implements Serializable {
         this.pin = pin;
     }
 
-    /*public InputStream getImage() {
-        return image;
-    }
-
-    public void setImage(InputStream image) {
-        this.image = image;
-    }*/
 }

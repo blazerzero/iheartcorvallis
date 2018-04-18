@@ -330,6 +330,7 @@ public class SettingsActivity extends AppCompatActivity
                 }
                 break;
         }
+        getProfilePicture();
     }
 
     /* INITIALIZE IMAGE FILE AND LET USER TAKE PHOTO */
@@ -400,4 +401,17 @@ public class SettingsActivity extends AppCompatActivity
         row.put(IHCDBContract.SavedImages.COLUMN_IMAGE, url);
         return mDB.insert(IHCDBContract.SavedImages.TABLE_NAME, null, row);
     }
+
+    public void onProfilePictureMenuItemClick(int id) {
+        ACTIVITYRESULT_ID = id;
+        if (id == 1) {
+            dispatchTakePictureIntent();
+        }
+        else if (id == 2) {
+            Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(pickPhoto, 1);
+        }
+    }
+
 }

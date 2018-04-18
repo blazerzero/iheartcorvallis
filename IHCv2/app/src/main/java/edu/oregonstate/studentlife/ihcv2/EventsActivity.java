@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -37,7 +38,9 @@ import android.widget.TextView;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -178,7 +181,7 @@ public class EventsActivity extends AppCompatActivity
         mEventCardRV.setLayoutManager(new LinearLayoutManager(this));
         mEventCardRV.setHasFixedSize(true);
 
-        mEventCardAdapter = new EventCardAdapter(this);
+        mEventCardAdapter = new EventCardAdapter(this, this);
         mEventCardRV.setAdapter(mEventCardAdapter);
 
         //eventList = mergeSortEventList(eventList);
@@ -394,6 +397,7 @@ public class EventsActivity extends AppCompatActivity
                 String eventStartDT = eventJSON.getString("startdt");
                 String eventEndDT = eventJSON.getString("enddt");
                 String eventDescription = eventJSON.getString("description");
+                String eventImageName = eventJSON.getString("image");
                 String eventLink1 = eventJSON.getString("link1");
                 String eventLink2 = eventJSON.getString("link2");
                 String eventLink3 = eventJSON.getString("link3");
@@ -438,6 +442,8 @@ public class EventsActivity extends AppCompatActivity
                     eventEndDay = eventEndDay.substring(1);
                 }
 
+                String eventImagePath = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/images/events/" + eventImageName;
+
                 Date currentDate = new Date();
                 if (eventEndDate.after(currentDate)) {
 
@@ -445,7 +451,7 @@ public class EventsActivity extends AppCompatActivity
                             eventStartDate, eventEndDate, eventStartTime, eventEndTime,
                             eventStartMonth, eventStartDay, eventStartYear,
                             eventEndMonth, eventEndDay, eventEndYear,
-                            eventDescription, eventLink1, eventLink2, eventLink3, eventPin);
+                            eventDescription, eventImagePath, eventLink1, eventLink2, eventLink3, eventPin);
 
                     eventList.add(retrievedEvent);
                 }
