@@ -430,12 +430,13 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
                     String last = userJSON.getString("lastname");
                     String name = first + " " + last;
                     String email = userJSON.getString("email");
-                    String tokeId = userJSON.getString("id");
-                    //int id = Integer.parseInt(tokeId);
-                    session.createLoginSession(name, email, tokeId);
+                    String id = userJSON.getString("id");
                     Intent intent = new Intent(NonStudentLoginActivity.this, DashboardActivity.class);
                     intent.putExtra(Constants.EXTRA_CALLING_ACTIVITY_ID, NonStudentLoginActivity.class.getSimpleName());
                     intent.putExtra(Constants.EXTRA_USER_STATUS, "Non-Student");
+                    intent.putExtra(Constants.EXTRA_USER_NAME, name);
+                    intent.putExtra(Constants.EXTRA_USER_EMAIL, email);
+                    intent.putExtra(Constants.EXTRA_USER_ID, id);
                     startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();

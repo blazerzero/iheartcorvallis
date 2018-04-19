@@ -80,6 +80,7 @@ public class SettingsActivity extends AppCompatActivity
     private File file;
     private int ACTIVITYRESULT_ID;
     private static final int REQUEST_TAKE_PHOTO = 1;
+    private Bitmap profilePictureBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,42 +208,47 @@ public class SettingsActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_dash) {
-            Intent intent = new Intent(SettingsActivity.this, DashboardActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_events) {
-            Intent intent = new Intent(SettingsActivity.this, EventsActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_passport) {
-            Intent intent = new Intent(SettingsActivity.this, PassportActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_prizes) {
-            Intent intent = new Intent(SettingsActivity.this, PrizesActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_leaderboard) {
-            Intent intent = new Intent(SettingsActivity.this, LeaderboardActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_resources) {
-            Intent intent = new Intent(SettingsActivity.this, ResourcesActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_aboutus) {
-            Intent intent = new Intent(SettingsActivity.this, AboutUsActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_settings) {
-            onBackPressed();
-        } else if (id == R.id.nav_logout) {
-            session.logoutUser();
-        }
+        if (user != null) {
+            if (id == R.id.nav_settings) {
+                onBackPressed();
+            } else {
+                recycleBitmap();
+                if (id == R.id.nav_dash) {
+                    Intent intent = new Intent(this, DashboardActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_events) {
+                    Intent intent = new Intent(this, EventsActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_passport) {
+                    Intent intent = new Intent(this, PassportActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_prizes) {
+                    Intent intent = new Intent(this, PrizesActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_leaderboard) {
+                    Intent intent = new Intent(this, LeaderboardActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_resources) {
+                    Intent intent = new Intent(this, ResourcesActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_aboutus) {
+                    Intent intent = new Intent(this, AboutUsActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_logout) {
+                    session.logoutUser();
+                }
+            }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
         return true;
     }
 
@@ -299,7 +305,7 @@ public class SettingsActivity extends AppCompatActivity
         Log.d(TAG, "number of images: " + savedImagesList.size());
         File profilePicture = savedImagesList.get(0);
         Log.d(TAG, "path of image: " + profilePicture.getAbsolutePath());
-        Bitmap profilePictureBitmap = BitmapFactory.decodeFile(profilePicture.getAbsolutePath());
+        profilePictureBitmap = BitmapFactory.decodeFile(profilePicture.getAbsolutePath());
         mProfilePictureIV.setImageBitmap(profilePictureBitmap);
 
     }
@@ -412,6 +418,11 @@ public class SettingsActivity extends AppCompatActivity
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(pickPhoto, 1);
         }
+    }
+
+    public void recycleBitmap() {
+        profilePictureBitmap.recycle();
+        profilePictureBitmap = null;
     }
 
 }

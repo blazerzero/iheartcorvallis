@@ -84,6 +84,7 @@ public class PassportActivity extends AppCompatActivity
     private ActionBarDrawerToggle mDrawerToggle;
 
     private SQLiteDatabase mDB;
+    private Bitmap profilePictureBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,27 +136,30 @@ public class PassportActivity extends AppCompatActivity
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-                if (id == R.id.bottom_nav_dash) {
-                    Intent intent = new Intent(PassportActivity.this, DashboardActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);                }
-                else if (id == R.id.bottom_nav_events) {
-                    Intent intent = new Intent(PassportActivity.this, EventsActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                }
-                else if (id == R.id.bottom_nav_passport) {
-                    // Do nothing, you're already here
-                }
-                else if (id == R.id.bottom_nav_resources) {
-                    Intent intent = new Intent(PassportActivity.this, ResourcesActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                }
-                else if (id == R.id.bottom_nav_aboutus) {
-                    Intent intent = new Intent(PassportActivity.this, AboutUsActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
+
+                if (user != null) {
+                    if (id == R.id.bottom_nav_passport) {
+                        // Do nothing, you're already here
+                    } else {
+                        recycleBitmap();
+                        if (id == R.id.bottom_nav_dash) {
+                            Intent intent = new Intent(PassportActivity.this, DashboardActivity.class);
+                            intent.putExtra(Constants.EXTRA_USER, user);
+                            startActivity(intent);
+                        } else if (id == R.id.bottom_nav_events) {
+                            Intent intent = new Intent(PassportActivity.this, EventsActivity.class);
+                            intent.putExtra(Constants.EXTRA_USER, user);
+                            startActivity(intent);
+                        } else if (id == R.id.bottom_nav_resources) {
+                            Intent intent = new Intent(PassportActivity.this, ResourcesActivity.class);
+                            intent.putExtra(Constants.EXTRA_USER, user);
+                            startActivity(intent);
+                        } else if (id == R.id.bottom_nav_aboutus) {
+                            Intent intent = new Intent(PassportActivity.this, AboutUsActivity.class);
+                            intent.putExtra(Constants.EXTRA_USER, user);
+                            startActivity(intent);
+                        }
+                    }
                 }
                 return false;
             }
@@ -259,42 +263,47 @@ public class PassportActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_dash || id == R.id.bottom_nav_dash) {
-            Intent intent = new Intent(PassportActivity.this, DashboardActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_events || id == R.id.bottom_nav_events) {
-            Intent intent = new Intent(PassportActivity.this, EventsActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_passport) {
-            onBackPressed();
-        } else if (id == R.id.nav_prizes) {
-            Intent intent = new Intent(PassportActivity.this, PrizesActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_leaderboard) {
-            Intent intent = new Intent(PassportActivity.this, LeaderboardActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_resources || id == R.id.bottom_nav_resources) {
-            Intent intent = new Intent(PassportActivity.this, ResourcesActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_aboutus || id == R.id.bottom_nav_aboutus) {
-            Intent intent = new Intent(PassportActivity.this, AboutUsActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_settings) {
-            Intent intent = new Intent(PassportActivity.this, SettingsActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_logout) {
-            session.logoutUser();
-        }
+        if (user != null) {
+            if (id == R.id.nav_passport) {
+                onBackPressed();
+            } else {
+                //recycleBitmap();
+                if (id == R.id.nav_dash) {
+                    Intent intent = new Intent(this, DashboardActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_events) {
+                    Intent intent = new Intent(this, EventsActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_prizes) {
+                    Intent intent = new Intent(this, PrizesActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_leaderboard) {
+                    Intent intent = new Intent(this, LeaderboardActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_resources) {
+                    Intent intent = new Intent(this, ResourcesActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_aboutus) {
+                    Intent intent = new Intent(this, AboutUsActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_settings) {
+                    Intent intent = new Intent(this, SettingsActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_logout) {
+                    session.logoutUser();
+                }
+            }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
         return true;
     }
 
@@ -316,156 +325,105 @@ public class PassportActivity extends AppCompatActivity
 
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
-        //if (!gotUser) {
-            if (data != null) {
-                try {
-                    StringTokenizer stEvents = new StringTokenizer(data, "\\");
-                    while (stEvents.hasMoreTokens()) {
-                        String eventInfoString = stEvents.nextToken();
-                        Log.d(TAG, "eventInfoString: " + eventInfoString);
-                        JSONObject eventJSON = new JSONObject(eventInfoString);
-                        Log.d(TAG, "eventJSON: " + eventJSON);
-                        int eventid = Integer.parseInt(eventJSON.getString("eventid"));
-                        String eventName = eventJSON.getString("name");
-                        String eventLocation = eventJSON.getString("location");
-                        String eventAddress = eventJSON.getString("address");
-                        String eventStartDT = eventJSON.getString("startdt");
-                        String eventEndDT = eventJSON.getString("enddt");
-                        String eventDescription = eventJSON.getString("description");
-                        String eventImageName = eventJSON.getString("image");
-                        String eventLink1 = eventJSON.getString("link1");
-                        String eventLink2 = eventJSON.getString("link2");
-                        String eventLink3 = eventJSON.getString("link3");
-                        int eventPin = Integer.parseInt(eventJSON.getString("pin"));
+        if (data != null) {
+            try {
+                StringTokenizer stEvents = new StringTokenizer(data, "\\");
+                while (stEvents.hasMoreTokens()) {
+                    String eventInfoString = stEvents.nextToken();
+                    Log.d(TAG, "eventInfoString: " + eventInfoString);
+                    JSONObject eventJSON = new JSONObject(eventInfoString);
+                    Log.d(TAG, "eventJSON: " + eventJSON);
+                    int eventid = Integer.parseInt(eventJSON.getString("eventid"));
+                    String eventName = eventJSON.getString("name");
+                    String eventLocation = eventJSON.getString("location");
+                    String eventAddress = eventJSON.getString("address");
+                    String eventStartDT = eventJSON.getString("startdt");
+                    String eventEndDT = eventJSON.getString("enddt");
+                    String eventDescription = eventJSON.getString("description");
+                    String eventImageName = eventJSON.getString("image");
+                    String eventLink1 = eventJSON.getString("link1");
+                    String eventLink2 = eventJSON.getString("link2");
+                    String eventLink3 = eventJSON.getString("link3");
+                    int eventPin = Integer.parseInt(eventJSON.getString("pin"));
 
-                        StringTokenizer dateTimeTokenizer = new StringTokenizer(eventStartDT);
-                        String eventStartYear = dateTimeTokenizer.nextToken("-");
-                        String eventStartMonth = dateTimeTokenizer.nextToken("-");
-                        String eventStartDay = dateTimeTokenizer.nextToken(" ");
-                        String eventStartTime = dateTimeTokenizer.nextToken();
+                    StringTokenizer dateTimeTokenizer = new StringTokenizer(eventStartDT);
+                    String eventStartYear = dateTimeTokenizer.nextToken("-");
+                    String eventStartMonth = dateTimeTokenizer.nextToken("-");
+                    String eventStartDay = dateTimeTokenizer.nextToken(" ");
+                    String eventStartTime = dateTimeTokenizer.nextToken();
 
-                        dateTimeTokenizer = new StringTokenizer(eventEndDT);
-                        String eventEndYear = dateTimeTokenizer.nextToken("-");
-                        String eventEndMonth = dateTimeTokenizer.nextToken("-");
-                        String eventEndDay = dateTimeTokenizer.nextToken(" ");
-                        String eventEndTime = dateTimeTokenizer.nextToken();
+                    dateTimeTokenizer = new StringTokenizer(eventEndDT);
+                    String eventEndYear = dateTimeTokenizer.nextToken("-");
+                    String eventEndMonth = dateTimeTokenizer.nextToken("-");
+                    String eventEndDay = dateTimeTokenizer.nextToken(" ");
+                    String eventEndTime = dateTimeTokenizer.nextToken();
 
-                        SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        Date eventStartDate = sdfEvent.parse(eventStartDT);
-                        Date eventEndDate = sdfEvent.parse(eventEndDT);
+                    SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date eventStartDate = sdfEvent.parse(eventStartDT);
+                    Date eventEndDate = sdfEvent.parse(eventEndDT);
 
-                        SimpleDateFormat _24HourFormat = new SimpleDateFormat("HH:mm");
-                        SimpleDateFormat _12HourFormat = new SimpleDateFormat("hh:mm a");
+                    SimpleDateFormat _24HourFormat = new SimpleDateFormat("HH:mm");
+                    SimpleDateFormat _12HourFormat = new SimpleDateFormat("hh:mm a");
 
-                        Date _24HourEventTime = _24HourFormat.parse(eventStartTime);
-                        eventStartTime = _12HourFormat.format(_24HourEventTime).toString();
-                        if (eventStartTime.charAt(0) == '0') {
-                            eventStartTime = eventStartTime.substring(1);
-                        }
+                    Date _24HourEventTime = _24HourFormat.parse(eventStartTime);
+                    eventStartTime = _12HourFormat.format(_24HourEventTime).toString();
+                    if (eventStartTime.charAt(0) == '0') {
+                        eventStartTime = eventStartTime.substring(1);
+                    }
+                    eventStartDay = eventStartDay.substring(1);
+                    if (eventStartDay.charAt(0) == '0') {
                         eventStartDay = eventStartDay.substring(1);
-                        if (eventStartDay.charAt(0) == '0') {
-                            eventStartDay = eventStartDay.substring(1);
-                        }
+                    }
 
-                        if (eventStartMonth.charAt(0) == '0') {
-                            eventStartMonth = eventStartMonth.substring(1);
-                        }
+                    if (eventStartMonth.charAt(0) == '0') {
+                        eventStartMonth = eventStartMonth.substring(1);
+                    }
 
-                        int monthInt = Integer.parseInt(eventStartMonth);
-                        eventStartMonth = monthShortNames[monthInt - 1];
+                    int monthInt = Integer.parseInt(eventStartMonth);
+                    eventStartMonth = monthShortNames[monthInt - 1];
 
-                        _24HourEventTime = _24HourFormat.parse(eventEndTime);
-                        eventEndTime = _12HourFormat.format(_24HourEventTime).toString();
-                        if (eventEndTime.charAt(0) == '0') {
-                            eventEndTime = eventEndTime.substring(1);
-                        }
+                    _24HourEventTime = _24HourFormat.parse(eventEndTime);
+                    eventEndTime = _12HourFormat.format(_24HourEventTime).toString();
+                    if (eventEndTime.charAt(0) == '0') {
+                        eventEndTime = eventEndTime.substring(1);
+                    }
+                    eventEndDay = eventEndDay.substring(1);
+                    if (eventEndDay.charAt(0) == '0') {
                         eventEndDay = eventEndDay.substring(1);
-                        if (eventEndDay.charAt(0) == '0') {
-                            eventEndDay = eventEndDay.substring(1);
-                        }
-
-                        if (eventEndMonth.charAt(0) == '0') {
-                            eventEndMonth = eventEndMonth.substring(1);
-                        }
-
-                        monthInt = Integer.parseInt(eventEndMonth);
-                        eventEndMonth = monthShortNames[monthInt - 1];
-
-                        String eventImagePath = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/images/events/" + eventImageName;
-
-                        Event retrievedEvent = new Event(eventid, eventName, eventLocation, eventAddress,
-                                eventStartDate, eventEndDate, eventStartTime, eventEndTime,
-                                eventStartMonth, eventStartDay, eventStartYear,
-                                eventEndMonth, eventEndDay, eventEndYear,
-                                eventDescription, eventImagePath, eventLink1, eventLink2, eventLink3, eventPin);
-
-                        completedEventList.add(retrievedEvent);
-
-                        if (isNetworkAvailable()) {
-                            mPassportAdapter.addEventToPassport(retrievedEvent);
-                            //gotUser = true;
-                            //getSupportLoaderManager().initLoader(IHC_GETUSERINFO_ID, null, this);
-                        } else {
-                            showNoInternetConnectionMsg();
-                        }
                     }
 
+                    if (eventEndMonth.charAt(0) == '0') {
+                        eventEndMonth = eventEndMonth.substring(1);
+                    }
 
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    monthInt = Integer.parseInt(eventEndMonth);
+                    eventEndMonth = monthShortNames[monthInt - 1];
+
+                    String eventImagePath = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/images/events/" + eventImageName;
+
+                    Event retrievedEvent = new Event(eventid, eventName, eventLocation, eventAddress,
+                            eventStartDate, eventEndDate, eventStartTime, eventEndTime,
+                            eventStartMonth, eventStartDay, eventStartYear,
+                            eventEndMonth, eventEndDay, eventEndYear,
+                            eventDescription, eventImagePath, eventLink1, eventLink2, eventLink3, eventPin);
+
+                    completedEventList.add(retrievedEvent);
+
+                    if (isNetworkAvailable()) {
+                        mPassportAdapter.addEventToPassport(retrievedEvent);
+                        //gotUser = true;
+                        //getSupportLoaderManager().initLoader(IHC_GETUSERINFO_ID, null, this);
+                    } else {
+                        showNoInternetConnectionMsg();
+                    }
                 }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-        /*else {
-            if (data != null) {
-                try {
-                    JSONObject userJSON = new JSONObject(data);
-                    String firstname = userJSON.getString("firstname");
-                    String lastname = userJSON.getString("lastname");
-                    String email = userJSON.getString("email");
-                    int id = Integer.parseInt(userJSON.getString("id"));
-                    String stampcount = userJSON.getString("stampcount");
-                    int grade = Integer.parseInt(userJSON.getString("grade"));
-                    int age = Integer.parseInt(userJSON.getString("age"));
-                    currentUser = new User(firstname, lastname, email, id, stampcount, grade, age);
-                    numStamps = Integer.parseInt(stampcount);
-                    progIndicatorTV.setText("STAMPS: " + String.valueOf(numStamps));
-                    if (numStamps >= getResources().getInteger(R.integer.bronzeThreshold)
-                            && numStamps < getResources().getInteger(R.integer.silverThreshold)) {
-                        progIndicatorTV.setBackgroundColor(getResources().getColor(R.color.eventBronze));
-                    }
-                    else if (numStamps >= getResources().getInteger(R.integer.silverThreshold)
-                            && numStamps < getResources().getInteger(R.integer.goldThreshold)) {
-                        progIndicatorTV.setBackgroundColor(getResources().getColor(R.color.eventSilver));
-                    }
-                    else if (numStamps >= getResources().getInteger(R.integer.goldThreshold)) {
-                        progIndicatorTV.setBackgroundColor(getResources().getColor(R.color.eventGold));
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            else {
-                AlertDialog.Builder builder;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-                }
-                else {
-                    builder = new AlertDialog.Builder(this);
-                }
-                builder.setTitle("Error");
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Close alert dialog
-                    }
-                });
-                builder.setMessage("Error retrieving user info.");
-                builder.setIcon(android.R.drawable.ic_dialog_alert);
-                builder.show();
-            }
-        }
-    }*/
+    }
 
     @Override
     public void onLoaderReset(Loader<String> loader) {
@@ -522,8 +480,13 @@ public class PassportActivity extends AppCompatActivity
         Log.d(TAG, "number of images: " + savedImagesList.size());
         File profilePicture = savedImagesList.get(0);
         Log.d(TAG, "path of image: " + profilePicture.getAbsolutePath());
-        Bitmap profilePictureBitmap = BitmapFactory.decodeFile(profilePicture.getAbsolutePath());
+        profilePictureBitmap = BitmapFactory.decodeFile(profilePicture.getAbsolutePath());
         mProfilePictureIV.setImageBitmap(profilePictureBitmap);
 
+    }
+
+    public void recycleBitmap() {
+        profilePictureBitmap.recycle();
+        profilePictureBitmap = null;
     }
 }

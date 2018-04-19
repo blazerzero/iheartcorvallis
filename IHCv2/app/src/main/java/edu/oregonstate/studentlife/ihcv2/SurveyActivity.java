@@ -52,6 +52,8 @@ public class SurveyActivity extends AppCompatActivity
     private Button mSubmitSurveyBtn;
     private TextView mSkipSurveyTV;
 
+    private byte[] profilePictureByteArray = null;
+
     /*private TextView mUserBirthDateTV;
     private TextView mUserTypeTV;
     private Spinner mUserTypeSP;
@@ -113,9 +115,12 @@ public class SurveyActivity extends AppCompatActivity
             user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
             Log.d(TAG, "User ID: " + user.getId());
         }
-        else if (intent != null && intent.hasExtra(Constants.EXTRA_USER_ID)){
+        else if (intent != null && intent.hasExtra(Constants.EXTRA_USER_ID)) {
             userid = (int) intent.getSerializableExtra(Constants.EXTRA_USER_ID);
             user = null;
+        }
+        if (intent != null && intent.hasExtra(Constants.EXTRA_USER_PROFILE_PICTURE)) {
+            profilePictureByteArray = intent.getByteArrayExtra(Constants.EXTRA_USER_PROFILE_PICTURE);
         }
 
         questionIDs = new ArrayList<Integer>();
@@ -291,7 +296,11 @@ public class SurveyActivity extends AppCompatActivity
             else if (data.equals("ADDSUCCESS")) {
                 recordedFeedback = true;
                 Intent dashIntent = new Intent(this, DashboardActivity.class);
-                startActivityForResult(dashIntent, 1);
+                if (profilePictureByteArray != null) {
+                    dashIntent.putExtra(Constants.EXTRA_USER_PROFILE_PICTURE, profilePictureByteArray);
+                }
+                //startActivityForResult(dashIntent, 1);
+                startActivity(dashIntent);
             }
         }
     }

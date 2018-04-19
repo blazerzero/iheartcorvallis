@@ -56,6 +56,7 @@ public class AboutUsActivity extends AppCompatActivity
     DrawerLayout mDrawerLayout;
     ActionBarDrawerToggle mDrawerToggle;
     private SQLiteDatabase mDB;
+    private Bitmap profilePictureBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,29 +110,30 @@ public class AboutUsActivity extends AppCompatActivity
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-                if (id == R.id.bottom_nav_dash) {
-                    Intent intent = new Intent(AboutUsActivity.this, DashboardActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                }
-                else if (id == R.id.bottom_nav_events) {
-                    Intent intent = new Intent(AboutUsActivity.this, EventsActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                }
-                else if (id == R.id.bottom_nav_passport) {
-                    Intent intent = new Intent(AboutUsActivity.this, PassportActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                }
-                else if (id == R.id.bottom_nav_resources) {
-                    Intent intent = new Intent(AboutUsActivity.this, ResourcesActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                }
-                else if (id == R.id.bottom_nav_aboutus) {
-                    // Do nothing, you're already here
+                if (user != null) {
+                    if (id == R.id.bottom_nav_aboutus) {
+                        // Do nothing, you're already here
 
+                    } else {
+                        recycleBitmap();
+                        if (id == R.id.bottom_nav_dash) {
+                            Intent intent = new Intent(AboutUsActivity.this, DashboardActivity.class);
+                            intent.putExtra(Constants.EXTRA_USER, user);
+                            startActivity(intent);
+                        } else if (id == R.id.bottom_nav_events) {
+                            Intent intent = new Intent(AboutUsActivity.this, EventsActivity.class);
+                            intent.putExtra(Constants.EXTRA_USER, user);
+                            startActivity(intent);
+                        } else if (id == R.id.bottom_nav_passport) {
+                            Intent intent = new Intent(AboutUsActivity.this, PassportActivity.class);
+                            intent.putExtra(Constants.EXTRA_USER, user);
+                            startActivity(intent);
+                        } else if (id == R.id.bottom_nav_resources) {
+                            Intent intent = new Intent(AboutUsActivity.this, ResourcesActivity.class);
+                            intent.putExtra(Constants.EXTRA_USER, user);
+                            startActivity(intent);
+                        }
+                    }
                 }
                 return false;
             }
@@ -214,42 +216,47 @@ public class AboutUsActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_dash || id == R.id.bottom_nav_dash) {
-            Intent intent = new Intent(AboutUsActivity.this, DashboardActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_events || id == R.id.bottom_nav_events) {
-            Intent intent = new Intent(AboutUsActivity.this, EventsActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_passport) {
-            Intent intent = new Intent(AboutUsActivity.this, PassportActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_prizes) {
-            Intent intent = new Intent(AboutUsActivity.this, PrizesActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_leaderboard) {
-            Intent intent = new Intent(AboutUsActivity.this, LeaderboardActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_resources || id == R.id.bottom_nav_resources) {
-            Intent intent = new Intent(AboutUsActivity.this, ResourcesActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_aboutus || id == R.id.bottom_nav_aboutus) {
-            onBackPressed();
-        } else if (id == R.id.nav_settings) {
-            Intent intent = new Intent(AboutUsActivity.this, SettingsActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_logout) {
-            session.logoutUser();
-        }
+        if (user != null) {
+            if (id == R.id.nav_aboutus) {
+                onBackPressed();
+            } else {
+                //recycleBitmap();
+                if (id == R.id.nav_dash) {
+                    Intent intent = new Intent(this, DashboardActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_events) {
+                    Intent intent = new Intent(this, EventsActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_passport) {
+                    Intent intent = new Intent(this, PassportActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_prizes) {
+                    Intent intent = new Intent(this, PrizesActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_leaderboard) {
+                    Intent intent = new Intent(this, LeaderboardActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_resources) {
+                    Intent intent = new Intent(this, ResourcesActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_settings) {
+                    Intent intent = new Intent(this, SettingsActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_logout) {
+                    session.logoutUser();
+                }
+            }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
         return true;
     }
 
@@ -296,8 +303,13 @@ public class AboutUsActivity extends AppCompatActivity
         Log.d(TAG, "number of images: " + savedImagesList.size());
         File profilePicture = savedImagesList.get(0);
         Log.d(TAG, "path of image: " + profilePicture.getAbsolutePath());
-        Bitmap profilePictureBitmap = BitmapFactory.decodeFile(profilePicture.getAbsolutePath());
+        profilePictureBitmap = BitmapFactory.decodeFile(profilePicture.getAbsolutePath());
         mProfilePictureIV.setImageBitmap(profilePictureBitmap);
 
+    }
+
+    public void recycleBitmap() {
+        profilePictureBitmap.recycle();
+        profilePictureBitmap = null;
     }
 }

@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -27,15 +29,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.IHCDBContract;
 import edu.oregonstate.studentlife.ihcv2.data.IHCDBHelper;
+import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.ExtraUserInfoLoader;
 
@@ -43,6 +48,8 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
 
     private final static String TAG = GetUserInfoActivity.class.getSimpleName();
     private SQLiteDatabase mDB;
+
+    Session session;
 
     private TextView mUserBirthDateTV;
     private TextView mUserTypeTV;
@@ -64,6 +71,9 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
     // For deciding what to do in onActivityResult
     private int ACTIVITYRESULT_ID;
     private String userStatus = null;
+    private String sesUsername;
+    private String sesEmail;
+    private String sesID;
 
     private User user;
     private final static int IHC_USER_GETEXTRAINFO_ID = 0;
@@ -115,6 +125,15 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
             if (intent.hasExtra(Constants.EXTRA_USER)) {
                 user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
             }
+            if (intent.hasExtra(Constants.EXTRA_USER_NAME)) {
+                sesUsername = (String) intent.getSerializableExtra(Constants.EXTRA_USER_NAME);
+            }
+            if (intent.hasExtra(Constants.EXTRA_USER_EMAIL)) {
+                sesEmail = (String) intent.getSerializableExtra(Constants.EXTRA_USER_EMAIL);
+            }
+            if (intent.hasExtra(Constants.EXTRA_USER_ID)) {
+                sesID = (String) intent.getSerializableExtra(Constants.EXTRA_USER_ID);
+            }
         }
 
         mUserBirthDateTV = (TextView) findViewById(R.id.tv_user_age);
@@ -128,14 +147,17 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
         mSubmitUserInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent dashIntent = new Intent(GetUserInfoActivity.this, SurveyActivity.class);
-                startActivity(dashIntent);*/
-                Bundle args = new Bundle();
-                args.putInt(IHC_USER_ID_KEY, user.getId());
-                args.putInt(IHC_USER_GRADE_KEY, userGradeValue);
-                args.putInt(IHC_USER_TYPE_KEY, userTypeValue);
-                args.putString(IHC_USER_BD_KEY, userBirthdate);
-                getSupportLoaderManager().initLoader(IHC_USER_GETEXTRAINFO_ID, args, GetUserInfoActivity.this);
+                if (!mUserBirthDateTV.getText().toString().contains("Birthdate: ") || getProfilePicture() != null) {
+                    Bundle args = new Bundle();
+                    args.putInt(IHC_USER_ID_KEY, user.getId());
+                    args.putInt(IHC_USER_GRADE_KEY, userGradeValue);
+                    args.putInt(IHC_USER_TYPE_KEY, userTypeValue);
+                    args.putString(IHC_USER_BD_KEY, userBirthdate);
+                    getSupportLoaderManager().initLoader(IHC_USER_GETEXTRAINFO_ID, args, GetUserInfoActivity.this);
+                }
+                else {
+                    Toast.makeText(GetUserInfoActivity.this, "Must fill all fields!", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -222,8 +244,14 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
             Toast.makeText(this, "There was an error adding this information to your profile.", Toast.LENGTH_LONG).show();
         }
         else {
+            session.createLoginSession(sesUsername, sesEmail, sesID);
+
             Intent surveyIntent = new Intent(this, SurveyActivity.class);
             surveyIntent.putExtra(Constants.EXTRA_USER, user);
+            ByteArrayOutputStream profilePictureStream = new ByteArrayOutputStream();
+            getProfilePicture().compress(Bitmap.CompressFormat.JPEG, 100, profilePictureStream);
+            byte[] profilePictureByteArray = profilePictureStream.toByteArray();
+            surveyIntent.putExtra(Constants.EXTRA_USER_PROFILE_PICTURE, profilePictureByteArray);
             startActivity(surveyIntent);
         }
 
@@ -296,8 +324,8 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
                 }
                 break;
         }
-        Intent surveyIntent = new Intent(this, SurveyActivity.class);
-        startActivity(surveyIntent);
+        /*Intent surveyIntent = new Intent(this, SurveyActivity.class);
+        startActivity(surveyIntent);*/
     }
 
     /* INITIALIZE IMAGE FILE AND LET USER TAKE PHOTO */
@@ -367,6 +395,45 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
         ContentValues row = new ContentValues();
         row.put(IHCDBContract.SavedImages.COLUMN_IMAGE, url);
         return mDB.insert(IHCDBContract.SavedImages.TABLE_NAME, null, row);
+    }
+
+    private Bitmap getProfilePicture() {
+        Cursor cursor = mDB.query(
+                IHCDBContract.SavedImages.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                IHCDBContract.SavedImages.COLUMN_TIMESTAMP + " DESC"
+        );
+
+        ArrayList<File> savedImagesList = new ArrayList<File>();
+        while (cursor.moveToNext()) {
+            File savedImage;
+            Uri fileUri = Uri.parse(cursor.getString(
+                    cursor.getColumnIndex(IHCDBContract.SavedImages.COLUMN_IMAGE)
+            ));
+            savedImage = new File(fileUri.getPath());
+            savedImagesList.add(savedImage);
+        }
+        cursor.close();
+        Log.d(TAG, "number of images: " + savedImagesList.size());
+        if (savedImagesList.size() == 0) {
+            /*Log.d(TAG, "about to get information from user");
+            Intent getUserInfoIntent = new Intent(this, GetUserInfoActivity.class);
+            getUserInfoIntent.putExtra(Constants.EXTRA_USER_STATUS, userStatus);
+            getUserInfoIntent.putExtra(Constants.EXTRA_USER, user);
+            startActivity(getUserInfoIntent);*/
+            return null;
+        }
+        else {
+            File profilePicture = savedImagesList.get(0);
+            Log.d(TAG, "path of image: " + profilePicture.getAbsolutePath());
+            Bitmap profilePictureBitmap = BitmapFactory.decodeFile(profilePicture.getAbsolutePath());
+            //mProfilePictureIV.setImageBitmap(profilePictureBitmap);
+            return profilePictureBitmap;
+        }
     }
 
 }

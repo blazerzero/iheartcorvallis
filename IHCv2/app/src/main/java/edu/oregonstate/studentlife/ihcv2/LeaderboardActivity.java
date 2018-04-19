@@ -67,6 +67,7 @@ public class LeaderboardActivity extends AppCompatActivity
     private User user;
 
     private SQLiteDatabase mDB;
+    private Bitmap profilePictureBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,29 +123,29 @@ public class LeaderboardActivity extends AppCompatActivity
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-                if (id == R.id.bottom_nav_dash) {
-                    Intent intent = new Intent(LeaderboardActivity.this, DashboardActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);                }
-                else if (id == R.id.bottom_nav_events) {
-                    Intent intent = new Intent(LeaderboardActivity.this, EventsActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                }
-                else if (id == R.id.bottom_nav_passport) {
-                    Intent intent = new Intent(LeaderboardActivity.this, PassportActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                }
-                else if (id == R.id.bottom_nav_resources) {
-                    Intent intent = new Intent(LeaderboardActivity.this, ResourcesActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                }
-                else if (id == R.id.bottom_nav_aboutus) {
-                    Intent intent = new Intent(LeaderboardActivity.this, AboutUsActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
+                if (user != null) {
+                    recycleBitmap();
+                    if (id == R.id.bottom_nav_dash) {
+                        Intent intent = new Intent(LeaderboardActivity.this, DashboardActivity.class);
+                        intent.putExtra(Constants.EXTRA_USER, user);
+                        startActivity(intent);
+                    } else if (id == R.id.bottom_nav_events) {
+                        Intent intent = new Intent(LeaderboardActivity.this, EventsActivity.class);
+                        intent.putExtra(Constants.EXTRA_USER, user);
+                        startActivity(intent);
+                    } else if (id == R.id.bottom_nav_passport) {
+                        Intent intent = new Intent(LeaderboardActivity.this, PassportActivity.class);
+                        intent.putExtra(Constants.EXTRA_USER, user);
+                        startActivity(intent);
+                    } else if (id == R.id.bottom_nav_resources) {
+                        Intent intent = new Intent(LeaderboardActivity.this, ResourcesActivity.class);
+                        intent.putExtra(Constants.EXTRA_USER, user);
+                        startActivity(intent);
+                    } else if (id == R.id.bottom_nav_aboutus) {
+                        Intent intent = new Intent(LeaderboardActivity.this, AboutUsActivity.class);
+                        intent.putExtra(Constants.EXTRA_USER, user);
+                        startActivity(intent);
+                    }
                 }
                 return false;
             }
@@ -158,8 +159,6 @@ public class LeaderboardActivity extends AppCompatActivity
 
         mLeaderboardAdapter = new LeaderboardAdapter();
         mLeaderboardRV.setAdapter(mLeaderboardAdapter);
-
-        //new StampCountReceiver(this).execute();
 
         getSupportLoaderManager().initLoader(IHC_PASSPORT_LOADER_ID, null, this);
 
@@ -235,42 +234,47 @@ public class LeaderboardActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_dash || id == R.id.bottom_nav_dash) {
-            Intent intent = new Intent(LeaderboardActivity.this, DashboardActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_events || id == R.id.bottom_nav_events) {
-            Intent intent = new Intent(LeaderboardActivity.this, EventsActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_passport) {
-            Intent intent = new Intent(LeaderboardActivity.this, PassportActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_prizes) {
-            Intent intent = new Intent(LeaderboardActivity.this, PrizesActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_leaderboard) {
-            onBackPressed();
-        } else if (id == R.id.nav_resources || id == R.id.bottom_nav_resources) {
-            Intent intent = new Intent(LeaderboardActivity.this, ResourcesActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_aboutus || id == R.id.bottom_nav_aboutus) {
-            Intent intent = new Intent(LeaderboardActivity.this, AboutUsActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_settings) {
-            Intent intent = new Intent(LeaderboardActivity.this, SettingsActivity.class);
-            intent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(intent);
-        } else if (id == R.id.nav_logout) {
-            session.logoutUser();
-        }
+        if (user != null) {
+            if (id == R.id.nav_leaderboard) {
+                onBackPressed();
+            } else {
+                //recycleBitmap();
+                if (id == R.id.nav_dash) {
+                    Intent intent = new Intent(this, DashboardActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_events) {
+                    Intent intent = new Intent(this, EventsActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_passport) {
+                    Intent intent = new Intent(this, PassportActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_prizes) {
+                    Intent intent = new Intent(this, PrizesActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_resources) {
+                    Intent intent = new Intent(this, ResourcesActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_aboutus) {
+                    Intent intent = new Intent(this, AboutUsActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_settings) {
+                    Intent intent = new Intent(this, SettingsActivity.class);
+                    intent.putExtra(Constants.EXTRA_USER, user);
+                    startActivity(intent);
+                } else if (id == R.id.nav_logout) {
+                    session.logoutUser();
+                }
+            }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
         return true;
     }
 
@@ -307,29 +311,6 @@ public class LeaderboardActivity extends AppCompatActivity
     public void onLoaderReset(Loader<String> loader) {
         // Nothing to do...
     }
-
-    /*private void onBackgroundTaskDataObtained(String result) {
-        try {
-            StringTokenizer stUser = new StringTokenizer(result, "\\");
-            while (stUser.hasMoreTokens()) {
-                String leaderboardUserString = stUser.nextToken();
-                JSONObject leaderboardUserJSON = new JSONObject(leaderboardUserString);
-                String userFirstName = leaderboardUserJSON.getString("firstname");
-                String userLastName = leaderboardUserJSON.getString("lastname");
-                String userStampCount = leaderboardUserJSON.getString("stampcount");
-
-                User.LeaderboardUser retrievedUser = new User.LeaderboardUser(userFirstName, userLastName, userStampCount);
-                leaderboardUserList.add(retrievedUser);
-            }
-            sortLeaderboard();
-
-            for (User.LeaderboardUser leaderboardUser : leaderboardUserList) {
-                mLeaderboardAdapter.addUserToLeaderboard(leaderboardUser);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
 
     public void sortLeaderboard() {
         User.LeaderboardUser holder;
@@ -375,8 +356,13 @@ public class LeaderboardActivity extends AppCompatActivity
         Log.d(TAG, "number of images: " + savedImagesList.size());
         File profilePicture = savedImagesList.get(0);
         Log.d(TAG, "path of image: " + profilePicture.getAbsolutePath());
-        Bitmap profilePictureBitmap = BitmapFactory.decodeFile(profilePicture.getAbsolutePath());
+        profilePictureBitmap = BitmapFactory.decodeFile(profilePicture.getAbsolutePath());
         mProfilePictureIV.setImageBitmap(profilePictureBitmap);
 
+    }
+
+    public void recycleBitmap() {
+        profilePictureBitmap.recycle();
+        profilePictureBitmap = null;
     }
 }
