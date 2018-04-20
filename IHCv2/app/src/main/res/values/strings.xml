@@ -100,12 +100,14 @@
     <string name="pref_user_grade_senior">Senior</string>
     <string name="pref_user_grade_grad">Graduate Student</string>
     <string name="pref_user_grade_doc">Doctoral Student</string>
+    <string name="pref_user_grade_faculty">Faculty</string>
     <string name="pref_user_grade_freshman_value" translatable="false">1</string>
     <string name="pref_user_grade_sophomore_value" translatable="false">2</string>
     <string name="pref_user_grade_junior_value" translatable="false">3</string>
     <string name="pref_user_grade_senior_value" translatable="false">4</string>
     <string name="pref_user_grade_grad_value" translatable="false">5</string>
     <string name="pref_user_grade_doc_value" translatable="false">6</string>
+    <string name="pref_user_grade_faculty_value" translatable="false">7</string>
 
     <string name="pref_user_birthdate_key" translatable="false">pref_user_birthdate</string>
     <string name="pref_user_birthdate_title">Birthdate</string>
@@ -116,12 +118,14 @@
     <string name="pref_user_type_title">User Type</string>
     <string name="pref_user_type_dom_student">Domestic Student</string>
     <string name="pref_user_type_intl_student">International Student</string>
+    <string name="pref_user_type_faculty">Faculty</string>
     <string name="pref_user_type_resident">Resident</string>
     <string name="pref_user_type_visitor">Visitor</string>
     <string name="pref_user_type_dom_student_value">0</string>
     <string name="pref_user_type_intl_student_value">1</string>
-    <string name="pref_user_type_resident_value">2</string>
-    <string name="pref_user_type_visitor_value">3</string>
+    <string name="pref_user_type_faculty_value">2</string>
+    <string name="pref_user_type_resident_value">3</string>
+    <string name="pref_user_type_visitor_value">4</string>
 
     <!-- CheckLocationActivity -->
     <string name="checking_location">Checking Location</string>
@@ -158,5 +162,8 @@
     <string name="userinfo_type_prompt">Type:</string>
     <string name="userinfo_grade_prompt">Grade:</string>
     <string name="submit_userinfo">Next</string>
+    <string name="prompt_studentid">OSU Student ID #</string>
+    <string name="prompt_onid">ONID Username</string>
+    <string name="prompt_is_osu">Are you an OSU student or faculty member?</string>
 
 </resources>

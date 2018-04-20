@@ -24,6 +24,8 @@ public class ExtraUserInfoLoader extends AsyncTaskLoader<String> {
     final static String IHC_ADD_EXTRA_USERINFO_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/add_extra_userinfo.php";
 
     private String userid;
+    private String studentid;
+    private String onid;
     private String grade;
     private String type;
     private String birthdate;
@@ -31,6 +33,8 @@ public class ExtraUserInfoLoader extends AsyncTaskLoader<String> {
     public ExtraUserInfoLoader(Context context, Bundle args) {
         super(context);
         userid = String.valueOf(args.getInt(GetUserInfoActivity.IHC_USER_ID_KEY));
+        studentid = args.getString(GetUserInfoActivity.IHC_USER_STUDENTID_KEY);
+        onid = args.getString(GetUserInfoActivity.IHC_USER_ONID_KEY);
         grade = String.valueOf(args.getInt(GetUserInfoActivity.IHC_USER_GRADE_KEY));
         type = String.valueOf(args.getInt(GetUserInfoActivity.IHC_USER_TYPE_KEY));
         birthdate = args.getString(GetUserInfoActivity.IHC_USER_BD_KEY);
@@ -46,6 +50,8 @@ public class ExtraUserInfoLoader extends AsyncTaskLoader<String> {
         try {
             URL url = new URL(IHC_ADD_EXTRA_USERINFO_URL);
             String data = URLEncoder.encode("userid", "UTF-8") + "=" + URLEncoder.encode(userid, "UTF-8");
+            data += "&" + URLEncoder.encode("studentid", "UTF-8") + "=" + URLEncoder.encode(studentid, "UTF-8");
+            data += "&" + URLEncoder.encode("onid", "UTF-8") + "=" + URLEncoder.encode(onid, "UTF-8");
             data += "&" + URLEncoder.encode("type", "UTF-8") + "=" + URLEncoder.encode(type, "UTF-8");
             data += "&" + URLEncoder.encode("grade", "UTF-8") + "=" + URLEncoder.encode(grade, "UTF-8");
             data += "&" + URLEncoder.encode("birthdate", "UTF-8") + "=" + URLEncoder.encode(birthdate, "UTF-8");

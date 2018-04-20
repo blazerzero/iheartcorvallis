@@ -7,6 +7,7 @@
         <item>@string/pref_user_grade_senior</item>
         <item>@string/pref_user_grade_grad</item>
         <item>@string/pref_user_grade_doc</item>
+        <item>@string/pref_user_grade_faculty</item>
     </string-array>
 
     <string-array name="pref_user_grade_values">
@@ -16,21 +17,24 @@
         <item>@string/pref_user_grade_senior_value</item>
         <item>@string/pref_user_grade_grad_value</item>
         <item>@string/pref_user_grade_doc_value</item>
+        <item>@string/pref_user_grade_faculty_value</item>
     </string-array>
 
     <string-array name="pref_user_type_entries_student">
         <item>@string/pref_user_type_dom_student</item>
         <item>@string/pref_user_type_intl_student</item>
+        <item>@string/pref_user_type_faculty</item>
     </string-array>
 
     <string-array name="pref_user_type_values_student">
         <item>@string/pref_user_type_dom_student_value</item>
         <item>@string/pref_user_type_intl_student_value</item>
+        <item>@string/pref_user_type_faculty_value</item>
     </string-array>
 
     <string-array name="pref_user_type_entries_nonstudent">
-        <item>@string/pref_user_type_dom_student</item>
-        <item>@string/pref_user_type_intl_student</item>
+        <item>@string/pref_user_type_resident</item>
+        <item>@string/pref_user_type_visitor</item>
     </string-array>
 
     <string-array name="pref_user_type_values_nonstudent">

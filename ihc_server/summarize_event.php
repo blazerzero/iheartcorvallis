@@ -14,7 +14,7 @@ if ($result->num_rows > 0) {
 
 $result = $mysqli->query("SELECT * FROM ihc_completed_events WHERE eventid='$eventid'");
 $numAttendees = $result->num_rows;
-$numFreshmen = $numSophomores = $numJuniors = $numSeniors = $numGrad = $numDoc = 0;
+$numFreshmen = $numSophomores = $numJuniors = $numSeniors = $numGrad = $numDoc = $numFaculty = 0;
 $numDomStudents = $numIntlStudents = $numNonStudents = 0;
 $ages = $allAttendees = $students = $allRatings = $studentRatings = $comments = $studentComments = array();
 $minAge = $maxAge = $minAllRating = $maxAllRating = $minStudentRating = $maxStudentRating = 0;
@@ -60,7 +60,15 @@ while ($row = $result->fetch_assoc()) {
             $studentComments[] = $row['comment'];
          }
       }
-      else if ($usertype >= 2) { $numNonStudents++; }
+      else if ($usertype == 2) {
+        $numFaculty++;
+        $students[] = $user;
+        $studentRatings[] = $row['rating'];
+        if (strlen($user['comment']) > 0) {
+           $studentComments[] = $row['comment'];
+        }
+      }
+      else if ($usertype >= 3) { $numNonStudents++; }
    }
 }
 $numStudents = $numDomStudents + $numIntlStudents;
@@ -94,7 +102,7 @@ $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
          function drawAttendeeChart() {
             var data = google.visualization.arrayToDataTable([
                ['Attendee Type', 'Number of Attendees of This Type'],
-               ['Students', <?php echo $numStudents; ?>],
+               ['Students and Faculty', <?php echo $numStudents + $numFaculty; ?>],
                ['Non-Students', <?php echo $numNonStudents; ?>]
             ]);
 
@@ -111,7 +119,8 @@ $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
             var data = google.visualization.arrayToDataTable([
                ['Student Attendee Type', 'Number of Attendees of This Type'],
                ['Domestic Students', <?php echo $numDomStudents; ?>],
-               ['International Students', <?php echo $numIntlStudents; ?>]
+               ['International Students', <?php echo $numIntlStudents; ?>],
+               ['Faculty', <?php echo $numFacultyl ?>]
             ]);
 
             var options = {
@@ -132,6 +141,7 @@ $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
                ['Seniors', <?php echo $numSeniors; ?>],
                ['Graduate Students', <?php echo $numGrad; ?>],
                ['Doctoral Students', <?php echo $numDoc; ?>]
+               ['Faculty', <?php echo $numFaculty; ?>]
             ]);
 
             var options = {
@@ -271,11 +281,11 @@ $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
                      </td>-->
                   </tr>
                </table>
-               <div id="student_ages_columnchart" style="width: 50vw; height: 30em;"></div>
+               <div id="student_ages_columnchart" style="width: 40vw; height: 30em;"></div>
                <table>
                   <tr>
-                     <td><div id="all_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td>
-                     <td><div id="student_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td>
+                     <td><div id="all_ratings_columnchart" style="width: 40vw; height: 30vw;"></div></td>
+                     <td><div id="student_ratings_columnchart" style="width: 40vw; height: 30vw;"></div></td>
                   </tr>
                </table>
 

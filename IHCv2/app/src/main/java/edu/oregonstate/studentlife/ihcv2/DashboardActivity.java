@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 
@@ -268,24 +269,25 @@ public class DashboardActivity extends AppCompatActivity
                     String firstname = userJSON.getString("firstname");
                     String lastname = userJSON.getString("lastname");
                     String email = userJSON.getString("email");
+                    int studentid = Integer.parseInt(userJSON.getString("studentid"));
+                    String onid = userJSON.getString("onid");
                     int id = Integer.parseInt(userJSON.getString("id"));
                     numStamps = Integer.parseInt(userJSON.getString("stampcount"));
                     int didsurvey = Integer.parseInt(userJSON.getString("didsurvey"));
                     int grade = Integer.parseInt(userJSON.getString("grade"));
-                    //int age = Integer.parseInt(userJSON.getString("age"));
                     String birthDateString = userJSON.getString("birthdate");
                     int type = Integer.parseInt(userJSON.getString("type"));
 
-                    SimpleDateFormat sdfBirthDate = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat sdfBirthDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
                     Date birthDate = sdfBirthDate.parse(birthDateString);
 
                     Log.d(TAG, "birthdate: " + birthDate.toString());
                     Log.d(TAG, "grade: " + grade);
 
-                    if (birthDate.toString().equals("0000-00-00") || grade == 0) {
+                    if (studentid == -1 || onid.length() == 0 || birthDate.toString().equals("0000-00-00") || grade == 0 || type == -1) {
+
                         Log.d(TAG, "about to get information from user");
                         Intent getUserInfoIntent = new Intent(this, GetUserInfoActivity.class);
-                        getUserInfoIntent.putExtra(Constants.EXTRA_USER_STATUS, userStatus);
                         getUserInfoIntent.putExtra(Constants.EXTRA_USER, user);
                         startActivity(getUserInfoIntent);
                     }
@@ -357,15 +359,15 @@ public class DashboardActivity extends AppCompatActivity
                     String eventEndDay = dateTimeTokenizer.nextToken(" ");
                     String eventEndTime = dateTimeTokenizer.nextToken();
 
-                    SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
                     Date eventStartDate = sdfEvent.parse(eventStartDT);
                     Date eventEndDate = sdfEvent.parse(eventEndDT);
 
-                    SimpleDateFormat _24HourFormat = new SimpleDateFormat("HH:mm");
-                    SimpleDateFormat _12HourFormat = new SimpleDateFormat("hh:mm a");
+                    SimpleDateFormat _24HourFormat = new SimpleDateFormat("HH:mm", Locale.US);
+                    SimpleDateFormat _12HourFormat = new SimpleDateFormat("hh:mm a", Locale.US);
 
                     Date _24HourEventTime = _24HourFormat.parse(eventStartTime);
-                    eventStartTime = _12HourFormat.format(_24HourEventTime).toString();
+                    eventStartTime = _12HourFormat.format(_24HourEventTime);
                     if (eventStartTime.charAt(0) == '0') {
                         eventStartTime = eventStartTime.substring(1);
                     }
@@ -382,7 +384,7 @@ public class DashboardActivity extends AppCompatActivity
                     eventStartMonth = monthShortNames[monthInt - 1];
 
                     _24HourEventTime = _24HourFormat.parse(eventEndTime);
-                    eventEndTime = _12HourFormat.format(_24HourEventTime).toString();
+                    eventEndTime = _12HourFormat.format(_24HourEventTime);
                     if (eventEndTime.charAt(0) == '0') {
                         eventEndTime = eventEndTime.substring(1);
                     }
@@ -458,18 +460,18 @@ public class DashboardActivity extends AppCompatActivity
                     String eventEndDay = dateTimeTokenizer.nextToken(" ");
                     String eventEndTime = dateTimeTokenizer.nextToken();
 
-                    SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
                     sdfEvent.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
                     Date eventStartDate = sdfEvent.parse(eventStartDT);
                     Date eventEndDate = sdfEvent.parse(eventEndDT);
 
-                    SimpleDateFormat _24HourFormat = new SimpleDateFormat("HH:mm");
+                    SimpleDateFormat _24HourFormat = new SimpleDateFormat("HH:mm", Locale.US);
                     _24HourFormat.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
-                    SimpleDateFormat _12HourFormat = new SimpleDateFormat("hh:mm a");
+                    SimpleDateFormat _12HourFormat = new SimpleDateFormat("hh:mm a", Locale.US);
                     _12HourFormat.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
 
                     Date _24HourEventTime = _24HourFormat.parse(eventStartTime);
-                    eventStartTime = _12HourFormat.format(_24HourEventTime).toString();
+                    eventStartTime = _12HourFormat.format(_24HourEventTime);
                     if (eventStartTime.charAt(0) == '0') {
                         eventStartTime = eventStartTime.substring(1);
                     }
@@ -479,7 +481,7 @@ public class DashboardActivity extends AppCompatActivity
                     }
 
                     _24HourEventTime = _24HourFormat.parse(eventEndTime);
-                    eventEndTime = _12HourFormat.format(_24HourEventTime).toString();
+                    eventEndTime = _12HourFormat.format(_24HourEventTime);
                     if (eventEndTime.charAt(0) == '0') {
                         eventEndTime = eventEndTime.substring(1);
                     }
@@ -585,7 +587,8 @@ public class DashboardActivity extends AppCompatActivity
         String message;
         int eventsToGo;
         int progColor;
-        mDashStampCountTV.setText("STAMPS: " + String.valueOf(user.getStampCount()));
+        String stampCountMessage = "STAMPS: " + String.valueOf(user.getStampCount());
+        mDashStampCountTV.setText(stampCountMessage);
         if (user.getStampCount() >= getResources().getInteger(R.integer.bronzeThreshold)
                 && user.getStampCount() < getResources().getInteger(R.integer.silverThreshold)) {
             progColor = getResources().getColor(R.color.eventBronze);

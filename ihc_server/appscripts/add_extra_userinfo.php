@@ -10,16 +10,18 @@
        die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
    }
 
-   $id = $grade = $type = $birthdate = "";
+   $id = $studentid = $onid = $grade = $type = $birthdate = "";
 
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
      $id = $_POST['userid'];
+     $studentid = $_POST['studentid'];
+     $onid = $_POST['onid'];
      $grade = $_POST['grade'];
      $type = $_POST['type'];
      $birthdate = $_POST['birthdate'];
 
-     $stmt = $mysqli->prepare("UPDATE ihc_users SET grade=?, type=?, birthdate=? WHERE id=?");
-     $stmt->bind_param('iisi', $grade, $type, $birthdate, $id);
+     $stmt = $mysqli->prepare("UPDATE ihc_users SET studentid=?, onid=?, grade=?, type=?, birthdate=? WHERE id=?");
+     $stmt->bind_param('ssiisi', $studentid, $onid, $grade, $type, $birthdate, $id);
      $stmt->execute();
      $result = $stmt->get_result();
      if ($result == True) {

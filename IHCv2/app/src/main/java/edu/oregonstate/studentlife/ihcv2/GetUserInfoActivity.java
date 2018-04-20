@@ -23,7 +23,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -52,6 +55,9 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
     Session session;
 
     private TextView mUserBirthDateTV;
+    private CheckBox mIsUserOSUCB;
+    private EditText mUserStudentIDET;
+    private EditText mUserONIDET;
     private TextView mUserTypeTV;
     private Spinner mUserTypeSP;
     private TextView mUserGradeTV;
@@ -78,6 +84,8 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
     private User user;
     private final static int IHC_USER_GETEXTRAINFO_ID = 0;
     public final static String IHC_USER_ID_KEY = "User ID";
+    public final static String IHC_USER_STUDENTID_KEY = "User Student ID";
+    public final static String IHC_USER_ONID_KEY = "User ONID Username";
     public final static String IHC_USER_BD_KEY = "User Birthdate";
     public final static String IHC_USER_TYPE_KEY = "User Type";
     public final static String IHC_USER_GRADE_KEY = "User Grade";
@@ -119,9 +127,6 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
 
         Intent intent = getIntent();
         if (intent != null) {
-            if (intent.hasExtra(Constants.EXTRA_USER_STATUS)) {
-                userStatus = (String) intent.getSerializableExtra(Constants.EXTRA_USER_STATUS);
-            }
             if (intent.hasExtra(Constants.EXTRA_USER)) {
                 user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
             }
@@ -137,6 +142,9 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
         }
 
         mUserBirthDateTV = (TextView) findViewById(R.id.tv_user_age);
+        mIsUserOSUCB = (CheckBox) findViewById(R.id.cb_is_osu);
+        mUserStudentIDET = (EditText) findViewById(R.id.et_user_studentid);
+        mUserONIDET = (EditText) findViewById(R.id.et_user_onid);
         mUserTypeTV = (TextView) findViewById(R.id.tv_user_type);
         mUserTypeSP = (Spinner) findViewById(R.id.sp_user_type);
         mUserGradeTV = (TextView) findViewById(R.id.tv_user_grade);
@@ -144,25 +152,65 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
         mUserProfilePicTV = (TextView) findViewById(R.id.tv_pick_profilepic);
         mSubmitUserInfoBtn = (Button) findViewById(R.id.btn_submit_userinfo);
 
+        mUserStudentIDET.setVisibility(View.GONE);
+        mUserONIDET.setVisibility(View.GONE);
+        mUserGradeTV.setVisibility(View.GONE);
+        mUserGradeSP.setVisibility(View.GONE);
+        typeChoices = getResources().getStringArray(R.array.pref_user_type_entries_nonstudent);
+        typeValueChoices = getResources().getIntArray(R.array.pref_user_type_values_nonstudent);
+        initializeUserTypeSpinner();
+        mUserTypeTV.setText(getResources().getString(R.string.nonstudent_choose_type));
+
+        mIsUserOSUCB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (buttonView.isPressed()) {
+                    if (isChecked) {
+                        mUserStudentIDET.setVisibility(View.VISIBLE);
+                        mUserONIDET.setVisibility(View.VISIBLE);
+                        mUserGradeTV.setVisibility(View.VISIBLE);
+                        mUserGradeSP.setVisibility(View.VISIBLE);
+                        typeChoices = getResources().getStringArray(R.array.pref_user_type_entries_student);
+                        typeValueChoices = getResources().getIntArray(R.array.pref_user_type_values_student);
+                        mUserTypeTV.setText(getResources().getString(R.string.student_choose_type));
+                    }
+                    else {
+                        mUserStudentIDET.setVisibility(View.GONE);
+                        mUserONIDET.setVisibility(View.GONE);
+                        mUserGradeTV.setVisibility(View.GONE);
+                        mUserGradeSP.setVisibility(View.GONE);
+                        typeChoices = getResources().getStringArray(R.array.pref_user_type_entries_nonstudent);
+                        typeValueChoices = getResources().getIntArray(R.array.pref_user_type_values_nonstudent);
+                        mUserTypeTV.setText(getResources().getString(R.string.nonstudent_choose_type));
+                        userGradeValue = 0;
+                    }
+                    initializeUserTypeSpinner();
+                }
+            }
+        });
+
         mSubmitUserInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mUserBirthDateTV.getText().toString().contains("Birthdate: ") || getProfilePicture() != null) {
+                if (!mUserBirthDateTV.getText().toString().contains("Birthdate: ") || getProfilePicture() != null
+                        || (mIsUserOSUCB.isChecked() && (mUserStudentIDET.getText().toString().length() == 0 || mUserONIDET.getText().toString().length() == 0))) {
+                    Toast.makeText(GetUserInfoActivity.this, "Must fill all fields!", Toast.LENGTH_LONG).show();
+                }
+                else {
                     Bundle args = new Bundle();
                     args.putInt(IHC_USER_ID_KEY, user.getId());
+                    args.putString(IHC_USER_STUDENTID_KEY, mUserStudentIDET.getText().toString());
+                    args.putString(IHC_USER_ONID_KEY, mUserONIDET.getText().toString());
                     args.putInt(IHC_USER_GRADE_KEY, userGradeValue);
                     args.putInt(IHC_USER_TYPE_KEY, userTypeValue);
                     args.putString(IHC_USER_BD_KEY, userBirthdate);
                     getSupportLoaderManager().initLoader(IHC_USER_GETEXTRAINFO_ID, args, GetUserInfoActivity.this);
                 }
-                else {
-                    Toast.makeText(GetUserInfoActivity.this, "Must fill all fields!", Toast.LENGTH_LONG).show();
-                }
             }
         });
 
         mUserBirthDateTV.setText(getResources().getString(R.string.enter_birthdate));
-        if (userStatus.equals("Student")) {
+        /*if (userStatus.equals("Student")) {
             typeChoices = getResources().getStringArray(R.array.pref_user_type_entries_student);
             typeValueChoices = getResources().getIntArray(R.array.pref_user_type_values_student);
             mUserTypeTV.setText(getResources().getString(R.string.student_choose_type));
@@ -173,21 +221,17 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
             typeChoices = getResources().getStringArray(R.array.pref_user_type_entries_nonstudent);
             typeValueChoices = getResources().getIntArray(R.array.pref_user_type_values_nonstudent);
             mUserTypeTV.setText(getResources().getString(R.string.nonstudent_choose_type));
-        }
+        }*/
 
-        ArrayAdapter<String> mUserTypeAdapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_item, typeChoices);
-        mUserTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mUserTypeSP.setAdapter(mUserTypeAdapter);
         mUserTypeSP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 userType = mUserTypeSP.getSelectedItem().toString();
-                if (userStatus.equals("Student")) {
+                if (mIsUserOSUCB.isChecked()) {
                     userTypeValue = typeValueChoices[position];
                 }
-                else if (userStatus.equals("Non-Student")) {
-                    userTypeValue = typeValueChoices[position] + 2;
+                else {
+                    userTypeValue = typeValueChoices[position] + 3;
                 }
             }
 
@@ -434,6 +478,13 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
             //mProfilePictureIV.setImageBitmap(profilePictureBitmap);
             return profilePictureBitmap;
         }
+    }
+
+    public void initializeUserTypeSpinner() {
+        ArrayAdapter<String> mUserTypeAdapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_item, typeChoices);
+        mUserTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mUserTypeSP.setAdapter(mUserTypeAdapter);
     }
 
 }

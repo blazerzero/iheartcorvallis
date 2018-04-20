@@ -1,7 +1,6 @@
 package edu.oregonstate.studentlife.ihcv2.loaders;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
@@ -12,26 +11,20 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import edu.oregonstate.studentlife.ihcv2.SurveyActivity;
-
 /**
- * Created by Omeed on 4/6/18.
+ * Created by Omeed on 4/20/18.
  */
 
-public class RecordFeedbackLoader extends AsyncTaskLoader<String> {
+public class SkipSurveyLoader extends AsyncTaskLoader<String> {
 
-    private final static String TAG = RecordFeedbackLoader.class.getSimpleName();
-    final static String IHC_ADD_APP_FEEDBACK_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/add_app_feedback.php";
+    private final static String TAG = SkipSurveyLoader.class.getSimpleName();
+    final static String IHC_SKIP_SURVEY_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/skip_survey.php";
 
-    private String userid;
-    private String rating;
-    private String comment;
+    private int userid;
 
-    public RecordFeedbackLoader(Context context, Bundle args) {
+    public SkipSurveyLoader(Context context, int userid) {
         super(context);
-        userid = String.valueOf(args.getInt(SurveyActivity.IHC_USERID_KEY));
-        rating = String.valueOf(args.getInt(SurveyActivity.IHC_APPRATING_KEY));
-        comment = args.getString(SurveyActivity.IHC_APPCOMMENT_KEY);
+        this.userid = userid;
     }
 
     @Override
@@ -41,20 +34,16 @@ public class RecordFeedbackLoader extends AsyncTaskLoader<String> {
 
     @Override
     public String loadInBackground() {
-        Log.d(TAG, "adding feedback with URL: " + IHC_ADD_APP_FEEDBACK_URL);
-
         try {
-            URL url = new URL(IHC_ADD_APP_FEEDBACK_URL);
-            String data = URLEncoder.encode("userid", "UTF-8") + "=" + URLEncoder.encode(userid, "UTF-8");
-            data += "&" + URLEncoder.encode("rating", "UTF-8") + "=" + URLEncoder.encode(rating, "UTF-8");
-            data += "&" + URLEncoder.encode("comment", "UTF-8") + "=" + URLEncoder.encode(comment, "UTF-8");
+            URL url = new URL(IHC_SKIP_SURVEY_URL);
 
+            String data = URLEncoder.encode("userid", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(userid), "UTF-8");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            wr.write( data );
+            wr.write(data);
             wr.flush();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -67,7 +56,6 @@ public class RecordFeedbackLoader extends AsyncTaskLoader<String> {
                 break;
             }
 
-            Log.d(TAG, "Received response from URL!");
             return sb.toString();
         } catch (Exception e) {
             e.printStackTrace();

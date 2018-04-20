@@ -22,6 +22,8 @@ import edu.oregonstate.studentlife.ihcv2.data.Session;
 public class MainActivity extends AppCompatActivity {
 
     Session session;
+    private Button mLoginButton;
+    private Button mSignupButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,17 +47,17 @@ public class MainActivity extends AppCompatActivity {
         };
         image.setColorFilter(new ColorMatrixColorFilter(negative));
 
-        Button loginButton = (Button) findViewById(R.id.btn_login);
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        mLoginButton = (Button) findViewById(R.id.btn_login);
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoginPageActivity.class);
+                Intent intent = new Intent(MainActivity.this, NonStudentLoginActivity.class);
                 startActivity(intent);
             }
         });
 
-        Button signupButton = (Button) findViewById(R.id.btn_signup);
-        signupButton.setOnClickListener(new View.OnClickListener() {
+        mSignupButton = (Button) findViewById(R.id.btn_signup);
+        mSignupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SignupPageActivity.class);
@@ -68,8 +70,8 @@ public class MainActivity extends AppCompatActivity {
         Animation fadeIn = AnimationUtils.loadAnimation(this,R.anim.fade_in);
         iv.startAnimation(fadeIn);
         tv.startAnimation(fadeIn);
-        loginButton.startAnimation(fadeIn);
-        signupButton.startAnimation(fadeIn);
+        mLoginButton.startAnimation(fadeIn);
+        mSignupButton.startAnimation(fadeIn);
 
         //spinner.setVisibility(View.GONE);
     }
