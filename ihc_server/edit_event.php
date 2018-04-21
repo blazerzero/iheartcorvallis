@@ -7,7 +7,7 @@
 <?php
 require './admin_server/db.php';
 $eventid = $_GET['eventid'];
-$stmt = $mysqli->prepate("SELECT * FROM ihc_events WHERE eventid=?");
+$stmt = $mysqli->prepare("SELECT * FROM ihc_events WHERE eventid=?");
 $stmt->bind_param('i', $eventid);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -112,7 +112,7 @@ if ($result->num_rows > 0) {
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
-               Description of Event: <textarea class="inputbox" type="text" name="description" rows="4" cols="50"><?php echo $event['description']; ?></textarea><br><br>
+               Event Description: <textarea class="inputbox" type="text" name="description" rows="4" cols="50"><?php echo $event['description']; ?></textarea><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>

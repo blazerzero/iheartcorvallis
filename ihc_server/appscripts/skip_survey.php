@@ -16,9 +16,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $stmt = $mysqli->prepare("UPDATE ihc_users SET didsurvey=1 WHERE id=?");
   $stmt->bind_param('s', $userid);
   $stmt->execute();
-  $res = $stmt->get_result();
-  echo "SKIPSUCCESS";
-  $res->close();
+  if ($stmt->error == "") {
+    echo "SKIPSUCCESS";
+  }
+  else {
+    echo "SKIPERROR";
+  }
+  $stmt->close();
 }
 
 $mysqli->close();

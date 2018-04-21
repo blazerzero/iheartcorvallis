@@ -103,7 +103,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $message = "Error adding event!"; # error adding event to database
     $url = "../add_event.php";
   }
-  
+
+  $stmt->close();
   $mysqli->close();
   echo "<script type='text/javascript'>alert('$message');</script>";
   echo "<script type='text/javascript'>document.location.href = '$url';</script>";

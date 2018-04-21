@@ -13,7 +13,9 @@ require "./admin_server/login.php"; ?>
   $avgAllRating = $avgStudentRating = 0;
   $numAllZeroes = $numStudentZeroes = 0;
 
-  $fbResult = $mysqli->query("SELECT * FROM ihc_feedback");
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_feedback");
+  $stmt->execute();
+  $fbResult = $stmt->get_result();
   if ($fbResult->num_rows > 0) {
     while ($fbRow = $fbResult->fetch_assoc()) {
       $userid = $fbRow['userid'];
@@ -236,7 +238,10 @@ require "./admin_server/login.php"; ?>
   </body>
   </html>
 
-<?php }
+  <?php
+  $stmt->close();
+  $mysqli->close();
+}
 else {
   $url = "./admin_auth.php";
   echo "<script type='text/javascript'>document.location.href = '$url';</script>";

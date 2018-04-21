@@ -111,7 +111,7 @@ function generatePIN() {
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
-               Description of Event: <textarea class="inputbox" rows="3" cols="50" name="description"></textarea><br><br>
+               Event Description: <textarea class="inputbox" rows="3" cols="50" name="description"></textarea><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>

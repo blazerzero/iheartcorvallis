@@ -11,6 +11,8 @@ if ($stmt->error == "") {
 else {
   $message = "Error deleting prize!";
 }
+
+$stmt->close();
 $mysqli->close();
 echo "<script type='text/javascript'>alert('$message');</script>";
 $url = "../manage_prizes.php";

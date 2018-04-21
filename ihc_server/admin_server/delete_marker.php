@@ -11,6 +11,8 @@ if ($stmt->error == "") {
 else {
   $message = "Error deleting marker!";
 }
+
+$stmt->close();
 $mysqli->close();
 echo "<script type='text/javascript'>alert('$message');</script>";
 $url = "../manage_resource_map.php";

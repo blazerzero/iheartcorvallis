@@ -26,7 +26,9 @@
   </body>
   </html>
 
-<?php }
+  <?php
+  $mysqli->close();
+}
 else {
   $url = "./admin_auth.php";
   echo "<script type='text/javascript'>document.location.href = '$url';</script>";

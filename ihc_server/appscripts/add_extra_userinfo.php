@@ -23,9 +23,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $stmt = $mysqli->prepare("UPDATE ihc_users SET studentid=?, onid=?, grade=?, type=?, birthdate=? WHERE id=?");
   $stmt->bind_param('ssiisi', $studentid, $onid, $grade, $type, $birthdate, $id);
   $stmt->execute();
-  $result = $stmt->get_result();
-  echo "ADDSUCCESS";
-  $result->close();
+  if ($stmt->error == "") {
+    echo "ADDSUCCESS";
+  }
+  else {
+    echo "ADDERROR";
+  }
+  $stmt->close();
 }
 $mysqli->close();
 ?>

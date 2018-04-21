@@ -1,49 +1,55 @@
 <?php
-   $dbhost="oniddb.cws.oregonstate.edu";
-   $dbname="habibelo-db";
-   $dbuser="habibelo-db";
-   $dbpass="RcAbWdWDkpj7XNTL";
+$dbhost="oniddb.cws.oregonstate.edu";
+$dbname="habibelo-db";
+$dbuser="habibelo-db";
+$dbpass="RcAbWdWDkpj7XNTL";
 
-   $alreadyExists = False;
+$alreadyExists = False;
 
-   $mysqli = new mysqli($dbhost,$dbuser,$dbpass,$dbname);
-   //Output any connection error
-   if ($mysqli->connect_error) {
-       die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
-   }
+$mysqli = new mysqli($dbhost,$dbuser,$dbpass,$dbname);
+//Output any connection error
+if ($mysqli->connect_error) {
+  die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
+}
 
-   $userid = $eventid = "";
+$userid = $eventid = "";
 
-   if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      $userid = $_POST["userid"];
-      $eventid = $_POST["eventid"];
-      $rating = $_POST["rating"];
-      $comment = $_POST["comment"];
-	   //$stmt = $mysqli->prepare("INSERT INTO ihc_completed_events (userid, eventid) VALUES (?, ?)");
-	   //$stmt->bind_param('ii', $userid, $eventid);
-	   //$result = $stmt->execute();
-      $result = $mysqli->query("INSERT INTO ihc_completed_events (userid, eventid, rating, comment) VALUES ('$userid', '$eventid', '$rating', '$comment')");
-      if ($result == True) {
-         $res2 = $mysqli->query("SELECT * FROM ihc_completed_events WHERE userid='$userid'");
-         if ($res2 == True) {
-            $stampcount = "";
-            if ($res2->num_rows == 1) {
-               $stampcount = 1;
-            }
-            else if ($res2->num_rows > 1){
-               $stampcount = $res2->num_rows;
-            }
-            $res3 = $mysqli->query("UPDATE ihc_users SET stampcount='$stampcount' WHERE id='$userid'");
-            if ($res3 == True) {
-               echo "COMPLETED EVENT ADDED";
-            }
-         }
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $userid = $_POST["userid"];
+  $eventid = $_POST["eventid"];
+  $rating = $_POST["rating"];
+  $comment = $_POST["comment"];
+  $stmt = $mysqli->prepare("INSERT INTO ihc_completed_events (userid, eventid, rating, comment) VALUES (?, ?, ?, ?)");
+  $stmt->bind_param('iiis', $userid, $eventid, $rating, $comment);
+  $stmt->execute();
+  if ($stmt->get_error == "") {
+    $stmt2 = $mysqli->prepare("SELECT * FROM ihc_completed_events WHERE userid=?");
+    $stmt2->bind_param('i', $userid);
+    $stmt2->execute();
+    if ($stmt2->error == "") {
+      $result = $stmt2->get_result();
+      $stampcount = $result->num_rows;
+      /*if ($result->num_rows == 1) {
+        $stampcount = 1;
       }
-      else {
-         echo "ADDERROR";
+      else if ($result->num_rows > 1){
+        $stampcount = $result->num_rows;
+      }*/
+      $stmt3 = $mysqli->prepare("UPDATE ihc_users SET stampcount=? WHERE id=?");
+      $stmt3->bind_param('ii', $stampcount, $userid);
+      $stmt3->execute();
+      if ($stmt3->error == "") {
+        echo "COMPLETED EVENT ADDED";
       }
-	   //$stmt->close();
-   }
+      $stmt3->close();
+    }
+    $stmt2->close();
+  }
+  else {
+    echo "ADDERROR";
+  }
+  $stmt->close();
+}
 
-   mysqli_close($con);
+$mysqli->close();
 ?>

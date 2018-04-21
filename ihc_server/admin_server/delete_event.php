@@ -2,9 +2,6 @@
 	error_reporting(E_ALL);
 	ini_set('display_errors', 1);
 
-//require "./login.php";
-
-//if (isset($_SESSION["id"]) && $_SESSION["id"] != null) {
    require 'db.php';
    $eventid = $_GET['eventid'];
    $eventpicture = $_GET['image'];
@@ -31,16 +28,11 @@
    else {
       $message = "Error deleting event!";
    }
+
+	 $stmt->close();
    $mysqli->close();
    echo "<script type='text/javascript'>alert('$message');</script>";
    $url = "../manage_events.php";
    echo "<script type='text/javascript'>document.location.href = '$url';</script>";
 
-
-
-/*}
-else {
-   $url = "../admin_auth.php";
-   echo "<script type='text/javascript'>document.location.href = '$url';</script>";
-}*/
 ?>
