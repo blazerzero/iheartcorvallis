@@ -1,8 +1,5 @@
 <?php
 
-//require "./login.php";
-
-//if (isset($_SESSION["id"]) && $_SESSION["id"] != null) {
    $dbhost="oniddb.cws.oregonstate.edu";
    $dbname="habibelo-db";
    $dbuser="habibelo-db";
@@ -16,9 +13,6 @@
        die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
        echo "Connection failed!<br>";
    }
-   else {
-      //echo "Connection succesful!<br>";
-   }
 
    $id = $info = "";
 
@@ -26,23 +20,23 @@
       $id = $_POST["id"];
       $info = $_POST["info"];
 
-      $result = $mysqli->query("UPDATE ihc_about SET info='$info' WHERE id='$id'");
+      $stmt = $mysqli->prepare("UPDATE ihc_about SET info=? WHERE id=?");
+      $stmt->bind_param('si', $info, $id);
+      $stmt->execute();
 
-      if ($result == True) {
+      if ($stmt->error == "") {
          $message = "About Page been updated!";
-         echo "<script type='text/javascript'>alert('$message');</script>";
       }
       else {
          $message = "Error updating About Page!"; # error updating prize in database
-         echo "<script type='text/javascript'>alert('$message');</script>";
       }
+
       $url = "../manage_about.php";
+      $mysqli->close();
+      echo "<script type='text/javascript'>alert('$message');</script>";
       echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+      exit;
+
    }
-   $mysqli->close();
-/*}
-else {
-   $url = "../admin_auth.php";
-   echo "<script type='text/javascript'>document.location.href = '$url';</script>";
-}*/
+
 ?>

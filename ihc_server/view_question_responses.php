@@ -50,18 +50,20 @@
         else if ($userrow['type'] == 2) $type = "Faculty";
         else if ($userrow['type'] == 3) $type = "Resident";
         else if ($userrow['type'] == 4) $type = "Visitor";
-        if ($userrow["grade"] == 0) $grade = "N/A";
-        else if ($userrow["grade"] == 1) $grade = "Freshman";
-        else if ($userrow["grade"] == 2) $grade = "Sophomore";
-        else if ($userrow["grade"] == 3) $grade = "Junior";
-        else if ($userrow["grade"] == 4) $grade = "Senior";
-        else if ($userrow["grade"] == 5) $grade = "Graduate Student";
-        else if ($userrow["grade"] == 6) $grade = "Doctoral Student";
-        else if ($userrow["grade"] == 7) $grade = "Faculty";
+        if ($userrow['grade'] == 0) $grade = "N/A";
+        else if ($userrow['grade'] == 1) $grade = "Freshman";
+        else if ($userrow['grade'] == 2) $grade = "Sophomore";
+        else if ($userrow['grade'] == 3) $grade = "Junior";
+        else if ($userrow['grade'] == 4) $grade = "Senior";
+        else if ($userrow['grade'] == 5) $grade = "Graduate Student";
+        else if ($userrow['grade'] == 6) $grade = "Doctoral Student";
+        else if ($userrow['grade'] == 7) $grade = "Faculty";
 
         $allTuples[] = array("userid" => $userid, "dateandtime" => $dateandtime, "name" => $name, "grade" => $grade, "type" => $type, "response" => $response);
         if ($userrow['type'] < 2) {
-          $studentTuples[] = array("userid" => $userid, "dateandtime" => $dateandtime, "name" => $name, "grade" => $grade, "type" => $type, "response" => $response);
+          $studentid = $userrow['studentid'];
+          $onid = $userrow['onid'];
+          $studentTuples[] = array("userid" => $userid, "dateandtime" => $dateandtime, "name" => $name, "studentid" => $studentid, "onid" => $onid, "grade" => $grade, "type" => $type, "response" => $response);
         }
       }
     }
@@ -139,6 +141,8 @@
           <thead>
             <tr>
               <th class="single line">Name</th>
+              <th>Student ID #</th>
+              <th>ONID Username</th>
               <th>Date and Time</th>
               <th>User Type</th>
               <th>Class Standing</th>
@@ -149,6 +153,8 @@
             <?php foreach ($studentTuples as $tuple) { ?>
               <tr>
                 <td><?php echo $tuple['name']; ?></td>
+                <td><?php echo $tuple['studentid']; ?></td>
+                <td><?php echo $tuple['onid']; ?></td>
                 <td><?php echo $tuple['dateandtime']; ?></td>
                 <td><?php echo $tuple['type']; ?></td>
                 <td><?php echo $tuple['grade']; ?></td>

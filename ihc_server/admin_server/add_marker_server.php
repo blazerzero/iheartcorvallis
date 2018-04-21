@@ -50,33 +50,24 @@
          $type = "OSU Campus";
       }
 
-      /*$result = $mysqli->query("SELECT id FROM ihc_resources");
-      while ($row = $result->fetch_assoc()) {
-         $markerids[] = $row;
-      }
-
-      $newmarkerid = $markerids[count($markerids)-1]['id'] + 1;*/
-
-
-
-      /* ADD EVENT TO DATABASE */
-      $result = $mysqli->query("INSERT INTO ihc_resources (name, address, type) VALUES ('$name', '$address', '$type')");
+      $stmt = $mysqli->prepare("INSERT INTO ihc_resources (name, address, type) VALUES (?, ?, ?)");
+      $stmt->bind_param('sss', $name, $address, $type);
+      $stmt->execute();
 
       $url = "";
 
-      if ($result == True) {
+      if ($stmt->error == "") {
          $message = "Resource has been added to the map!";
-         echo "<script type='text/javascript'>alert('$message');</script>";
          $url = "../index.php";
       }
       else {
          $message = "Error adding resource to the map!"; # error adding prize to database
-         echo "<script type='text/javascript'>alert('$message');</script>";
          $url = "../add_marker.php";
       }
 
-      echo "<script type='text/javascript'>document.location.href = '$url';</script>";
       $mysqli->close();
+      echo "<script type='text/javascript'>alert('$message');</script>";
+      echo "<script type='text/javascript'>document.location.href = '$url';</script>";
       exit;
 
    }

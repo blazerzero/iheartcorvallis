@@ -1,8 +1,5 @@
 <?php
 
-//require "./login.php";
-
-//if (isset($_SESSION["id"]) && $_SESSION["id"] != null) {
    $dbhost="oniddb.cws.oregonstate.edu";
    $dbname="habibelo-db";
    $dbuser="habibelo-db";
@@ -40,39 +37,28 @@
          $level = "bronze";
       }
 
-      /*$result = $mysqli->query("SELECT prizeid FROM ihc_prizes");
-      while ($row = $result->fetch_assoc()) {
-         $prizeids[] = $row;
-      }
-
-      $newprizeid = $prizeids[count($prizeids)-1]['prizeid'] + 1;*/
-
-      /* ADD EVENT TO DATABASE */
-      $result = $mysqli->query("INSERT INTO ihc_prizes (name, level) VALUES ('$name', '$level')");
+      $stmt = $mysqli->prepare("INSERT INTO ihc_prizes (name, level) VALUES (?, ?)");
+      $stmt->bind_param('ss', $name, $level);
+      $stmt->execute();
 
       $url = "";
 
-      if ($result == True) {
+      if ($stmt->error == "") {
          $message = "Prize has been added!";
-         echo "<script type='text/javascript'>alert('$message');</script>";
          $url = "../index.php";
       }
       else {
          $message = "Error adding prize!"; # error adding prize to database
-         echo "<script type='text/javascript'>alert('$message');</script>";
          $url = "../add_prize.php";
       }
 
-      echo "<script type='text/javascript'>document.location.href = '$url';</script>";
       $mysqli->close();
+      echo "<script type='text/javascript'>alert('$message');</script>";
+      echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+      exit;
 
    }
 
    $mysqli->close();
-/*}
-else {
-   $url = "../admin_auth.php";
-   echo "<script type='text/javascript'>document.location.href = '$url';</script>";
-}*/
 
 ?>

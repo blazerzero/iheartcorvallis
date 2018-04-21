@@ -24,6 +24,7 @@ if ($result->num_rows > 0) {
 
       function validateForm() {
          var nameField = document.forms["eventForm"]["name"].value;
+         var hostField = document.forms["eventForm"]["host"].value;
          var locationField = document.forms["eventForm"]["location"].value;
          var streetAdressField = document.forms["eventForm"]["streetaddress"].value;
          var cityField = document.forms["eventForm"]["city"].value;
@@ -37,6 +38,7 @@ if ($result->num_rows > 0) {
          var imageField = document.forms["eventForm"]["image"].value;
          var pinField = document.forms["eventForm"]["pin"].value;
          if (nameField == null || nameField == "" ||
+            hostField == null || hostField == "" ||
             locationField == null || locationField == "" ||
             streetAddressField == null || streetAddressField == "" ||
             cityField == null || cityField == "" ||
@@ -77,11 +79,15 @@ if ($result->num_rows > 0) {
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
-               Name of Event: <input class="inputbox" type="text" name="name" value="<?php echo $event['name']; ?>"><br><br>
+               Event Name: <input class="inputbox" type="text" name="name" value="<?php echo $event['name']; ?>"><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
-               Name of Location: <input class="inputbox" type="text" name="location" value="<?php echo $event['location']; ?>"><br><br>
+               Event Host: <input class="inputbox" type="text" name="host" value="<?php echo $event['host']; ?>"><br><br>
+            </div>
+            <div class="elem">
+               <span class="requirednote">*</span>
+               Event Location: <input class="inputbox" type="text" name="location" value="<?php echo $event['location']; ?>"><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>

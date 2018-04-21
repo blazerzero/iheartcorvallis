@@ -28,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   /* GET VALUES VIA POST */
   $name = $_POST["name"];
+  $host = $_POST["host"];
   $location = $_POST["location"];
   $fullAddress = $_POST["fulladdress"];
   $startdate = $_POST["startdate"];
@@ -88,35 +89,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   /* ADD EVENT TO DATABASE */
-  $result = $mysqli->query("INSERT INTO ihc_events (eventid, name, location, address, startdt, enddt, description, image, link1, link2, link3, pin) VALUES ('$totalEventCount', '$name', '$location', '$fullAddress', '$startdt', '$enddt', '$description', '$file_name', '$link1', '$link2', '$link3', '$pin')");
+  $stmt = $mysqli->prepare("INSERT INTO ihc_events (eventid, name, host, location, address, startdt, enddt, description, image, link1, link2, link3, pin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+  $stmt->bind_param('isssssssssssi', $totalEventCount, $name, $host, $location, $fullAddress, $startdt, $enddt, $description, $file_name, $link1, $link2, $link3, $pin);
+  $stmt->execute();
 
   $url = "";
 
-  if ($result == True) {
+  if ($stmt->error == "") {
     $message = "Event has been added!";
-    echo "<script type='text/javascript'>alert('$message');</script>";
+    $url = "../index.php";
   }
   else {
     $message = "Error adding event!"; # error adding event to database
     $url = "../add_event.php";
-    echo "<script type='text/javascript'>alert('$message');</script>";
-    $mysqli->close();
-    echo "<script type='text/javascript'>document.location.href = '$url';</script>";
-    exit;
   }
-
-  /* UPDATE TOTAL EVENT COUNT IN DATABASE */
-  $result = $mysqli->query("UPDATE ihc_events SET totalEventCount='$totalEventCount'");
-  if ($result == True) {
-    $url = "../index.php";
-  }
-  else {
-    $message = "Error updating total event count!";
-    echo "<script type='text/javascript'>alert('$message');</script>";
-    $url = "../add_event.php";
-  }
-
+  
   $mysqli->close();
+  echo "<script type='text/javascript'>alert('$message');</script>";
   echo "<script type='text/javascript'>document.location.href = '$url';</script>";
   exit;
 

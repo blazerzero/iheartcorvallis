@@ -22,30 +22,31 @@
    }
 
    $question = $choices = "";
-  
+
 
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
       /* GET VALUES VIA POST */
       $question = $_POST["question"];
-      $survey = $_POST["survey"];
+      $choices = $_POST["choices"];
 
-      $result = $mysqli->query("INSERT INTO ihc_survey (question, choices) VALUES ('$question', '$choices')");
+      $stmt = $mysqli->prepare("INSERT INTO ihc_survey (question, choices) VALUES ('$question', '$choices')");
+      $stmt->bind_param('ss', $question, $choices);
+      $stmt->execute();
 
-
-      if ($result == True) {
-         $message = "survey has been added!";
-         echo "<script type='text/javascript'>alert('$message');</script>";
+      if ($stmt->error == "") {
+         $message = "Survey question has been added!";
          $url = "../index.php";
       }
       else {
-         $message = "Error adding survey!"; # error adding survey to database
-         echo "<script type='text/javascript'>alert('$message');</script>";
+         $message = "Error adding survey question!"; # error adding survey to database
          $url = "../add_survey_question.php";
       }
 
-      echo "<script type='text/javascript'>document.location.href = '$url';</script>";
       $mysqli->close();
+      echo "<script type='text/javascript'>alert('$message');</script>";
+      echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+      exit;
 
    }
 

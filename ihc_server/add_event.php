@@ -27,6 +27,7 @@ function generatePIN() {
 
       function validateForm() {
          var nameField = document.forms["eventForm"]["name"].value;
+         var hostField = document.forms["eventForm"]["host"].value;
          var locationField = document.forms["eventForm"]["location"].value;
          var streetAdressField = document.forms["eventForm"]["streetaddress"].value;
          var cityField = document.forms["eventForm"]["city"].value;
@@ -40,6 +41,7 @@ function generatePIN() {
          var imageField = document.forms["eventForm"]["image"].value;
          var pinField = document.forms["eventForm"]["pin"].value;
          if (nameField == null || nameField == "" ||
+            hostField == null || hostField == "" ||
             locationField == null || locationField == "" ||
             streetAddressField == null || streetAddressField == "" ||
             cityField == null || cityField == "" ||
@@ -77,11 +79,15 @@ function generatePIN() {
          <form name="eventForm" onsubmit="return validateForm()" action="./admin_server/add_events_server.php" method="post" enctype="multipart/form-data">
             <div class="elem">
                <span class="requirednote">*</span>
-               Name of Event: <input class="inputbox" type="text" name="name"><br><br>
+               Event Name: <input class="inputbox" type="text" name="name"><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>
-               Name of Location: <input class="inputbox" type="text" name="location"><br><br>
+               Event Host: <input class="inputbox" type="text" name="host"><br><br>
+            </div>
+            <div class="elem">
+               <span class="requirednote">*</span>
+               Event Location: <input class="inputbox" type="text" name="location"><br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>

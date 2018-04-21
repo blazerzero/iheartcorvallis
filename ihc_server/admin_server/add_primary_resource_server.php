@@ -69,23 +69,24 @@
       }
 
       /* ADD RESOURCE TO DATABASE */
-      $result = $mysqli->query("INSERT INTO ihc_resource_info (title, description, image, link) VALUES ('$title', '$description', '$file_name', '$link')");
+      $stmt = $mysqli->prepare("INSERT INTO ihc_resource_info (title, description, image, link) VALUES (?, ?, ?, ?)");
+      $stmt->bind_param('ssss', $title, $description, $image, $link);
+      $stmt->execute();
 
       $url = "";
 
-      if ($result == True) {
+      if ($stmt->error == "") {
          $message = "Resource has been added to the resource page!";
-         echo "<script type='text/javascript'>alert('$message');</script>";
          $url = "../index.php";
       }
       else {
          $message = "Error adding resource to the resource page!"; # error adding prize to database
-         echo "<script type='text/javascript'>alert('$message');</script>";
          $url = "../add_primary_resource.php";
       }
 
-      echo "<script type='text/javascript'>document.location.href = '$url';</script>";
       $mysqli->close();
+      echo "<script type='text/javascript'>alert('$message');</script>";
+      echo "<script type='text/javascript'>document.location.href = '$url';</script>";
       exit;
 
    }

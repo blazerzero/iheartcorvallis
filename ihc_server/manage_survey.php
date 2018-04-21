@@ -45,8 +45,9 @@ while ($question = $result->fetch_assoc()) {
                   <tr>
                      <td><?php echo $question['question']; ?></td>
                      <td>
-                        <a href="view_question_responses.php?id=<?php echo $question['id'] ?>" class="ui green button">View Responses</a>
-                        <a href="edit_question.php?id=<?php echo $question['id'] ?>" class="ui blue button">Edit</a>
+                        <a href="view_question_responses.php?id=<?php echo $question['id']; ?>" class="ui green button">View Responses</a>
+                        <a href="edit_question.php?id=<?php echo $question['id']; ?>" class="ui blue button">Edit</a>
+                        <a onclick="return confirm('Are you sure you want to delete this survey question?')" href="./admin_server/delete_survey_question.php?id=<?php echo $question['id']; ?>" class='ui red button'>Delete</a>
                      </td>
                   </tr>
                <?php endforeach; ?>
