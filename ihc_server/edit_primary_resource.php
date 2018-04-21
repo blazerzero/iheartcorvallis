@@ -7,7 +7,7 @@
   <?php
   require './admin_server/db.php';
   $id = $_GET['id'];
-  $stmt = $mysqli->preapre("SELECT * FROM ihc_resource_info WHERE id=?");
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_resource_info WHERE id=?");
   $stmt->bind_param('i', $id);
   $stmt->execute();
   $result = $stmt->get_result();
@@ -62,6 +62,10 @@
         <div class="elem">
           <span class="requirednote">*</span>
           Description: <textarea class="inputbox" rows="4" cols="50" name="description"><?php echo $resource['description']; ?></textarea><br><br>
+        </div>
+        <div class="elem">
+          <span class="requirednote">*</span>
+          Cover Image: <input class="ui button" type="file" name="image" value="<?php echo $resource['image']; ?>"><br><br>
         </div>
         <div class="elem">
           Link: <input class="inputbox" type="text" name="link" value="<?php echo $resource['link']; ?>"><br><br>
