@@ -196,7 +196,7 @@ require "./admin_server/login.php"; ?>
           <div class="ui divider"></div><br>
 
           <div>
-            <h2>Feedback: Students</h2>
+            <h2>Feedback: Students and Faculty</h2>
             <table class="ui celled padded table">
               <thead>
                 <tr>

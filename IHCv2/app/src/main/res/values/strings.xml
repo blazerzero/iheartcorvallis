@@ -153,6 +153,7 @@
     <!--- Get User Info Page -->
     <string name="userinfo_fill_msg">We\'re almost there! We just need some basic information.</string>
     <string name="pick_profilepic_msg">Tap to Pick a Profile Picture</string>
+    <string name="profilepic_chosen_msg">Profile picture has been chosen!</string>
     <string name="take_photo">Take Photo</string>
     <string name="choose_photo">Choose Photo</string>
     <string name="enter_birthdate">Enter Birthdate</string>
@@ -165,5 +166,6 @@
     <string name="prompt_studentid">OSU Student ID #</string>
     <string name="prompt_onid">ONID Username</string>
     <string name="prompt_is_osu">Are you an OSU student or faculty member?</string>
+    <string name="extra_info_already_received">Extra user info already received!</string>
 
 </resources>

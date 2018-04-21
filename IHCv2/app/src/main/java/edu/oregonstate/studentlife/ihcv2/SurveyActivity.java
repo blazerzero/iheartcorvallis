@@ -122,9 +122,9 @@ public class SurveyActivity extends AppCompatActivity
             userid = (int) intent.getSerializableExtra(Constants.EXTRA_USER_ID);
             user = null;
         }
-        if (intent != null && intent.hasExtra(Constants.EXTRA_USER_PROFILE_PICTURE)) {
+        /*if (intent != null && intent.hasExtra(Constants.EXTRA_USER_PROFILE_PICTURE)) {
             profilePictureByteArray = intent.getByteArrayExtra(Constants.EXTRA_USER_PROFILE_PICTURE);
-        }
+        }*/
 
         questionIDs = new ArrayList<Integer>();
         responses = new ArrayList<String>();
@@ -297,9 +297,9 @@ public class SurveyActivity extends AppCompatActivity
                 } else if (data.equals("ADDSUCCESS")) {
                     recordedFeedback = true;
                     Intent dashIntent = new Intent(this, DashboardActivity.class);
-                    if (profilePictureByteArray != null) {
+                    /*if (profilePictureByteArray != null) {
                         dashIntent.putExtra(Constants.EXTRA_USER_PROFILE_PICTURE, profilePictureByteArray);
-                    }
+                    }*/
                     //startActivityForResult(dashIntent, 1);
                     startActivity(dashIntent);
                 }

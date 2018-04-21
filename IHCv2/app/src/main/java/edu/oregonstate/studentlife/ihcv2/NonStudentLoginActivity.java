@@ -206,116 +206,6 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
         }
     }
 
-    /*public Loader<String> onCreateLoader(int id, final Bundle args) {
-        if (id == NS_LOGIN_PASS_ID) {
-            return new AsyncTaskLoader<String>(this) {
-
-                Context context;
-                private String email;
-                private String password;
-
-                @Override
-                protected void onStartLoading() {
-                    if (args != null) {
-                        showProgress(true);
-                    }
-                }
-
-                @Override
-                public String loadInBackground() {
-                    if (args != null) {
-                        String ihcPassCheckURL = args.getString(NS_LOGIN_PASS_KEY);
-                        Log.d(TAG, "checking password");
-                    }
-                    email = (String) args.getString(EMAIL);
-                    password = (String) args.getString(PASS);
-
-                    try{
-                        URL url = new URL(IHC_PASS_URL);
-
-                        String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
-
-                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-                        conn.setRequestMethod("POST");
-                        conn.setDoOutput(true);
-                        OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-                        wr.write( data );
-                        wr.flush();
-
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-                        StringBuffer sb = new StringBuffer("");
-                        String line = null;
-
-                        while ((line = reader.readLine()) != null) {
-                            sb.append(line);
-                            break;
-                        }
-
-                        return sb.toString();
-                    } catch (Exception e) { return new String("Exception: " + e.getMessage()); }
-
-                }
-
-                @Override
-                public void deliverResult(String data)
-            };
-
-        }
-        else return null;
-    }*/
-
-    /*private void onBackgroundTaskDataObtained(String result) {
-        Log.d("NonStudentLoginActivity", "result: " + result);
-        if (!result.equals("AUTHERROR")) {
-            try {
-                JSONObject userJSON = new JSONObject(result);
-                String first = userJSON.getString("firstname");
-                String last = userJSON.getString("lastname");
-                String name = first + " " + last;
-                String email = userJSON.getString("email");
-                session.createLoginSession( name , email);
-                Intent intent = new Intent(NonStudentLoginActivity.this, DashboardActivity.class);
-                startActivity(intent);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        else {
-            mEmailView.setText("");
-            mPasswordView.setText("");
-            showProgress(false);
-            AlertDialog.Builder builder;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-            }
-            else {
-                builder = new AlertDialog.Builder(this);
-            }
-            builder.setTitle("Login Error");
-            builder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // Try logging in again
-                }
-            });
-            if (result.equals("AUTHERROR")) {
-                builder.setMessage("Incorrect email/password combination.");
-            }
-            else if (result.equals("DUPACCOUNTERROR")) {
-                builder.setMessage("Unable to authenticate. More than one account exists with this email/password combination.");
-            }
-            else if (result.equals("SEARCHERROR")) {
-                builder.setMessage("Error searching for account.");
-            }
-            builder.setIcon(android.R.drawable.ic_dialog_alert);
-            builder.show();
-        }
-
-    }*/
-
-
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
         return email.contains("@");
@@ -431,13 +321,12 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
                     String name = first + " " + last;
                     String email = userJSON.getString("email");
                     String id = userJSON.getString("id");
-                    Intent intent = new Intent(NonStudentLoginActivity.this, DashboardActivity.class);
-                    intent.putExtra(Constants.EXTRA_CALLING_ACTIVITY_ID, NonStudentLoginActivity.class.getSimpleName());
-                    intent.putExtra(Constants.EXTRA_USER_STATUS, "Non-Student");
-                    intent.putExtra(Constants.EXTRA_USER_NAME, name);
-                    intent.putExtra(Constants.EXTRA_USER_EMAIL, email);
-                    intent.putExtra(Constants.EXTRA_USER_ID, id);
-                    startActivity(intent);
+
+                    session = new Session(getApplicationContext());
+                    session.createLoginSession(name, email, id);
+
+                    Intent dashIntent = new Intent(this, DashboardActivity.class);
+                    startActivity(dashIntent);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

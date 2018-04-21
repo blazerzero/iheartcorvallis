@@ -44,6 +44,7 @@ public class UserInfoLoader extends AsyncTaskLoader<String> {
 
         try {
             URL url = new URL(IHC_GETUSERINFO_URL);
+            Log.d(TAG, "email: " + email);
             String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
 
             //Log.d(TAG, "About to open connection.");

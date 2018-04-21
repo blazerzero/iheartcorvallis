@@ -25,6 +25,7 @@ public class Constants extends AppCompatActivity {
     public static final String EXTRA_USER_STATUS = "User Status";
     public static final String EXTRA_USER_NAME = "User Name";
     public static final String EXTRA_USER_EMAIL = "User Email";
+    public static final String EXTRA_MSG = "Extra Message";
     /*public static final String EXTRA_USER_BIRTHDATE = "User Birthdate";
     public static final String EXTRA_USER_GRADE = "User Grade";
     public static final String EXTRA_USER_TYPE = "User Type";*/

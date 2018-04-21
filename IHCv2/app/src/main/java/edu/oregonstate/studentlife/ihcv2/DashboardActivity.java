@@ -189,6 +189,7 @@ public class DashboardActivity extends AppCompatActivity
         session = new Session(getApplicationContext());
         HashMap<String, String> userBasics = session.getUserDetails();
         email = userBasics.get(Session.KEY_EMAIL);
+        Log.d(TAG, "email: " + email);
 
         mEventListRV = (RecyclerView) findViewById(R.id.rv_event_list);
         mEventListRV.setLayoutManager(new LinearLayoutManager(this));
@@ -214,9 +215,6 @@ public class DashboardActivity extends AppCompatActivity
         Bundle args = new Bundle();
         args.putString(IHC_USER_EMAIL_KEY, email);
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(Constants.EXTRA_USER_STATUS)) {
-            userStatus = (String) intent.getSerializableExtra(Constants.EXTRA_USER_STATUS);
-        }
         if (intent != null && intent.hasExtra(Constants.EXTRA_USER)) {
             user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
             Log.d(TAG, "User ID: " + user.getId());
@@ -225,7 +223,6 @@ public class DashboardActivity extends AppCompatActivity
             getSupportLoaderManager().initLoader(IHC_PASSPORT_LOADER_ID, args, this);
         }
         else {
-            args.putString(IHC_USER_EMAIL_KEY, email);
             getSupportLoaderManager().initLoader(IHC_USER_LOADER_ID, args, this);
         }
 
@@ -268,7 +265,7 @@ public class DashboardActivity extends AppCompatActivity
                     JSONObject userJSON = new JSONObject(data);
                     String firstname = userJSON.getString("firstname");
                     String lastname = userJSON.getString("lastname");
-                    String email = userJSON.getString("email");
+                    //String email = userJSON.getString("email");
                     int studentid = Integer.parseInt(userJSON.getString("studentid"));
                     String onid = userJSON.getString("onid");
                     int id = Integer.parseInt(userJSON.getString("id"));
@@ -284,15 +281,15 @@ public class DashboardActivity extends AppCompatActivity
                     Log.d(TAG, "birthdate: " + birthDate.toString());
                     Log.d(TAG, "grade: " + grade);
 
-                    if (studentid == -1 || onid.length() == 0 || birthDate.toString().equals("0000-00-00") || grade == 0 || type == -1) {
+                    user = new User(firstname, lastname, email, id, numStamps, didsurvey, grade, birthDate, type);
 
+                    if (studentid == -1 || onid.length() == 0 || birthDate.toString().equals("0000-00-00") || grade == 0 || type == -1) {
                         Log.d(TAG, "about to get information from user");
                         Intent getUserInfoIntent = new Intent(this, GetUserInfoActivity.class);
                         getUserInfoIntent.putExtra(Constants.EXTRA_USER, user);
                         startActivity(getUserInfoIntent);
                     }
                     
-                    user = new User(firstname, lastname, email, id, numStamps, didsurvey, grade, birthDate, type);
                     if (didsurvey == 0) {
                         Intent surveyIntent = new Intent(this, SurveyActivity.class);
                         surveyIntent.putExtra(Constants.EXTRA_USER, user);
@@ -817,8 +814,8 @@ public class DashboardActivity extends AppCompatActivity
         if (savedImagesList.size() == 0) {
             Log.d(TAG, "about to get information from user");
             Intent getUserInfoIntent = new Intent(this, GetUserInfoActivity.class);
-            getUserInfoIntent.putExtra(Constants.EXTRA_USER_STATUS, userStatus);
             getUserInfoIntent.putExtra(Constants.EXTRA_USER, user);
+            getUserInfoIntent.putExtra(Constants.EXTRA_MSG, getResources().getString(R.string.extra_info_already_received));
             startActivity(getUserInfoIntent);
         }
         else {

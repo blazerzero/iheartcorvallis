@@ -39,6 +39,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.IHCDBContract;
@@ -66,12 +68,12 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
     private Button mSubmitUserInfoBtn;
 
     private int userBdDay = 1;
-    private int userBdMonth = 1;
+    private int userBdMonth = 0;
     private int userBdYear = 2000;
     private String userType;
     private int userTypeValue;
     private String userGrade;
-    private int userGradeValue = 0;
+    private int userGradeValue = 1;
     private String userBirthdate;
 
     // For deciding what to do in onActivityResult
@@ -97,21 +99,28 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
     private File file;
 
     private String[] typeChoices;
-    private int[] typeValueChoices;
+    private String[] typeValueChoices;
     private String[] gradeChoices;
-    private int[] gradeValueChoices;
+    private String[] gradeValueChoices;
 
     private DatePickerDialog.OnDateSetListener birthDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.YEAR, year);
-            cal.set(Calendar.MONTH, month);
-            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            userBdYear = year;
-            userBdMonth = month;
-            userBdDay = dayOfMonth;
-            mUserBirthDateTV.setText(createDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)));
+            //try {
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.YEAR, year);
+                cal.set(Calendar.MONTH, month);
+                cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                Log.d(TAG, "cal birthdate: " + cal.getTime());
+                SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+                sdfEvent.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
+                userBirthdate = sdfEvent.format(cal.getTime());
+                Log.d(TAG, "birthdate: " + userBirthdate);
+                userBdYear = year;
+                userBdMonth = month;
+                userBdDay = dayOfMonth;
+                mUserBirthDateTV.setText(createDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)));
+            //} catch (Exception e) { e.printStackTrace(); }
         }
     };
 
@@ -125,22 +134,6 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
         IHCDBHelper dbHelper = new IHCDBHelper(this);
         mDB = dbHelper.getWritableDatabase();
 
-        Intent intent = getIntent();
-        if (intent != null) {
-            if (intent.hasExtra(Constants.EXTRA_USER)) {
-                user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
-            }
-            if (intent.hasExtra(Constants.EXTRA_USER_NAME)) {
-                sesUsername = (String) intent.getSerializableExtra(Constants.EXTRA_USER_NAME);
-            }
-            if (intent.hasExtra(Constants.EXTRA_USER_EMAIL)) {
-                sesEmail = (String) intent.getSerializableExtra(Constants.EXTRA_USER_EMAIL);
-            }
-            if (intent.hasExtra(Constants.EXTRA_USER_ID)) {
-                sesID = (String) intent.getSerializableExtra(Constants.EXTRA_USER_ID);
-            }
-        }
-
         mUserBirthDateTV = (TextView) findViewById(R.id.tv_user_age);
         mIsUserOSUCB = (CheckBox) findViewById(R.id.cb_is_osu);
         mUserStudentIDET = (EditText) findViewById(R.id.et_user_studentid);
@@ -152,12 +145,40 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
         mUserProfilePicTV = (TextView) findViewById(R.id.tv_pick_profilepic);
         mSubmitUserInfoBtn = (Button) findViewById(R.id.btn_submit_userinfo);
 
+        Intent intent = getIntent();
+        if (intent != null) {
+            if (intent.hasExtra(Constants.EXTRA_USER)) {
+                user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
+            }
+            if (intent.hasExtra(Constants.EXTRA_USER_NAME)) {
+                sesUsername = intent.getStringExtra(Constants.EXTRA_USER_NAME);
+            }
+            if (intent.hasExtra(Constants.EXTRA_USER_EMAIL)) {
+                sesEmail = intent.getStringExtra(Constants.EXTRA_USER_EMAIL);
+            }
+            if (intent.hasExtra(Constants.EXTRA_USER_ID)) {
+                sesID = intent.getStringExtra(Constants.EXTRA_USER_ID);
+            }
+            if (intent.hasExtra(Constants.EXTRA_MSG)) {
+                String extraMsg = intent.getStringExtra(Constants.EXTRA_MSG);
+                if (extraMsg.equals(getResources().getString(R.string.extra_info_already_received))) {
+                    mUserBirthDateTV.setVisibility(View.GONE);
+                    mIsUserOSUCB.setVisibility(View.GONE);
+                    mUserStudentIDET.setVisibility(View.GONE);
+                    mUserONIDET.setVisibility(View.GONE);
+                    mUserTypeTV.setVisibility(View.GONE);
+                    mUserTypeSP.setVisibility(View.GONE);
+                    mUserGradeTV.setVisibility(View.GONE);
+                }
+            }
+        }
+
         mUserStudentIDET.setVisibility(View.GONE);
         mUserONIDET.setVisibility(View.GONE);
         mUserGradeTV.setVisibility(View.GONE);
         mUserGradeSP.setVisibility(View.GONE);
         typeChoices = getResources().getStringArray(R.array.pref_user_type_entries_nonstudent);
-        typeValueChoices = getResources().getIntArray(R.array.pref_user_type_values_nonstudent);
+        typeValueChoices = getResources().getStringArray(R.array.pref_user_type_values_nonstudent);
         initializeUserTypeSpinner();
         mUserTypeTV.setText(getResources().getString(R.string.nonstudent_choose_type));
 
@@ -171,8 +192,9 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
                         mUserGradeTV.setVisibility(View.VISIBLE);
                         mUserGradeSP.setVisibility(View.VISIBLE);
                         typeChoices = getResources().getStringArray(R.array.pref_user_type_entries_student);
-                        typeValueChoices = getResources().getIntArray(R.array.pref_user_type_values_student);
+                        typeValueChoices = getResources().getStringArray(R.array.pref_user_type_values_student);
                         mUserTypeTV.setText(getResources().getString(R.string.student_choose_type));
+                        Log.d(TAG, "grade value: " + userGradeValue);
                     }
                     else {
                         mUserStudentIDET.setVisibility(View.GONE);
@@ -180,7 +202,7 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
                         mUserGradeTV.setVisibility(View.GONE);
                         mUserGradeSP.setVisibility(View.GONE);
                         typeChoices = getResources().getStringArray(R.array.pref_user_type_entries_nonstudent);
-                        typeValueChoices = getResources().getIntArray(R.array.pref_user_type_values_nonstudent);
+                        typeValueChoices = getResources().getStringArray(R.array.pref_user_type_values_nonstudent);
                         mUserTypeTV.setText(getResources().getString(R.string.nonstudent_choose_type));
                         userGradeValue = 0;
                     }
@@ -192,7 +214,7 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
         mSubmitUserInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mUserBirthDateTV.getText().toString().contains("Birthdate: ") || getProfilePicture() != null
+                if (!mUserBirthDateTV.getText().toString().contains("Birthdate: ") || getProfilePicture() == null
                         || (mIsUserOSUCB.isChecked() && (mUserStudentIDET.getText().toString().length() == 0 || mUserONIDET.getText().toString().length() == 0))) {
                     Toast.makeText(GetUserInfoActivity.this, "Must fill all fields!", Toast.LENGTH_LONG).show();
                 }
@@ -210,28 +232,15 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
         });
 
         mUserBirthDateTV.setText(getResources().getString(R.string.enter_birthdate));
-        /*if (userStatus.equals("Student")) {
-            typeChoices = getResources().getStringArray(R.array.pref_user_type_entries_student);
-            typeValueChoices = getResources().getIntArray(R.array.pref_user_type_values_student);
-            mUserTypeTV.setText(getResources().getString(R.string.student_choose_type));
-        }
-        else if (userStatus.equals("Non-Student")) {
-            mUserGradeTV.setVisibility(View.GONE);
-            mUserGradeSP.setVisibility(View.GONE);
-            typeChoices = getResources().getStringArray(R.array.pref_user_type_entries_nonstudent);
-            typeValueChoices = getResources().getIntArray(R.array.pref_user_type_values_nonstudent);
-            mUserTypeTV.setText(getResources().getString(R.string.nonstudent_choose_type));
-        }*/
-
         mUserTypeSP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 userType = mUserTypeSP.getSelectedItem().toString();
                 if (mIsUserOSUCB.isChecked()) {
-                    userTypeValue = typeValueChoices[position];
+                    userTypeValue = Integer.valueOf(typeValueChoices[position]);
                 }
                 else {
-                    userTypeValue = typeValueChoices[position] + 3;
+                    userTypeValue = Integer.valueOf(typeValueChoices[position]) + 3;
                 }
             }
 
@@ -242,7 +251,7 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
         });
 
         gradeChoices = getResources().getStringArray(R.array.pref_user_grade_entries);
-        gradeValueChoices = getResources().getIntArray(R.array.pref_user_grade_values);
+        gradeValueChoices = getResources().getStringArray(R.array.pref_user_grade_values);
         ArrayAdapter<String> mUserGradeAdapter = new ArrayAdapter<String>(
                 this, android.R.layout.simple_spinner_item, gradeChoices);
         mUserGradeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -251,7 +260,11 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 userGrade = mUserGradeSP.getSelectedItem().toString();
-                userGradeValue = gradeValueChoices[position];
+                userGradeValue = Integer.valueOf(gradeValueChoices[position]);
+                Log.d(TAG, "grade value: " + userGradeValue);
+                Log.d(TAG, "gradeValueChoices: " + gradeValueChoices);
+                Log.d(TAG, "position: " + position);
+                Log.d(TAG, "gradeValueChoices[position]: " + gradeValueChoices[position]);
             }
 
             @Override
@@ -288,14 +301,8 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
             Toast.makeText(this, "There was an error adding this information to your profile.", Toast.LENGTH_LONG).show();
         }
         else {
-            session.createLoginSession(sesUsername, sesEmail, sesID);
-
             Intent surveyIntent = new Intent(this, SurveyActivity.class);
             surveyIntent.putExtra(Constants.EXTRA_USER, user);
-            ByteArrayOutputStream profilePictureStream = new ByteArrayOutputStream();
-            getProfilePicture().compress(Bitmap.CompressFormat.JPEG, 100, profilePictureStream);
-            byte[] profilePictureByteArray = profilePictureStream.toByteArray();
-            surveyIntent.putExtra(Constants.EXTRA_USER_PROFILE_PICTURE, profilePictureByteArray);
             startActivity(surveyIntent);
         }
 
@@ -354,7 +361,12 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
                         Uri uri;
                         uri = Uri.fromFile(file);
                         String filePath = uri.toString();
-                        Log.d(TAG, "Row: " + addImageToDB(filePath));
+                        if (addImageToDB(filePath) != -1) {
+                            mUserProfilePicTV.setText(getResources().getString(R.string.profilepic_chosen_msg));
+                        }
+                        else {
+                            Toast.makeText(this, "There was an error saving your profile picture!", Toast.LENGTH_LONG).show();
+                        }
                     }
 
                 }
@@ -364,7 +376,12 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = data.getData();
                     String filePath = getPath(this, selectedImage);
-                    addImageToDB(filePath);
+                    if (addImageToDB(filePath) != -1) {
+                        mUserProfilePicTV.setText(getResources().getString(R.string.profilepic_chosen_msg));
+                    }
+                    else {
+                        Toast.makeText(this, "There was an error saving your profile picture!", Toast.LENGTH_LONG).show();
+                    }
                 }
                 break;
         }
@@ -464,18 +481,12 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
         cursor.close();
         Log.d(TAG, "number of images: " + savedImagesList.size());
         if (savedImagesList.size() == 0) {
-            /*Log.d(TAG, "about to get information from user");
-            Intent getUserInfoIntent = new Intent(this, GetUserInfoActivity.class);
-            getUserInfoIntent.putExtra(Constants.EXTRA_USER_STATUS, userStatus);
-            getUserInfoIntent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(getUserInfoIntent);*/
             return null;
         }
         else {
             File profilePicture = savedImagesList.get(0);
             Log.d(TAG, "path of image: " + profilePicture.getAbsolutePath());
             Bitmap profilePictureBitmap = BitmapFactory.decodeFile(profilePicture.getAbsolutePath());
-            //mProfilePictureIV.setImageBitmap(profilePictureBitmap);
             return profilePictureBitmap;
         }
     }
