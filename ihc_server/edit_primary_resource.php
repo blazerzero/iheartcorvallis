@@ -7,7 +7,10 @@
 <?php
 require './admin_server/db.php';
 $id = $_GET['id'];
-$result = $mysqli->query("SELECT * FROM ihc_resource_info WHERE id='$id'");
+$stmt = $mysqli->preapre("SELECT * FROM ihc_resource_info WHERE id=?");
+$stmt->bind_param('i', $id);
+$stmt->execute();
+$result = $stmt->get_result();
 if ($result->num_rows > 0) {
    $resource = $result->fetch_assoc();
 }

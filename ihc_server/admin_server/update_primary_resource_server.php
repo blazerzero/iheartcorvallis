@@ -1,8 +1,5 @@
 <?php
 
-//require "./login.php";
-
-//if (isset($_SESSION["id"]) && $_SESSION["id"] != null) {
    $dbhost="oniddb.cws.oregonstate.edu";
    $dbname="habibelo-db";
    $dbuser="habibelo-db";
@@ -16,9 +13,6 @@
        die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
        echo "Connection failed!<br>";
    }
-   else {
-      //echo "Connection succesful!<br>";
-   }
 
    $id = $title = $description = $link = "";
 
@@ -28,23 +22,22 @@
       $description = $_POST["description"];
       $link = $_POST["link"];
 
-      $result = $mysqli->query("UPDATE ihc_resource_info SET title='$title', description='$description', link='$link' WHERE id='$id'");
+      $stmt = $mysqli->prepare("UPDATE ihc_resource_info SET title=?, description=?, link=? WHERE id=?");
+      $stmt->bind_param('sssi', $title, $description, $link, $id);
+      $stmt->execute();
 
-      if ($result == True) {
+      if ($stmt->error == "") {
          $message = "Resource has been updated!";
-         echo "<script type='text/javascript'>alert('$message');</script>";
       }
       else {
          $message = "Error updating resource!"; # error updating resource in database
-         echo "<script type='text/javascript'>alert('$message');</script>";
       }
       $url = "../manage_primary_resources.php";
+      $mysqli->close();
+      echo "<script type='text/javascript'>alert('$message');</script>";
       echo "<script type='text/javascript'>document.location.href = '$url';</script>";
    }
-   mysqli_close($con);
-/*}
-else {
-   $url = "../admin_auth.php";
-   echo "<script type='text/javascript'>document.location.href = '$url';</script>";
-}*/
+
+   $mysqli->close();
+
 ?>

@@ -13,9 +13,6 @@
        die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
        echo "Connection failed!<br>";
    }
-   else {
-      //echo "Connection succesful!<br>";
-   }
 
    $prizeid = $name = $type = "";
 
@@ -24,17 +21,19 @@
       $question = $_POST["question"];
       $choices = $_POST["choices"];
 
-      $result = $mysqli->query("UPDATE ihc_survey SET question='$question', choices='$choices' WHERE id='$id'");
+      $stmt = $mysqli->prepare("UPDATE ihc_survey SET question=?, choices=? WHERE id=?");
+      $stmt->bind_param('ssi', $question, $choices, $id);
+      $stmt->execute();
 
-      if ($result == True) {
+      if ($stmt->error == "") {
          $message = "Survey question has been updated!";
-         echo "<script type='text/javascript'>alert('$message');</script>";
       }
       else {
          $message = "Error updating survey question!"; # error updating survey question in database
-         echo "<script type='text/javascript'>alert('$message');</script>";
       }
       $url = "../manage_survey.php";
+      $mysqli->close();
+      echo "<script type='text/javascript'>alert('$message');</script>";
       echo "<script type='text/javascript'>document.location.href = '$url';</script>";
    }
    $mysqli->close();

@@ -7,7 +7,10 @@
 <?php
 require './admin_server/db.php';
 $eventid = $_GET['eventid'];
-$result = $mysqli->query("SELECT * FROM ihc_events WHERE eventid='$eventid'");
+$stmt = $mysqli->prepate("SELECT * FROM ihc_events WHERE eventid=?");
+$stmt->bind_param('i', $eventid);
+$stmt->execute();
+$result = $stmt->get_result();
 if ($result->num_rows > 0) {
    $event = $result->fetch_assoc();
 }
@@ -36,7 +39,6 @@ if ($result->num_rows > 0) {
          var endTimeField = document.forms["eventForm"]["endtime"].value;
          var descriptionField = document.forms["eventForm"]["description"].value;
          var imageField = document.forms["eventForm"]["image"].value;
-         var pinField = document.forms["eventForm"]["pin"].value;
          if (nameField == null || nameField == "" ||
             hostField == null || hostField == "" ||
             locationField == null || locationField == "" ||
@@ -49,8 +51,7 @@ if ($result->num_rows > 0) {
             endDateField == null || endDateField == "" ||
             endTimeField == null || endTimeField == "" ||
             descriptionField == null || descriptionField == "" ||
-            imageField == null || imageField == "" ||
-            pinField == null || pinField = "") {
+            imageField == null || imageField == "") {
                alert("Please fill all required fields before submitting!");
                return false;
          }

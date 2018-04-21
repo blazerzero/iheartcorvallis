@@ -1,8 +1,5 @@
 <?php
 
-//require "./login.php";
-
-//if (isset($_SESSION["id"]) && $_SESSION["id"] != null) {
    $dbhost="oniddb.cws.oregonstate.edu";
    $dbname="habibelo-db";
    $dbuser="habibelo-db";
@@ -16,9 +13,6 @@
        die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
        echo "Connection failed!<br>";
    }
-   else {
-      //echo "Connection succesful!<br>";
-   }
 
    $prizeid = $name = $type = "";
 
@@ -28,23 +22,22 @@
       $address = $_POST["address"];
       $type = $_POST["type"];
 
-      $result = $mysqli->query("UPDATE ihc_resources SET name='$name', address='$address', type='$type' WHERE id='$id'");
+      $stmt = $mysqli->prepare("UPDATE ihc_resources SET name=?, address=?, type=? WHERE id=?");
+      $stmt->bind_param('sssi', $name, $address, $type, $id);
+      $stmt->execute();
 
-      if ($result == True) {
+      if ($stmt->error == "") {
          $message = "Resource marker has been updated!";
-         echo "<script type='text/javascript'>alert('$message');</script>";
       }
       else {
          $message = "Error updating resource marker!"; # error updating prize in database
-         echo "<script type='text/javascript'>alert('$message');</script>";
       }
       $url = "../manage_resource_map.php";
+      $mysqli->close();
+      echo "<script type='text/javascript'>alert('$message');</script>";
       echo "<script type='text/javascript'>document.location.href = '$url';</script>";
    }
+
    $mysqli->close();
-/*}
-else {
-   $url = "../admin_auth.php";
-   echo "<script type='text/javascript'>document.location.href = '$url';</script>";
-}*/
+
 ?>

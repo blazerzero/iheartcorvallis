@@ -7,7 +7,10 @@
 <?php
 require './admin_server/db.php';
 $prizeid = $_GET['prizeid'];
-$result = $mysqli->query("SELECT * FROM ihc_prizes WHERE prizeid='$prizeid'");
+$stmt = $mysqli->prepare("SELECT * FROM ihc_prizes WHERE prizeid=?");
+$stmt->bind_param('i', $prizeid);
+$stmt->execute();
+$result = $stmt->get_result();
 if ($result->num_rows > 0) {
    $prize = $result->fetch_assoc();
 }
