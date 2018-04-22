@@ -24,14 +24,13 @@
     <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
     <script>
-
     function validateForm() {
       var questionField = document.forms["questionForm"]["question"].value;
       var choicesField = document.forms["questionForm"]["choices"].value;
       if (questionField == null || questionField == "" ||
-      choicesField == null || choicesField == "" ||) {
-        alert("Please fill all required fields before submitting!");
-        return false;
+          choicesField == null || choicesField == "") {
+            alert("Please fill both fields before submitting!");
+            return false;
       }
       else {
         return true;

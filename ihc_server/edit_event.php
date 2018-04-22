@@ -24,40 +24,33 @@ if ($result->num_rows > 0) {
       <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
       <script>
-
       function validateForm() {
-         var nameField = document.forms["eventForm"]["name"].value;
-         var hostField = document.forms["eventForm"]["host"].value;
-         var locationField = document.forms["eventForm"]["location"].value;
-         var streetAdressField = document.forms["eventForm"]["streetaddress"].value;
-         var cityField = document.forms["eventForm"]["city"].value;
-         var stateField = document.forms["eventForm"]["state"].value;
-         var zipField = document.forms["eventForm"]["zip"].value;
-         var startDateField = document.forms["eventForm"]["startdate"].value;
-         var startTimeField = document.forms["eventForm"]["starttime"].value;
-         var endDateField = document.forms["eventForm"]["enddate"].value;
-         var endTimeField = document.forms["eventForm"]["endtime"].value;
-         var descriptionField = document.forms["eventForm"]["description"].value;
-         var imageField = document.forms["eventForm"]["image"].value;
-         if (nameField == null || nameField == "" ||
+        var nameField = document.forms["eventForm"]["name"].value;
+        var hostField = document.forms["eventForm"]["host"].value;
+        var locationField = document.forms["eventForm"]["location"].value;
+        var fullAddressField = document.forms["eventForm"]["fulladdress"].value;
+        var startDateField = document.forms["eventForm"]["startdate"].value;
+        var startTimeField = document.forms["eventForm"]["starttime"].value;
+        var endDateField = document.forms["eventForm"]["enddate"].value;
+        var endTimeField = document.forms["eventForm"]["endtime"].value;
+        var descriptionField = document.forms["eventForm"]["description"].value;
+        var imageField = document.forms["eventForm"]["image"].value;
+        if (nameField == null || nameField == "" ||
             hostField == null || hostField == "" ||
             locationField == null || locationField == "" ||
-            streetAddressField == null || streetAddressField == "" ||
-            cityField == null || cityField == "" ||
-            stateField == null || stateField == "" ||
-            zipField == null || zipField == "" ||
+            fullAddressField == null || fullAddressField == "" ||
             startDateField == null || startDateField == "" ||
             startTimeField == null || startTimeField == "" ||
             endDateField == null || endDateField == "" ||
             endTimeField == null || endTimeField == "" ||
             descriptionField == null || descriptionField == "" ||
             imageField == null || imageField == "") {
-               alert("Please fill all required fields before submitting!");
-               return false;
-         }
-         else {
-            return true;
-         }
+              alert("Please fill all fields before submitting!");
+              return false;
+        }
+        else {
+          return true;
+        }
       }
       </script>
       <script>

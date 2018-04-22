@@ -24,16 +24,11 @@
     <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
     <script>
-
     function validateForm() {
-      alert("Validating form!");
       var nameField = document.forms["eventForm"]["name"].value;
       var hostField = document.forms["eventForm"]["host"].value;
       var locationField = document.forms["eventForm"]["location"].value;
-      var streetAdressField = document.forms["eventForm"]["streetaddress"].value;
-      var cityField = document.forms["eventForm"]["city"].value;
-      var stateField = document.forms["eventForm"]["state"].value;
-      var zipField = document.forms["eventForm"]["zip"].value;
+      var fullAddressField = document.forms["eventForm"]["fulladdress"].value;
       var startDateField = document.forms["eventForm"]["startdate"].value;
       var startTimeField = document.forms["eventForm"]["starttime"].value;
       var endDateField = document.forms["eventForm"]["enddate"].value;
@@ -42,21 +37,18 @@
       var imageField = document.forms["eventForm"]["image"].value;
       var pinField = document.forms["eventForm"]["pin"].value;
       if (nameField == null || nameField == "" ||
-      hostField == null || hostField == "" ||
-      locationField == null || locationField == "" ||
-      streetAddressField == null || streetAddressField == "" ||
-      cityField == null || cityField == "" ||
-      stateField == null || stateField == "" ||
-      zipField == null || zipField == "" ||
-      startDateField == null || startDateField == "" ||
-      startTimeField == null || startTimeField == "" ||
-      endDateField == null || endDateField == "" ||
-      endTimeField == null || endTimeField == "" ||
-      descriptionField == null || descriptionField == "" ||
-      imageField = null || imageField == "" ||
-      pinField == null || pinField = "") {
-        alert("Please fill all required fields before submitting!");
-        return false;
+          hostField == null || hostField == "" ||
+          locationField == null || locationField == "" ||
+          fullAddressField == null || fullAddressField == "" ||
+          startDateField == null || startDateField == "" ||
+          startTimeField == null || startTimeField == "" ||
+          endDateField == null || endDateField == "" ||
+          endTimeField == null || endTimeField == "" ||
+          descriptionField == null || descriptionField == "" ||
+          imageField == null || imageField == "" ||
+          pinField == null || pinField == "") {
+            alert("Please fill all fields before submitting!");
+            return false;
       }
       else {
         return true;

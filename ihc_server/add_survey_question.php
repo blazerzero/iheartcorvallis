@@ -12,20 +12,18 @@
     <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
     <script>
-
     function validateForm() {
       var questionField = document.forms["questionForm"]["question"].value;
       var choicesField = document.forms["questionForm"]["choices"].value;
       if (questionField == null || questionField == "" ||
-      choicesField == null || choicesField == "" ||) {
-        alert("Please fill all required fields before submitting!");
-        return false;
+          choicesField == null || choicesField == "") {
+            alert("Please fill both fields before submitting!");
+            return false;
       }
       else {
         return true;
       }
     }
-
     </script>
     <script>
     $(document).ready(function() {
@@ -41,7 +39,7 @@
       <div class="ui divider"></div><br>
 
       <p class="requirednote">* Denotes a required field</p><br>
-      <form name="questionForm" onsubmit="return validateForm()" action="./admin_server/add_survey_server.php" method="post">
+      <form name="questionForm" onsubmit="return validateForm()" action="./admin_server/add_survey_server.php" method="post" enctype="multipart/form-data">
         <div class="elem">
           <span class="requirednote">*</span>
           Question: <input class="inputbox" type="text" name="question"><br><br>

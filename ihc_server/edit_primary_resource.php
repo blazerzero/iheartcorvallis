@@ -27,8 +27,10 @@
     function validateForm() {
       var titleField = document.forms["resourceForm"]["title"].value;
       var descriptionField = document.forms["resourceForm"]["description"].value;
+      var imageField = document.forms["resourceForm"]["image"].value;
       if (titleField == null || titleField == "" ||
-      descriptionField == null || descriptionField == "") {
+        descriptionField == null || descriptionField == "" ||
+        imageField == null || imageField == "") {
         alert("Please fill all required fields before submitting!");
         return false;
       }

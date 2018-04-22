@@ -13,12 +13,12 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
     <script>
     function validateForm() {
-      var nameField = document.forms["userForm"]["email"].value;
-      var levelField = document.forms["userForm"]["password"].value;
-      if (nameField == null || nameField == "" ||
-      levelField == null || levelField == "") {
-        alert("Please fill both fields before submitting!");
-        return false;
+      var emailField = document.forms["prizeForm"]["email"].value;
+      var passwordField = document.forms["prizeForm"]["password"].value;
+      if (emailField == null || emailField == "" ||
+          passwordField == null || passwordField == "") {
+            alert("Please fill both fields before submitting!");
+            return false;
       }
       else {
         return true;
@@ -39,7 +39,7 @@
       <div class="ui divider"></div><br>
 
       <p class="requirednote">* Denotes a required field</p><br>
-      <form name="prizeForm" onsubmit="return validateForm()" action="./admin_server/add_users_server.php" method="post">
+      <form name="prizeForm" onsubmit="return validateForm()" action="./admin_server/add_users_server.php" method="post" enctype="multipart/form-data">
         <div class="elem">
           <span class="requirednote">*</span>
           Email: <input class="inputbox" type="email" name="email"><br><br>

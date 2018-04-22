@@ -21,7 +21,7 @@
        exit;
    }
 
-   $title = $description = $link = "";
+   $title = $description = $image = $link = "";
    $resourceids = array();
 
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -29,6 +29,7 @@
       /* GET VALUES VIA POST */
       $title = $_POST["title"];
       $description = $_POST["description"];
+      $image = $_POST["image"];
       $link = $_POST["link"];
 
       /*$result = $mysqli->query("SELECT id FROM ihc_resource_info");
@@ -70,7 +71,7 @@
 
       /* ADD RESOURCE TO DATABASE */
       $stmt = $mysqli->prepare("INSERT INTO ihc_resource_info (title, description, image, link) VALUES (?, ?, ?, ?)");
-      $stmt->bind_param('ssss', $title, $description, $image, $link);
+      $stmt->bind_param('ssss', $title, $description, $file_name, $link);
       $stmt->execute();
 
       $url = "";
@@ -81,6 +82,7 @@
       }
       else {
          $message = "Error adding resource to the resource page!"; # error adding prize to database
+         echo "<br>" . $stmt->error;
          $url = "../add_primary_resource.php";
       }
 

@@ -7,19 +7,22 @@ $picture = $_GET['image'];
 $dir = "../images/resources/".$picture;
 
 if (!is_writable($dir)) {
- echo '$dir is not writeable';
+ echo $dir . ' is not writeable';
 }
 
 if(!unlink($dir)) {
- echo 'Error deleting $picture';
+ echo 'Error deleting ' .  $picture;
 }
 else {
- echo ('Deleted $picture');
+ echo 'Deleted ' . $picture;
 }
 
-$stmt = $mysqli->prepare("DELETE FROM ihc_resource_info WHERE id=");
+echo 'About to delete resource';
+
+$stmt = $mysqli->prepare("DELETE FROM ihc_resource_info WHERE id=?");
 $stmt->bind_param('i', $id);
 $stmt->execute();
+echo "<br>" . $stmt->error;
 if ($stmt->error == "") {
   $message = "Resource has been deleted!";
 }
