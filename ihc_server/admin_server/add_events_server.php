@@ -1,8 +1,5 @@
 <?php
 
-//require "./login.php";
-
-//if (isset($_SESSION["id"]) && $_SESSION["id"] != null) {
 $dbhost="oniddb.cws.oregonstate.edu";
 $dbname="habibelo-db";
 $dbuser="habibelo-db";
@@ -89,15 +86,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   /* ADD EVENT TO DATABASE */
-  $stmt = $mysqli->prepare("INSERT INTO ihc_events (eventid, name, host, location, address, startdt, enddt, description, image, link1, link2, link3, pin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-  $stmt->bind_param('isssssssssssi', $totalEventCount, $name, $host, $location, $fullAddress, $startdt, $enddt, $description, $file_name, $link1, $link2, $link3, $pin);
+  $stmt = $mysqli->prepare("INSERT INTO ihc_events (eventid, name, host, location, address, startdt, enddt, description, image, link1, link2, link3, pin, totalEventCount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+  $stmt->bind_param('isssssssssssii', $totalEventCount, $name, $host, $location, $fullAddress, $startdt, $enddt, $description, $file_name, $link1, $link2, $link3, $pin, $totalEventCount);
   $stmt->execute();
 
   $url = "";
 
   if ($stmt->error == "") {
     $message = "Event has been added!";
-    $url = "../index.php";
+    $stmt2 = $mysqli->prepare("UPDATE ihc_events SET totalEventCount=?");
+    $stmt2->bind_param('i', $totalEventCount);
+    $stmt2->execute();
+
+    if ($stmt2->error == "") {
+      $url = "../index.php";
+    }
+    else {
+      $message = "Error updating total event count!"; # error adding event to database
+      $url = "../add_event.php";
+    }
   }
   else {
     $message = "Error adding event!"; # error adding event to database
@@ -113,10 +120,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 $mysqli->close();
-/*}
-else {
-$url = "../admin_auth.php";
-echo "<script type='text/javascript'>document.location.href = '$url';</script>";
-}*/
 
 ?>

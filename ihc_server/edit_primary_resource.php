@@ -27,14 +27,21 @@
     function validateForm() {
       var titleField = document.forms["resourceForm"]["title"].value;
       var descriptionField = document.forms["resourceForm"]["description"].value;
+      var changeImageField = document.forms["resourceForm"]["changeimage"].value;
       var imageField = document.forms["resourceForm"]["image"].value;
       if (titleField == null || titleField == "" ||
         descriptionField == null || descriptionField == "" ||
-        imageField == null || imageField == "") {
+        changeImageField == null || changeImageField == "") {
         alert("Please fill all required fields before submitting!");
         return false;
       }
       else {
+        if (changeImageField == 1) {
+          if (imageField == null || imageField == "") {
+            alert("Please choose a new cover image!");
+            return false;
+          }
+        }
         return true;
       }
     }
@@ -64,6 +71,15 @@
         <div class="elem">
           <span class="requirednote">*</span>
           Description: <textarea class="inputbox" rows="4" cols="50" name="description"><?php echo $resource['description']; ?></textarea><br><br>
+        </div>
+        <div class="elem">
+          <span class="requirednote">*</span>
+          Do you want to change the cover image? <select class="ui search dropdown" name="changeimage">
+            <option value="">Select Yes or No</option>
+            <option value="1">Yes</option>
+            <option value="2">No</option>
+          </select>
+          <br><br>
         </div>
         <div class="elem">
           <span class="requirednote">*</span>

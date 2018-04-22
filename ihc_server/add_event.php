@@ -47,7 +47,7 @@
           descriptionField == null || descriptionField == "" ||
           imageField == null || imageField == "" ||
           pinField == null || pinField == "") {
-            alert("Please fill all fields before submitting!");
+            alert("Please fill all required fields before submitting!");
             return false;
       }
       else {

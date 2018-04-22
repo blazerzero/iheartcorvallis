@@ -34,6 +34,7 @@ if ($result->num_rows > 0) {
         var endDateField = document.forms["eventForm"]["enddate"].value;
         var endTimeField = document.forms["eventForm"]["endtime"].value;
         var descriptionField = document.forms["eventForm"]["description"].value;
+        var changeImageField = document.forms["eventForm"]["changeimage"].value;
         var imageField = document.forms["eventForm"]["image"].value;
         if (nameField == null || nameField == "" ||
             hostField == null || hostField == "" ||
@@ -44,13 +45,29 @@ if ($result->num_rows > 0) {
             endDateField == null || endDateField == "" ||
             endTimeField == null || endTimeField == "" ||
             descriptionField == null || descriptionField == "" ||
-            imageField == null || imageField == "") {
-              alert("Please fill all fields before submitting!");
+            changeImageField == null || changeImageField == "") {
+              alert("Please fill all required fields before submitting!");
               return false;
         }
         else {
+          if (changeImageField == 1) {
+            if (imageField == null || imageField == "") {
+              alert("Please choose a new cover image!");
+              return false;
+            }
+          }
           return true;
         }
+      }
+
+      function switchCBValue() {
+        if (document.forms["eventForm"]["name"].value == "n") {
+          document.forms["eventForm"]["name"].value = "y";
+        }
+        else if (document.forms["eventForm"]["name"].value == "y") {
+          document.forms["eventForm"]["name"].value = "n";
+        }
+        alert("Checkbox value: " + document.forms["eventForm"]["name"].value);
       }
       </script>
       <script>
@@ -108,8 +125,17 @@ if ($result->num_rows > 0) {
                Event Description: <textarea class="inputbox" type="text" name="description" rows="4" cols="50"><?php echo $event['description']; ?></textarea><br><br>
             </div>
             <div class="elem">
+              <span class="requirednote">*</span>
+              Do you want to change the cover image? <select class="ui search dropdown" name="changeimage">
+                <option value="">Select Yes or No</option>
+                <option value="1">Yes</option>
+                <option value="2">No</option>
+              </select>
+              <br><br>
+            </div>
+            <div class="elem">
                <span class="requirednote">*</span>
-               Cover Image: <input class="ui button" type="file" name="image" value="<?php echo $event['image']; ?>"><br><br>
+               Cover Image: <input class="ui button" type="file" name="image"><br><br>
             </div>
             <div class="elem">
                Link 1: <input class="inputbox" type="text" name="link1" value="<?php echo $event['link1']; ?>"><br><br>
