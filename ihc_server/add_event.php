@@ -125,7 +125,7 @@
           <input class="inputbox" type="text" name="pin" id="pin_holder" value="<?php echo generatePIN(); ?>" readonly><br><br>
           <!--<button class="ui button" id="pin_generator" type="button">Generate PIN</button><br><br>-->
         </div>
-        <input class="ui button" type="submit">
+        <input class="ui green button" type="submit" value="Create Event">
       </form>
     </div>
   </body>

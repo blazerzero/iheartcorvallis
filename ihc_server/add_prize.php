@@ -39,7 +39,7 @@
       <div class="ui divider"></div><br>
 
       <p class="requirednote">* Denotes a required field</p><br>
-      <form name="prizeForm" onsubmit="return validateForm()" action="./admin_server/add_prizes_server.php" method="post">
+      <form name="prizeForm" onsubmit="return validateForm()" action="./admin_server/add_prizes_server.php" method="post" enctype="multipart/form-data">
         <div class="elem">
           <span class="requirednote">*</span>
           Name of Prize: <input class="inputbox" type="text" name="name"><br><br>
@@ -54,7 +54,7 @@
           </select>
           <br><br>
         </div>
-        <input class="ui button" type="submit">
+        <input class="ui green button" type="submit" value="Create Prize">
       </form>
     </div>
   </body>

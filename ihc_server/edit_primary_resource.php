@@ -88,7 +88,7 @@
         <div class="elem">
           Link: <input class="inputbox" type="text" name="link" value="<?php echo $resource['link']; ?>"><br><br>
         </div>
-        <input class="ui button" type="submit">
+        <input class="ui green button" type="submit" value="Update Resource">
       </form>
     </div>
   </body>

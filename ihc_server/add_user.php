@@ -48,7 +48,7 @@
           <span class="requirednote">*</span>
           Password: <input class="inputbox" type="text" name="password"><br><br>
         </div>
-        <input class="ui button" type="submit">
+        <input class="ui green button" type="submit" value="Create New Authorized User">
       </form>
     </div>
   </body>

@@ -49,7 +49,7 @@
           Choices: <input class="inputbox" type="text" name="choices"><br><br>
           <span class="requirednote"><strong>Please separate answer choices with a comma.</strong></span><br><br>
         </div>
-        <input class="ui button" type="submit">
+        <input class="ui green button" type="submit" value="Create Survey Question">
       </form>
     </div>
   </body>

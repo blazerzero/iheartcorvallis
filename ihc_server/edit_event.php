@@ -146,7 +146,7 @@ if ($result->num_rows > 0) {
             <div class="elem">
                Link 3: <input class="inputbox" type="text" name="link3" value="<?php echo $event['link3']; ?>"><br><br>
             </div>
-            <input class="ui button" type="submit">
+            <input class="ui green button" type="submit" value="Update Event">
          </form>
       </div>
    </body>

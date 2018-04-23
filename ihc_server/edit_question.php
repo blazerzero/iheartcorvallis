@@ -64,7 +64,7 @@
           Choices: <textarea class="inputbox" rows="4" cols="70" name="choices"><?php echo $question['choices']; ?></textarea><br>
           <span class="requirednote"><strong>Please separate answer choices with a comma.</strong></span><br><br>
         </div>
-        <input class="ui button" type="submit">
+        <input class="ui green button" type="submit" value="Update Survey Question">
       </form>
     </div>
   </body>

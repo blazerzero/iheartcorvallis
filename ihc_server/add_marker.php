@@ -63,7 +63,7 @@
           </select>
           <br><br>
         </div>
-        <input class="ui button" type="submit">
+        <input class="ui green button" type="submit" value="Create Marker">
       </form>
     </div>
   </body>

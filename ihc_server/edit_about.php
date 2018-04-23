@@ -63,7 +63,7 @@
           <span class="requirednote">*</span>
           Description: <textarea class="inputbox" rows="4" cols="50" name="info"><?php echo $about['info']; ?></textarea><br><br>
         </div>
-        <input class="ui button" type="submit">
+        <input class="ui green button" type="submit" value="Update About Page Contents">
       </form>
     </div>
   </body>

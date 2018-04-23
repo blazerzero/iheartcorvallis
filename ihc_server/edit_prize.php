@@ -69,7 +69,7 @@
           </select>
           <br><br>
         </div>
-        <input class="ui button" type="submit">
+        <input class="ui green button" type="submit" value="Update Prize">
       </form>
     </div>
   </body>

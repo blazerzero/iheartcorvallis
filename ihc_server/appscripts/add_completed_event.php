@@ -19,8 +19,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $eventid = $_POST["eventid"];
   $rating = $_POST["rating"];
   $comment = $_POST["comment"];
-  $stmt = $mysqli->prepare("INSERT INTO ihc_completed_events (userid, eventid, rating, comment) VALUES (?, ?, ?, ?)");
-  $stmt->bind_param('iiis', $userid, $eventid, $rating, $comment);
+  $dateandtime = date("Y-m-d H:i:s");
+
+  $stmt = $mysqli->prepare("INSERT INTO ihc_completed_events (userid, eventid, dateandtime, rating, comment) VALUES (?, ?, ?, ?, ?)");
+  $stmt->bind_param('iisis', $userid, $eventid, $dateandtime, $rating, $comment);
   $stmt->execute();
   if ($stmt->get_error == "") {
     $stmt2 = $mysqli->prepare("SELECT * FROM ihc_completed_events WHERE userid=?");
