@@ -6,7 +6,9 @@
 
   <?php
   require './admin_server/db.php';
-  $result = $mysqli->query("SELECT * FROM ihc_resources");
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_resources");
+  $stmt->execute();
+  $result = $stmt->get_result();
   $marker = array();
   $markers = array();
   $sortedMarkers = array();

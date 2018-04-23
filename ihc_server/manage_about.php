@@ -6,7 +6,9 @@
 
   <?php
   require './admin_server/db.php';
-  $result = $mysqli->query("SELECT * FROM ihc_about");
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_about");
+  $stmt->execute();
+  $result = $stmt->get_result();
   $ihc_about = array();
   while ($about = $result->fetch_assoc()) {
     $ihc_about[] = $about;

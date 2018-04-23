@@ -6,7 +6,9 @@
 
   <?php
   require './admin_server/db.php';
-  $result = $mysqli->query("SELECT * FROM ihc_events");
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_events");
+  $stmt->execute();
+  $result = $stmt->get_result();
   $ihc_events = array();
   while ($event = $result->fetch_assoc()) {
     $ihc_events[] = $event;

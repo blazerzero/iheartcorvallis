@@ -6,7 +6,9 @@
 
   <?php
   require './admin_server/db.php';
-  $result = $mysqli->query("SELECT * FROM ihc_resource_info");
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_resource_info");
+  $stmt->execute();
+  $result = $stmt->get_result();
   $ihc_resources = array();
   while ($resource = $result->fetch_assoc()) {
     $ihc_resources[] = $resource;

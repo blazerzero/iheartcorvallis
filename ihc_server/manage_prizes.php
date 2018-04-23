@@ -6,7 +6,9 @@
 
   <?php
   require './admin_server/db.php';
-  $result = $mysqli->query("SELECT * FROM ihc_prizes");
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_prizes");
+  $stmt->execute();
+  $result = $stmt->get_result();
   $ihc_prizes = array();
   $temp = array();
   while ($prize = $result->fetch_assoc()) {
