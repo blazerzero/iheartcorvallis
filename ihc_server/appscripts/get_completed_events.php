@@ -20,7 +20,7 @@
       $stmt1 = $mysqli->prepare("SELECT id FROM ihc_users WHERE email=?");
       $stmt1->bind_param('s', $email);
       $stmt1->execute();
-      $usersResult = $stmt->get_result();
+      $usersResult = $stmt1->get_result();
       if ($usersResult->num_rows > 0) {
          $user = $usersResult->fetch_assoc();
          $userid = $user['id'];
