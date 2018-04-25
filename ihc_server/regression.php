@@ -15,6 +15,31 @@
   }
   ?>
 
+  <?php
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $stat1 = $_POST["stat1"];
+    $stat2 = $_POST["stat2"];
+
+    $res = "";
+    if ($stat1 == 1) {
+      if ($stat2 == 5) {
+
+      }
+      for ($i = 1; $i <= count($questions); $i++) {
+        if ($stat2 - 4 == $i) {
+          $stmt = $mysqli->prepare("SELECT * FROM ihc_survey_responses WHERE questionid=? GROUP BY userid");
+          $stmt->bind_param('i', $i);
+          $stmt->execute();
+          $res = $stmt->get_result();
+          break;
+        }
+      }
+      $responses = $res->fetch_assoc();
+      print_r($responses);
+    }
+  }
+  ?>
+
   <html>
   <head>
     <title>Regression Analysis Center - I Heart Corvallis Administrative Suite</title>
@@ -50,9 +75,9 @@
       <left class="sectionheader"><h1>Regression Analysis Center</h1></left><br>
       <div class="ui divider"></div><br>
       <?php $j = 0; ?>
-      <form name="regressionForm" onsubmit="return validateForm()" action="./admin_server/get_regression_data.php" method="post" enctype="multipart/form-data">
+      <form name="regressionForm" onsubmit="return validateForm()" action="./get_regression_data.php" method="post" enctype="multipart/form-data">
         <span style="font-size: 1.25vw"><strong>Compare</strong></span><br><br>
-        <select class="ui search dropdown" name="stat1">
+        <select class="ui search dropdown" name="stat1" id="stat1">
           <option value="">Choose statistic</option>
           <option value="1">Change in Time</option>
           <option value="2">Grade</option>
@@ -60,21 +85,36 @@
           <option value="4">Number of Completed Events</option>
         </select><br><br>
         <span style="font-size: 1.25vw"><strong>to</strong></span><br><br>
-        <select class="ui search dropdown" name="stat2">
+        <select class="ui search dropdown" name="stat2" id="stat2">
           <option value="">Choose statistic</option>
-          <option value="1">Number of Completed Events</option>
+          <option value="5">Number of Completed Events</option>
           <?php for ($j = 1; $j <= count($questions); $j++) { ?>
-            <option value="<?php echo $j; ?>">Responses to Survey Question: <?php echo $questions[$j-1]['question']; ?></option>
+            <option value="<?php echo $j+4; ?>">Responses to Survey Question: <?php echo $questions[$j-1]['question']; ?></option>
           <?php } ?>
         </select><br><br>
-        <input class="ui green button" type="submit" value="Create Regression Visual">
+        <input class="ui green button" type="submit" value="Create Regression Visual" onclick="createGraph()">
       </form><br>
-
-      <div class="ui divider"></div><br>
-
-      <div id="regression_analysis_chart" style="width: 50vw; height: 30vw;"></div>
-
     </div>
+    <!--<script type="text/javascript">
+    function createGraph() {
+      alert("The submit button works!");
+      alert("Stat1: " + document.getElementById("stat1").value);
+      alert("Stat2: " + document.getElementById("stat2").value);
+      if (document.getElementById("stat1").value == 1) { <?php $stat1 = 1; ?>; }
+      else if (document.getElementById("stat1").value == 2) { <?php $stat1 = 2; ?>; }
+      else if (document.getElementById("stat1").value == 3) { <?php $stat1 = 3; ?>; }
+      else if (document.getElementById("stat1").value == 4) { <?php $stat1 = 4; ?>; }
+      if (document.getElementById("stat2").value == 5) { <?php $stat2 = 5; ?>; }
+      /*<?php for ($i = 1; $i <= count($questions); $i++) { ?>
+        if (document.getElementById("stat2").value == <?php echo $i + 5; ?>) {
+          <?php $stat2 = $i + 5; ?>;
+          break;
+        }
+      <?php } ?>*/
+      alert("stat1: " + <?php echo $stat1; ?>);
+      alert("stat2: " + <?php echo $stat2; ?>);
+    }
+    </script>-->
   </body>
   </html>
 

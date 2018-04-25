@@ -362,7 +362,9 @@ public class LeaderboardActivity extends AppCompatActivity
     }
 
     public void recycleBitmap() {
-        profilePictureBitmap.recycle();
-        profilePictureBitmap = null;
+        if (profilePictureBitmap != null && !profilePictureBitmap.isRecycled()) {
+            profilePictureBitmap.recycle();
+            profilePictureBitmap = null;
+        }
     }
 }

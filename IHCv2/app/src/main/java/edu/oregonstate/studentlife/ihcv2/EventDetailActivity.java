@@ -169,7 +169,7 @@ public class EventDetailActivity extends AppCompatActivity {
             Log.d(TAG, "permission has been granted!");
             mLocationPermissionGranted = true;
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         } else {
             Log.d(TAG, "permission has NOT been granted!");
@@ -186,7 +186,7 @@ public class EventDetailActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             ActivityCompat.requestPermissions(EventDetailActivity.this,
-                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
 
                         }
@@ -219,29 +219,11 @@ public class EventDetailActivity extends AppCompatActivity {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mLocationPermissionGranted = true;
-                }
-                else {
-                    Log.d(TAG, "Location has still NOT been granted!");
-                    // Nothing to do...
-                }
-            }
-        }
-    }
-
-    private void verifyLocation() {
-        try {
-            address = coder.getFromLocationName(event.getAddress(), 5);
-            if (address == null || address.size() == 0) {
-                Toast.makeText(getApplicationContext(), "Error reading event address.", Toast.LENGTH_LONG).show();
-            } else {
-                eventLocation = address.get(0);
-                getLocationPermission();
-                if (mLocationPermissionGranted) {
                     try {
                         // TODO: implement location manager to get location updates from user, as getLastLocation can return null
                         // TODO: Or if getLastLocation return null then exit the verify location function
                         Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
-                       // locationResult = mFusedLocationProviderClient.requestLocationUpdates();
+                        // locationResult = mFusedLocationProviderClient.requestLocationUpdates();
                         locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
                             @Override
                             public void onComplete(@NonNull Task<Location> task) {
@@ -292,6 +274,23 @@ public class EventDetailActivity extends AppCompatActivity {
                         builder.show();
                     }
                 }
+                else {
+                    Log.d(TAG, "Location has still NOT been granted!");
+                    // Nothing to do...
+                }
+            }
+        }
+    }
+
+    private void verifyLocation() {
+        try {
+            address = coder.getFromLocationName(event.getAddress(), 5);
+            if (address == null || address.size() == 0) {
+                Toast.makeText(getApplicationContext(), "Error reading event address.", Toast.LENGTH_LONG).show();
+            } else {
+                eventLocation = address.get(0);
+                getLocationPermission();
+
             }
         } catch (Exception e) {
             e.printStackTrace();

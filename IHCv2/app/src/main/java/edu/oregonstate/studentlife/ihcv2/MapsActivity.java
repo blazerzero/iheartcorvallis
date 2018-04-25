@@ -212,9 +212,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     })
                     .create()
                     .show();
-            /*ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);*/
         }
     }
 

@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   if ($result1->num_rows > 0) {
     $stmt2 = $mysqli->prepare("SELECT * FROM ihc_users WHERE email=?");
-    $stmt2->prepare('s', $email);
+    $stmt2->bind_param('s', $email);
     $stmt2->execute();
     $result2 = $stmt2->get_result();
     $row = $result2->fetch_assoc();
