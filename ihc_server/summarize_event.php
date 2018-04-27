@@ -20,11 +20,16 @@
   $stmt->execute();
   $result = $stmt->get_result();
   $numAttendees = $result->num_rows;
+
+  /* Variable Declarations */
   $numFreshmen = $numSophomores = $numJuniors = $numSeniors = $numGrad = $numDoc = $numFaculty = 0;
   $numDomStudents = $numIntlStudents = $numNonStudents = 0;
   $ages = $allAttendees = $students = $allRatings = $studentRatings = $comments = $studentComments = array();
   $minAge = $maxAge = $minAllRating = $maxAllRating = $minStudentRating = $maxStudentRating = 0;
   $avgAllRating = $avgStudentRating = 0;
+
+  /* Get Tuples from Completed Events for This Event
+  and Get the Information of the Users Who Attended This Event */
   while ($row = $result->fetch_assoc()) {
     $userid = $row['userid'];
     $stmt = $mysqli->prepare("SELECT * FROM ihc_users WHERE id=?");
@@ -33,19 +38,36 @@
     $res = $stmt->get_result();
     if ($res->num_rows > 0) {
       $user = $res->fetch_assoc();
+      $name = $user['firstname'] . " " . $user['lastname'];
       $allAttendees[] = $user;
       $grade = (int)$user['grade'];
-      //echo date("Y") . "<br>";
-      //echo date("Y", strtotime($user['birthdate'])) . "<br>";
       $today = date("Y-m-d h:i:s");
       $birthdate = date("Y-m-d h:i:s", strtotime($user['birthdate']));
       $userAge = $today - $birthdate;
       $ages[] = $userAge;
       $allRatings[] = $row['rating'];
+
       $usertype = (int)$user['type'];
-      if (strlen($user['comment']) > 0) {
-        $comments[] = $row['comment'];
+      $typeString = $gradeString = "";
+      if ($usertype == 0) $typeString = "Domestic Student";
+      else if ($usertype == 1) $typeString = "International Student";
+      else if ($usertype == 2) $typeString = "Faculty";
+      else if ($usertype == 3) $typeString = "Resident";
+      else if ($usertype == 4) $typeString = "Visitor";
+      if ($grade == 0) $gradeString = "N/A";
+      else if ($grade == 1) $gradeString = "Freshman";
+      else if ($grade == 2) $gradeString = "Sophomore";
+      else if ($grade == 3) $gradeString = "Junior";
+      else if ($grade == 4) $gradeString = "Senior";
+      else if ($grade == 5) $gradeString = "Graduate Student";
+      else if ($grade == 6) $gradeString = "Doctoral Student";
+      else if ($grade == 7) $gradeString = "Faculty";
+
+      if (strlen($row['comment']) > 0 || (int)$row['rating'] != 0) {
+        //$comments[] = $row['comment'];
+        $comments[] = array("userid" => $user['id'], "dateandtime" => $row['dateandtime'], "name" => $name, "type" => $typeString, "rating" => $row['rating'], "comment" => $row['comment']);
       }
+
       if ($grade == 1) { $numFreshmen++; }
       else if ($grade == 2) { $numSophomores++; }
       else if ($grade == 3) { $numJuniors++; }
@@ -53,30 +75,16 @@
       else if ($grade == 5) { $numGrad++; }
       else if ($grade == 6) { $numDoc++; }
 
-      if ($usertype == 0) {
-        $numDomStudents++;
+      if ($usertype < 3) {
         $students[] = $user;
         $studentRatings[] = $row['rating'];
-        if (strlen($user['comment']) > 0) {
-          $studentComments[] = $row['comment'];
+        if (strlen($row['comment']) > 0 || (int)$user['rating'] != 0) {
+          $studentComments[] = array("userid" => $user['id'], "dateandtime" => $row['dateandtime'], "name" => $name, "studentid" => $user['studentid'], "onid" => $user['onid'], "grade" => $gradeString, "type" => $typeString, "rating" => $row['rating'], "comment" => $row['comment']);
         }
       }
-      else if ($usertype == 1) {
-        $numIntlStudents++;
-        $students[] = $user;
-        $studentRatings[] = $row['rating'];
-        if (strlen($user['comment']) > 0) {
-          $studentComments[] = $row['comment'];
-        }
-      }
-      else if ($usertype == 2) {
-        $numFaculty++;
-        $students[] = $user;
-        $studentRatings[] = $row['rating'];
-        if (strlen($user['comment']) > 0) {
-          $studentComments[] = $row['comment'];
-        }
-      }
+      if ($usertype == 0) { $numDomStudents++; }
+      else if ($usertype == 1) { $numIntlStudents++; }
+      else if ($usertype == 2) { $numFaculty++; }
       else if ($usertype >= 3) { $numNonStudents++; }
     }
   }
@@ -129,7 +137,7 @@
         ['Student Attendee Type', 'Number of Attendees of This Type'],
         ['Domestic Students', <?php echo $numDomStudents; ?>],
         ['International Students', <?php echo $numIntlStudents; ?>],
-        ['Faculty', <?php echo $numFacultyl ?>]
+        ['Faculty', <?php echo $numFaculty; ?>]
       ]);
 
       var options = {
@@ -149,7 +157,7 @@
         ['Juniors', <?php echo $numJuniors; ?>],
         ['Seniors', <?php echo $numSeniors; ?>],
         ['Graduate Students', <?php echo $numGrad; ?>],
-        ['Doctoral Students', <?php echo $numDoc; ?>]
+        ['Doctoral Students', <?php echo $numDoc; ?>],
         ['Faculty', <?php echo $numFaculty; ?>]
       ]);
 
@@ -290,10 +298,69 @@
 
           <!-- EVENT FEEDBACK -->
           <?php if (count($comments) > 0) { ?>
-            <h2>Event Feedback</h2>
-            <?php foreach ($comments as $comment): ?>
-              <span><?php echo "\"" . $comment . "\"<br>"; ?></span>
-            <?php endforeach; ?>
+            <div class="ui divider"></div><br>
+
+            <div>
+              <h2>Event Feedback: All Feedback</h2>
+              <table class="ui celled padded table">
+                <thead>
+                  <tr>
+                    <th class="single line">Name</th>
+                    <th>Date and Time</th>
+                    <th>User Type</th>
+                    <th>Event Rating</th>
+                    <th>Comment</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php foreach($comments as $tuple) { ?>
+                    <tr>
+                      <td><?php echo $tuple['name']; ?></td>
+                      <td><?php echo $tuple['dateandtime']; ?></td>
+                      <td><?php echo $tuple['type']; ?></td>
+                      <td><?php if ($tuple['rating'] != 0) echo $tuple['rating']; ?></td>
+                      <td><?php echo $tuple['comment']; ?></td>
+                    </tr>
+                  <?php } ?>
+                </tbody>
+              </table>
+            </div><br>
+          <?php } ?>
+
+          <?php if (count($studentComments) > 0) { ?>
+            <div class="ui divider"></div><br>
+
+            <div>
+              <h2>Event Feedback: Student/Faculty Feedback</h2>
+              <table class="ui celled padded table">
+                <thead>
+                  <tr>
+                    <th class="single line">Name</th>
+                    <th>Student ID #</th>
+                    <th>ONID Username</th>
+                    <th>Date and Time</th>
+                    <th>User Type</th>
+                    <th>Class Standing</th>
+                    <th>Event Rating</th>
+                    <th>Comment</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php foreach($studentComments as $tuple) { ?>
+                    <tr>
+                      <td><?php echo $tuple['name']; ?></td>
+                      <td><?php echo $tuple['studentid']; ?></td>
+                      <td><?php echo $tuple['onid']; ?></td>
+                      <td><?php echo $tuple['dateandtime']; ?></td>
+                      <td><?php echo $tuple['type']; ?></td>
+                      <td><?php echo $tuple['grade']; ?></td>
+                      <td><?php if ($tuple['rating'] != 0) echo $tuple['rating']; ?></td>
+                      <td><?php echo $tuple['comment']; ?></td>
+                    </tr>
+                  <?php } ?>
+                </tbody>
+              </table>
+            </div>
           <?php } ?>
 
         <?php } ?>

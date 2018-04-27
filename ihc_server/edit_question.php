@@ -62,7 +62,7 @@
         <div class="elem">
           <span class="requirednote">*</span>
           Choices: <textarea class="inputbox" rows="4" cols="70" name="choices"><?php echo $question['choices']; ?></textarea><br>
-          <span class="requirednote"><strong>Please separate answer choices with a comma.</strong></span><br><br>
+          <span class="requirednote">Please separate answer choices with a comma, and list them in order of decreasing value.</span><br><br>
         </div>
         <input class="ui green button" type="submit" value="Update Survey Question">
       </form>

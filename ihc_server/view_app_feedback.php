@@ -48,7 +48,7 @@ require "./admin_server/login.php"; ?>
         else if ($userRow['grade'] == 6) $grade = "Doctoral Student";
         else if ($userRow['grade'] == 7) $grade = "Faculty";
 
-        $allTuples[] = array("userid" => $userid, "dateandtime" => $dateandtime, "name" => $name, "type" => $type, "grade" => $grade, "rating" => $rating, "comment" => $comment);
+        $allTuples[] = array("userid" => $userid, "dateandtime" => $dateandtime, "name" => $name, "type" => $type, "rating" => $rating, "comment" => $comment);
         if ($userRow['type'] < 2) {
           $sumStudentRating += $rating;
           if ($rating == 0) $numStudentZeroes++;
@@ -177,7 +177,6 @@ require "./admin_server/login.php"; ?>
                   <th class="single line">Name</th>
                   <th>Date and Time</th>
                   <th>User Type</th>
-                  <th>Class Standing</th>
                   <th>Rating</th>
                   <th>Comment</th>
                 </tr>
@@ -188,7 +187,6 @@ require "./admin_server/login.php"; ?>
                     <td><?php echo $tuple['name']; ?></td>
                     <td><?php echo $tuple['dateandtime']; ?></td>
                     <td><?php echo $tuple['type']; ?></td>
-                    <td><?php echo $tuple['grade']; ?></td>
                     <td><?php if ($tuple['rating'] != 0) echo $tuple['rating']; ?></td>
                     <td><?php echo $tuple['comment']; ?></td>
                   </tr>
@@ -205,7 +203,7 @@ require "./admin_server/login.php"; ?>
               <thead>
                 <tr>
                   <th class="single line">Name</th>
-                  <th>Student Id #</th>
+                  <th>Student ID #</th>
                   <th>ONID Username</th>
                   <th>Date and Time</th>
                   <th>User Type</th>

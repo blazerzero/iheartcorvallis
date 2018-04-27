@@ -59,7 +59,7 @@
         else if ($userrow['grade'] == 6) $grade = "Doctoral Student";
         else if ($userrow['grade'] == 7) $grade = "Faculty";
 
-        $allTuples[] = array("userid" => $userid, "dateandtime" => $dateandtime, "name" => $name, "grade" => $grade, "type" => $type, "response" => $response);
+        $allTuples[] = array("userid" => $userid, "dateandtime" => $dateandtime, "name" => $name, "type" => $type, "response" => $response);
         if ($userrow['type'] < 2) {
           $studentid = $userrow['studentid'];
           $onid = $userrow['onid'];
@@ -115,7 +115,6 @@
               <th class="single line">Name</th>
               <th>Date and Time</th>
               <th>User Type</th>
-              <th>Class Standing</th>
               <th>Response</th>
             </tr>
           </thead>
@@ -125,7 +124,6 @@
                 <td><?php echo $tuple['name']; ?></td>
                 <td><?php echo $tuple['dateandtime']; ?></td>
                 <td><?php echo $tuple['type']; ?></td>
-                <td><?php echo $tuple['grade']; ?></td>
                 <td><?php echo $tuple['response']; ?></td>
               </tr>
             <?php } ?>
