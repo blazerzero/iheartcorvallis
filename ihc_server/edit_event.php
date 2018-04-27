@@ -56,6 +56,7 @@ if ($result->num_rows > 0) {
               return false;
             }
           }
+          alert(imageField);
           return true;
         }
       }

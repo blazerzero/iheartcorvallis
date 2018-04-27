@@ -39,6 +39,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.content.DialogInterface;
 
+import com.squareup.picasso.Picasso;
+
 import org.json.JSONObject;
 
 import java.io.File;
@@ -104,7 +106,7 @@ public class DashboardActivity extends AppCompatActivity
     private static final String TAG = DashboardActivity.class.getSimpleName();
     private User user = null;
     private File profilePicture;
-    private Bitmap profilePictureBitmap;
+    //private Bitmap profilePictureBitmap;
 
     Session session;
 
@@ -162,7 +164,7 @@ public class DashboardActivity extends AppCompatActivity
                     if (id == R.id.bottom_nav_dash) {
                         // Do nothing, you're already here
                     } else {
-                        recycleBitmap();
+                        //recycleBitmap();
                         if (id == R.id.bottom_nav_events) {
                             Intent intent = new Intent(DashboardActivity.this, EventsActivity.class);
                             intent.putExtra(Constants.EXTRA_USER, user);
@@ -800,37 +802,27 @@ public class DashboardActivity extends AppCompatActivity
                 IHCDBContract.SavedImages.COLUMN_TIMESTAMP + " DESC"
         );
 
-        ArrayList<File> savedImagesList = new ArrayList<File>();
-        while (cursor.moveToNext()) {
-            File savedImage;
-            Uri fileUri = Uri.parse(cursor.getString(
+        Uri fileUri = null;
+        if (cursor.moveToNext()) {
+            fileUri = Uri.parse(cursor.getString(
                     cursor.getColumnIndex(IHCDBContract.SavedImages.COLUMN_IMAGE)
             ));
-            savedImage = new File(fileUri.getPath());
-            savedImagesList.add(savedImage);
         }
-        cursor.close();
-        Log.d(TAG, "number of images: " + savedImagesList.size());
-        if (savedImagesList.size() == 0) {
-            Log.d(TAG, "about to get information from user");
-            Intent getUserInfoIntent = new Intent(this, GetUserInfoActivity.class);
-            getUserInfoIntent.putExtra(Constants.EXTRA_USER, user);
-            getUserInfoIntent.putExtra(Constants.EXTRA_MSG, getResources().getString(R.string.extra_info_already_received));
-            startActivity(getUserInfoIntent);
-        }
-        else {
-            profilePicture = savedImagesList.get(0);
-            Log.d(TAG, "path of image: " + profilePicture.getAbsolutePath());
-            profilePictureBitmap = BitmapFactory.decodeFile(profilePicture.getAbsolutePath());
-            mProfilePictureIV.setImageBitmap(profilePictureBitmap);
+        if (fileUri != null) {
+            Log.d(TAG, "path of image: " + fileUri.toString());
+            if (fileUri.toString().contains(".jpg") || fileUri.toString().contains(".jpeg") || fileUri.toString().contains(".png")) {
+                Picasso.with(this)
+                        .load(fileUri.toString())
+                        .into(mProfilePictureIV);
+            }
         }
     }
 
-    public void recycleBitmap() {
+    /*public void recycleBitmap() {
         if (profilePictureBitmap != null && !profilePictureBitmap.isRecycled()) {
             profilePictureBitmap.recycle();
             profilePictureBitmap = null;
         }
-    }
+    }*/
 
 }

@@ -33,6 +33,8 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.json.JSONObject;
 
 import java.io.File;
@@ -138,7 +140,7 @@ public class PrizesActivity extends AppCompatActivity
                 int id = item.getItemId();
 
                 if (user != null) {
-                    recycleBitmap();
+                    //recycleBitmap();
                     if (id == R.id.bottom_nav_dash) {
                         Intent intent = new Intent(PrizesActivity.this, DashboardActivity.class);
                         intent.putExtra(Constants.EXTRA_USER, user);
@@ -358,29 +360,27 @@ public class PrizesActivity extends AppCompatActivity
                 IHCDBContract.SavedImages.COLUMN_TIMESTAMP + " DESC"
         );
 
-        ArrayList<File> savedImagesList = new ArrayList<File>();
-        while (cursor.moveToNext()) {
-            File savedImage;
-            Uri fileUri = Uri.parse(cursor.getString(
+        Uri fileUri = null;
+        if (cursor.moveToNext()) {
+            fileUri = Uri.parse(cursor.getString(
                     cursor.getColumnIndex(IHCDBContract.SavedImages.COLUMN_IMAGE)
             ));
-            savedImage = new File(fileUri.getPath());
-            savedImagesList.add(savedImage);
         }
-        cursor.close();
-        Log.d(TAG, "number of images: " + savedImagesList.size());
-        File profilePicture = savedImagesList.get(0);
-        Log.d(TAG, "path of image: " + profilePicture.getAbsolutePath());
-        profilePictureBitmap = BitmapFactory.decodeFile(profilePicture.getAbsolutePath());
-        mProfilePictureIV.setImageBitmap(profilePictureBitmap);
-
+        if (fileUri != null) {
+            Log.d(TAG, "path of image: " + fileUri.toString());
+            if (fileUri.toString().contains(".jpg") || fileUri.toString().contains(".jpeg") || fileUri.toString().contains(".png")) {
+                Picasso.with(this)
+                        .load(fileUri.toString())
+                        .into(mProfilePictureIV);
+            }
+        }
     }
 
-    public void recycleBitmap() {
+    /*public void recycleBitmap() {
         if (profilePictureBitmap != null && !profilePictureBitmap.isRecycled()) {
             profilePictureBitmap.recycle();
             profilePictureBitmap = null;
         }
-    }
+    }*/
 
 }

@@ -26,6 +26,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -99,6 +100,11 @@ public class EventDetailActivity extends AppCompatActivity {
             user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
             Log.d(TAG, "User ID: " + user.getId());
             event = (Event) intent.getSerializableExtra(Constants.EXTRA_EVENT);
+            if (event.getImagePath().contains(".jpg") || event.getImagePath().contains(".jpeg") || event.getImagePath().contains(".png")) {
+                Picasso.with(this)
+                        .load(event.getImagePath())
+                        .into(mEventImageIV);
+            }
             mEventNameTV.setText(event.getName());
             mEventLocationTV.setText(event.getLocation());
             mEventAddressTV.setText(event.getAddress());

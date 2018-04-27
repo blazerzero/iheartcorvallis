@@ -30,6 +30,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -292,22 +294,20 @@ public class SettingsActivity extends AppCompatActivity
                 IHCDBContract.SavedImages.COLUMN_TIMESTAMP + " DESC"
         );
 
-        ArrayList<File> savedImagesList = new ArrayList<File>();
-        while (cursor.moveToNext()) {
-            File savedImage;
-            Uri fileUri = Uri.parse(cursor.getString(
+        Uri fileUri = null;
+        if (cursor.moveToNext()) {
+            fileUri = Uri.parse(cursor.getString(
                     cursor.getColumnIndex(IHCDBContract.SavedImages.COLUMN_IMAGE)
             ));
-            savedImage = new File(fileUri.getPath());
-            savedImagesList.add(savedImage);
         }
-        cursor.close();
-        Log.d(TAG, "number of images: " + savedImagesList.size());
-        File profilePicture = savedImagesList.get(0);
-        Log.d(TAG, "path of image: " + profilePicture.getAbsolutePath());
-        profilePictureBitmap = BitmapFactory.decodeFile(profilePicture.getAbsolutePath());
-        mProfilePictureIV.setImageBitmap(profilePictureBitmap);
-
+        if (fileUri != null) {
+            Log.d(TAG, "path of image: " + fileUri.toString());
+            if (fileUri.toString().contains(".jpg") || fileUri.toString().contains(".jpeg") || fileUri.toString().contains(".png")) {
+                Picasso.with(this)
+                        .load(fileUri.toString())
+                        .into(mProfilePictureIV);
+            }
+        }
     }
 
     @Override
@@ -420,11 +420,11 @@ public class SettingsActivity extends AppCompatActivity
         }
     }
 
-    public void recycleBitmap() {
+    /*public void recycleBitmap() {
         if (profilePictureBitmap != null && !profilePictureBitmap.isRecycled()) {
             profilePictureBitmap.recycle();
             profilePictureBitmap = null;
         }
-    }
+    }*/
 
 }
