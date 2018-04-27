@@ -49,6 +49,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 import edu.oregonstate.studentlife.ihcv2.adapters.PassportAdapter;
@@ -143,7 +144,6 @@ public class PassportActivity extends AppCompatActivity
                     if (id == R.id.bottom_nav_passport) {
                         // Do nothing, you're already here
                     } else {
-                        //recycleBitmap();
                         if (id == R.id.bottom_nav_dash) {
                             Intent intent = new Intent(PassportActivity.this, DashboardActivity.class);
                             intent.putExtra(Constants.EXTRA_USER, user);
@@ -269,7 +269,6 @@ public class PassportActivity extends AppCompatActivity
             if (id == R.id.nav_passport) {
                 onBackPressed();
             } else {
-                //recycleBitmap();
                 if (id == R.id.nav_dash) {
                     Intent intent = new Intent(this, DashboardActivity.class);
                     intent.putExtra(Constants.EXTRA_USER, user);
@@ -360,15 +359,15 @@ public class PassportActivity extends AppCompatActivity
                     String eventEndDay = dateTimeTokenizer.nextToken(" ");
                     String eventEndTime = dateTimeTokenizer.nextToken();
 
-                    SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
                     Date eventStartDate = sdfEvent.parse(eventStartDT);
                     Date eventEndDate = sdfEvent.parse(eventEndDT);
 
-                    SimpleDateFormat _24HourFormat = new SimpleDateFormat("HH:mm");
-                    SimpleDateFormat _12HourFormat = new SimpleDateFormat("hh:mm a");
+                    SimpleDateFormat _24HourFormat = new SimpleDateFormat("HH:mm", Locale.US);
+                    SimpleDateFormat _12HourFormat = new SimpleDateFormat("hh:mm a", Locale.US);
 
                     Date _24HourEventTime = _24HourFormat.parse(eventStartTime);
-                    eventStartTime = _12HourFormat.format(_24HourEventTime).toString();
+                    eventStartTime = _12HourFormat.format(_24HourEventTime);
                     if (eventStartTime.charAt(0) == '0') {
                         eventStartTime = eventStartTime.substring(1);
                     }
@@ -385,7 +384,7 @@ public class PassportActivity extends AppCompatActivity
                     eventStartMonth = monthShortNames[monthInt - 1];
 
                     _24HourEventTime = _24HourFormat.parse(eventEndTime);
-                    eventEndTime = _12HourFormat.format(_24HourEventTime).toString();
+                    eventEndTime = _12HourFormat.format(_24HourEventTime);
                     if (eventEndTime.charAt(0) == '0') {
                         eventEndTime = eventEndTime.substring(1);
                     }
@@ -413,8 +412,6 @@ public class PassportActivity extends AppCompatActivity
 
                     if (isNetworkAvailable()) {
                         mPassportAdapter.addEventToPassport(retrievedEvent);
-                        //gotUser = true;
-                        //getSupportLoaderManager().initLoader(IHC_GETUSERINFO_ID, null, this);
                     } else {
                         showNoInternetConnectionMsg();
                     }
@@ -483,12 +480,7 @@ public class PassportActivity extends AppCompatActivity
                         .into(mProfilePictureIV);
             }
         }
+        cursor.close();
     }
 
-    /*public void recycleBitmap() {
-        if (profilePictureBitmap != null && !profilePictureBitmap.isRecycled()) {
-            profilePictureBitmap.recycle();
-            profilePictureBitmap = null;
-        }
-    }*/
 }

@@ -126,7 +126,6 @@ public class LeaderboardActivity extends AppCompatActivity
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 if (user != null) {
-                    //recycleBitmap();
                     if (id == R.id.bottom_nav_dash) {
                         Intent intent = new Intent(LeaderboardActivity.this, DashboardActivity.class);
                         intent.putExtra(Constants.EXTRA_USER, user);
@@ -164,9 +163,6 @@ public class LeaderboardActivity extends AppCompatActivity
 
         getSupportLoaderManager().initLoader(IHC_PASSPORT_LOADER_ID, null, this);
 
-        /*for (User user : leaderboardUserList) {
-            mLeaderboardAdapter.addUserToLeaderboard(user);
-        }*/
     }
 
     @Override
@@ -240,7 +236,6 @@ public class LeaderboardActivity extends AppCompatActivity
             if (id == R.id.nav_leaderboard) {
                 onBackPressed();
             } else {
-                //recycleBitmap();
                 if (id == R.id.nav_dash) {
                     Intent intent = new Intent(this, DashboardActivity.class);
                     intent.putExtra(Constants.EXTRA_USER, user);
@@ -359,12 +354,7 @@ public class LeaderboardActivity extends AppCompatActivity
                         .into(mProfilePictureIV);
             }
         }
+        cursor.close();
     }
 
-    /*public void recycleBitmap() {
-        if (profilePictureBitmap != null && !profilePictureBitmap.isRecycled()) {
-            profilePictureBitmap.recycle();
-            profilePictureBitmap = null;
-        }
-    }*/
 }

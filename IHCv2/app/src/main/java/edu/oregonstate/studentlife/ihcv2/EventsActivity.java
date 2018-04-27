@@ -49,6 +49,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 import edu.oregonstate.studentlife.ihcv2.adapters.EventCardAdapter;
@@ -144,7 +145,6 @@ public class EventsActivity extends AppCompatActivity
                     if (id == R.id.bottom_nav_events) {
                         // Do nothing, you're already here
                     } else {
-                        //recycleBitmap();
                         if (id == R.id.bottom_nav_dash) {
                             Intent intent = new Intent(EventsActivity.this, DashboardActivity.class);
                             intent.putExtra(Constants.EXTRA_USER, user);
@@ -189,12 +189,9 @@ public class EventsActivity extends AppCompatActivity
         mEventCardAdapter = new EventCardAdapter(this, this);
         mEventCardRV.setAdapter(mEventCardAdapter);
 
-        //eventList = mergeSortEventList(eventList);
-
         mEventCardRV.setVisibility(View.GONE);
 
         if (isNetworkAvailable()) {
-            //new EventReceiver(this).execute();
             getSupportLoaderManager().initLoader(IHC_EVENT_LOADER_ID, null, this);
         }
         else {
@@ -347,7 +344,6 @@ public class EventsActivity extends AppCompatActivity
             if (id == R.id.nav_events) {
                 onBackPressed();
             } else {
-                //recycleBitmap();
                 if (id == R.id.nav_dash) {
                     Intent intent = new Intent(this, DashboardActivity.class);
                     intent.putExtra(Constants.EXTRA_USER, user);
@@ -425,15 +421,15 @@ public class EventsActivity extends AppCompatActivity
                 String eventEndDay = dateTimeTokenizer.nextToken(" ");
                 String eventEndTime = dateTimeTokenizer.nextToken();
 
-                SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
                 Date eventStartDate = sdfEvent.parse(eventStartDT);
                 Date eventEndDate = sdfEvent.parse(eventEndDT);
 
-                SimpleDateFormat _24HourFormat = new SimpleDateFormat("HH:mm");
-                SimpleDateFormat _12HourFormat = new SimpleDateFormat("hh:mm a");
+                SimpleDateFormat _24HourFormat = new SimpleDateFormat("HH:mm", Locale.US);
+                SimpleDateFormat _12HourFormat = new SimpleDateFormat("hh:mm a", Locale.US);
 
                 Date _24HourEventTime = _24HourFormat.parse(eventStartTime);
-                eventStartTime = _12HourFormat.format(_24HourEventTime).toString();
+                eventStartTime = _12HourFormat.format(_24HourEventTime);
                 if (eventStartTime.charAt(0) == '0') {
                     eventStartTime = eventStartTime.substring(1);
                 }
@@ -443,7 +439,7 @@ public class EventsActivity extends AppCompatActivity
                 }
 
                 _24HourEventTime = _24HourFormat.parse(eventEndTime);
-                eventEndTime = _12HourFormat.format(_24HourEventTime).toString();
+                eventEndTime = _12HourFormat.format(_24HourEventTime);
                 if (eventEndTime.charAt(0) == '0') {
                     eventEndTime = eventEndTime.substring(1);
                 }
@@ -541,12 +537,7 @@ public class EventsActivity extends AppCompatActivity
                         .into(mProfilePictureIV);
             }
         }
+        cursor.close();
     }
 
-    /*public void recycleBitmap() {
-        if (profilePictureBitmap != null && !profilePictureBitmap.isRecycled()) {
-            profilePictureBitmap.recycle();
-            profilePictureBitmap = null;
-        }
-    }*/
 }

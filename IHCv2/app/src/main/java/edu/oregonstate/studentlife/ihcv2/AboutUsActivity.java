@@ -306,6 +306,7 @@ public class AboutUsActivity extends AppCompatActivity
                         .into(mProfilePictureIV);
             }
         }
+        cursor.close();
     }
 
     /*public void recycleBitmap() {

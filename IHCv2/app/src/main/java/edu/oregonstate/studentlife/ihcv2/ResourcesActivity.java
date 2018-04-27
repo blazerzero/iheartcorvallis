@@ -141,7 +141,6 @@ public class ResourcesActivity extends AppCompatActivity
                         // Do nothing, you're already here
 
                     } else {
-                        //recycleBitmap();
                         if (id == R.id.bottom_nav_dash) {
                             Intent intent = new Intent(ResourcesActivity.this, DashboardActivity.class);
                             intent.putExtra(Constants.EXTRA_USER, user);
@@ -280,7 +279,6 @@ public class ResourcesActivity extends AppCompatActivity
             if (id == R.id.nav_resources) {
                 onBackPressed();
             } else {
-                //recycleBitmap();
                 if (id == R.id.nav_dash) {
                     Intent intent = new Intent(this, DashboardActivity.class);
                     intent.putExtra(Constants.EXTRA_USER, user);
@@ -405,12 +403,7 @@ public class ResourcesActivity extends AppCompatActivity
                         .into(mProfilePictureIV);
             }
         }
+        cursor.close();
     }
 
-    /*public void recycleBitmap() {
-        if (profilePictureBitmap != null && !profilePictureBitmap.isRecycled()) {
-            profilePictureBitmap.recycle();
-            profilePictureBitmap = null;
-        }
-    }*/
 }

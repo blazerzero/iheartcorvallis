@@ -214,7 +214,6 @@ public class SettingsActivity extends AppCompatActivity
             if (id == R.id.nav_settings) {
                 onBackPressed();
             } else {
-                //recycleBitmap();
                 if (id == R.id.nav_dash) {
                     Intent intent = new Intent(this, DashboardActivity.class);
                     intent.putExtra(Constants.EXTRA_USER, user);
@@ -308,6 +307,7 @@ public class SettingsActivity extends AppCompatActivity
                         .into(mProfilePictureIV);
             }
         }
+        cursor.close();
     }
 
     @Override
@@ -419,12 +419,5 @@ public class SettingsActivity extends AppCompatActivity
             startActivityForResult(pickPhoto, 1);
         }
     }
-
-    /*public void recycleBitmap() {
-        if (profilePictureBitmap != null && !profilePictureBitmap.isRecycled()) {
-            profilePictureBitmap.recycle();
-            profilePictureBitmap = null;
-        }
-    }*/
 
 }
