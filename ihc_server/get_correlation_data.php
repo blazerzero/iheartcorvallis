@@ -82,14 +82,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $choices[] = $token;
             $token = strtok(",");
           }
-          print_r($choices);
+          //print_r($choices);
           $newChoices = array();
           for ($j = count($choices)-1; $j >= 0; $j--) {
             $newChoices[] = $choices[$j];
           }
           $choices = $newChoices;
-          print_r($choices);
-          echo "<br>";
+          //print_r($choices);
+          //echo "<br>";
 
           $stmt = $mysqli->prepare("SELECT * FROM ihc_survey_responses WHERE questionid=? ORDER BY userid ASC, dateandtime ASC");
           $stmt->bind_param('i', $questions[$i-1]['id']);
@@ -97,8 +97,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $res = $stmt->get_result();
           if ($res->num_rows > 0) {
             while ($row = $res->fetch_assoc()) {
-              print_r($row);
-              echo "<br>";
+              //print_r($row);
+              //echo "<br>";
               if (!array_key_exists($row['userid'], $startTimes)) {
                 $startTimes[$row['userid']] = $row['dateandtime'];
               }
@@ -123,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   }
 
-  print_r($allData);
+  //print_r($allData);
 
   ?>
 
