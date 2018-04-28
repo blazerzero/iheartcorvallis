@@ -73,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   if($file_size > 2097152) {
-    $errors[]='File size must be excately 2 MB';
+    $errors[]='File size must not exceed 2 MB';
   }
 
   if(empty($errors)==true) {

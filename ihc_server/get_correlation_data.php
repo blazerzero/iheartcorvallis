@@ -82,14 +82,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $choices[] = $token;
             $token = strtok(",");
           }
-          //print_r($choices);
           $newChoices = array();
           for ($j = count($choices)-1; $j >= 0; $j--) {
             $newChoices[] = $choices[$j];
           }
           $choices = $newChoices;
-          //print_r($choices);
-          //echo "<br>";
 
           $stmt = $mysqli->prepare("SELECT * FROM ihc_survey_responses WHERE questionid=? ORDER BY userid ASC, dateandtime ASC");
           $stmt->bind_param('i', $questions[$i-1]['id']);
@@ -97,8 +94,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $res = $stmt->get_result();
           if ($res->num_rows > 0) {
             while ($row = $res->fetch_assoc()) {
-              //print_r($row);
-              //echo "<br>";
               if (!array_key_exists($row['userid'], $startTimes)) {
                 $startTimes[$row['userid']] = $row['dateandtime'];
               }
@@ -120,7 +115,97 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
   }
   else {
+    $xData = $yData = array();
+    $orderByVar = "";
+    if ($stat1 == 2) {
+      $orderByVar = "grade";
+      $stmt1 = $mysqli->prepare("SELECT id, grade FROM ihc_users ORDER BY grade ASC");
+      $stmt1->execute();
+      $res1 = $stmt1->get_result();
+      if ($res1->num_rows > 0) {
+        while ($row = $res1->fetch_assoc()) {
+          $xData[] = array('userid' => $row['id'], 'xval' => $row['grade']);
+        }
+      }
+    }
+    else if ($stat1 == 3) {
+      $orderByVar = "type";
+      $stmt1 = $mysqli->prepare("SELECT id, type FROM ihc_users ORDER BY type ASC");
+      $stmt1->execute();
+      $res1 = $stmt1->get_result();
+      if ($res1->num_rows > 0) {
+        while ($row = $res1->fetch_assoc()) {
+          $xData[] = array('userid' => $row['id'], 'xval' => $row['type']);
+        }
+      }
+    }
+    else if ($stat1 == 4) {
+      $orderByVar = "stampcount";
+      $stmt1 = $mysqli->prepare("SELECT id, stampcount FROM ihc_users ORDER BY stampcount ASC");
+      $stmt1->execute();
+      $res1 = $stmt1->get_result();
+      if ($res1->num_rows > 0) {
+        while ($row = $res1->fetch_assoc()) {
+          $xData[] = array('userid' => $row['id'], 'xval' => $row['stampcount']);
+        }
+      }
+    }
+    if ($stat2 == 5) {
+      $stmt2 = $mysqli->prepare("SELECT id, stampcount FROM ihc_users ORDER BY stampcount ASC");
+      $stmt2->execute();
+      $res2 = $stmt2->get_result();
+      if ($res2->num_rows > 0) {
+        while ($row = $res2->fetch_assoc()) {
+          $yData[] = array('userid' => $row['id'], 'yval' => $row['stampcount']);
+        }
+      }
+    }
+    else {
+      for ($i = 1; $i <= count($questions); $i++) {
+        if ($stat2 == $i + 5) {
+          $choices = array();
+          $choicesStr = $questions[$i-1]['choices'];
+          $choiceVal = 0;
+          $token = strtok($choicesStr, ",");
+          while ($token !== false) {
+            $choices[] = $token;
+            $token = strtok(",");
+          }
+          $newChoices = array();
+          for ($j = count($choices)-1; $j >= 0; $j--) {
+            $newChoices[] = $choices[$j];
+          }
+          $choices = $newChoices;
 
+          $stmt2 = $mysqli->prepare("SELECT DISTINCT userid, response FROM ihc_survey_responses WHERE questionid=? ORDER BY dateandtime ASC");
+          $stmt2->bind_param('i', $i);
+          $stmt2->execute();
+          $res2 = $stmt2->get_result();
+          if ($res2->num_rows > 0) {
+            while ($row = $res2->fetch_assoc()) {
+
+              for ($j = 0; $j < count($choices); $j++) {
+                if ($row['response'] == $choices[$j]) {
+                  $choiceVal = $j+1;
+                  break;
+                }
+              }
+
+              $yData[] = array('userid' => $row['userid'], 'yval' => $choiceVal);
+            }
+          }
+          break;
+        }
+      }
+    }
+    for ($i = 0; $i < count($xData); $i++) {
+      for ($j = 0; $j < count($yData); $j++) {
+        if ($xData[$i]['userid'] == $yData[$j]['userid']) {
+          $allData[] = array('x' => $xData[$i]['xval'], 'y' => $yData[$j]['yval']);
+          break;
+        }
+      }
+    }
   }
 
   //print_r($allData);

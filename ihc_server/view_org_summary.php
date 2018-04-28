@@ -17,9 +17,23 @@
       $events[] = $event;
     }
   }
-  $attendees = array();
-  $allRatings = array();
-  foreach ($events as $event) {
+  $attendees = $studentAttendees = array();
+  $allRatings = $studentRatings = array();
+  $stmt = $mysqli->prepare("SELECT CE.*, U.type FROM ihc_completed_events CE, ihc_events E, ihc_users U WHERE CE.eventid=E.eventid AND CE.userid=U.id AND E.host=?");
+  $stmt->bind_param('i', $host);
+  $stmt->execute();
+  $completedres = $stmt->get_result();
+  if ($completedres->num_rows > 0) {
+    while ($listing = $completedres->fetch_assoc()) {
+      $attendees[] = $listing;
+      $allRatings[] = $listing['rating'];
+      if ($listing['type'] < 3) {
+        $studentAttendees[] = $listing;
+        $studentRatings[] = $listing['rating'];
+      }
+    }
+  }
+  /*foreach ($events as $event) {
     $eventid = $event['eventid'];
     $stmt = $mysqli->prepare("SELECT * FROM ihc_completed_events WHERE eventid=?");
     $stmt->bind_param('i', $eventid);
@@ -31,53 +45,15 @@
         $allRatings[] = $listing['rating'];
       }
     }
-  }
+  }*/
 
   $avgAllRating = array_sum($allRatings) / count($allRatings);
   $minAllRating = min($allRatings);
   $maxAllRating = max($allRatings);
+  $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
+  $minStudentRating = min($studentRatings);
+  $maxStudentRating = max($studentRatings);
 
-  ?>
-
-  <?php
-  function getOverallRating($eventid) {
-    $ratingsArr = array();
-    $stmt = $mysqli->prepare("SELECT * FROM ihc_completed_events WHERE eventid=?");
-    $stmt->bind_param('i', $eventid);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    while ($row = $result->fetch_assoc()) {
-      $ratingsArr[] = $row['rating'];
-    }
-    $rating = array_sum($ratingsArr) / count($ratingsArr);
-    return $rating;
-  }
-
-  function getStudentRating($eventid) {
-    $ratingsArr = array();
-    $ratings = 0;
-    $stmt = $mysqli->prepare("SELECT * FROM ihc_completed_events WHERE eventid=?");
-    $stmt->bind_param('i', $eventid);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    while ($row = $result->fetch_assoc()) {
-      $userid = $row['userid'];
-      $stmt = $mysqli->prepare("SELECT * FROM ihc_users WHERE id=?");
-      $stmt->bind_param('i', $userid);
-      $stmt->execute();
-      $res = $stmt->get_result();
-      if ($res->num_rows > 0) {
-        $user = $res->fetch_assoc();
-        $usertype = (int)$user['type'];
-        if ($usertype < 2) {
-          $ratingsArr[] = $row['rating'];
-        }
-      }
-    }
-    if (count($ratingsArr) > 0) $rating = array_sum($ratingsArr) / count($ratingsArr);
-    else $rating = "-";
-    return $rating;
-  }
   ?>
 
   <html>
@@ -91,15 +67,16 @@
     <script type="text/javascript">
     google.charts.load("current", {packages:["corechart"]});
     google.charts.setOnLoadCallback(drawAllRatingsChart);
+    google.charts.setOnLoadCallback(drawStudentRatingsChart);
 
     function drawAllRatingsChart() {
       var data = new google.visualization.arrayToDataTable([
         ['Rating', 'Users'],
-        ['1', <?php echo count(array_keys($allRatings, 1)); ?>],
-        ['2', <?php echo count(array_keys($allRatings, 2)); ?>],
-        ['3', <?php echo count(array_keys($allRatings, 3)); ?>],
+        ['5', <?php echo count(array_keys($allRatings, 5)); ?>],
         ['4', <?php echo count(array_keys($allRatings, 4)); ?>],
-        ['5', <?php echo count(array_keys($allRatings, 5)); ?>]
+        ['3', <?php echo count(array_keys($allRatings, 3)); ?>],
+        ['2', <?php echo count(array_keys($allRatings, 2)); ?>],
+        ['1', <?php echo count(array_keys($allRatings, 1)); ?>]
       ]);
 
       var options = {
@@ -110,7 +87,29 @@
         vAxis: {gridlines: {count: 4}}
       };
 
-      var chart = new google.visualization.ColumnChart(document.getElementById('all_ratings_columnchart'));
+      var chart = new google.visualization.BarChart(document.getElementById('all_ratings_columnchart'));
+      chart.draw(data, options);
+    }
+
+    function drawStudentRatingsChart() {
+      var data = new google.visualization.arrayToDataTable([
+        ['Rating', 'Users'],
+        ['5', <?php echo count(array_keys($studentRatings, 5)); ?>],
+        ['4', <?php echo count(array_keys($studentRatings, 4)); ?>],
+        ['3', <?php echo count(array_keys($studentRatings, 3)); ?>],
+        ['2', <?php echo count(array_keys($studentRatings, 2)); ?>],
+        ['1', <?php echo count(array_keys($studentRatings, 1)); ?>]
+      ]);
+
+      var options = {
+        title: 'Student/Faculty Rating Spread',
+        bar: {groupWidth: "80%"},
+        legend: {position: "none"},
+        colors: ['#d73f09'],
+        vAxis: {gridlines: {count: 4}}
+      };
+
+      var chart = new google.visualization.BarChart(document.getElementById('student_ratings_columnchart'));
       chart.draw(data, options);
     }
     </script>
@@ -132,9 +131,16 @@
         <h2>General</h2>
         <h4>Number of Events: <?php echo count($events); ?></h4>
         <h4>Total Number of Attendees: <?php echo count($attendees); ?></h4>
+        <h4>Number of Student/Faculty Attendees: <?php echo count($studentAttendees); ?></h4>
         <?php if (count($attendees) > 0) { ?>
           <h4>Average Rating: <?php echo $avgAllRating; ?></h4>
-          <div id="all_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td><br>
+          <h4>Student/Faculty Rating: <?php echo $avgStudentRating; ?></h4>
+          <table>
+            <tr>
+              <td><div id="all_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td>
+              <td><div id="student_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td>
+            </tr>
+          </table><br>
 
           <div class="ui divider"></div><br>
           <div>

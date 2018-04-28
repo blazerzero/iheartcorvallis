@@ -74,11 +74,13 @@ public class DashboardActivity extends AppCompatActivity
         LoaderManager.LoaderCallbacks<String> {
 
     private String email;
+    private int userid;
     private int numStamps;
     private ImageView mProfilePictureIV;
     private LinearLayout mProgIndicatorLL;
     public static final String EXTRA_USER = "User";
     private final static String IHC_USER_EMAIL_KEY = "IHC_USER_EMAIL";
+    private final static String IHC_USER_ID_KEY = "IHC_USER_ID";
     private final static int IHC_USER_LOADER_ID = 0;
     private final static int IHC_PASSPORT_LOADER_ID = 1;
     private final static int IHC_EVENT_LOADER_ID = 2;
@@ -241,12 +243,13 @@ public class DashboardActivity extends AppCompatActivity
     public Loader<String> onCreateLoader(int id, final Bundle args) {
         if (args != null) {
             email = args.getString(IHC_USER_EMAIL_KEY);
+            userid = args.getInt(IHC_USER_ID_KEY);
         }
         if (id == IHC_USER_LOADER_ID) {
             return new UserInfoLoader(this, email);
         }
         else if (id == IHC_PASSPORT_LOADER_ID) {
-            return new PassportLoader(this, email);
+            return new PassportLoader(this, String.valueOf(userid));
         }
         else if (id == IHC_EVENT_LOADER_ID){
             return new EventLoader(this);
@@ -298,6 +301,7 @@ public class DashboardActivity extends AppCompatActivity
                     }
 
                     gotUser = true;
+                    args.putInt(IHC_USER_ID_KEY, user.getId());
                     getSupportLoaderManager().initLoader(IHC_PASSPORT_LOADER_ID, args, this);
 
                 } catch (Exception e) {

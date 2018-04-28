@@ -18,13 +18,13 @@ import java.net.URLEncoder;
 public class PassportLoader extends AsyncTaskLoader<String> {
     private final static String TAG = PassportLoader.class.getSimpleName();
 
-    private String email;
+    private String userid;
     private String passportJSON;
     private final static String IHC_GET_COMPLETED_EVENTS_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/get_completed_events.php";
 
-    public PassportLoader(Context context, String email) {
+    public PassportLoader(Context context, String userid) {
         super(context);
-        this.email = email;
+        this.userid = userid;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class PassportLoader extends AsyncTaskLoader<String> {
     public String loadInBackground() {
         try {
             URL url = new URL(IHC_GET_COMPLETED_EVENTS_URL);
-            String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
+            String data = URLEncoder.encode("userid", "UTF-8") + "=" + URLEncoder.encode(userid, "UTF-8");
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 

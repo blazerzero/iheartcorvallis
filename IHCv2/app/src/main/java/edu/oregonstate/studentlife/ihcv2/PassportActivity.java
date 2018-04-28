@@ -81,6 +81,7 @@ public class PassportActivity extends AppCompatActivity
 
     private ArrayList<Event> completedEventList;
     private String email;
+    private int userid;
     Session session;
 
     private DrawerLayout mDrawerLayout;
@@ -173,6 +174,7 @@ public class PassportActivity extends AppCompatActivity
         if (intent != null && intent.hasExtra(Constants.EXTRA_USER)) {
             user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
             Log.d(TAG, "User ID: " + user.getId());
+            userid = user.getId();
         }
 
         progIndicatorTV.setText("STAMPS: " + user.getStampCount());
@@ -185,12 +187,12 @@ public class PassportActivity extends AppCompatActivity
         mPassportRecyclerView.setAdapter(mPassportAdapter);
 
         session = new Session(getApplicationContext());
-        HashMap<String, String> user = session.getUserDetails();
-        email = user.get(Session.KEY_EMAIL);
-        Bundle args = new Bundle();
-        args.putString(IHC_USER_EMAIL_KEY, email);
+        //HashMap<String, String> user = session.getUserDetails();
+        //email = user.get(Session.KEY_EMAIL);
+        //Bundle args = new Bundle();
+        //args.putString(IHC_USER_EMAIL_KEY, email);
         //new CompletedEventReceiver(this).execute(email);
-        getSupportLoaderManager().initLoader(IHC_GETCOMPLETEDEVENTS_ID, args, this);
+        getSupportLoaderManager().initLoader(IHC_GETCOMPLETEDEVENTS_ID,null, this);
     }
 
     public void onPause() {
@@ -310,18 +312,7 @@ public class PassportActivity extends AppCompatActivity
 
     @Override
     public Loader<String> onCreateLoader(int id, Bundle args) {
-        if (args != null) {
-            email = args.getString(IHC_USER_EMAIL_KEY);
-        }
-        if (id == IHC_GETCOMPLETEDEVENTS_ID) {
-            return new PassportLoader(this, email);
-        }
-        /*else if (id == IHC_GETUSERINFO_ID) {
-            return new UserInfoLoader(this, email);
-        }*/
-        else {
-            return null;
-        }
+        return new PassportLoader(this, String.valueOf(userid));
     }
 
     @Override

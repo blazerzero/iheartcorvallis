@@ -6,14 +6,12 @@
 
   <?php
   require './admin_server/db.php';
-  $stmt = $mysqli->prepare("SELECT * FROM ihc_events");
+  $stmt = $mysqli->prepare("SELECT DISTINCT host FROM ihc_events");
   $stmt->execute();
   $result = $stmt->get_result();
   $ihc_orgs = array();
   while ($org = $result->fetch_assoc()) {
-    if (!in_array($org['host'], $ihc_orgs)) {
-      $ihc_orgs[] = $org['host'];
-    }
+    $ihc_orgs[] = $org['host'];
   }
   ?>
 

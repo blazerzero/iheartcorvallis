@@ -9,58 +9,39 @@ require "./admin_server/login.php"; ?>
   <?php
   require './admin_server/db.php';
   $allTuples = $studentTuples = array();
-  $sumAllRating = $sumStudentRating = 0;
+  $sumAllRatings = $sumStudentRatings = 0;
   $avgAllRating = $avgStudentRating = 0;
   $numAllZeroes = $numStudentZeroes = 0;
 
-  $stmt = $mysqli->prepare("SELECT * FROM ihc_feedback");
+  $stmt = $mysqli->prepare("SELECT U.*, F.dateandtime, F.rating, F.comment FROM ihc_users U, ihc_feedback F WHERE F.userid=U.id");
   $stmt->execute();
-  $fbResult = $stmt->get_result();
-  if ($fbResult->num_rows > 0) {
-    while ($fbRow = $fbResult->fetch_assoc()) {
-      $userid = $fbRow['userid'];
-      $dateandtime = $fbRow['dateandtime'];
-      $rating = $fbRow['rating'];
-      $sumAllRating += $rating;
-      if ($rating == 0) $numAllZeroes++;
-      $comment = $fbRow['comment'];
+  $res = $stmt->get_result();
+  while ($row = $res->fetch_assoc()) {
+    if ($row['type'] == 0) $row['type'] = "Domestic Student";
+    else if ($row['type'] == 1) $row['type'] = "International Student";
+    else if ($row['type'] == 2) $row['type'] = "Faculty";
+    else if ($row['type'] == 3) $row['type'] = "Resident";
+    else if ($row['type'] == 4) $row['type'] = "Visitor";
+    if ($row['grade'] == 0) $row['grade'] = "N/A";
+    else if ($row['grade'] == 1) $row['grade'] = "Freshman";
+    else if ($row['grade'] == 2) $row['grade'] = "Sophomore";
+    else if ($row['grade'] == 3) $row['grade'] = "Junior";
+    else if ($row['grade'] == 4) $row['grade'] = "Senior";
+    else if ($row['grade'] == 5) $row['grade'] = "Graduate Student";
+    else if ($row['grade'] == 6) $row['grade'] = "Doctoral Student";
+    else if ($row['grade'] == 7) $row['grade'] = "Faculty";
 
-      $stmt = $mysqli->prepare("SELECT * FROM ihc_users WHERE id=?");
-      $stmt->bind_param('i', $userid);
-      $stmt->execute();
-      $userRes = $stmt->get_result();
-      if ($userRes->num_rows > 0) {
-        $userRow = $userRes->fetch_assoc();
-        $name = $userRow['firstname'] . " " . $userRow['lastname'];
-        $type = "";
-        $grade = "";
-        if ($userRow['type'] == 0) $type = "Domestic Student";
-        else if ($userRow['type'] == 1) $type = "International Student";
-        else if ($userRow['type'] == 2) $type = "Faculty";
-        else if ($userRow['type'] == 3) $type = "Resident";
-        else if ($userRow['type'] == 4) $type = "Visitor";
-        if ($userRow['grade'] == 0) $grade = "N/A";
-        else if ($userRow['grade'] == 1) $grade = "Freshman";
-        else if ($userRow['grade'] == 2) $grade = "Sophomore";
-        else if ($userRow['grade'] == 3) $grade = "Junior";
-        else if ($userRow['grade'] == 4) $grade = "Senior";
-        else if ($userRow['grade'] == 5) $grade = "Graduate Student";
-        else if ($userRow['grade'] == 6) $grade = "Doctoral Student";
-        else if ($userRow['grade'] == 7) $grade = "Faculty";
-
-        $allTuples[] = array("userid" => $userid, "dateandtime" => $dateandtime, "name" => $name, "type" => $type, "rating" => $rating, "comment" => $comment);
-        if ($userRow['type'] < 2) {
-          $sumStudentRating += $rating;
-          if ($rating == 0) $numStudentZeroes++;
-          $studentid = $userRow['studentid'];
-          $onid = $userRow['onid'];
-          $studentTuples[] = array("userid" => $userid, "dateandtime" => $dateandtime, "name" => $name, "studentid" => $studentid, "onid" => $onid, "type" => $type, "grade" => $grade, "rating" => $rating, "comment" => $comment);
-        }
-      }
+    $allTuples[] = $row;
+    $sumAllRatings += $row['rating'];
+    if ($row['rating'] == 0) $numAllZeroes++;
+    if ($row['type'] == "Domestic Student" || $row['type'] == "International Student" || $row['type'] == "Faculty") {
+      $studentTuples[] = $row;
+      $sumStudentRatings += $row['rating'];
+      if ($row['rating'] == 0) $numStudentZeroes++;
     }
 
-    $avgAllRating = $sumAllRating / (count($allTuples) - $numAllZeroes);
-    $avgStudentRating = $sumStudentRating / (count($studentTuples) - $numStudentZeroes);
+    $avgAllRating = $sumAllRatings/ (count($allTuples) - $numAllZeroes);
+    $avgStudentRating = $sumStudentRatings/ (count($studentTuples) - $numStudentZeroes);
     $allRatingCounts = array_count_values(array_column($allTuples, 'rating'));
     $studentRatingCounts = array_count_values(array_column($studentTuples, 'rating'));
     $allRatings = array_column($allTuples, 'rating');
@@ -69,6 +50,7 @@ require "./admin_server/login.php"; ?>
       if (!array_key_exists("$i", $studentRatingCounts)) $studentRatingCounts["$i"] = 0;
     }
   }
+
   ?>
 
   <html>
@@ -184,7 +166,7 @@ require "./admin_server/login.php"; ?>
               <tbody>
                 <?php foreach ($allTuples as $tuple) { ?>
                   <tr>
-                    <td><?php echo $tuple['name']; ?></td>
+                    <td><?php echo $tuple['firstname'] . " " . $tuple['lastname']; ?></td>
                     <td><?php echo $tuple['dateandtime']; ?></td>
                     <td><?php echo $tuple['type']; ?></td>
                     <td><?php if ($tuple['rating'] != 0) echo $tuple['rating']; ?></td>
@@ -215,7 +197,7 @@ require "./admin_server/login.php"; ?>
               <tbody>
                 <?php foreach ($studentTuples as $tuple) { ?>
                   <tr>
-                    <td><?php echo $tuple['name']; ?></td>
+                    <td><?php echo $tuple['firstname'] . " " . $tuple['lastname']; ?></td>
                     <td><?php echo $tuple['studentid']; ?></td>
                     <td><?php echo $tuple['onid']; ?></td>
                     <td><?php echo $tuple['dateandtime']; ?></td>

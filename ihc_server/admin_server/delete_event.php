@@ -9,14 +9,14 @@
    $dir = "../images/events/".$eventpicture;
 
    if (!is_writable($dir)) {
-	   echo '$dir is not writeable';
+	   echo $dir . ' is not writeable';
    }
 
    if(!unlink($dir)) {
-	   echo 'Error deleting $eventpicture';
+	   echo 'Error deleting ' . $eventpicture;
    }
    else {
-	   echo ('Deleted $eventpicture');
+	   echo ('Deleted ' . $eventpicture);
    }
 
    $stmt = $mysqli->prepare("DELETE FROM ihc_events WHERE eventid=?");

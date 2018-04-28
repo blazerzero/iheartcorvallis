@@ -27,44 +27,36 @@
     }
   }
 
-  $stmt = $mysqli->prepare("SELECT * FROM ihc_survey_responses WHERE questionid=?");
+  $stmt = $mysqli->prepare("SELECT U.*, R.dateandtime, R.response FROM ihc_users U, ihc_survey_responses R WHERE R.userid=U.id AND questionid=?");
   $stmt->bind_param('i', $id);
   $stmt->execute();
-  $surveyres = $stmt->get_result();
-  if ($surveyres->num_rows > 0) {
-    while ($surveyrow = $surveyres->fetch_assoc()) {
-      $userid = $surveyrow['userid'];
-      $dateandtime = $surveyrow['dateandtime'];
-      $response = $surveyrow['response'];
-      $stmt = $mysqli->prepare("SELECT * FROM ihc_users WHERE id=?");
-      $stmt->bind_param('i', $userid);
-      $stmt->execute();
-      $userres = $stmt->get_result();
-      if ($userres->num_rows > 0) {
-        $userrow = $userres->fetch_assoc();
-        $name = $userrow['firstname'] . " " . $userrow['lastname'];
-        $type = "";
-        $grade = "";
-        if ($userrow['type'] == 0) $type = "Domestic Student";
-        else if ($userrow['type'] == 1) $type = "International Student";
-        else if ($userrow['type'] == 2) $type = "Faculty";
-        else if ($userrow['type'] == 3) $type = "Resident";
-        else if ($userrow['type'] == 4) $type = "Visitor";
-        if ($userrow['grade'] == 0) $grade = "N/A";
-        else if ($userrow['grade'] == 1) $grade = "Freshman";
-        else if ($userrow['grade'] == 2) $grade = "Sophomore";
-        else if ($userrow['grade'] == 3) $grade = "Junior";
-        else if ($userrow['grade'] == 4) $grade = "Senior";
-        else if ($userrow['grade'] == 5) $grade = "Graduate Student";
-        else if ($userrow['grade'] == 6) $grade = "Doctoral Student";
-        else if ($userrow['grade'] == 7) $grade = "Faculty";
+  $res = $stmt->get_result();
+  if ($res->num_rows > 0) {
+    while ($row = $res->fetch_assoc()) {
+      $dateandtime = $row['dateandtime'];
+      $response = $row['response'];
+      $name = $row['firstname'] . " " . $row['lastname'];
+      $type = "";
+      $grade = "";
+      if ($row['type'] == 0) $type = "Domestic Student";
+      else if ($row['type'] == 1) $type = "International Student";
+      else if ($row['type'] == 2) $type = "Faculty";
+      else if ($row['type'] == 3) $type = "Resident";
+      else if ($row['type'] == 4) $type = "Visitor";
+      if ($row['grade'] == 0) $grade = "N/A";
+      else if ($row['grade'] == 1) $grade = "Freshman";
+      else if ($row['grade'] == 2) $grade = "Sophomore";
+      else if ($row['grade'] == 3) $grade = "Junior";
+      else if ($row['grade'] == 4) $grade = "Senior";
+      else if ($row['grade'] == 5) $grade = "Graduate Student";
+      else if ($row['grade'] == 6) $grade = "Doctoral Student";
+      else if ($row['grade'] == 7) $grade = "Faculty";
 
-        $allTuples[] = array("userid" => $userid, "dateandtime" => $dateandtime, "name" => $name, "type" => $type, "response" => $response);
-        if ($userrow['type'] < 2) {
-          $studentid = $userrow['studentid'];
-          $onid = $userrow['onid'];
-          $studentTuples[] = array("userid" => $userid, "dateandtime" => $dateandtime, "name" => $name, "studentid" => $studentid, "onid" => $onid, "grade" => $grade, "type" => $type, "response" => $response);
-        }
+      $allTuples[] = array("userid" => $userid, "dateandtime" => $dateandtime, "name" => $name, "type" => $type, "response" => $response);
+      if ($row['type'] < 2) {
+        $studentid = $row['studentid'];
+        $onid = $row['onid'];
+        $studentTuples[] = array("userid" => $userid, "dateandtime" => $dateandtime, "name" => $name, "studentid" => $studentid, "onid" => $onid, "grade" => $grade, "type" => $type, "response" => $response);
       }
     }
   }
