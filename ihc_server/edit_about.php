@@ -32,11 +32,20 @@
 
     function validateForm() {
       var infoField = document.forms["aboutForm"]["info"].value;
-      if (infoField == null || infoField == "")  {
-        alert("Please fill both fields before submitting!");
+      var changeImageField = document.forms["aboutForm"]["changeimage"].value;
+      var imageField = document.forms["aboutForm"]["image"].value;
+      if (infoField == null || infoField == "" ||
+          changeImageField == null || changeImageField == "")  {
+        alert("Please fill all required fields before submitting!");
         return false;
       }
       else {
+        if (changeImageField == 1) {
+          if (imageField == null || imageField == "") {
+            alert("Please choose a new cover image!");
+            return false;
+          }
+        }
         return true;
       }
     }
@@ -55,13 +64,26 @@
       <div class="ui divider"></div><br>
 
       <br><p class="requirednote">* Denotes a required field</p><br>
-      <form name="aboutForm" onsubmit="return validateForm()" action="./admin_server/update_about_server.php" method="post">
+      <form name="aboutForm" onsubmit="return validateForm()" action="./admin_server/update_about_server.php" method="post" enctype="multipart/form-data">
         <div class="elem" style="display: none">
           About ID: <input class="inputbox" type="text" name="id" value="<?php echo $about['id']; ?>" readonly><br><br>
         </div>
         <div class="elem">
           <span class="requirednote">*</span>
           Description: <textarea class="inputbox" rows="4" cols="50" name="info"><?php echo $about['info']; ?></textarea><br><br>
+        </div>
+        <div class="elem">
+          <span class="requirednote">*</span>
+          Do you want to change the cover image? <select class="ui search dropdown" name="changeimage">
+            <option value="">Select Yes or No</option>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+          </select>
+          <br><br>
+        </div>
+        <div class="elem">
+           <span class="requirednote">*</span>
+           Cover Image: <input class="ui button" type="file" name="image"><br><br>
         </div>
         <input class="ui green button" type="submit" value="Update About Page Contents">
       </form>
