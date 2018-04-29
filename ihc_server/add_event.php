@@ -51,6 +51,7 @@
             return false;
       }
       else {
+        alert(imageField);
         return true;
       }
     }

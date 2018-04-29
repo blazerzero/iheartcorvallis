@@ -10,14 +10,18 @@ if (!is_writable($dir)) {
  echo $dir . ' is not writeable';
 }
 
-if(!unlink($dir)) {
- echo 'Error deleting ' .  $picture;
+$stmt = $mysqli->prepare("SELECT id FROM ihc_resource_info WHERE image=?");
+$stmt->bind_param('s', $picture);
+$stmt->execute();
+$res = $stmt->get_result();
+if ($res->num_rows == 1) {
+  if(!unlink($dir)) {
+    echo 'Error deleting ' . $picture;
+  }
+  else {
+    echo ('Deleted ' . $picture);
+  }
 }
-else {
- echo 'Deleted ' . $picture;
-}
-
-echo 'About to delete resource';
 
 $stmt = $mysqli->prepare("DELETE FROM ihc_resource_info WHERE id=?");
 $stmt->bind_param('i', $id);

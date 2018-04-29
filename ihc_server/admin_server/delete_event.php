@@ -12,12 +12,18 @@
 	   echo $dir . ' is not writeable';
    }
 
-   if(!unlink($dir)) {
-	   echo 'Error deleting ' . $eventpicture;
-   }
-   else {
-	   echo ('Deleted ' . $eventpicture);
-   }
+	 $stmt = $mysqli->prepare("SELECT eventid FROM ihc_events WHERE image=?");
+	 $stmt->bind_param('s', $eventpicture);
+	 $stmt->execute();
+	 $res = $stmt->get_result();
+	 if ($res->num_rows == 1) {
+	   if(!unlink($dir)) {
+		   echo 'Error deleting ' . $eventpicture;
+	   }
+	   else {
+		   echo ('Deleted ' . $eventpicture);
+	   }
+	 }
 
    $stmt = $mysqli->prepare("DELETE FROM ihc_events WHERE eventid=?");
 	 $stmt->bind_param('i', $eventid);
