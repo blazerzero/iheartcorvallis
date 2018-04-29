@@ -29,6 +29,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -52,13 +54,13 @@ public class AboutUsActivity extends AppCompatActivity
     private final static String TAG = AboutUsActivity.class.getSimpleName();
     Session session;
     private ImageView mProfilePictureIV;
+    private ImageView mAboutImageIV;
     private TextView mAboutAppTV;
     private final static int IHC_GETABOUT_ID = 0;
     private User user;
     DrawerLayout mDrawerLayout;
     ActionBarDrawerToggle mDrawerToggle;
     private SQLiteDatabase mDB;
-    private Bitmap profilePictureBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +143,7 @@ public class AboutUsActivity extends AppCompatActivity
             }
         });
 
+        mAboutImageIV = (ImageView) findViewById(R.id.iv_about_image);
         mAboutAppTV = (TextView) findViewById(R.id.tv_about_app);
 
         getSupportLoaderManager().initLoader(IHC_GETABOUT_ID, null, this);
@@ -271,8 +274,19 @@ public class AboutUsActivity extends AppCompatActivity
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
         Log.d(TAG, "received data: " + data);
-        if (data != null) {
-            mAboutAppTV.setText(data);
+        try {
+            JSONObject aboutJSON = new JSONObject(data);
+            String aboutInfo = aboutJSON.getString("info");
+            String aboutImageName = aboutJSON.getString("image");
+            String aboutImagePath = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/images/about/" + aboutImageName;
+            mAboutAppTV.setText(aboutInfo);
+            Picasso.with(this)
+                    .load(aboutImagePath)
+                    .into(mAboutImageIV);
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -51,6 +51,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.StringTokenizer;
+import java.util.TimeZone;
 
 import edu.oregonstate.studentlife.ihcv2.adapters.EventCardAdapter;
 import edu.oregonstate.studentlife.ihcv2.adapters.EventListAdapter;
@@ -451,7 +452,12 @@ public class EventsActivity extends AppCompatActivity
                 String eventImagePath = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/images/events/" + eventImageName;
 
                 Date currentDate = new Date();
-                if (eventEndDate.after(currentDate)) {
+
+                Calendar visibleDateLimit = Calendar.getInstance(TimeZone.getTimeZone("America/LosAngeles"));
+                visibleDateLimit.setTime(eventEndDate);
+                visibleDateLimit.add(Calendar.HOUR_OF_DAY, 2);
+
+                if (currentDate.before(visibleDateLimit.getTime())) {
 
                     Event retrievedEvent = new Event(eventid, eventName, eventLocation, eventAddress,
                             eventStartDate, eventEndDate, eventStartTime, eventEndTime,

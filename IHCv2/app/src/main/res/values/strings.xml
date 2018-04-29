@@ -72,7 +72,7 @@
     <string name="acc_stamp">Passport Stamp</string>
     <string name="event_image_description">Event Image</string>
     <string name="mu_sunset_description">View of Sunset Above the MU</string>
-    <string name="ihc_group_description">The development group for the I Heart Corvallis app</string>
+    <string name="ihc_about_image_description">The development group for the I Heart Corvallis app</string>
 
     <!-- Navigation bar titles -->
     <string name="nav_dashboard">Dashboard</string>

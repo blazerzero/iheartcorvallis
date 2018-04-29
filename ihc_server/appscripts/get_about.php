@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $result = $mysqli->query("SELECT * FROM ihc_about");
   if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    $data = $row["info"];
+    $data = json_encode($row);
     echo $data;
   }
 }

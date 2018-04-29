@@ -49,6 +49,7 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -503,7 +504,11 @@ public class DashboardActivity extends AppCompatActivity
 
                     String eventImagePath = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/images/events/" + eventImageName;
 
-                    if (eventEndDate.after(currentDate) && !completedEventIDs.contains(eventid)) {  // if the event can still be attended and has not already been attended
+                    Calendar visibleDateLimit = Calendar.getInstance(TimeZone.getTimeZone("America/LosAngeles"));
+                    visibleDateLimit.setTime(eventEndDate);
+                    visibleDateLimit.add(Calendar.HOUR_OF_DAY, 2);
+
+                    if (currentDate.before(visibleDateLimit.getTime()) && !completedEventIDs.contains(eventid)) {  // if the event can still be attended and has not already been attended
 
                         Event retrievedEvent = new Event(eventid, eventName, eventLocation, eventAddress,
                                 eventStartDate, eventEndDate, eventStartTime, eventEndTime,
