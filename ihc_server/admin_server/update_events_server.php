@@ -14,12 +14,12 @@ if ($mysqli->connect_error) {
   echo "Connection failed!<br>";
 }
 
-$eventid = $host = $name = $location = $fullAddress = $startdate = $starttime = $startdt = $enddate = $endtime = $enddt = $description = $changeimage = $image = $link1 = $link2 = $link3 = "";
+$eventid = $name = $host = $location = $fullAddress = $startdate = $starttime = $startdt = $enddate = $endtime = $enddt = $description = $changeimage = $image = $link1 = $link2 = $link3 = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $eventid = $_POST["eventid"];
-  $host = $_POST["host"];
   $name = $_POST["name"];
+  $host = $_POST["host"];
   $location = $_POST["location"];
   $fullAddress = $_POST["fulladdress"];
   $startdate = $_POST["startdate"];
@@ -33,13 +33,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $link2 = $_POST["link2"];
   $link3 = $_POST["link3"];
 
-  $startdt = $startdate . " " . $starttime . ":00";
-  $enddt = $enddate . " " . $endtime . ":00";
-  if (strlen($startdt) < 19) {
-    $startdt = $startdt . ":00";
+  if ($setdateandtime == 0) {
+    $startdt = "1900-01-01 00:00:00";
+    $enddt = "2099-12-31 23:59:59";
   }
-  if (strlen($enddt) < 19) {
-    $enddt = $enddt . ":00";
+  else {
+    $startdt = $startdate . " " . $starttime . ":00";
+    $enddt = $enddate . " " . $endtime . ":00";
+    if (strlen($startdt) < 19) {
+      $startdt = $startdt . ":00";
+    }
+    if (strlen($enddt) < 19) {
+      $enddt = $enddt . ":00";
+    }
   }
 
   //$file_name = "";

@@ -76,7 +76,8 @@ public class EventCardAdapter extends RecyclerView.Adapter<EventCardAdapter.Even
         }
 
         void bind(Event event) {
-            int monthInt = Integer.parseInt(event.getStartMonth()) - 1;
+            int startMonthInt = Integer.parseInt(event.getStartMonth()) - 1;
+            int endMonthInt = Integer.parseInt(event.getEndMonth()) - 1;
             /*if (event.getImagePath() != null) {
                 mEventImageIV.setImageBitmap(BitmapFactory.decodeStream(event.getImagePath()));
             }*/
@@ -94,9 +95,21 @@ public class EventCardAdapter extends RecyclerView.Adapter<EventCardAdapter.Even
             }
 
             mEventNameTV.setText(event.getName());
-            mEventDateTimeTV.setText(monthLongNames[monthInt] + " " + event.getStartDay() + ", "
-                    + event.getStartYear() + ", " + event.getStartTime() + " - " + event.getEndTime());
             mEventLocationTV.setText(event.getLocation());
+            Log.d(TAG, "start dt: " + event.getStartDT());
+            Log.d(TAG, "end dt: " + event.getEndDT());
+            String eventDateTimeText;
+            if (event.getStartDay().equals("01") && event.getStartMonth().equals("01") && event.getStartYear().equals("1900") && event.getStartTime().equals("00:00:00")
+                    && event.getEndDay().equals("12") && event.getEndMonth().equals("31") && event.getEndYear().equals("2099") && event.getEndTime().equals("23:59:59")) {
+                eventDateTimeText = "*This event can be completed anytime!*";
+            }
+            else {
+                eventDateTimeText = "BEGINS: " + monthLongNames[startMonthInt] + " " + event.getStartDay() + ", "
+                        + event.getStartYear() + ", " + event.getStartTime() + "\nENDS: "
+                        + monthLongNames[endMonthInt] + " " + event.getEndDay() + ", "
+                        + event.getEndYear() + ", " + event.getEndTime();
+            }
+            mEventDateTimeTV.setText(eventDateTimeText);
         }
 
     }

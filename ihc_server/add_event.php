@@ -29,6 +29,7 @@
       var hostField = document.forms["eventForm"]["host"].value;
       var locationField = document.forms["eventForm"]["location"].value;
       var fullAddressField = document.forms["eventForm"]["fulladdress"].value;
+      var setDateAndTimeField = document.forms["eventForm"]["setdateandtime"].value;
       var startDateField = document.forms["eventForm"]["startdate"].value;
       var startTimeField = document.forms["eventForm"]["starttime"].value;
       var endDateField = document.forms["eventForm"]["enddate"].value;
@@ -40,10 +41,7 @@
           hostField == null || hostField == "" ||
           locationField == null || locationField == "" ||
           fullAddressField == null || fullAddressField == "" ||
-          startDateField == null || startDateField == "" ||
-          startTimeField == null || startTimeField == "" ||
-          endDateField == null || endDateField == "" ||
-          endTimeField == null || endTimeField == "" ||
+          setDateAndTimeField == null || setDateAndTimeField == "" ||
           descriptionField == null || descriptionField == "" ||
           imageField == null || imageField == "" ||
           pinField == null || pinField == "") {
@@ -51,6 +49,15 @@
             return false;
       }
       else {
+        if (setDateAndTimeField == 1) {
+          if (startDateField == null || startDateField == "" ||
+          startTimeField == null || startTimeField == "" ||
+          endDateField == null || endDateField == "" ||
+          endTimeField == null || endTimeField == "") {
+            alert("Please enter start and end dates and times!");
+            return false;
+          }
+        }
         return true;
       }
     }
@@ -85,6 +92,15 @@
         <div class="elem">
           <span class="requirednote">*</span>
           Full Address: <textarea class="inputbox" rows="2" cols="50" name="fulladdress"></textarea><br><br>
+        </div>
+        <div class="elem">
+          <span class="requirednote">*</span>
+          Does this event have a specific date and time? <select class="ui search dropdown" name="setdateandtime">
+            <option value="">Select Yes or No</option>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+          </select>
+          <br><br>
         </div>
         <div class="elem">
           <span class="requirednote">*</span>

@@ -119,13 +119,27 @@ public class EventDetailActivity extends AppCompatActivity
             mEventNameTV.setText(event.getName());
             mEventLocationTV.setText(event.getLocation());
             mEventAddressTV.setText(event.getAddress());
-            int monthInt = Integer.parseInt(event.getStartMonth()) - 1;
-            mEventDateTimeTV.setText(monthLongNames[monthInt] + " " + event.getStartDay() + ", "
-                    + event.getStartYear() + ", " + event.getStartTime() + " - " + event.getEndTime());
+            int startMonthInt = Integer.parseInt(event.getStartMonth()) - 1;
+            int endMonthInt = Integer.parseInt(event.getEndMonth()) - 1;
+            String eventDateTimeText = "BEGINS: " + monthLongNames[startMonthInt] + " " + event.getStartDay() + ", "
+                    + event.getStartYear() + ", " + event.getStartTime() + "\nENDS: "
+                    + monthLongNames[endMonthInt] + " " + event.getEndDay() + ", "
+                    + event.getEndYear() + ", " + event.getEndTime();
+            mEventDateTimeTV.setText(eventDateTimeText);
             mEventDescriptionTV.setText(event.getDescription());
             mEventLink1TV.setText(event.getLink1());
             mEventLink2TV.setText(event.getLink2());
             mEventLink3TV.setText(event.getLink3());
+            Log.d(TAG, "link1: " + event.getLink1());
+            if (event.getLink1() == null || event.getLink1().equals("")) {
+                mEventLink1TV.setVisibility(View.GONE);
+            }
+            if (event.getLink2() == null || event.getLink1().equals("")) {
+                mEventLink1TV.setVisibility(View.GONE);
+            }
+            if (event.getLink2() == null || event.getLink1().equals("")) {
+                mEventLink1TV.setVisibility(View.GONE);
+            }
         }
 
         getSupportLoaderManager().initLoader(IHC_PASSPORT_LOADER_ID, null, this);

@@ -29,6 +29,7 @@ if ($result->num_rows > 0) {
         var hostField = document.forms["eventForm"]["host"].value;
         var locationField = document.forms["eventForm"]["location"].value;
         var fullAddressField = document.forms["eventForm"]["fulladdress"].value;
+        var setDateAndTimeField = document.forms["eventForm"]["setdateandtime"].value;
         var startDateField = document.forms["eventForm"]["startdate"].value;
         var startTimeField = document.forms["eventForm"]["starttime"].value;
         var endDateField = document.forms["eventForm"]["enddate"].value;
@@ -40,16 +41,22 @@ if ($result->num_rows > 0) {
             hostField == null || hostField == "" ||
             locationField == null || locationField == "" ||
             fullAddressField == null || fullAddressField == "" ||
-            startDateField == null || startDateField == "" ||
-            startTimeField == null || startTimeField == "" ||
-            endDateField == null || endDateField == "" ||
-            endTimeField == null || endTimeField == "" ||
+            setDateAndTimeField == null || setDateAndTimeField == "" ||
             descriptionField == null || descriptionField == "" ||
             changeImageField == null || changeImageField == "") {
               alert("Please fill all required fields before submitting!");
               return false;
         }
         else {
+          if (setDateAndTimeField == 1) {
+            if (startDateField == null || startDateField == "" ||
+            startTimeField == null || startTimeField == "" ||
+            endDateField == null || endDateField == "" ||
+            endTimeField == null || endTimeField == "") {
+              alert("Please enter start and end dates and times!");
+              return false;
+            }
+          }
           if (changeImageField == 1) {
             if (imageField == null || imageField == "") {
               alert("Please choose a new cover image!");
@@ -60,7 +67,7 @@ if ($result->num_rows > 0) {
         }
       }
 
-      function switchCBValue() {
+      /*function switchCBValue() {
         if (document.forms["eventForm"]["name"].value == "n") {
           document.forms["eventForm"]["name"].value = "y";
         }
@@ -68,7 +75,7 @@ if ($result->num_rows > 0) {
           document.forms["eventForm"]["name"].value = "n";
         }
         alert("Checkbox value: " + document.forms["eventForm"]["name"].value);
-      }
+      }*/
       </script>
       <script>
       $(document).ready(function() {
@@ -103,6 +110,15 @@ if ($result->num_rows > 0) {
             <div class="elem">
                <span class="requirednote">*</span>
                Full Address: <textarea class="inputbox" rows="2" cols="50" name="fulladdress"><?php echo $event['address']; ?></textarea><br><br>
+            </div>
+            <div class="elem">
+              <span class="requirednote">*</span>
+              Does this event have a specific date and time? <select class="ui search dropdown" name="setdateandtime">
+                <option value="">Select Yes or No</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+              <br><br>
             </div>
             <div class="elem">
                <span class="requirednote">*</span>

@@ -17,7 +17,7 @@ if ($mysqli->connect_error) {
   exit;
 }
 
-$name = $location = $startdate = $starttime = $startdt = $enddate = $endtime = $enddt = $description = $image = $link1 = $link2 = $link3 = $pin = $fullAddress = $addressData = $prepAddress = $latLng = $row = "";
+$name = $host = $location = $fullAddress = $setdateandtime = $startdate = $starttime = $startdt = $enddate = $endtime = $enddt = $description = $image = $link1 = $link2 = $link3 = $pin = $row = "";
 
 $events = array();
 
@@ -28,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $host = $_POST["host"];
   $location = $_POST["location"];
   $fullAddress = $_POST["fulladdress"];
+  $setdateandtime = $_POST["setdateandtime"];
   $startdate = $_POST["startdate"];
   $starttime = $_POST["starttime"];
   $enddate = $_POST["enddate"];
@@ -38,9 +39,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $link2 = $_POST["link2"];
   $link3 = $_POST["link3"];
   $pin = $_POST["pin"];
-
-  $startdt = $startdate . " " . $starttime . ":00";
-  $enddt = $enddate . " " . $endtime . ":00";
 
   /* GET EVENT COUNT */
   $result = $mysqli->query("SELECT eventid, totalEventCount FROM ihc_events");
@@ -83,6 +81,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //echo "Success";
   }else{
     print_r($errors);
+  }
+
+  if ($setdateandtime == 0) {
+    $startdt = "1900-01-01 00:00:00";
+    $enddt = "2099-12-31 23:59:59";
+  }
+  else {
+    $startdt = $startdate . " " . $starttime . ":00";
+    $enddt = $enddate . " " . $endtime . ":00";
+    if (strlen($startdt) < 19) {
+      $startdt = $startdt . ":00";
+    }
+    if (strlen($enddt) < 19) {
+      $enddt = $enddt . ":00";
+    }
   }
 
   /* ADD EVENT TO DATABASE */

@@ -1,6 +1,7 @@
 package edu.oregonstate.studentlife.ihcv2.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import edu.oregonstate.studentlife.ihcv2.R;
 import edu.oregonstate.studentlife.ihcv2.data.Event;
@@ -20,6 +22,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
    private ArrayList<Event> mEventList;
    private OnEventClickListener mOnEventClickListener;
+   private final static String TAG = EventListAdapter.class.getSimpleName();
 
    public EventListAdapter(OnEventClickListener onEventClickListener) {
        mEventList = new ArrayList<Event>();
@@ -83,12 +86,23 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
        }
 
        void bind(Event event) {
-           int monthInt = Integer.parseInt(event.getStartMonth()) - 1;
-           mEventMonthTV.setText(monthShortNames[monthInt]);
-           mEventDayTV.setText(event.getStartDay());
            mEventNameTV.setText(event.getName());
            mEventLocationTV.setText(event.getLocation());
-           mEventTimeTV.setText(event.getStartTime() + " - " + event.getEndTime());
+           Log.d(TAG, "start dt: " + event.getStartDay() + "-" + event.getStartMonth() + "-" + event.getStartYear() + " " + event.getStartTime());
+           Log.d(TAG, "end dt: " + event.getEndDay() + "-" + event.getEndMonth() + "-" + event.getEndYear() + " " + event.getEndTime());
+           if (event.getStartDay().equals("1") && event.getStartMonth().equals("01") && event.getStartYear().equals("1900") && event.getStartTime().equals("12:00 AM")
+                   && event.getEndDay().equals("31") && event.getEndMonth().equals("12") && event.getEndYear().equals("2099") && event.getEndTime().equals("11:59 PM")) {
+               mEventMonthTV.setText("ANY");
+               mEventDayTV.setText("TIME");
+               mEventTimeTV.setText("Anytime");
+           }
+           else {
+               int monthInt = Integer.parseInt(event.getStartMonth()) - 1;
+               mEventMonthTV.setText(monthShortNames[monthInt]);
+               mEventDayTV.setText(event.getStartDay());
+               String dtRange = event.getStartTime() + " - " + event.getEndTime();
+               mEventTimeTV.setText(dtRange);
+           }
        }
 
    }
