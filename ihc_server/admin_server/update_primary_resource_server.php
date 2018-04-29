@@ -38,7 +38,7 @@
       $message = "changeimage is " . $changeimage;
       echo "<script type='text/javascript'>alert('$message');</script>";
 
-      if ($changeimage == 2) {
+      if ($changeimage == 0) {
         $stmt = $mysqli->prepare("SELECT image FROM ihc_resource_info WHERE id=?");
         $stmt->bind_param('i', $id);
         $stmt->execute();
@@ -61,6 +61,33 @@
       }
 
       else if ($changeimage == 1) {
+        $stmt = $mysqli->prepare("SELECT image FROM ihc_resource_info WHERE id=?");
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $row = $res->fetch_assoc();
+
+        $picture = $row['image'];
+        $dir = "../images/resources/".$picture;
+
+        if (!is_writable($dir)) {
+     	   echo $dir . ' is not writeable';
+        }
+
+        $stmt = $mysqli->prepare("SELECT id FROM ihc_resource_info WHERE image=?");
+        $stmt->bind_param('s', $picture);
+        $stmt->execute();
+        $res = $stmt->get_result();
+
+        if ($res->num_rows == 1) {
+          if(!unlink($dir)) {
+            echo 'Error deleting ' . $picture;
+          }
+          else {
+            echo ('Deleted ' . $picture);
+          }
+        }
+
         $errors= array();
         $file_name = $_FILES['image']['name'];
         $file_size = $_FILES['image']['size'];

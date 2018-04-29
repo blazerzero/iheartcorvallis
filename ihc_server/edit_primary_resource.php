@@ -60,7 +60,7 @@
       <div class="ui divider"></div><br>
 
       <p class="requirednote">* Denotes a required field</p><br>
-      <form name="resourceForm" onsubmit="return validateForm()" action="./admin_server/update_primary_resource_server.php" method="post">
+      <form name="resourceForm" onsubmit="return validateForm()" action="./admin_server/update_primary_resource_server.php" method="post" enctype="multipart/form-data">
         <div class="elem" style="display: none;">
           Resource ID: <input class="inputbox" type="text" name="id" value="<?php echo $resource['id']; ?>"><br><br>
         </div>
@@ -77,7 +77,7 @@
           Do you want to change the cover image? <select class="ui search dropdown" name="changeimage">
             <option value="">Select Yes or No</option>
             <option value="1">Yes</option>
-            <option value="2">No</option>
+            <option value="0">No</option>
           </select>
           <br><br>
         </div>

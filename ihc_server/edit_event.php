@@ -56,7 +56,6 @@ if ($result->num_rows > 0) {
               return false;
             }
           }
-          alert(imageField);
           return true;
         }
       }
@@ -85,7 +84,7 @@ if ($result->num_rows > 0) {
          <div class="ui divider"></div><br>
 
          <p class="requirednote">* Denotes a required field</p><br>
-         <form name="eventForm" onsubmit="return validateForm()" action="./admin_server/update_events_server.php" method="post">
+         <form name="eventForm" onsubmit="return validateForm()" action="./admin_server/update_events_server.php" method="post" enctype="multipart/form-data">
             <div class="elem" style="display: none">
                Event ID: <input class="inputbox" type="text" name="eventid" value="<?php echo $event['eventid']; ?>" readonly><br><br>
             </div>
@@ -130,7 +129,7 @@ if ($result->num_rows > 0) {
               Do you want to change the cover image? <select class="ui search dropdown" name="changeimage">
                 <option value="">Select Yes or No</option>
                 <option value="1">Yes</option>
-                <option value="2">No</option>
+                <option value="0">No</option>
               </select>
               <br><br>
             </div>
