@@ -1,5 +1,6 @@
 package edu.oregonstate.studentlife.ihcv2.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -7,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -19,10 +22,12 @@ import edu.oregonstate.studentlife.ihcv2.data.Resource;
 
 public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.ResourceViewHolder> {
 
+    private Context context;
     private ArrayList<Resource> mResourceList;
     private OnResourceClickListener mOnResourceClickListener;
 
-    public ResourceAdapter(OnResourceClickListener onResourceClickListener) {
+    public ResourceAdapter(Context context, OnResourceClickListener onResourceClickListener) {
+        this.context = context;
         mOnResourceClickListener = onResourceClickListener;
         mResourceList = new ArrayList<Resource>();
     }
@@ -68,6 +73,9 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
             if (TextUtils.isEmpty(resource.getResourceLink())) {
                 mResourceLinkTV.setVisibility(View.GONE);
             }
+            Picasso.with(context)
+                    .load(resource.getResourceImagePath())
+                    .into(mResourceImageIV);
         }
     }
 

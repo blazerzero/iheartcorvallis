@@ -166,7 +166,7 @@ public class ResourcesActivity extends AppCompatActivity
         mResourceRV.setLayoutManager(new LinearLayoutManager(this));
         mResourceRV.setHasFixedSize(true);
 
-        mResourceAdapter = new ResourceAdapter(this);
+        mResourceAdapter = new ResourceAdapter(this, this);
         mResourceRV.setAdapter(mResourceAdapter);
 
         TextView resourceMapBtn = (TextView)findViewById(R.id.mapbtn2);
@@ -331,8 +331,12 @@ public class ResourcesActivity extends AppCompatActivity
                 String resourceTitle = resourceJSON.getString("title");
                 String resourceDescription = resourceJSON.getString("description");
                 String resourceLink = resourceJSON.getString("link");
+                String resourceImageName = resourceJSON.getString("image");
 
-                Resource retrievedResource = new Resource(resourceID, resourceTitle, resourceDescription, resourceLink);
+                String resourceImagePath = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/images/resources/" + resourceImageName;
+
+
+                Resource retrievedResource = new Resource(resourceID, resourceTitle, resourceDescription, resourceLink, resourceImagePath);
                 resourceList.add(retrievedResource);
             }
             for (Resource resource : resourceList) {
