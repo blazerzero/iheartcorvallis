@@ -35,8 +35,11 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.StringTokenizer;
+import java.util.TimeZone;
 
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.Event;
@@ -159,8 +162,17 @@ public class EventDetailActivity extends AppCompatActivity
                 // go to check user geolocation and ask for event verification PIN
                 // go to geolocation first, but goes straight to PIN for now
                 Log.d(TAG, "check in button pressed");
+
                 if (!completedEventIDs.contains(event.getEventid())) {
-                    verifyLocation();
+                    Calendar currentDate = Calendar.getInstance(TimeZone.getTimeZone("America/LosAngeles"), Locale.US);
+                    Log.d(TAG, "current date: " + currentDate.getTime());
+                    Log.d(TAG, "event start dt: " + event.getStartDT());
+                    if (currentDate.getTime().before(event.getStartDT())) {
+                        Toast.makeText(EventDetailActivity.this, "This event hasn't started yet. Try again when the event has started.", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        verifyLocation();
+                    }
                 }
                 else {
                     Toast.makeText(EventDetailActivity.this, "You have already checked into this event!", Toast.LENGTH_LONG).show();

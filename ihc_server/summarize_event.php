@@ -48,8 +48,8 @@
       $allRatings[] = $row['rating'];
 
       $usertype = (int)$user['type'];
-      $typeString = $gradeString = "";
-      if ($usertype == 0) $typeString = "Domestic Student";
+      //$typeString = $gradeString = "";
+      /*if ($usertype == 0) $typeString = "Domestic Student";
       else if ($usertype == 1) $typeString = "International Student";
       else if ($usertype == 2) $typeString = "Faculty";
       else if ($usertype == 3) $typeString = "Resident";
@@ -61,7 +61,11 @@
       else if ($grade == 4) $gradeString = "Senior";
       else if ($grade == 5) $gradeString = "Graduate Student";
       else if ($grade == 6) $gradeString = "Doctoral Student";
-      else if ($grade == 7) $gradeString = "Faculty";
+      else if ($grade == 7) $gradeString = "Faculty";*/
+      $types = array('Domestic Student', 'International Student', 'Faculty', 'Resident', 'Visitor');
+      $grades = array('N/A', 'Freshman', 'Sophomore', 'Junior', 'Senior', 'Graduate Student', 'Doctoral Student', 'Faculty');
+      $typeString = $types[$usertype];
+      $gradeString = $grades[$grade];
 
       if (strlen($row['comment']) > 0 || (int)$row['rating'] != 0) {
         //$comments[] = $row['comment'];
@@ -327,7 +331,7 @@
                   <?php foreach($comments as $tuple) { ?>
                     <tr>
                       <td><?php echo $tuple['name']; ?></td>
-                      <td><?php echo $tuple['dateandtime']; ?></td>
+                      <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
                       <td><?php echo $tuple['type']; ?></td>
                       <td><?php if ($tuple['rating'] != 0) echo $tuple['rating']; ?></td>
                       <td><?php echo $tuple['comment']; ?></td>
@@ -362,7 +366,7 @@
                       <td><?php echo $tuple['name']; ?></td>
                       <td><?php echo $tuple['studentid']; ?></td>
                       <td><?php echo $tuple['onid']; ?></td>
-                      <td><?php echo $tuple['dateandtime']; ?></td>
+                      <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
                       <td><?php echo $tuple['type']; ?></td>
                       <td><?php echo $tuple['grade']; ?></td>
                       <td><?php if ($tuple['rating'] != 0) echo $tuple['rating']; ?></td>

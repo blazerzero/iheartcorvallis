@@ -20,18 +20,21 @@
   $result = $stmt->get_result();
   while ($row = $result->fetch_assoc()) {
     $comment = $row['comment'];
-    $token = strtok($comment, " ");
+    $token = strtok($comment, ",. ");
     while ($token !== false) {
-      if (!array_key_exists($token, $wordCounts)) {
-        $wordCounts[$token] = 1;
+      if (strlen($token) > 1) {
+        if (!array_key_exists($token, $wordCounts)) {
+          $wordCounts[$token] = 1;
+        }
+        else {
+          $wordCounts[$token]++;
+        }
       }
-      else {
-        $wordCounts[$token]++;
-      }
-      $token = strtok(" ");
+      $token = strtok(",. ");
     }
   }
   $words = array_keys($wordCounts);
+  arsort($words);
   ?>
 
   <html>
@@ -97,7 +100,25 @@
                   "text":"<?php echo $words[count($words)-1]; ?>",
                   "count":"<?php echo $wordCounts[$words[count($words)-1]]; ?>"
                 }
-              ]
+              ]/*,
+              "series":[
+                {
+                  "values":[
+                    <?php for ($i = 0; $i < count($words) - 1; $i++) { ?>
+                      "<?php echo $wordCounts[$words[$i]]; ?>",
+                    <?php } ?>
+                    <?php echo $wordsCounts[$words[count($words)-1]]; ?>
+                  ],
+                  "data-band":[
+                    <?php for ($i = 0; $i < count($words) - 1; $i++) { ?>
+                      "<?php echo $words[$i]; ?>",
+                    <?php } ?>
+                    <?php echo $words[count($words)-1]; ?>
+                  ],
+                  "url":"./analyze_word_occurrences.php?word=%data-band",
+                  "target":"_blank"
+                }
+              ]*/
             }
           }
         ]
@@ -107,6 +128,15 @@
         data: myConfig,
         height: '100%',
         width: '100%'
+      });
+      zingchart.bind('comment_word_cloud', 'node_click', function(p) {
+        alert("node index: " + p.nodeindex);
+        switch (p.nodeIndex) {
+          default: {
+            var link = './analyze_word.occurrences.php?word=this';
+            window.open(link, '_blank');
+          }
+        }
       });
     });
     </script>
@@ -146,10 +176,36 @@
       <div>
         <h2>App Comments: Word Cloud</h2>
         <p class="test"></p>
-        <div id="comment_word_cloud" style="height: 100%; width: 100%; min-height: 150px;">
-          <a class="zc-ref" href="https://www.zingchart.com">Powered by ZingChart
-          </a>
-        </div>
+        <table>
+          <tr>
+            <td>
+              <div id="comment_word_cloud" style="width: 50vw; height: 30vw;">
+                <a class="zc-ref" href="https://www.zingchart.com">Powered by ZingChart
+                </a>
+              </div>
+            </td>
+            <td>
+              <table class="ui celled padded table" style="width: 100%; height: 30vw; display: block; overflow-y:auto; overflow-x:hidden">
+                <thead>
+                  <tr>
+                    <th class="single line">Word</th>
+                    <th>Number of Occurrences</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php for ($i = 0; $i < count($words); $i++) { ?>
+                    <tr>
+                      <td><?php echo $words[$i]; ?></td>
+                      <td><?php echo $wordCounts[$words[$i]]; ?></td>
+                      <td><a href="./analyze_word_occurrences.php?word=<?php echo $words[$i]; ?>&count=<?php echo $wordCounts[$words[$i]]; ?>" class="ui green button">Analyze Occurences</a></td>
+                    </tr>
+                  <?php } ?>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </table>
       </div>
 
       <div class="ui divider"></div><br>

@@ -36,7 +36,7 @@
       $dateandtime = $row['dateandtime'];
       $response = $row['response'];
       $name = $row['firstname'] . " " . $row['lastname'];
-      $type = "";
+      /*$type = "";
       $grade = "";
       if ($row['type'] == 0) $type = "Domestic Student";
       else if ($row['type'] == 1) $type = "International Student";
@@ -50,7 +50,11 @@
       else if ($row['grade'] == 4) $grade = "Senior";
       else if ($row['grade'] == 5) $grade = "Graduate Student";
       else if ($row['grade'] == 6) $grade = "Doctoral Student";
-      else if ($row['grade'] == 7) $grade = "Faculty";
+      else if ($row['grade'] == 7) $grade = "Faculty";*/
+      $types = array('Domestic Student', 'International Student', 'Faculty', 'Resident', 'Visitor');
+      $grades = array('N/A', 'Freshman', 'Sophomore', 'Junior', 'Senior', 'Graduate Student', 'Doctoral Student', 'Faculty');
+      $type = $types[$row['type']];
+      $grade = $grades[$row['grade']]; 
 
       $allTuples[] = array("userid" => $userid, "dateandtime" => $dateandtime, "name" => $name, "type" => $type, "response" => $response);
       if ($row['type'] < 2) {
@@ -114,7 +118,7 @@
             <?php foreach ($allTuples as $tuple) { ?>
               <tr>
                 <td><?php echo $tuple['name']; ?></td>
-                <td><?php echo $tuple['dateandtime']; ?></td>
+                <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
                 <td><?php echo $tuple['type']; ?></td>
                 <td><?php echo $tuple['response']; ?></td>
               </tr>
@@ -145,7 +149,7 @@
                 <td><?php echo $tuple['name']; ?></td>
                 <td><?php echo $tuple['studentid']; ?></td>
                 <td><?php echo $tuple['onid']; ?></td>
-                <td><?php echo $tuple['dateandtime']; ?></td>
+                <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
                 <td><?php echo $tuple['type']; ?></td>
                 <td><?php echo $tuple['grade']; ?></td>
                 <td><?php echo $tuple['response']; ?></td>

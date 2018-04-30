@@ -42,6 +42,7 @@
             <th>Host</th>
             <th>Location</th>
             <th>Date and Time</th>
+            <th>Event PIN</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -63,6 +64,7 @@
                 }
                 ?>
               </td>
+              <td><?php echo $event['pin']; ?></td>
               <td>
                 <a href="summarize_event.php?eventid=<?php echo $event['eventid'] ?>" class="ui green button">View Summary</a>
                 <a href="edit_event.php?eventid=<?php echo $event['eventid'] ?>" class="ui blue button">Edit</a>

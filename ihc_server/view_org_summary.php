@@ -20,7 +20,7 @@
   $attendees = $studentAttendees = array();
   $allRatings = $studentRatings = array();
   $stmt = $mysqli->prepare("SELECT CE.*, U.type FROM ihc_completed_events CE, ihc_events E, ihc_users U WHERE CE.eventid=E.eventid AND CE.userid=U.id AND E.host=?");
-  $stmt->bind_param('i', $host);
+  $stmt->bind_param('s', $host);
   $stmt->execute();
   $completedres = $stmt->get_result();
   if ($completedres->num_rows > 0) {

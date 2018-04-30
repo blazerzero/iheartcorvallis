@@ -167,7 +167,7 @@ require "./admin_server/login.php"; ?>
                 <?php foreach ($allTuples as $tuple) { ?>
                   <tr>
                     <td><?php echo $tuple['firstname'] . " " . $tuple['lastname']; ?></td>
-                    <td><?php echo $tuple['dateandtime']; ?></td>
+                    <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
                     <td><?php echo $tuple['type']; ?></td>
                     <td><?php if ($tuple['rating'] != 0) echo $tuple['rating']; ?></td>
                     <td><?php echo $tuple['comment']; ?></td>
@@ -200,7 +200,7 @@ require "./admin_server/login.php"; ?>
                     <td><?php echo $tuple['firstname'] . " " . $tuple['lastname']; ?></td>
                     <td><?php echo $tuple['studentid']; ?></td>
                     <td><?php echo $tuple['onid']; ?></td>
-                    <td><?php echo $tuple['dateandtime']; ?></td>
+                    <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
                     <td><?php echo $tuple['type']; ?></td>
                     <td><?php echo $tuple['grade']; ?></td>
                     <td><?php if ($tuple['rating'] != 0) echo $tuple['rating']; ?></td>
