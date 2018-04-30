@@ -95,9 +95,9 @@ public class EventCardAdapter extends RecyclerView.Adapter<EventCardAdapter.Even
             Log.d(TAG, "start dt: " + event.getStartDT());
             Log.d(TAG, "end dt: " + event.getEndDT());
             String eventDateTimeText;
-            if (event.getStartDay().equals("01") && event.getStartMonth().equals("01") && event.getStartYear().equals("1900") && event.getStartTime().equals("00:00:00")
-                    && event.getEndDay().equals("12") && event.getEndMonth().equals("31") && event.getEndYear().equals("2099") && event.getEndTime().equals("23:59:59")) {
-                eventDateTimeText = "*This event can be completed anytime!*";
+            if (event.getStartDay().equals("1") && event.getStartMonth().equals("1") && event.getStartYear().equals("1900") && event.getStartTime().equals("12:00 AM")
+                    && event.getEndDay().equals("31") && event.getEndMonth().equals("12") && event.getEndYear().equals("2099") && event.getEndTime().equals("11:59 PM")) {
+                eventDateTimeText = "This event can be completed anytime!";
             }
             else {
                 eventDateTimeText = "BEGINS: " + monthLongNames[startMonthInt] + " " + event.getStartDay() + ", "

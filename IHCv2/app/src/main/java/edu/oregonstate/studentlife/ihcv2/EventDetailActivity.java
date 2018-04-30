@@ -123,10 +123,17 @@ public class EventDetailActivity extends AppCompatActivity
             mEventAddressTV.setText(event.getAddress());
             int startMonthInt = Integer.parseInt(event.getStartMonth()) - 1;
             int endMonthInt = Integer.parseInt(event.getEndMonth()) - 1;
-            String eventDateTimeText = "BEGINS: " + monthLongNames[startMonthInt] + " " + event.getStartDay() + ", "
-                    + event.getStartYear() + ", " + event.getStartTime() + "\nENDS: "
-                    + monthLongNames[endMonthInt] + " " + event.getEndDay() + ", "
-                    + event.getEndYear() + ", " + event.getEndTime();
+            String eventDateTimeText;
+            if (event.getStartDay().equals("1") && event.getStartMonth().equals("01") && event.getStartYear().equals("1900") && event.getStartTime().equals("12:00 AM")
+                    && event.getEndDay().equals("31") && event.getEndMonth().equals("12") && event.getEndYear().equals("2099") && event.getEndTime().equals("11:59 PM")) {
+                eventDateTimeText = "This event can be completed anytime!";
+            }
+            else {
+                eventDateTimeText = "BEGINS: " + monthLongNames[startMonthInt] + " " + event.getStartDay() + ", "
+                        + event.getStartYear() + ", " + event.getStartTime() + "\nENDS: "
+                        + monthLongNames[endMonthInt] + " " + event.getEndDay() + ", "
+                        + event.getEndYear() + ", " + event.getEndTime();
+            }
             mEventDateTimeTV.setText(eventDateTimeText);
             mEventDescriptionTV.setText(event.getDescription());
             mEventLink1TV.setText(event.getLink1());

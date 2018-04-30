@@ -1,6 +1,7 @@
 package edu.oregonstate.studentlife.ihcv2.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import edu.oregonstate.studentlife.ihcv2.R;
 public class PassportAdapter extends RecyclerView.Adapter<PassportAdapter.PassportViewHolder> {
 
     private ArrayList<Event> mCompletedEvents;
+    private final static String TAG = PassportAdapter.class.getSimpleName();
+    private String[] monthShortNames = {"Jan.", "Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."};
 
     public PassportAdapter() {
         mCompletedEvents = new ArrayList<Event>();
@@ -51,12 +54,19 @@ public class PassportAdapter extends RecyclerView.Adapter<PassportAdapter.Passpo
 
         void bind(Event event) {
             mEventNameTV.setText(event.getName());
-            if (event.getStartMonth().length() <= 3) {
-                mEventInfoTV.setText(event.getStartMonth() + " " + event.getStartDay() + ", " + event.getStartYear() + ", " + event.getLocation());
+            Log.d(TAG, "start dt: " + event.getStartDay() + "-" + event.getStartMonth() + "-" + event.getStartYear() + " " + event.getStartTime());
+            Log.d(TAG, "end dt: " + event.getEndDay() + "-" + event.getEndMonth() + "-" + event.getEndYear() + " " + event.getEndTime());
+            String eventDateAndTimeText;
+            if (event.getStartDay().equals("1") && event.getStartMonth().equals("1") && event.getStartYear().equals("1900") && event.getStartTime().equals("12:00 AM")
+                    && event.getEndDay().equals("31") && event.getEndMonth().equals("12") && event.getEndYear().equals("2099") && event.getEndTime().equals("11:59 PM")) {
+                eventDateAndTimeText = "Anytime, " + event.getLocation();
             }
             else {
-                mEventInfoTV.setText(event.getStartMonth().substring(0, 3) + ". " + event.getStartDay() + ", " + event.getStartYear() + ", " + event.getLocation());
+                int startMonthInt = Integer.parseInt(event.getStartMonth()) - 1;
+                String startMonthString = monthShortNames[startMonthInt];
+                eventDateAndTimeText = startMonthString + " " + event.getStartDay() + ", " + event.getStartYear() + ", " + event.getLocation();
             }
+            mEventInfoTV.setText(eventDateAndTimeText);
         }
 
     }

@@ -75,7 +75,6 @@ public class PassportActivity extends AppCompatActivity
     private TextView progIndicatorTV;
     private RecyclerView mPassportRecyclerView;
     private PassportAdapter mPassportAdapter;
-    private String[] monthShortNames = {"Jan.", "Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."};
 
     private ArrayList<Event> completedEventList;
     private String email;
@@ -368,8 +367,8 @@ public class PassportActivity extends AppCompatActivity
                         eventStartMonth = eventStartMonth.substring(1);
                     }
 
-                    int monthInt = Integer.parseInt(eventStartMonth);
-                    eventStartMonth = monthShortNames[monthInt - 1];
+                    /*int monthInt = Integer.parseInt(eventStartMonth);
+                    eventStartMonth = monthShortNames[monthInt - 1];*/
 
                     _24HourEventTime = _24HourFormat.parse(eventEndTime);
                     eventEndTime = _12HourFormat.format(_24HourEventTime);
@@ -385,8 +384,8 @@ public class PassportActivity extends AppCompatActivity
                         eventEndMonth = eventEndMonth.substring(1);
                     }
 
-                    monthInt = Integer.parseInt(eventEndMonth);
-                    eventEndMonth = monthShortNames[monthInt - 1];
+                    /*monthInt = Integer.parseInt(eventEndMonth);
+                    eventEndMonth = monthShortNames[monthInt - 1];*/
 
                     String eventImagePath = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/images/events/" + eventImageName;
 

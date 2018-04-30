@@ -448,6 +448,10 @@ public class EventsActivity extends AppCompatActivity
                     eventStartDay = eventStartDay.substring(1);
                 }
 
+                if (eventStartMonth.charAt(0) == '0') {
+                    eventStartMonth = eventStartMonth.substring(1);
+                }
+
                 _24HourEventTime = _24HourFormat.parse(eventEndTime);
                 eventEndTime = _12HourFormat.format(_24HourEventTime);
                 if (eventEndTime.charAt(0) == '0') {
@@ -456,6 +460,10 @@ public class EventsActivity extends AppCompatActivity
                 eventEndDay = eventEndDay.substring(1);
                 if (eventEndDay.charAt(0) == '0') {
                     eventEndDay = eventEndDay.substring(1);
+                }
+
+                if (eventEndMonth.charAt(0) == '0') {
+                    eventEndMonth = eventEndMonth.substring(1);
                 }
 
                 String eventImagePath = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/images/events/" + eventImageName;

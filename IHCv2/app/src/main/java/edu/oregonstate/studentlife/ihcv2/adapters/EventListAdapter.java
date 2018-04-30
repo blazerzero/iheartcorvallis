@@ -90,7 +90,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
            mEventLocationTV.setText(event.getLocation());
            Log.d(TAG, "start dt: " + event.getStartDay() + "-" + event.getStartMonth() + "-" + event.getStartYear() + " " + event.getStartTime());
            Log.d(TAG, "end dt: " + event.getEndDay() + "-" + event.getEndMonth() + "-" + event.getEndYear() + " " + event.getEndTime());
-           if (event.getStartDay().equals("1") && event.getStartMonth().equals("01") && event.getStartYear().equals("1900") && event.getStartTime().equals("12:00 AM")
+           if (event.getStartDay().equals("1") && event.getStartMonth().equals("1") && event.getStartYear().equals("1900") && event.getStartTime().equals("12:00 AM")
                    && event.getEndDay().equals("31") && event.getEndMonth().equals("12") && event.getEndYear().equals("2099") && event.getEndTime().equals("11:59 PM")) {
                mEventMonthTV.setText("ANY");
                mEventDayTV.setText("TIME");

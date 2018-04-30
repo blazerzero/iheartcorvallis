@@ -36,6 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.IHCDBContract;
@@ -303,6 +304,7 @@ public class SettingsActivity extends AppCompatActivity
                 if (!filePath.contains("file://")) {
                     filePath = "file://" + filePath;
                 }
+                Log.d(TAG, "updated file path: " + filePath);
                 Picasso.with(this)
                         .load(filePath)
                         .into(mProfilePictureIV);
@@ -383,7 +385,7 @@ public class SettingsActivity extends AppCompatActivity
     /* INITIALIZE IMAGE FILE */
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(

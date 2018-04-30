@@ -87,8 +87,6 @@ public class DashboardActivity extends AppCompatActivity
     private TextView mDashStampCountTV;
     private TextView mDashProgressTV;
 
-    private String[] monthShortNames = {"Jan.", "Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."};
-
     private RecyclerView mEventListRV;
     private ArrayList<Event> eventList;
     private EventListAdapter mEventListAdapter;
@@ -383,8 +381,8 @@ public class DashboardActivity extends AppCompatActivity
                         eventStartMonth = eventStartMonth.substring(1);
                     }
 
-                    int monthInt = Integer.parseInt(eventStartMonth);
-                    eventStartMonth = monthShortNames[monthInt - 1];
+                    /*int monthInt = Integer.parseInt(eventStartMonth);
+                    eventStartMonth = monthShortNames[monthInt - 1];*/
 
                     _24HourEventTime = _24HourFormat.parse(eventEndTime);
                     eventEndTime = _12HourFormat.format(_24HourEventTime);
@@ -400,8 +398,8 @@ public class DashboardActivity extends AppCompatActivity
                         eventEndMonth = eventEndMonth.substring(1);
                     }
 
-                    monthInt = Integer.parseInt(eventEndMonth);
-                    eventEndMonth = monthShortNames[monthInt - 1];
+                    /*monthInt = Integer.parseInt(eventEndMonth);
+                    eventEndMonth = monthShortNames[monthInt - 1];*/
 
                     String eventImagePath = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/images/events/" + eventImageName;
 
@@ -483,6 +481,10 @@ public class DashboardActivity extends AppCompatActivity
                         eventStartDay = eventStartDay.substring(1);
                     }
 
+                    if (eventStartMonth.charAt(0) == '0') {
+                        eventStartMonth = eventStartMonth.substring(1);
+                    }
+
                     _24HourEventTime = _24HourFormat.parse(eventEndTime);
                     eventEndTime = _12HourFormat.format(_24HourEventTime);
                     if (eventEndTime.charAt(0) == '0') {
@@ -491,6 +493,10 @@ public class DashboardActivity extends AppCompatActivity
                     eventEndDay = eventEndDay.substring(1);
                     if (eventEndDay.charAt(0) == '0') {
                         eventEndDay = eventEndDay.substring(1);
+                    }
+
+                    if (eventEndMonth.charAt(0) == '0') {
+                        eventEndMonth = eventEndMonth.substring(1);
                     }
 
                     Date currentDate = new Date();
