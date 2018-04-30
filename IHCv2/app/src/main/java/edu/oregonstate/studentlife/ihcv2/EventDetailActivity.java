@@ -209,9 +209,18 @@ public class EventDetailActivity extends AppCompatActivity
                 onBackPressed();
                 return true;
             case R.id.action_map:
-                Intent mapIntent = new Intent(EventDetailActivity.this, MapsActivity.class);
-                mapIntent.putExtra(Constants.EXTRA_EVENT_DETAILED, event);
-                startActivity(mapIntent);
+                LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+                try {
+                    if (lm != null && (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) && !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER))) {
+                        Toast.makeText(this, "Location services are not enabled! Please go to settings to enable location services!", Toast.LENGTH_LONG).show();
+                    } else if (lm != null) {
+                        Intent mapIntent = new Intent(this, MapsActivity.class);
+                        mapIntent.putExtra(Constants.EXTRA_EVENT_DETAILED, event);
+                        startActivity(mapIntent);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -353,7 +362,7 @@ public class EventDetailActivity extends AppCompatActivity
             if (lm != null && (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) && !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER))) {
                 Toast.makeText(EventDetailActivity.this, "Location services are not enabled! Please go to settings to enable location services!", Toast.LENGTH_LONG).show();
             }
-            else {
+            else if (lm != null) {
                 address = coder.getFromLocationName(event.getAddress(), 5);
                 if (address == null || address.size() == 0) {
                     Toast.makeText(getApplicationContext(), "Error reading event address.", Toast.LENGTH_LONG).show();

@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -32,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -280,9 +282,19 @@ public class EventsActivity extends AppCompatActivity
 
             case R.id.action_map:
                 if (isNetworkAvailable()) {
-                    Intent mapIntent = new Intent(this, MapsActivity.class);
-                    mapIntent.putExtra(Constants.EXTRA_EVENT, eventList);
-                    startActivity(mapIntent);
+                    LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+                    try {
+                        if (lm != null && (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) && !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER))) {
+                            Toast.makeText(EventsActivity.this, "Location services are not enabled! Please go to settings to enable location services!", Toast.LENGTH_LONG).show();
+                        }
+                        else if (lm != null) {
+                            Intent mapIntent = new Intent(this, MapsActivity.class);
+                            mapIntent.putExtra(Constants.EXTRA_EVENT, eventList);
+                            startActivity(mapIntent);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 else {
                     showNoInternetConnectionMsg();
