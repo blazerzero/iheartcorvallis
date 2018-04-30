@@ -297,10 +297,14 @@ public class SettingsActivity extends AppCompatActivity
             ));
         }
         if (fileUri != null) {
-            Log.d(TAG, "path of image: " + fileUri.toString());
-            if (fileUri.toString().contains(".jpg") || fileUri.toString().contains(".jpeg") || fileUri.toString().contains(".png")) {
+            String filePath = fileUri.toString();
+            Log.d(TAG, "path of image: " + filePath);
+            if (filePath.contains(".jpg") || filePath.contains(".jpeg") || filePath.contains(".png")) {
+                if (!filePath.contains("file://")) {
+                    filePath = "file://" + filePath;
+                }
                 Picasso.with(this)
-                        .load(fileUri.toString())
+                        .load(filePath)
                         .into(mProfilePictureIV);
             }
         }
@@ -321,6 +325,7 @@ public class SettingsActivity extends AppCompatActivity
                         String filePath = uri.toString();
                         if (addImageToDB(filePath) != -1) {
                             Toast.makeText(this, "Profile picture changed!", Toast.LENGTH_LONG).show();
+                            getProfilePicture();
                         }
                         else {
                             Toast.makeText(this, "There was an error saving your profile picture!", Toast.LENGTH_LONG).show();

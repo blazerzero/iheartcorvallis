@@ -515,7 +515,7 @@ public class EventsActivity extends AppCompatActivity
         builder.show();
     }
 
-    private void getProfilePicture() {
+    public void getProfilePicture() {
         Cursor cursor = mDB.query(
                 IHCDBContract.SavedImages.TABLE_NAME,
                 null,
@@ -533,10 +533,14 @@ public class EventsActivity extends AppCompatActivity
             ));
         }
         if (fileUri != null) {
-            Log.d(TAG, "path of image: " + fileUri.toString());
-            if (fileUri.toString().contains(".jpg") || fileUri.toString().contains(".jpeg") || fileUri.toString().contains(".png")) {
+            String filePath = fileUri.toString();
+            Log.d(TAG, "path of image: " + filePath);
+            if (filePath.contains(".jpg") || filePath.contains(".jpeg") || filePath.contains(".png")) {
+                if (!filePath.contains("file://")) {
+                    filePath = "file://" + filePath;
+                }
                 Picasso.with(this)
-                        .load(fileUri.toString())
+                        .load(filePath)
                         .into(mProfilePictureIV);
             }
         }

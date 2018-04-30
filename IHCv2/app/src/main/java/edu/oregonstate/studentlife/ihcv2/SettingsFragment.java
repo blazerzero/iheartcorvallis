@@ -21,6 +21,7 @@ import android.widget.PopupMenu;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Created by Omeed on 3/9/18.
@@ -233,7 +234,7 @@ public class SettingsFragment extends PreferenceFragment
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH, month);
         cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        SimpleDateFormat sdfBirthDate = new SimpleDateFormat("MM/dd/yy");
+        SimpleDateFormat sdfBirthDate = new SimpleDateFormat("MM/dd/yy", Locale.US);
         userBirthDatePref.setSummary(sdfBirthDate.format(cal.getTime()));
     }
 
