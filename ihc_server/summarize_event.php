@@ -253,7 +253,18 @@
       <div>
         <h2>Event Information</h2>
         <h4>Location: <?php echo $event['location']; ?></h4>
-        <h4>Date and Time: <?php echo $event['startdt'] . " - " . $event['enddt']; ?></h4>
+        <h4>Date and Time:
+          <?php
+          if ($event['startdt'] == '1900-01-01 00:00:00' && $event['enddt'] == '2099-12-31 23:59:59') {
+            echo 'Anytime';
+          }
+          else {
+            $startdt = date('M d, Y g:i A', strtotime($event['startdt']));
+            $enddt = date('M d, Y g:i A', strtotime($event['enddt']));
+            echo $startdt . " - " . $enddt;
+          }
+          ?>
+        </h4>
       </div><br>
       <div class="ui divider"></div><br>
 

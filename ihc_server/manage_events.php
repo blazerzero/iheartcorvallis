@@ -51,7 +51,18 @@
               <td><?php echo $event['name']; ?></td>
               <td><?php echo $event['host']; ?></td>
               <td><?php echo $event['location']; ?></td>
-              <td><?php echo $event['startdt'] . " - " . $event['enddt']; ?></td>
+              <td>
+                <?php
+                if ($event['startdt'] == '1900-01-01 00:00:00' && $event['enddt'] == '2099-12-31 23:59:59') {
+                  echo 'Anytime';
+                }
+                else {
+                  $startdt = date('M d, Y g:i A', strtotime($event['startdt']));
+                  $enddt = date('M d, Y g:i A', strtotime($event['enddt']));
+                  echo $startdt . " - " . $enddt;
+                }
+                ?>
+              </td>
               <td>
                 <a href="summarize_event.php?eventid=<?php echo $event['eventid'] ?>" class="ui green button">View Summary</a>
                 <a href="edit_event.php?eventid=<?php echo $event['eventid'] ?>" class="ui blue button">Edit</a>
