@@ -83,6 +83,12 @@
 
     <div class="mainbody">
       <left class="sectionheader"><h1>Analysis Center</h1></left><br>
+      <form action="./analyze.php">
+        <button class="ui red button">
+          <i class="arrow left icon"></i>
+          Back to Selection Prompt
+        </button>
+      </form>
       <div class="ui divider"></div><br>
       <div>
         <h2>Analyze Word Occurrences: "<?php echo $word; ?>"</h2>

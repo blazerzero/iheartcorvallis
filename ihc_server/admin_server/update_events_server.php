@@ -14,7 +14,7 @@ if ($mysqli->connect_error) {
   echo "Connection failed!<br>";
 }
 
-$eventid = $name = $host = $location = $fullAddress = $startdate = $starttime = $startdt = $enddate = $endtime = $enddt = $description = $changeimage = $image = $link1 = $link2 = $link3 = "";
+$eventid = $name = $host = $location = $fullAddress = $setdateandtime = $startdate = $starttime = $startdt = $enddate = $endtime = $enddt = $description = $changeimage = $image = $link1 = $link2 = $link3 = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $eventid = $_POST["eventid"];
@@ -22,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $host = $_POST["host"];
   $location = $_POST["location"];
   $fullAddress = $_POST["fulladdress"];
+  $setdateandtime = $_POST["setdateandtime"];
   $startdate = $_POST["startdate"];
   $starttime = $_POST["starttime"];
   $enddate = $_POST["enddate"];
