@@ -3,8 +3,6 @@ package edu.oregonstate.studentlife.ihcv2;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -119,7 +117,6 @@ public class AboutUsActivity extends AppCompatActivity
                         // Do nothing, you're already here
 
                     } else {
-                        //recycleBitmap();
                         if (id == R.id.bottom_nav_dash) {
                             Intent intent = new Intent(AboutUsActivity.this, DashboardActivity.class);
                             intent.putExtra(Constants.EXTRA_USER, user);
@@ -225,7 +222,6 @@ public class AboutUsActivity extends AppCompatActivity
             if (id == R.id.nav_aboutus) {
                 onBackPressed();
             } else {
-                //recycleBitmap();
                 if (id == R.id.nav_dash) {
                     Intent intent = new Intent(this, DashboardActivity.class);
                     intent.putExtra(Constants.EXTRA_USER, user);
@@ -323,8 +319,4 @@ public class AboutUsActivity extends AppCompatActivity
         cursor.close();
     }
 
-    /*public void recycleBitmap() {
-        profilePictureBitmap.recycle();
-        profilePictureBitmap = null;
-    }*/
 }

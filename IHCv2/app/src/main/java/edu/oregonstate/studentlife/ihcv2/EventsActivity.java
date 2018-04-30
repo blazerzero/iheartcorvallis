@@ -5,8 +5,6 @@ import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -85,7 +83,6 @@ public class EventsActivity extends AppCompatActivity
     private ArrayList<Event> eventList;
     private User user;
     private SQLiteDatabase mDB;
-    private Bitmap profilePictureBitmap;
 
     Session session;
 

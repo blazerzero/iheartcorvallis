@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -82,7 +80,6 @@ public class SettingsActivity extends AppCompatActivity
     private File file;
     private int ACTIVITYRESULT_ID;
     private static final int REQUEST_TAKE_PHOTO = 1;
-    private Bitmap profilePictureBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -322,7 +319,12 @@ public class SettingsActivity extends AppCompatActivity
                         Uri uri;
                         uri = Uri.fromFile(file);
                         String filePath = uri.toString();
-                        Log.d(TAG, "Row: " + addImageToDB(filePath));
+                        if (addImageToDB(filePath) != -1) {
+                            Toast.makeText(this, "Profile picture changed!", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Toast.makeText(this, "There was an error saving your profile picture!", Toast.LENGTH_LONG).show();
+                        }
                     }
 
                 }
@@ -332,7 +334,12 @@ public class SettingsActivity extends AppCompatActivity
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = data.getData();
                     String filePath = getPath(this, selectedImage);
-                    addImageToDB(filePath);
+                    if (addImageToDB(filePath) != -1) {
+                        Toast.makeText(this, "Profile picture changed!", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText(this, "There was an error saving your profile picture!", Toast.LENGTH_LONG).show();
+                    }
                 }
                 break;
         }

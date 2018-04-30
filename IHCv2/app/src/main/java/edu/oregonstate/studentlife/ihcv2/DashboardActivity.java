@@ -3,8 +3,6 @@ package edu.oregonstate.studentlife.ihcv2;
 import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -109,7 +107,6 @@ public class DashboardActivity extends AppCompatActivity
     private static final String TAG = DashboardActivity.class.getSimpleName();
     private User user = null;
     private File profilePicture;
-    //private Bitmap profilePictureBitmap;
 
     Session session;
 
@@ -287,15 +284,18 @@ public class DashboardActivity extends AppCompatActivity
                     Log.d(TAG, "grade: " + grade);
 
                     user = new User(firstname, lastname, email, id, numStamps, didsurvey, grade, birthDate, type);
+                    Log.d(TAG, "studentid: " + studentid);
+                    Log.d(TAG, "onid.length(): " + onid.length());
+                    Log.d(TAG, "type: " + type);
 
-                    if (studentid == -1 || onid.length() == 0 || birthDate.toString().equals("0000-00-00") || grade == 0 || type == -1) {
+                    if (studentid == -1 || onid.length() == 0 || birthDate.toString().equals("Sun Nov 30 00:00:00 PST 2") || grade == 0 || type == -1) {
                         Log.d(TAG, "about to get information from user");
                         Intent getUserInfoIntent = new Intent(this, GetUserInfoActivity.class);
                         getUserInfoIntent.putExtra(Constants.EXTRA_USER, user);
                         startActivity(getUserInfoIntent);
                     }
                     
-                    if (didsurvey == 0) {
+                    else if (didsurvey == 0) {
                         Intent surveyIntent = new Intent(this, SurveyActivity.class);
                         surveyIntent.putExtra(Constants.EXTRA_USER, user);
                         startActivity(surveyIntent);

@@ -9,8 +9,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -224,8 +222,9 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
         mSubmitUserInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mUserBirthDateTV.getText().toString().contains("Birthdate: ") || getProfilePicture() == null
-                        || (mIsUserOSUCB.isChecked() && (mUserStudentIDET.getText().toString().length() == 0 || mUserONIDET.getText().toString().length() == 0))) {
+                if (!mUserBirthDateTV.getText().toString().contains("Birthdate: ") ||
+                        (mIsUserOSUCB.isChecked() && (mUserStudentIDET.getText().toString().length() == 0
+                                || mUserONIDET.getText().toString().length() == 0))) {
                     Toast.makeText(GetUserInfoActivity.this, "Must fill all fields!", Toast.LENGTH_LONG).show();
                 }
                 else {
@@ -472,6 +471,7 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = data.getData();
                     String filePath = getPath(this, selectedImage);
+
                     if (addImageToDB(filePath) != -1) {
                         mUserProfilePicTV.setText(getResources().getString(R.string.profilepic_chosen_msg));
                     }
@@ -554,44 +554,16 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
         return mDB.insert(IHCDBContract.SavedImages.TABLE_NAME, null, row);
     }
 
-    private Bitmap getProfilePicture() {
-        Cursor cursor = mDB.query(
-                IHCDBContract.SavedImages.TABLE_NAME,
-                null,
-                null,
-                null,
-                null,
-                null,
-                IHCDBContract.SavedImages.COLUMN_TIMESTAMP + " DESC"
-        );
-
-        ArrayList<File> savedImagesList = new ArrayList<File>();
-        while (cursor.moveToNext()) {
-            File savedImage;
-            Uri fileUri = Uri.parse(cursor.getString(
-                    cursor.getColumnIndex(IHCDBContract.SavedImages.COLUMN_IMAGE)
-            ));
-            savedImage = new File(fileUri.getPath());
-            savedImagesList.add(savedImage);
-        }
-        cursor.close();
-        Log.d(TAG, "number of images: " + savedImagesList.size());
-        if (savedImagesList.size() == 0) {
-            return null;
-        }
-        else {
-            File profilePicture = savedImagesList.get(0);
-            Log.d(TAG, "path of image: " + profilePicture.getAbsolutePath());
-            Bitmap profilePictureBitmap = BitmapFactory.decodeFile(profilePicture.getAbsolutePath());
-            return profilePictureBitmap;
-        }
-    }
-
     public void initializeUserTypeSpinner() {
         ArrayAdapter<String> mUserTypeAdapter = new ArrayAdapter<String>(
                 this, android.R.layout.simple_spinner_item, typeChoices);
         mUserTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mUserTypeSP.setAdapter(mUserTypeAdapter);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Do nothing...
     }
 
 }

@@ -7,8 +7,6 @@ package edu.oregonstate.studentlife.ihcv2;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -79,8 +77,6 @@ public class PrizesActivity extends AppCompatActivity
 
     private User user;
     private SQLiteDatabase mDB;
-    private Bitmap profilePictureBitmap;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

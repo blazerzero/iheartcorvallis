@@ -5,8 +5,6 @@ import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -79,8 +77,6 @@ public class ResourcesActivity extends AppCompatActivity
     private SQLiteDatabase mDB;
 
     private final static int IHC_RESOURCE_LOADER_ID = 0;
-
-    private Bitmap profilePictureBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

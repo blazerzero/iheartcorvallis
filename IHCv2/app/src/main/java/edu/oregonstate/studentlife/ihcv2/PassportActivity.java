@@ -9,8 +9,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -88,7 +86,6 @@ public class PassportActivity extends AppCompatActivity
     private ActionBarDrawerToggle mDrawerToggle;
 
     private SQLiteDatabase mDB;
-    private Bitmap profilePictureBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

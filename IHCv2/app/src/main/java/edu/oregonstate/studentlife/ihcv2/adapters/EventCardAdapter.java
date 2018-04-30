@@ -78,10 +78,6 @@ public class EventCardAdapter extends RecyclerView.Adapter<EventCardAdapter.Even
         void bind(Event event) {
             int startMonthInt = Integer.parseInt(event.getStartMonth()) - 1;
             int endMonthInt = Integer.parseInt(event.getEndMonth()) - 1;
-            /*if (event.getImagePath() != null) {
-                mEventImageIV.setImageBitmap(BitmapFactory.decodeStream(event.getImagePath()));
-            }*/
-            //mEventImageIV.setImageBitmap(event.getImagePath());
             Log.d(TAG, "image path: " + event.getImagePath());
             try {
                 URL url = new URL(event.getImagePath());
