@@ -1,12 +1,14 @@
 package edu.oregonstate.studentlife.ihcv2;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -150,10 +152,6 @@ public class EventDetailActivity extends AppCompatActivity
                 // go to check user geolocation and ask for event verification PIN
                 // go to geolocation first, but goes straight to PIN for now
                 Log.d(TAG, "check in button pressed");
-                /*Intent enterEventPINIntent = new Intent(EventDetailActivity.this, CheckLocationActivity.class);
-                enterEventPINIntent.putExtra(Constants.EXTRA_EVENT_DETAILED, event);
-                enterEventPINIntent.putExtra(Constants.EXTRA_USER, user);
-                startActivity(enterEventPINIntent);*/
                 if (!completedEventIDs.contains(event.getEventid())) {
                     verifyLocation();
                 }
@@ -350,14 +348,20 @@ public class EventDetailActivity extends AppCompatActivity
     }
 
     private void verifyLocation() {
+        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         try {
-            address = coder.getFromLocationName(event.getAddress(), 5);
-            if (address == null || address.size() == 0) {
-                Toast.makeText(getApplicationContext(), "Error reading event address.", Toast.LENGTH_LONG).show();
-            } else {
-                eventLocation = address.get(0);
-                getLocationPermission();
+            if (lm != null && (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) && !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER))) {
+                Toast.makeText(EventDetailActivity.this, "Location services are not enabled! Please go to settings to enable location services!", Toast.LENGTH_LONG).show();
+            }
+            else {
+                address = coder.getFromLocationName(event.getAddress(), 5);
+                if (address == null || address.size() == 0) {
+                    Toast.makeText(getApplicationContext(), "Error reading event address.", Toast.LENGTH_LONG).show();
+                } else {
+                    eventLocation = address.get(0);
+                    getLocationPermission();
 
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
