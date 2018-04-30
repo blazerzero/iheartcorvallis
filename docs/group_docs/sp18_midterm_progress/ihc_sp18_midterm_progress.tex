@@ -1,0 +1,145 @@
+\documentclass[onecolumn, draftclsnofoot,10pt, compsoc]{IEEEtran}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{setspace}
+
+\usepackage{geometry}
+\geometry{textheight=9.5in, textwidth=7in}
+
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstdefinestyle{php}
+{
+   frame=tb,
+   language=PHP,
+   aboveskip=3mm,
+   belowskip=3mm,
+   showstringspaces=false,
+   columns=flexible,
+   basicstyle={\small\ttfamily},
+   numbers=none,
+   numberstyle=\tiny\color{gray},
+   keywordstyle=\color{blue},
+   commentstyle=\color{dkgreen},
+   stringstyle=\color{mauve},
+   breaklines=true,
+   breakatwhitespace=true,
+   tabsize=3
+}
+
+\lstdefinestyle{java}
+{
+   frame=tb,
+   language=C++,
+   aboveskip=3mm,
+   belowskip=3mm,
+   showstringspaces=false,
+   columns=flexible,
+   basicstyle={\small\ttfamily},
+   numbers=none,
+   numberstyle=\tiny\color{gray},
+   keywordstyle=\color{blue},
+   commentstyle=\color{dkgreen},
+   stringstyle=\color{mauve},
+   breaklines=true,
+   breakatwhitespace=true,
+   tabsize=3
+}
+
+% 1. Fill in these details
+\def \CapstoneTeamName{		The Cleverly Named Team}
+\def \CapstoneTeamNumber{		14}
+\def \GroupMemberOne{			Omeed Habibelahian}
+\def \GroupMemberTwo{			Bradley Imai}
+\def \GroupMemberThree{			Dylan Tomlinson}
+\def \CapstoneProjectName{		"I Heart Corvallis" Mobile Application}
+\def \CapstoneSponsorCompany{	Corvallis Community Relations Office}
+\def \CapstoneSponsorPerson{		Lyndi-Rae Petty}
+
+% 2. Uncomment the appropriate line below so that the document type works
+\def \DocType{		%Problem Statement
+				%Requirements Document
+				%Technology Review
+				%Design Document
+				Progress Report
+				}
+
+\newcommand{\NameSigPair}[1]{\par
+\makebox[2.75in][r]{#1} \hfil 	\makebox[3.25in]{\makebox[2.25in]{\hrulefill} \hfill		\makebox[.75in]{\hrulefill}}
+\par\vspace{-12pt} \textit{\tiny\noindent
+\makebox[2.75in]{} \hfil		\makebox[3.25in]{\makebox[2.25in][r]{Signature} \hfill	\makebox[.75in][r]{Date}}}}
+% 3. If the document is not to be signed, uncomment the RENEWcommand below
+\renewcommand{\NameSigPair}[1]{#1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\begin{titlepage}
+    \pagenumbering{gobble}
+    \begin{singlespace}
+    	\includegraphics[height=4cm]{coe_v_spot1}
+        \hfill
+        % 4. If you have a logo, use this includegraphics command to put it on the coversheet.
+        %\includegraphics[height=4cm]{CompanyLogo}
+        \par\vspace{.2in}
+        \centering
+        \scshape{
+            \huge CS Capstone \DocType \par
+            {\large\today}\par
+            \vspace{.5in}
+            \textbf{\Huge\CapstoneProjectName}\par
+            \vfill
+            {\large Prepared for}\par
+            \Huge \CapstoneSponsorCompany\par
+            \vspace{5pt}
+            {\Large\NameSigPair{\CapstoneSponsorPerson}\par}
+            {\large Prepared by }\par
+            Group\CapstoneTeamNumber\par
+            % 5. comment out the line below this one if you do not wish to name your team
+            %\CapstoneTeamName\par
+            \vspace{5pt}
+            {\Large
+                \NameSigPair{\GroupMemberOne}\par
+                \NameSigPair{\GroupMemberTwo}\par
+                \NameSigPair{\GroupMemberThree}\par
+            }
+            \vspace{20pt}
+        }
+        \begin{abstract}
+        % 6. Fill in your abstract
+        		This document takes a look back at the work have done on the I Heart Corvallis mobile application this past term. It recaps the purposes and goals of the project, explains our current status on the project, and details what we have left to complete. It also describes any problems that we have encountered, how they have impeded our progress, and how we have solved them. The document also showcases some notable pieces of code that we have recently implemented and some updated screenshots of our application and administrative website.
+        \end{abstract}
+    \end{singlespace}
+\end{titlepage}
+\newpage
+\pagenumbering{arabic}
+\tableofcontents
+% 7. uncomment this (if applicable). Consider adding a page break.
+%\listoffigures
+%\listoftables
+\clearpage
+
+% 8. now you write!
+\section{Project Overview}
+	The I Heart Corvallis project is a mobile application we are creating for the Corvallis Community Relations office (also known as the CCR office) and is part of a larger Initiative ran by the office to help students become more involved in the Corvallis community. The application focuses on increasing student awareness of events and service opportunities happening around Corvallis, as well as creating an incentive for students to attend these events. \\ \\
+	On top of listing events and service opportunities available to users, the application provides users with a passport that shows them which events they’ve completed. Users receive stamps upon completing events, and when a user accumulates a certain number of stamps, they can turn in their stamps for rewards. The application also presents users with community resources available to them, a map of notable community establishments and locations, and more information about the I Heart Corvallis initiative. \\ \\
+  On top of developing the mobile application, we are creating an administrative website for the CCR office so they can manage in-app content, such as events, prizes, and resources.
+
+\section{Current Status}
+  
+
+
+\section{Problems We've Encountered}
+
+
+\section{Solutions to Problems}
+
+
+\section{Conclusion}
+	At this point, a large portion of our application is complete. We have implemented nearly all of our in-app pages, we have successfully set up a database connection and consistent database communication with the app, and our administrative website is coming along nicely as well. Our next steps will be to determine if we will be able to implement the CAS ONID login, find a third-party service on which to host our database long-term, and to complete the remaining pieces of our application and administrative website. Our goal is to have a completed beta version of the app and website by the end of this term.
+
+\end{document}
