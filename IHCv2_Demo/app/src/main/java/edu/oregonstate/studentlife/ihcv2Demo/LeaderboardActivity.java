@@ -38,6 +38,7 @@ import edu.oregonstate.studentlife.ihcv2Demo.adapters.LeaderboardAdapter;
 import edu.oregonstate.studentlife.ihcv2Demo.data.Constants;
 import edu.oregonstate.studentlife.ihcv2Demo.data.IHCDBContract;
 import edu.oregonstate.studentlife.ihcv2Demo.data.IHCDBHelper;
+import edu.oregonstate.studentlife.ihcv2Demo.data.Prize;
 import edu.oregonstate.studentlife.ihcv2Demo.data.Session;
 import edu.oregonstate.studentlife.ihcv2Demo.data.User;
 
@@ -127,6 +128,31 @@ public class LeaderboardActivity extends AppCompatActivity
         });
 
         leaderboardUserList = new ArrayList<User.LeaderboardUser>();
+
+        try {
+            leaderboardUserList.add(
+                    new User.LeaderboardUser("Bradley", "Imai", "15")
+            );
+            leaderboardUserList.add(
+                    new User.LeaderboardUser("Omeed", "Habibelahian", "10")
+            );
+            leaderboardUserList.add(
+                    new User.LeaderboardUser("Dylan", "Tomlinson", "9")
+            );
+            leaderboardUserList.add(
+                    new User.LeaderboardUser("Steve", "Rose", "8")
+            );
+            leaderboardUserList.add(
+                    new User.LeaderboardUser("Jake", "Mills", "7")
+            );
+
+            for (User.LeaderboardUser leaderboardUser : leaderboardUserList) {
+                mLeaderboardAdapter.addUserToLeaderboard(leaderboardUser);
+            }
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
 
         mLeaderboardRV = (RecyclerView) findViewById(R.id.rv_leaderboard_list);
         mLeaderboardRV.setLayoutManager(new LinearLayoutManager(this));
