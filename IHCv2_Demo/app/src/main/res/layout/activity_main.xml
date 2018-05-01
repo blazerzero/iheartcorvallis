@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="edu.oregonstate.studentlife.ihcv2.MainActivity">
+
+    <ImageView
+        android:id="@+id/iv_aerial"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/mu_sunset"/>
+
+    <ImageView
+        android:id="@+id/iv_ihc"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/osu_icon_heart_02"
+        android:scaleType="fitXY"/>
+
+    <TextView
+        android:id="@+id/tv_main_title"
+        android:layout_below="@+id/iv_ihc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="20dp"
+        android:text="I HEART CORVALLIS"
+        android:textColor="@color/colorAccent"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/stratum2_medium"/>
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_below="@+id/tv_main_title"
+        android:layout_width="280dp"
+        android:layout_height="75dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="27dp"
+        android:background="@color/colorAccent"
+        android:drawablePadding="-20dp"
+        android:text="Log In"
+        android:textSize="20sp"
+        android:fontFamily="@font/stratum2_bold"/>
+
+    <Button
+        android:id="@+id/btn_signup"
+        android:layout_below="@+id/btn_login"
+        android:layout_width="280dp"
+        android:layout_height="75dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="27dp"
+        android:background="@color/colorAccent"
+        android:drawablePadding="-20dp"
+        android:text="Sign Up"
+        android:textSize="20sp"
+        android:fontFamily="@font/stratum2_bold"/>
+
+</RelativeLayout>

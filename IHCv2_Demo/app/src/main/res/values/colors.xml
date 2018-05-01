@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#D73F09</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#FFFFFF</color>
+    <color name="eventBronze">#D3832B</color>
+    <color name="eventSilver">#A7ACA2</color>
+    <color name="eventGold">#FFB500</color>
+    <color name="maroon">#8B0000</color>
+    <color name="white">#ffffff</color>
+    <color name="marker_blue">#0080ff</color>
+    <color name="marker_orange">#ff8000</color>
+    <color name="marker_green">#00ff00</color>
+    <color name="marker_purple">#8000ff</color>
+    <color name="marker_yellow">#ffff00</color>
+    <color name="marker_red">#ff0000</color>
+    <color name="dark_gray">#696969</color>
+    <color name="light_gray">#d0d0d0</color>
+    <color name="starcanvas">#003B5C</color>
+</resources>

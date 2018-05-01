@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="/Users/beerad/.gradle/caches/transforms-1/files-1.1/play-services-basement-11.8.0.aar/1cf1595ea3d0870ab5a170280bdcd83a/jars/classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="5ad3911825107d8dd4b017fdecebfd23c08048dd">
+        <dex dex="/Users/beerad/capstone 2017/iheartcorvallis/IHCv2/app/build/intermediates/transforms/preDex/release/12.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/beerad/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-26.1.0.aar/8572f4df00496fb7c1d2209fd162a675/jars/classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="b12cd9c87c3dfb012a911b6e38d2444ed0a65e1f">
+        <dex dex="/Users/beerad/capstone 2017/iheartcorvallis/IHCv2/app/build/intermediates/transforms/preDex/release/8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/beerad/capstone 2017/iheartcorvallis/IHCv2/app/libs/mysql-connector-java-5.1.45-bin.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="6223be933fbc8d81f819aacad0ce09346d5911c4">
+        <dex dex="/Users/beerad/capstone 2017/iheartcorvallis/IHCv2/app/build/intermediates/transforms/preDex/release/1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/beerad/.gradle/caches/transforms-1/files-1.1/play-services-base-11.8.0.aar/5f67fae8db38c005d6638dc558fe98b9/jars/classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="233d88c6f961d2a84758dfe27b7af61318190c7b">
+        <dex dex="/Users/beerad/capstone 2017/iheartcorvallis/IHCv2/app/build/intermediates/transforms/preDex/release/10.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/beerad/.gradle/caches/transforms-1/files-1.1/play-services-maps-11.8.0.aar/a1219477c8b3342fafaab9bc0c58cbcd/jars/classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="601ebd8fa027a3dad924ffa1cb14689ced5aa436">
+        <dex dex="/Users/beerad/capstone 2017/iheartcorvallis/IHCv2/app/build/intermediates/transforms/preDex/release/5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/beerad/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/f729f469d4f6ba721fbba153414e2dc3/jars/classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="a37fc31c5ceeaa4532a37358add1b189d8db4af1">
+        <dex dex="/Users/beerad/capstone 2017/iheartcorvallis/IHCv2/app/build/intermediates/transforms/preDex/release/2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/beerad/.gradle/caches/transforms-1/files-1.1/transition-26.1.0.aar/08489f9f6157025789c09f2b510f8fc1/jars/classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="58b12bdb21a84f22e0dc3b047aeceb0a546b1b44">
+        <dex dex="/Users/beerad/capstone 2017/iheartcorvallis/IHCv2/app/build/intermediates/transforms/preDex/release/9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/beerad/.gradle/caches/transforms-1/files-1.1/play-services-tasks-11.8.0.aar/c8ab5832039fc8cb71247fba078123b8/jars/classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="d2af2ef4d987d753f2e8ee2d1480ab964d5c7273">
+        <dex dex="/Users/beerad/capstone 2017/iheartcorvallis/IHCv2/app/build/intermediates/transforms/preDex/release/11.jar" />
+    </item>
+
+</items>

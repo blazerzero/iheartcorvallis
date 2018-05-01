@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="bronzeThreshold">7</integer>
+    <integer name="silverThreshold">10</integer>
+    <integer name="goldThreshold">15</integer>
+</resources>

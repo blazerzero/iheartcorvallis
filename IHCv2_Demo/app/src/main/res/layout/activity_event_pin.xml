@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="edu.oregonstate.studentlife.ihcv2.EventPINActivity">
+
+    <TextView
+        android:id="@+id/tv_pin_event_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="25dp"
+        android:paddingBottom="25dp"
+        android:gravity="center"
+        android:textSize="35sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
+        android:elevation="10dp"
+        android:textStyle="bold"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_pin_status"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                android:layout_gravity="center"/>
+
+            <EditText
+                android:id="@+id/et_event_pin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp"
+                android:layout_marginLeft="80dp"
+                android:layout_marginRight="80dp"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="50sp"
+                android:textColor="@color/colorPrimary"
+                android:background="@color/colorAccent"
+                android:textStyle="bold"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/eventSilver" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="25dp"
+                android:text="@string/event_feedback_msg"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="22sp"
+                android:fontFamily="@font/stratum2_bold"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/event_rating"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp"
+                android:fontFamily="@font/stratum2_medium"/>
+
+            <RatingBar
+                android:id="@+id/rb_event_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="25dp"
+                android:numStars="5"
+                android:stepSize="1.0"/>
+
+            <EditText
+                android:id="@+id/et_event_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="22dp"
+                android:hint="@string/event_comment_hint"/>
+
+            <Button
+                android:id="@+id/btn_submit_event_pin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Submit"
+                android:textSize="15sp"
+                android:fontFamily="@font/stratum2_medium"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

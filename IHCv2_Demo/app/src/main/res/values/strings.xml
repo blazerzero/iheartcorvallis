@@ -1,0 +1,171 @@
+<resources>
+    <string name="app_name">I Heart Corvallis</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_switch_view">Switch View</string>
+    <string name="action_switch_to_listview">Switch to List View</string>
+    <string name="action_switch_to_cardview">Switch to Card View</string>
+    <string-array name="drawer_pages">
+        <item>Dashboard</item>
+        <item>Events</item>
+        <item>Passport</item>
+        <item>Leaderboard</item>
+        <item>Resources</item>
+        <item>About Us</item>
+        <item>Settings</item>
+    </string-array>
+    <string name="title_activity_drawer">DrawerActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_dashboard">DashboardActivity</string>
+    <string name="title_activity_test">TESTActivity</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_resource_map">Map</string>
+    <string name="title_activity_res_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_password_confirm">Confirm Password</string>
+    <string name="prompt_firstname">First Name</string>
+    <string name="prompt_lastname">Last Name</string>
+    <string name="student_login_signup">ARE YOU AN OSU STUDENT? TAP HERE TO LOG IN WITH YOUR ONID ACCOUNT</string>
+    <string name="action_create_account">Create Account</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid!</string>
+    <string name="error_no_account_email">Account not found!</string>
+    <string name="error_short_password">Your password must be at least 8 characters long and include at least 1 uppercase letter, 1 lowercase letter, and 1 number.</string>
+    <string name="error_invalid_password">Your password must include at least 1 uppercase letter, 1 lowercase letter, and 1 number.</string>
+    <string name="error_incorrect_password">Incorrect email/password combination!</string>
+    <string name="error_field_required">This field is required!</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="title_activity_signup_page">Sign Up</string>
+    <string name="nonstudent_login_form">http://web.engr.oregonstate.edu/~habibelo/ihc_server/reslogin.php</string>
+
+    <string name="gm_legend_activities">Activities and Entertainment</string>
+    <string name="gm_legend_grocery">Grocery Stores</string>
+    <string name="gm_legend_restaurants">Restaurants</string>
+    <string name="gm_legend_shopping">Shopping</string>
+    <string name="gm_legend_cityoffices">City Offices</string>
+    <string name="gm_legend_osucampus">OSU Campus</string>
+
+    <string name="no_internet_connection_msg">I Heart Corvallis requires an internet connection. Make sure you have an internet connection and try again.</string>
+
+    <string name="event_learn_more">LEARN MORE</string>
+    <string name="event_check_in">CHECK IN</string>
+    <string name="action_map_single_event">View Event on Map</string>
+    <string name="action_map_main">View Events on Map</string>
+    <string name="event_enter_pin">Enter Event PIN</string>
+
+    <string name="gold_prizes_list">Gold Level</string>
+    <string name="silver_prizes_list">Silver Level</string>
+    <string name="bronze_prizes_list">Bronze Level</string>
+
+    <string name="resource_map_button_text">RESOURCE MAP</string>
+    <string name="legend_title">Legend</string>
+
+    <!-- Accessibility strings -->
+    <string name="acc_stamp">Passport Stamp</string>
+    <string name="event_image_description">Event Image</string>
+    <string name="mu_sunset_description">View of Sunset Above the MU</string>
+    <string name="ihc_about_image_description">The development group for the I Heart Corvallis app</string>
+
+    <!-- Navigation bar titles -->
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_events">Events</string>
+    <string name="nav_passport">Passport</string>
+    <string name="nav_prizes">Prizes</string>
+    <string name="nav_leaderboard">Leaderboard</string>
+    <string name="nav_resources">Resources</string>
+    <string name="nav_aboutus">About Us</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_logout">Logout</string>
+
+    <!-- Preference (settings) strings -->
+    <string name="pref_user_firstname_key" translatable="false">pref_user_firstname</string>
+    <string name="pref_user_firstname_title">First Name</string>
+    <string name="pref_user_lastname_key" translatable="false">pref_user_lastname</string>
+    <string name="pref_user_lastname_title">Last Name</string>
+    <string name="pref_user_email_key" translatable="false">pref_user_email</string>
+    <string name="pref_user_email_title">Email</string>
+    <string name="pref_user_grade_key" translatable="false">pref_user_grade</string>
+    <string name="pref_user_grade_title">Grade</string>
+    <string name="pref_user_grade_freshman">Freshman</string>
+    <string name="pref_user_grade_sophomore">Sophomore</string>
+    <string name="pref_user_grade_junior">Junior</string>
+    <string name="pref_user_grade_senior">Senior</string>
+    <string name="pref_user_grade_grad">Graduate Student</string>
+    <string name="pref_user_grade_doc">Doctoral Student</string>
+    <string name="pref_user_grade_faculty">Faculty</string>
+    <string name="pref_user_grade_freshman_value" translatable="false">1</string>
+    <string name="pref_user_grade_sophomore_value" translatable="false">2</string>
+    <string name="pref_user_grade_junior_value" translatable="false">3</string>
+    <string name="pref_user_grade_senior_value" translatable="false">4</string>
+    <string name="pref_user_grade_grad_value" translatable="false">5</string>
+    <string name="pref_user_grade_doc_value" translatable="false">6</string>
+    <string name="pref_user_grade_faculty_value" translatable="false">7</string>
+
+    <string name="pref_user_birthdate_key" translatable="false">pref_user_birthdate</string>
+    <string name="pref_user_birthdate_title">Birthdate</string>
+    <string name="pref_user_profile_picture_key" translatable="false">pref_user_profile_picture</string>
+    <string name="pref_user_profile_picture_title">Change Profile Picture</string>
+
+    <string name="pref_user_type_key" translatable="false">pref_user_type</string>
+    <string name="pref_user_type_title">User Type</string>
+    <string name="pref_user_type_dom_student">Domestic Student</string>
+    <string name="pref_user_type_intl_student">International Student</string>
+    <string name="pref_user_type_faculty">Faculty</string>
+    <string name="pref_user_type_resident">Resident</string>
+    <string name="pref_user_type_visitor">Visitor</string>
+    <string name="pref_user_type_dom_student_value">0</string>
+    <string name="pref_user_type_intl_student_value">1</string>
+    <string name="pref_user_type_faculty_value">2</string>
+    <string name="pref_user_type_resident_value">3</string>
+    <string name="pref_user_type_visitor_value">4</string>
+
+    <!-- CheckLocationActivity -->
+    <string name="checking_location">Checking Location</string>
+
+    <!-- Survey -->
+    <string name="survey_fill_msg">Your account has been created! We just have a few questions for you before getting started! It should take less than a minute.</string>
+    <string name="survey_update_msg">Great progress! We\'d love your feedback! It should take less than a minute.</string>
+    <string name="submit_survey_message">Submit Responses</string>
+    <string name="add_survey_responses_error">Error saving your responses.</string>
+    <string name="track_survey_status_error">Error saving your response status.</string>
+    <string name="app_rating">Rate the App</string>
+    <string name="survey_skip_message">SKIP</string>
+
+    <!-- Bottom Navigation Buttons -->
+    <string name="bottom_nav_events">Events</string>
+    <string name="bottom_nav_dashboard">Dashboard</string>
+    <string name="bottom_nav_resource">Resource</string>
+    <string name="bottom_nav_aboutus">About Us</string>
+
+    <!-- Event PIN Page -->
+    <string name="event_feedback_msg">We\'d Love Your Feedback</string>
+    <string name="event_rating">Rate the Event</string>
+    <string name="event_comment_hint">Leave a Comment</string>
+
+    <!--- Get User Info Page -->
+    <string name="userinfo_fill_msg">We\'re almost there! We just need some basic information.</string>
+    <string name="pick_profilepic_msg">Tap to Pick a Profile Picture</string>
+    <string name="profilepic_chosen_msg">Profile picture has been chosen!</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="choose_photo">Choose Photo</string>
+    <string name="enter_birthdate">Enter Birthdate</string>
+    <string name="choose_grade">Choose Grade</string>
+    <string name="nonstudent_choose_type">Are You a Resident or a Visitor?</string>
+    <string name="student_choose_type">Choose Student Type</string>
+    <string name="userinfo_type_prompt">Type:</string>
+    <string name="userinfo_grade_prompt">Grade:</string>
+    <string name="submit_userinfo">Next</string>
+    <string name="prompt_studentid">OSU Student ID #</string>
+    <string name="prompt_onid">ONID Username</string>
+    <string name="prompt_is_osu">Are you an OSU student or faculty member?</string>
+    <string name="extra_info_already_received">Extra user info already received!</string>
+
+</resources>

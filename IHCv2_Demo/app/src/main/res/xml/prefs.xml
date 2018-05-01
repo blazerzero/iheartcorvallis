@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:key="@string/pref_user_firstname_key"
+        android:title="@string/pref_user_firstname_title" />
+
+    <EditTextPreference
+        android:key="@string/pref_user_lastname_key"
+        android:title="@string/pref_user_lastname_title" />
+
+    <EditTextPreference
+        android:key="@string/pref_user_email_key"
+        android:title="@string/pref_user_email_title" />
+
+    <ListPreference
+        android:key="@string/pref_user_type_key"
+        android:title="@string/pref_user_type_title"
+        android:summary="%s"
+        android:dialogTitle="@string/pref_user_type_title"/>
+
+    <ListPreference
+        android:key="@string/pref_user_grade_key"
+        android:title="@string/pref_user_grade_title"
+        android:summary="%s"
+        android:dialogTitle="@string/pref_user_grade_title"
+        android:entries="@array/pref_user_grade_entries"
+        android:entryValues="@array/pref_user_grade_values" />
+
+    <Preference
+        android:key="@string/pref_user_birthdate_key"
+        android:title="@string/pref_user_birthdate_title" />
+
+    <Preference
+        android:key="@string/pref_user_profile_picture_key"
+        android:title="@string/pref_user_profile_picture_title" />
+
+</PreferenceScreen>
