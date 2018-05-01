@@ -172,6 +172,7 @@ public class DashboardActivity extends AppCompatActivity
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
+                Log.d(TAG, "bottom view id: " + id);
                 if (id == R.id.bottom_nav_dash) {
                     // Do nothing, you're already here
                 } else {
