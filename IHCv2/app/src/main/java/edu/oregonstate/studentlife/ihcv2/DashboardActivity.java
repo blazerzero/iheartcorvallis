@@ -809,14 +809,6 @@ public class DashboardActivity extends AppCompatActivity
     @Override
     public void onResume() {
         super.onResume();
-        /*Log.e(TAG, "resuming!");
-        Bundle args = new Bundle();
-        args.putString(IHC_USER_EMAIL_KEY, email);
-        args.putInt(IHC_USER_ID_KEY, userid);
-        gotUser = false;
-        gotPassport = false;
-        gotEvents = false;
-        getSupportLoaderManager().initLoader(IHC_USER_LOADER_ID, args, this);*/
     }
 
     @Override
