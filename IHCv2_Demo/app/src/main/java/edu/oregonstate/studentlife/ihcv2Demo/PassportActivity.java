@@ -31,8 +31,10 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 import edu.oregonstate.studentlife.ihcv2Demo.adapters.PassportAdapter;
 import edu.oregonstate.studentlife.ihcv2Demo.data.Constants;
@@ -50,7 +52,6 @@ public class PassportActivity extends AppCompatActivity
     private final static int IHC_GETCOMPLETEDEVENTS_ID = 0;
     private final static String IHC_USER_EMAIL_KEY = "ihcUserEmail";
     private boolean gotUser = false;
-    private User user;
     private int numStamps;
 
     private ImageView mProfilePictureIV;
@@ -86,6 +87,19 @@ public class PassportActivity extends AppCompatActivity
         overridePendingTransition(0,0);
 
         completedEventList = new ArrayList<Event>();
+        try {
+            completedEventList.add(
+                    new Event(1, "Impact", "College of Public Health and Human Sciences",
+                            "College of Public Health and Human Sciences", "160 SW 26th St, Corvallis, OR 97331",
+                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).parse("1900-01-01 00:00:00"),
+                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).parse("2099-12-31 23:59:59"),
+                            "12:00 AM", "11:59 PM", "1", "1", "1900",
+                            "12", "31", "2099", getResources().getString(R.string.hc_impact_event_description),
+                            "https://health.oregonstate.edu/impact", "", "", 1234)
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -120,27 +134,21 @@ public class PassportActivity extends AppCompatActivity
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
 
-                if (user != null) {
-                    if (id == R.id.bottom_nav_passport) {
-                        // Do nothing, you're already here
-                    } else {
-                        if (id == R.id.bottom_nav_dash) {
-                            Intent intent = new Intent(PassportActivity.this, DashboardActivity.class);
-                            intent.putExtra(Constants.EXTRA_USER, user);
-                            startActivity(intent);
-                        } else if (id == R.id.bottom_nav_events) {
-                            Intent intent = new Intent(PassportActivity.this, EventsActivity.class);
-                            intent.putExtra(Constants.EXTRA_USER, user);
-                            startActivity(intent);
-                        } else if (id == R.id.bottom_nav_resources) {
-                            Intent intent = new Intent(PassportActivity.this, ResourcesActivity.class);
-                            intent.putExtra(Constants.EXTRA_USER, user);
-                            startActivity(intent);
-                        } else if (id == R.id.bottom_nav_aboutus) {
-                            Intent intent = new Intent(PassportActivity.this, AboutUsActivity.class);
-                            intent.putExtra(Constants.EXTRA_USER, user);
-                            startActivity(intent);
-                        }
+                if (id == R.id.bottom_nav_passport) {
+                    // Do nothing, you're already here
+                } else {
+                    if (id == R.id.bottom_nav_dash) {
+                        Intent intent = new Intent(PassportActivity.this, DashboardActivity.class);
+                        startActivity(intent);
+                    } else if (id == R.id.bottom_nav_events) {
+                        Intent intent = new Intent(PassportActivity.this, EventsActivity.class);
+                        startActivity(intent);
+                    } else if (id == R.id.bottom_nav_resources) {
+                        Intent intent = new Intent(PassportActivity.this, ResourcesActivity.class);
+                        startActivity(intent);
+                    } else if (id == R.id.bottom_nav_aboutus) {
+                        Intent intent = new Intent(PassportActivity.this, AboutUsActivity.class);
+                        startActivity(intent);
                     }
                 }
                 return false;
@@ -149,14 +157,7 @@ public class PassportActivity extends AppCompatActivity
 
         progIndicatorTV = (TextView) findViewById(R.id.tv_current_user_stamp_count);
 
-        Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(Constants.EXTRA_USER)) {
-            user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
-            Log.d(TAG, "User ID: " + user.getId());
-            userid = user.getId();
-        }
-
-        progIndicatorTV.setText("STAMPS: " + user.getStampCount());
+        progIndicatorTV.setText("STAMPS: 1");
 
         mPassportRecyclerView = (RecyclerView) findViewById(R.id.rv_passport_list);
         mPassportRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -164,6 +165,10 @@ public class PassportActivity extends AppCompatActivity
 
         mPassportAdapter = new PassportAdapter();
         mPassportRecyclerView.setAdapter(mPassportAdapter);
+
+        for (Event event : completedEventList) {
+            mPassportAdapter.addEventToPassport(event);
+        }
 
         session = new Session(getApplicationContext());
         //HashMap<String, String> user = session.getUserDetails();
@@ -245,46 +250,37 @@ public class PassportActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (user != null) {
-            if (id == R.id.nav_passport) {
-                onBackPressed();
-            } else {
-                if (id == R.id.nav_dash) {
-                    Intent intent = new Intent(this, DashboardActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                } else if (id == R.id.nav_events) {
-                    Intent intent = new Intent(this, EventsActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                } else if (id == R.id.nav_prizes) {
-                    Intent intent = new Intent(this, PrizesActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                } else if (id == R.id.nav_leaderboard) {
-                    Intent intent = new Intent(this, LeaderboardActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                } else if (id == R.id.nav_resources) {
-                    Intent intent = new Intent(this, ResourcesActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                } else if (id == R.id.nav_aboutus) {
-                    Intent intent = new Intent(this, AboutUsActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                } else if (id == R.id.nav_settings) {
-                    Intent intent = new Intent(this, SettingsActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                } else if (id == R.id.nav_logout) {
-                    session.logoutUser();
-                }
+        if (id == R.id.nav_passport) {
+            onBackPressed();
+        } else {
+            if (id == R.id.nav_dash) {
+                Intent intent = new Intent(this, DashboardActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.nav_events) {
+                Intent intent = new Intent(this, EventsActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.nav_prizes) {
+                Intent intent = new Intent(this, PrizesActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.nav_leaderboard) {
+                Intent intent = new Intent(this, LeaderboardActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.nav_resources) {
+                Intent intent = new Intent(this, ResourcesActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.nav_aboutus) {
+                Intent intent = new Intent(this, AboutUsActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.nav_settings) {
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.nav_logout) {
+                session.logoutUser();
             }
-
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
         }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 

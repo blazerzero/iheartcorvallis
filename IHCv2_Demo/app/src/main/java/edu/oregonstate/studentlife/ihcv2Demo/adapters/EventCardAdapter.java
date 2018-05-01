@@ -75,8 +75,6 @@ public class EventCardAdapter extends RecyclerView.Adapter<EventCardAdapter.Even
         void bind(Event event) {
             int startMonthInt = Integer.parseInt(event.getStartMonth()) - 1;
             int endMonthInt = Integer.parseInt(event.getEndMonth()) - 1;
-            //Log.d(TAG, "image path: " + event.getImagePath());
-            mEventImageIV.setImageDrawable(event.getImage());
 
             mEventNameTV.setText(event.getName());
             mEventLocationTV.setText(event.getLocation());

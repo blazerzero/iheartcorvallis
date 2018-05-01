@@ -29,10 +29,12 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 
 import edu.oregonstate.studentlife.ihcv2Demo.adapters.EventCardAdapter;
 import edu.oregonstate.studentlife.ihcv2Demo.adapters.EventListAdapter;
@@ -140,6 +142,37 @@ public class EventsActivity extends AppCompatActivity
         });
 
         eventList = new ArrayList<Event>();
+        try {
+            eventList.add(
+                    new Event(1, "Impact", "College of Public Health and Human Sciences",
+                            "College of Public Health and Human Sciences", "160 SW 26th St, Corvallis, OR 97331",
+                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).parse("1900-01-01 00:00:00"),
+                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).parse("2099-12-31 23:59:59"),
+                            "12:00 AM", "11:59 PM", "1", "1", "1900",
+                            "12", "31", "2099", getResources().getString(R.string.hc_impact_event_description),
+                            "https://health.oregonstate.edu/impact", "", "", 1234)
+            );
+            eventList.add(
+                    new Event(2, "OSU COE Engineering Expo", "College of Engineering", "Kelley Engineering Center",
+                            "2500 NW Monroe Ave, Corvallis, OR 97331",
+                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).parse("2018-05-18 11:00:00"),
+                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).parse("2018-05-18 16:00:00"),
+                            "11:00 AM", "4:00 PM", "5", "18", "2018",
+                            "5", "18", "2018", getResources().getString(R.string.hc_expo_event_description),
+                            "https://expo.engr.oregonstate.edu", "", "", 1078)
+            );
+            eventList.add(
+                    new Event(3, "Corvallis Farmers' Market", "Locally Grown", "Downtown Corvallis",
+                            "NW 1st St, Corvallis, OR 97330",
+                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).parse("2018-05-30 09:00:00"),
+                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).parse("2018-05-30 13:00:00"),
+                            "9:00 AM", "1:00 PM", "5", "30", "2018",
+                            "5", "30", "2018", getResources().getString(R.string.hc_farmers_event_description),
+                            "https://locallygrown.org/home/", "", "", 3676)
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         mEventListRV = (RecyclerView) findViewById(R.id.rv_event_list);
         mEventListRV.setLayoutManager(new LinearLayoutManager(this));
@@ -157,6 +190,10 @@ public class EventsActivity extends AppCompatActivity
 
         mEventCardRV.setVisibility(View.GONE);
 
+        for (Event event : eventList) {
+            mEventListAdapter.addEvent(event);
+            mEventCardAdapter.addEvent(event);
+        }
 
     }
 

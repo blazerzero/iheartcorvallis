@@ -110,7 +110,6 @@ public class EventDetailActivity extends AppCompatActivity
                         .load(event.getImage())
                         .into(mEventImageIV);
             }*/
-            mEventImageIV.setImageDrawable(event.getImage());
             mEventNameTV.setText(event.getName());
             mEventLocationTV.setText(event.getLocation());
             mEventAddressTV.setText(event.getAddress());
@@ -151,7 +150,7 @@ public class EventDetailActivity extends AppCompatActivity
                 // go to geolocation first, but goes straight to PIN for now
                 Log.d(TAG, "check in button pressed");
 
-                if (!completedEventIDs.contains(event.getEventid())) {
+                /*if (!completedEventIDs.contains(event.getEventid())) {
                     Calendar currentDate = Calendar.getInstance(TimeZone.getTimeZone("America/LosAngeles"), Locale.US);
                     Log.d(TAG, "current date: " + currentDate.getTime());
                     Log.d(TAG, "event start dt: " + event.getStartDT());
@@ -164,7 +163,7 @@ public class EventDetailActivity extends AppCompatActivity
                 }
                 else {
                     Toast.makeText(EventDetailActivity.this, "You have already checked into this event!", Toast.LENGTH_LONG).show();
-                }
+                }*/
             }
         });
     }

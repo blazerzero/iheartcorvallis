@@ -96,16 +96,15 @@ public class DashboardActivity extends AppCompatActivity
 
         overridePendingTransition(0,0);
 
-
         try {
             eventList.add(
-                new Event(1, "Impact", "College of Public Health and Human Sciences",
-                        "College of Public Health and Human Sciences", "160 SW 26th St, Corvallis, OR 97331",
-                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).parse("2018-05-20 10:00:00"),
-                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).parse("2018-05-20 14:00:00"),
-                        "10:00 AM", "2:00 PM", "5", "20", "2018",
-                        "5", "20", "2018", getResources().getString(R.string.hc_impact_event_description),
-                        getResources().getDrawable(R.drawable.mu_sunset), "https://health.oregonstate.edu/impact", null, null, 1234)
+                    new Event(1, "Impact", "College of Public Health and Human Sciences",
+                            "College of Public Health and Human Sciences", "160 SW 26th St, Corvallis, OR 97331",
+                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).parse("1900-01-01 00:00:00"),
+                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).parse("2099-12-31 23:59:59"),
+                            "12:00 AM", "11:59 PM", "1", "1", "1900",
+                            "12", "31", "2099", getResources().getString(R.string.hc_impact_event_description),
+                            "https://health.oregonstate.edu/impact", "", "", 1234)
             );
             eventList.add(
                     new Event(2, "OSU COE Engineering Expo", "College of Engineering", "Kelley Engineering Center",
@@ -114,7 +113,7 @@ public class DashboardActivity extends AppCompatActivity
                             new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).parse("2018-05-18 16:00:00"),
                             "11:00 AM", "4:00 PM", "5", "18", "2018",
                             "5", "18", "2018", getResources().getString(R.string.hc_expo_event_description),
-                            getResources().getDrawable(R.drawable.mu_sunset), "https://expo.engr.oregonstate.edu", null, null, 1078)
+                            "https://expo.engr.oregonstate.edu", "", "", 1078)
             );
             eventList.add(
                     new Event(3, "Corvallis Farmers' Market", "Locally Grown", "Downtown Corvallis",
@@ -123,18 +122,11 @@ public class DashboardActivity extends AppCompatActivity
                             new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).parse("2018-05-30 13:00:00"),
                             "9:00 AM", "1:00 PM", "5", "30", "2018",
                             "5", "30", "2018", getResources().getString(R.string.hc_farmers_event_description),
-                            getResources().getDrawable(R.drawable.mu_sunset), "https://locallygrown.org/home/", null, null, 3676)
+                            "https://locallygrown.org/home/", "", "", 3676)
             );
-            completedEventList.add(
-                    new Event(1, "Impact", "College of Public Health and Human Sciences",
-                            "College of Public Health and Human Sciences", "160 SW 26th St, Corvallis, OR 97331",
-                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).parse("2018-05-20 10:00:00"),
-                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).parse("2018-05-20 14:00:00"),
-                            "10:00 AM", "2:00 PM", "5", "20", "2018",
-                            "5", "20", "2018", getResources().getString(R.string.hc_impact_event_description),
-                            getResources().getDrawable(R.drawable.mu_sunset), "https://health.oregonstate.edu/impact", null, null, 1234)
-            );
-            completedEventIDs.add(1);
+
+            completedEventList.add(eventList.get(0));
+            completedEventIDs.add(eventList.get(0).getEventid());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -194,11 +186,6 @@ public class DashboardActivity extends AppCompatActivity
             }
         });
 
-        session = new Session(getApplicationContext());
-        HashMap<String, String> userBasics = session.getUserDetails();
-        email = userBasics.get(Session.KEY_EMAIL);
-        Log.d(TAG, "email: " + email);
-
         mEventListRV = (RecyclerView) findViewById(R.id.rv_event_list);
         mEventListRV.setLayoutManager(new LinearLayoutManager(this));
         mEventListRV.setHasFixedSize(true);
@@ -213,20 +200,12 @@ public class DashboardActivity extends AppCompatActivity
         mPassportAdapter = new PassportAdapter();
         mPassportRV.setAdapter(mPassportAdapter);
 
-        eventList = new ArrayList<Event>();
-        completedEventList = new ArrayList<Event>();
-
         mDashStampCountTV = (TextView) findViewById(R.id.tv_dash_stamp_count);
         mDashProgressTV = (TextView) findViewById(R.id.tv_dash_progress);
         mProgIndicatorLL = (LinearLayout) findViewById(R.id.progIndicator);
 
-        /*Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(Constants.EXTRA_USER)) {
-            user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
-            Log.d(TAG, "User ID: " + user.getId());
-            numStamps = user.getStampCount();
-        }*/
         numStamps = completedEventList.size();
+        initProgIndicator();
 
         mProgIndicatorLL.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -28,7 +28,6 @@ public class Event extends AppCompatActivity implements Serializable {
     private String endDay;
     private String endYear;
     private String description;
-    private Drawable image;
     private String link1;
     private String link2;
     private String link3;
@@ -37,7 +36,7 @@ public class Event extends AppCompatActivity implements Serializable {
     public Event(int eventid, String name, String host, String location, String address, Date startDT, Date endDT, String startTime, String endTime,
                  String startMonth, String startDay, String startYear,
                  String endMonth, String endDay, String endYear,
-                 String description, Drawable image, String link1, String link2, String link3, int pin) {
+                 String description, String link1, String link2, String link3, int pin) {
         this.eventid = eventid;
         this.name = name;
         this.host = host;
@@ -54,7 +53,6 @@ public class Event extends AppCompatActivity implements Serializable {
         this.endDay = endDay;
         this.endYear = endYear;
         this.description = description;
-        this.image = image;
         this.link1 = link1;
         this.link2 = link2;
         this.link3 = link3;
@@ -187,14 +185,6 @@ public class Event extends AppCompatActivity implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Drawable getImage() {
-        return image;
-    }
-
-    public void setImage(Drawable image) {
-        this.image = image;
     }
 
     public String getLink1() {
