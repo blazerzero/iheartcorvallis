@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="edu.oregonstate.studentlife.ihcv2">
+    package="edu.oregonstate.studentlife.ihcv2Demo">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -35,7 +35,7 @@
         android:theme="@style/AppTheme">
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="edu.oregonstate.studentlife.ihcv2.fileprovider"
+            android:authorities="edu.oregonstate.studentlife.ihcv2Demo.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -48,7 +48,7 @@
             android:value="AIzaSyBYbpLA_XmLpBF31OVt91u1K3z2pAVyvrM" />
 
         <activity
-            android:name=".SplashActivity"
+            android:name="edu.oregonstate.studentlife.ihcv2Demo.SplashActivity"
             android:label="I Heart Corvallis"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
@@ -59,7 +59,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="edu.oregonstate.studentlife.ihcv2Demo.MainActivity"
             android:label="I Heart Corvallis"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
@@ -68,10 +68,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginPageActivity"
+            android:name="edu.oregonstate.studentlife.ihcv2Demo.LoginPageActivity"
             android:label="Log In"
             android:launchMode="singleTop"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="edu.oregonstate.studentlife.ihcv2Demo.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -79,13 +79,13 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.oregonstate.studentlife.ihcv2.MainActivity" />
+                android:value="edu.oregonstate.studentlife.ihcv2Demo.MainActivity" />
         </activity>
         <activity
-            android:name=".SignupPageActivity"
+            android:name="edu.oregonstate.studentlife.ihcv2Demo.SignupPageActivity"
             android:label="Sign Up"
             android:launchMode="singleTop"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="edu.oregonstate.studentlife.ihcv2Demo.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -93,10 +93,10 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.oregonstate.studentlife.ihcv2.MainActivity" />
+                android:value="edu.oregonstate.studentlife.ihcv2Demo.MainActivity" />
         </activity>
         <activity
-            android:name=".DashboardActivity"
+            android:name="edu.oregonstate.studentlife.ihcv2Demo.DashboardActivity"
             android:label="Dashboard"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
@@ -105,7 +105,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".EventsActivity"
+            android:name="edu.oregonstate.studentlife.ihcv2Demo.EventsActivity"
             android:label="Events"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
@@ -114,7 +114,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PassportActivity"
+            android:name="edu.oregonstate.studentlife.ihcv2Demo.PassportActivity"
             android:label="Passport"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
@@ -123,7 +123,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PrizesActivity"
+            android:name="edu.oregonstate.studentlife.ihcv2Demo.PrizesActivity"
             android:label="Prizes"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
@@ -132,7 +132,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LeaderboardActivity"
+            android:name="edu.oregonstate.studentlife.ihcv2Demo.LeaderboardActivity"
             android:label="Leaderboard"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
@@ -141,7 +141,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ResourcesActivity"
+            android:name="edu.oregonstate.studentlife.ihcv2Demo.ResourcesActivity"
             android:label="Resources"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
@@ -150,7 +150,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AboutUsActivity"
+            android:name="edu.oregonstate.studentlife.ihcv2Demo.AboutUsActivity"
             android:label="About Us"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
@@ -159,7 +159,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name="edu.oregonstate.studentlife.ihcv2Demo.SettingsActivity"
             android:label="Settings"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
@@ -168,7 +168,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LogoutPageActivity"
+            android:name="edu.oregonstate.studentlife.ihcv2Demo.LogoutPageActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -176,18 +176,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MapsActivity"
+            android:name="edu.oregonstate.studentlife.ihcv2Demo.MapsActivity"
             android:label="@string/title_activity_maps"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ResourceMapActivity"
+            android:name="edu.oregonstate.studentlife.ihcv2Demo.ResourceMapActivity"
             android:label="@string/title_activity_resource_map"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".NonStudentLoginActivity"
+            android:name="edu.oregonstate.studentlife.ihcv2Demo.NonStudentLoginActivity"
             android:label="Non-Student Login"
             android:launchMode="singleTop"
-            android:parentActivityName=".LoginPageActivity"
+            android:parentActivityName="edu.oregonstate.studentlife.ihcv2Demo.LoginPageActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -195,13 +195,13 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.oregonstate.studentlife.ihcv2.LoginPageActivity" />
+                android:value="edu.oregonstate.studentlife.ihcv2Demo.LoginPageActivity" />
         </activity>
         <activity
-            android:name=".EventDetailActivity"
+            android:name="edu.oregonstate.studentlife.ihcv2Demo.EventDetailActivity"
             android:label="Event Details"
             android:launchMode="singleTop"
-            android:parentActivityName=".EventsActivity"
+            android:parentActivityName="edu.oregonstate.studentlife.ihcv2Demo.EventsActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -209,13 +209,13 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.oregonstate.studentlife.ihcv2.EventsActivity" />
+                android:value="edu.oregonstate.studentlife.ihcv2Demo.EventsActivity" />
         </activity>
         <activity
-            android:name=".EventPINActivity"
+            android:name="edu.oregonstate.studentlife.ihcv2Demo.EventPINActivity"
             android:label="Enter Event PIN"
             android:launchMode="singleTop"
-            android:parentActivityName=".EventDetailActivity"
+            android:parentActivityName="edu.oregonstate.studentlife.ihcv2Demo.EventDetailActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -223,10 +223,10 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.oregonstate.studentlife.ihcv2.EventDetailActivity" />
+                android:value="edu.oregonstate.studentlife.ihcv2Demo.EventDetailActivity" />
         </activity>
         <activity
-            android:name=".SurveyActivity"
+            android:name="edu.oregonstate.studentlife.ihcv2Demo.SurveyActivity"
             android:label="A Few Questions"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
@@ -235,7 +235,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CASWebViewActivity"
+            android:name="edu.oregonstate.studentlife.ihcv2Demo.CASWebViewActivity"
             android:label="OSU Student Login"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
@@ -244,7 +244,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".GetUserInfoActivity"
+            android:name="edu.oregonstate.studentlife.ihcv2Demo.GetUserInfoActivity"
             android:label="Get User Info"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">

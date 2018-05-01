@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="edu.oregonstate.studentlife.ihcv2.DashboardActivity"
+    tools:context="edu.oregonstate.studentlife.ihcv2Demo.DashboardActivity"
     tools:showIn="@layout/app_bar">
 
 </android.support.constraint.ConstraintLayout>
