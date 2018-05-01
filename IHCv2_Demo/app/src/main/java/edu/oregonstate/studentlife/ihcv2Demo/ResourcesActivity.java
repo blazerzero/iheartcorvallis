@@ -37,7 +37,6 @@ import edu.oregonstate.studentlife.ihcv2Demo.data.IHCDBContract;
 import edu.oregonstate.studentlife.ihcv2Demo.data.IHCDBHelper;
 import edu.oregonstate.studentlife.ihcv2Demo.data.Resource;
 import edu.oregonstate.studentlife.ihcv2Demo.data.Session;
-import edu.oregonstate.studentlife.ihcv2Demo.data.User;
 
 /**
  * Created by Omeed on 12/20/17.
@@ -61,7 +60,6 @@ public class ResourcesActivity extends AppCompatActivity
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
 
-    private User user;
     private SQLiteDatabase mDB;
 
 
@@ -82,10 +80,6 @@ public class ResourcesActivity extends AppCompatActivity
         overridePendingTransition(0,0);
 
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(Constants.EXTRA_USER)) {
-            user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
-            Log.d(TAG, "User ID: " + user.getId());
-        }
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -119,30 +113,25 @@ public class ResourcesActivity extends AppCompatActivity
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-                if (user != null) {
                     if (id == R.id.bottom_nav_resources) {
                         // Do nothing, you're already here
 
                     } else {
                         if (id == R.id.bottom_nav_dash) {
                             Intent intent = new Intent(ResourcesActivity.this, DashboardActivity.class);
-                            intent.putExtra(Constants.EXTRA_USER, user);
                             startActivity(intent);
                         } else if (id == R.id.bottom_nav_events) {
                             Intent intent = new Intent(ResourcesActivity.this, EventsActivity.class);
-                            intent.putExtra(Constants.EXTRA_USER, user);
                             startActivity(intent);
                         } else if (id == R.id.bottom_nav_passport) {
                             Intent intent = new Intent(ResourcesActivity.this, PassportActivity.class);
-                            intent.putExtra(Constants.EXTRA_USER, user);
                             startActivity(intent);
                         } else if (id == R.id.bottom_nav_aboutus) {
                             Intent intent = new Intent(ResourcesActivity.this, AboutUsActivity.class);
-                            intent.putExtra(Constants.EXTRA_USER, user);
                             startActivity(intent);
                         }
                     }
-                }
+
                 return false;
             }
         });
@@ -220,11 +209,8 @@ public class ResourcesActivity extends AppCompatActivity
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        // session information is retrieved and displayed on nav menu
-        session = new Session(getApplicationContext());
-        HashMap<String, String> user = session.getUserDetails();
-        String name = user.get(Session.KEY_NAME);
-        String email = user.get(Session.KEY_EMAIL);
+        String name = "Test User";
+        String email = "testuser@oregonstate.edu";
         mProfilePictureIV = (ImageView) findViewById(R.id.iv_profile_picture);
         getProfilePicture();
 
@@ -242,46 +228,38 @@ public class ResourcesActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (user != null) {
             if (id == R.id.nav_resources) {
                 onBackPressed();
             } else {
                 if (id == R.id.nav_dash) {
                     Intent intent = new Intent(this, DashboardActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
                     startActivity(intent);
                 } else if (id == R.id.nav_events) {
                     Intent intent = new Intent(this, EventsActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
                     startActivity(intent);
                 } else if (id == R.id.nav_passport) {
                     Intent intent = new Intent(this, PassportActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
                     startActivity(intent);
                 } else if (id == R.id.nav_prizes) {
                     Intent intent = new Intent(this, PrizesActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
                     startActivity(intent);
                 } else if (id == R.id.nav_leaderboard) {
                     Intent intent = new Intent(this, LeaderboardActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
                     startActivity(intent);
                 } else if (id == R.id.nav_aboutus) {
                     Intent intent = new Intent(this, AboutUsActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
                     startActivity(intent);
                 } else if (id == R.id.nav_settings) {
                     Intent intent = new Intent(this, SettingsActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
                     startActivity(intent);
                 } else if (id == R.id.nav_logout) {
-                    session.logoutUser();
+                    Intent intent = new Intent(this, SplashActivity.class);
                 }
             }
 
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
-        }
+
         return true;
     }
 
