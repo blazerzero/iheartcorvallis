@@ -18,8 +18,6 @@ import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -61,7 +59,6 @@ import edu.oregonstate.studentlife.ihcv2.data.IHCDBContract;
 import edu.oregonstate.studentlife.ihcv2.data.IHCDBHelper;
 import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.data.User;
-import edu.oregonstate.studentlife.ihcv2.loaders.EventLoader;
 ;
 
 /**
@@ -71,8 +68,7 @@ import edu.oregonstate.studentlife.ihcv2.loaders.EventLoader;
 public class EventsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         EventListAdapter.OnEventClickListener,
-        EventCardAdapter.OnEventClickListener,
-        LoaderManager.LoaderCallbacks<String> {
+        EventCardAdapter.OnEventClickListener {
 
     private final static String TAG = EventsActivity.class.getSimpleName();
 
@@ -91,7 +87,6 @@ public class EventsActivity extends AppCompatActivity
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
 
-    private final static int IHC_EVENT_LOADER_ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,12 +186,6 @@ public class EventsActivity extends AppCompatActivity
 
         mEventCardRV.setVisibility(View.GONE);
 
-        if (isNetworkAvailable()) {
-            getSupportLoaderManager().initLoader(IHC_EVENT_LOADER_ID, null, this);
-        }
-        else {
-            showNoInternetConnectionMsg();
-        }
 
     }
 
@@ -281,24 +270,8 @@ public class EventsActivity extends AppCompatActivity
         switch (item.getItemId()) {
 
             case R.id.action_map:
-                if (isNetworkAvailable()) {
-                    LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-                    try {
-                        if (lm != null && (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) && !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER))) {
-                            Toast.makeText(EventsActivity.this, "Location services are not enabled! Please go to settings to enable location services!", Toast.LENGTH_LONG).show();
-                        }
-                        else if (lm != null) {
-                            Intent mapIntent = new Intent(this, MapsActivity.class);
-                            mapIntent.putExtra(Constants.EXTRA_EVENT, eventList);
-                            startActivity(mapIntent);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                else {
-                    showNoInternetConnectionMsg();
-                }
+
+
                 return true;
             case R.id.action_switch_view:
                 if (mEventListRV.getVisibility() == View.VISIBLE && mEventCardRV.getVisibility() == View.GONE) {
@@ -393,147 +366,6 @@ public class EventsActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public Loader<String> onCreateLoader(int id, Bundle args) {
-        return new EventLoader(this);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<String> loader, String data) {
-        Log.d(TAG, "got results from loader");
-        try {
-            StringTokenizer stEvents = new StringTokenizer(data, "\\");
-            while (stEvents.hasMoreTokens()) {
-                String eventInfoString = stEvents.nextToken();
-                JSONObject eventJSON = new JSONObject(eventInfoString);
-                int eventid = Integer.parseInt(eventJSON.getString("eventid"));
-                String eventName = eventJSON.getString("name");
-                String eventLocation = eventJSON.getString("location");
-                String eventAddress = eventJSON.getString("address");
-                String eventStartDT = eventJSON.getString("startdt");
-                String eventEndDT = eventJSON.getString("enddt");
-                String eventDescription = eventJSON.getString("description");
-                String eventImageName = eventJSON.getString("image");
-                String eventLink1 = eventJSON.getString("link1");
-                String eventLink2 = eventJSON.getString("link2");
-                String eventLink3 = eventJSON.getString("link3");
-                int eventPin = Integer.parseInt(eventJSON.getString("pin"));
-
-                StringTokenizer dateTimeTokenizer = new StringTokenizer(eventStartDT);
-                String eventStartYear = dateTimeTokenizer.nextToken("-");
-                String eventStartMonth = dateTimeTokenizer.nextToken("-");
-                String eventStartDay = dateTimeTokenizer.nextToken(" ");
-                String eventStartTime = dateTimeTokenizer.nextToken();
-
-                dateTimeTokenizer = new StringTokenizer(eventEndDT);
-                String eventEndYear = dateTimeTokenizer.nextToken("-");
-                String eventEndMonth = dateTimeTokenizer.nextToken("-");
-                String eventEndDay = dateTimeTokenizer.nextToken(" ");
-                String eventEndTime = dateTimeTokenizer.nextToken();
-
-                SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-                Date eventStartDate = sdfEvent.parse(eventStartDT);
-                Date eventEndDate = sdfEvent.parse(eventEndDT);
-
-                SimpleDateFormat _24HourFormat = new SimpleDateFormat("HH:mm", Locale.US);
-                SimpleDateFormat _12HourFormat = new SimpleDateFormat("hh:mm a", Locale.US);
-
-                Date _24HourEventTime = _24HourFormat.parse(eventStartTime);
-                eventStartTime = _12HourFormat.format(_24HourEventTime);
-                if (eventStartTime.charAt(0) == '0') {
-                    eventStartTime = eventStartTime.substring(1);
-                }
-                eventStartDay = eventStartDay.substring(1);
-                if (eventStartDay.charAt(0) == '0') {
-                    eventStartDay = eventStartDay.substring(1);
-                }
-
-                if (eventStartMonth.charAt(0) == '0') {
-                    eventStartMonth = eventStartMonth.substring(1);
-                }
-
-                _24HourEventTime = _24HourFormat.parse(eventEndTime);
-                eventEndTime = _12HourFormat.format(_24HourEventTime);
-                if (eventEndTime.charAt(0) == '0') {
-                    eventEndTime = eventEndTime.substring(1);
-                }
-                eventEndDay = eventEndDay.substring(1);
-                if (eventEndDay.charAt(0) == '0') {
-                    eventEndDay = eventEndDay.substring(1);
-                }
-
-                if (eventEndMonth.charAt(0) == '0') {
-                    eventEndMonth = eventEndMonth.substring(1);
-                }
-
-                String eventImagePath = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/images/events/" + eventImageName;
-
-                Date currentDate = new Date();
-
-                Calendar visibleDateLimit = Calendar.getInstance(TimeZone.getTimeZone("America/LosAngeles"));
-                visibleDateLimit.setTime(eventEndDate);
-                visibleDateLimit.add(Calendar.HOUR_OF_DAY, 2);
-
-                if (currentDate.before(visibleDateLimit.getTime())) {
-
-                    Event retrievedEvent = new Event(eventid, eventName, eventLocation, eventAddress,
-                            eventStartDate, eventEndDate, eventStartTime, eventEndTime,
-                            eventStartMonth, eventStartDay, eventStartYear,
-                            eventEndMonth, eventEndDay, eventEndYear,
-                            eventDescription, eventImagePath, eventLink1, eventLink2, eventLink3, eventPin);
-
-                    eventList.add(retrievedEvent);
-                }
-
-            }
-
-            sortEventsByDate();
-
-            for (Event event : eventList) {
-                if (isNetworkAvailable()) {
-                    mEventListAdapter.addEvent(event);
-                    mEventCardAdapter.addEvent(event);
-                } else {
-                    showNoInternetConnectionMsg();
-                }
-            }
-            Log.d(TAG, "eventList.size(): " + String.valueOf(eventList.size()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<String> loader) {
-        // Nothing to do...
-    }
-
-    public boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
-    }
-
-    public void showNoInternetConnectionMsg() {
-        android.app.AlertDialog.Builder builder;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new android.app.AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-        }
-        else {
-            builder = new android.app.AlertDialog.Builder(this);
-        }
-        builder.setTitle("No Internet Connection");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Close alert. User can try action again.
-            }
-        });
-        builder.setMessage(getResources().getString(R.string.no_internet_connection_msg));
-        builder.setIcon(android.R.drawable.ic_dialog_alert);
-        builder.show();
-    }
 
     public void getProfilePicture() {
         Cursor cursor = mDB.query(

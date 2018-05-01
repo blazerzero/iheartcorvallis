@@ -48,11 +48,10 @@ import edu.oregonstate.studentlife.ihcv2.data.IHCDBHelper;
 import edu.oregonstate.studentlife.ihcv2.data.Prize;
 import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.data.User;
-import edu.oregonstate.studentlife.ihcv2.loaders.PrizeLoader;
 
 public class PrizesActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, PrizeAdapter.OnPrizeClickListener,
-        LoaderManager.LoaderCallbacks<String> {
+        implements NavigationView.OnNavigationItemSelectedListener, PrizeAdapter.OnPrizeClickListener
+       {
 
     private final static String TAG = PrizesActivity.class.getSimpleName();
 
@@ -180,7 +179,6 @@ public class PrizesActivity extends AppCompatActivity
 
 
         //new PrizeReceiver(this).execute();
-        getSupportLoaderManager().initLoader(IHC_GETPRIZES_ID, null, this);
     }
 
     @Override
@@ -302,46 +300,6 @@ public class PrizesActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public Loader<String> onCreateLoader(int id, Bundle args) {
-        return new PrizeLoader(this);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<String> loader, String data) {
-        Log.d(TAG, "got results from loader");
-        try {
-            StringTokenizer stPrizes = new StringTokenizer(data, "\\");
-            while (stPrizes.hasMoreTokens()) {
-                String prizesString = stPrizes.nextToken();
-                JSONObject prizeJSON = new JSONObject(prizesString);
-                String prizeName = prizeJSON.getString("name");
-                String prizeLevel = prizeJSON.getString("level");
-                Log.d("Prize name: ", prizeName);
-                Log.d("Prize level: ", prizeLevel);
-
-                Prize retrievedPrize = new Prize(prizeName, prizeLevel);
-                prizeList.add(retrievedPrize);
-
-                if (retrievedPrize.getLevel().equals("gold")) {
-                    mGoldPrizeAdapter.addPrize(retrievedPrize);
-                }
-                else if (retrievedPrize.getLevel().equals("silver")) {
-                    mSilverPrizeAdapter.addPrize(retrievedPrize);
-                }
-                else if (retrievedPrize.getLevel().equals("bronze")) {
-                    mBronzePrizeAdapter.addPrize(retrievedPrize);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<String> loader) {
-        // Nothing to do...
-    }
 
     public void getProfilePicture() {
         Cursor cursor = mDB.query(

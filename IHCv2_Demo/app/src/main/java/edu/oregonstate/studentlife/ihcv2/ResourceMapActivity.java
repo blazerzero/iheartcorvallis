@@ -27,10 +27,9 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import edu.oregonstate.studentlife.ihcv2.data.ResourceMarker;
-import edu.oregonstate.studentlife.ihcv2.loaders.MarkerLoader;
 
 public class ResourceMapActivity extends FragmentActivity
-        implements OnMapReadyCallback, LoaderManager.LoaderCallbacks<String> {
+        {
 
     private GoogleMap mMap;
     private TextView legendTitleTV;
@@ -52,7 +51,6 @@ public class ResourceMapActivity extends FragmentActivity
 
 
     private final static String TAG = ResourceMapActivity.class.getSimpleName();
-    private final static int IHC_MARKER_LOADER_ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +62,6 @@ public class ResourceMapActivity extends FragmentActivity
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
 
         legendTitleTV = (TextView) findViewById(R.id.gm_legend_title);
         activitiesEntertainmentTV = (TextView) findViewById(R.id.gm_legend_activities);
@@ -121,9 +118,7 @@ public class ResourceMapActivity extends FragmentActivity
                     }
                     actEntOnly = true;
                 }
-                else {
-                    showAllMarkers();
-                }
+
             }
         });
 
@@ -140,9 +135,7 @@ public class ResourceMapActivity extends FragmentActivity
                     }
                     groceryOnly = true;
                 }
-                else {
-                    showAllMarkers();
-                }
+
             }
         });
 
@@ -159,9 +152,7 @@ public class ResourceMapActivity extends FragmentActivity
                     }
                     restaurantOnly = true;
                 }
-                else {
-                    showAllMarkers();
-                }
+
             }
         });
 
@@ -178,9 +169,7 @@ public class ResourceMapActivity extends FragmentActivity
                     }
                     shoppingOnly = true;
                 }
-                else {
-                    showAllMarkers();
-                }
+
             }
         });
 
@@ -197,9 +186,7 @@ public class ResourceMapActivity extends FragmentActivity
                     }
                     cityOfficesOnly = true;
                 }
-                else {
-                    showAllMarkers();
-                }
+
             }
         });
 
@@ -216,9 +203,7 @@ public class ResourceMapActivity extends FragmentActivity
                     }
                     osuCampusOnly = true;
                 }
-                else {
-                    showAllMarkers();
-                }
+
             }
         });
     }
@@ -238,104 +223,8 @@ public class ResourceMapActivity extends FragmentActivity
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.setMinZoomPreference(12.0f);
 
-        // Set the camera over Corvallis
-        LatLng Corvallis = new LatLng(44.564663, -123.263282);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(Corvallis));
 
-        getSupportLoaderManager().initLoader(IHC_MARKER_LOADER_ID, null, this);
-    }
 
-    @Override
-    public Loader<String> onCreateLoader(int id, Bundle args) {
-        return new MarkerLoader(this);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<String> loader, String data) {
-        Log.d(TAG, "got markers from loader");
-        try {
-            StringTokenizer stMarker = new StringTokenizer(data, "\\");
-            while (stMarker.hasMoreTokens()) {
-                String markerString = stMarker.nextToken();
-                JSONObject markerJSON = new JSONObject(markerString);
-                String markerName = markerJSON.getString("name");
-                String markerAddress = markerJSON.getString("address");
-                String markerType = markerJSON.getString("type");
-
-                Geocoder coder = new Geocoder(this);
-                List<Address> address;
-                Marker marker;
-                LatLng markerLatLng = null;
-
-                address = coder.getFromLocationName(markerAddress, 5);
-                if (address == null || address.size() == 0) {
-                    Log.d(TAG, "Error geocoding address.");
-                } else {
-                    Address location = address.get(0);
-                    markerLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                    if (markerType.equals("Activities and Entertainment")) {
-                        marker = mMap.addMarker(new MarkerOptions()
-                                .position(markerLatLng)
-                                .title(markerName)
-                                .icon(BitmapDescriptorFactory.defaultMarker(210))); // blue
-                    } else if (markerType.equals("Grocery Stores")) {
-                        marker = mMap.addMarker(new MarkerOptions()
-                                .position(markerLatLng)
-                                .title(markerName)
-                                .icon(BitmapDescriptorFactory.defaultMarker(120))); // green
-                    } else if (markerType.equals("Restaurants")) {
-                        marker = mMap.addMarker(new MarkerOptions()
-                                .position(markerLatLng)
-                                .title(markerName)
-                                .icon(BitmapDescriptorFactory.defaultMarker(0)));   // red
-                    } else if (markerType.equals("Shopping")) {
-                        marker = mMap.addMarker(new MarkerOptions()
-                                .position(markerLatLng)
-                                .title(markerName)
-                                .icon(BitmapDescriptorFactory.defaultMarker(270))); // purple
-                    } else if (markerType.equals("City Offices")) {
-                        marker = mMap.addMarker(new MarkerOptions()
-                                .position(markerLatLng)
-                                .title(markerName)
-                                .icon(BitmapDescriptorFactory.defaultMarker(60)));  // yellow
-                    } else if (markerType.equals("OSU Campus")) {
-                        marker = mMap.addMarker(new MarkerOptions()
-                                .position(markerLatLng)
-                                .title(markerName)
-                                .icon(BitmapDescriptorFactory.defaultMarker(30)));  // orange
-                    } else {
-                        marker = null;
-                    }
-                    ResourceMarker resourceMarker = new ResourceMarker(markerName, location, markerLatLng, markerType, marker);
-                    resourceMarkerList.add(resourceMarker);
-                }
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<String> loader) {
-        // Nothing to do...
-    }
-
-    private void showAllMarkers() {
-        for (ResourceMarker marker : resourceMarkerList) {
-            marker.setMarkerVisibility(true);
-        }
-        actEntOnly = false;
-        groceryOnly = false;
-        restaurantOnly = false;
-        shoppingOnly = false;
-        cityOfficesOnly = false;
-        osuCampusOnly = false;
-    }
 
 }

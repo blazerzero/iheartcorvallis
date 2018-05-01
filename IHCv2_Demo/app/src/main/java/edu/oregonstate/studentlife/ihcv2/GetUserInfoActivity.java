@@ -15,10 +15,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -52,9 +50,8 @@ import edu.oregonstate.studentlife.ihcv2.data.IHCDBContract;
 import edu.oregonstate.studentlife.ihcv2.data.IHCDBHelper;
 import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.data.User;
-import edu.oregonstate.studentlife.ihcv2.loaders.ExtraUserInfoLoader;
 
-public class GetUserInfoActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
+public class GetUserInfoActivity extends AppCompatActivity{
 
     private final static String TAG = GetUserInfoActivity.class.getSimpleName();
     private SQLiteDatabase mDB;
@@ -235,7 +232,6 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
                     args.putInt(IHC_USER_GRADE_KEY, userGradeValue);
                     args.putInt(IHC_USER_TYPE_KEY, userTypeValue);
                     args.putString(IHC_USER_BD_KEY, userBirthdate);
-                    getSupportLoaderManager().initLoader(IHC_USER_GETEXTRAINFO_ID, args, GetUserInfoActivity.this);
                 }
             }
         });
@@ -298,29 +294,6 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
 
     }
 
-    @Override
-    public Loader<String> onCreateLoader(int id, Bundle args) {
-        return new ExtraUserInfoLoader(this, args);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<String> loader, String data) {
-        Log.d(TAG, "got return message from loader: " + data);
-        if (data.equals("ADDERROR")) {
-            Toast.makeText(this, "There was an error adding this information to your profile.", Toast.LENGTH_LONG).show();
-        }
-        else {
-            Intent surveyIntent = new Intent(this, SurveyActivity.class);
-            surveyIntent.putExtra(Constants.EXTRA_USER, user);
-            startActivity(surveyIntent);
-        }
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<String> loader) {
-        // Nothing to do...
-    }
 
     public String createDate(int year, int month, int dayOfMonth) {
         Calendar cal = Calendar.getInstance();

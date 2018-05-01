@@ -15,8 +15,6 @@ import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -46,15 +44,12 @@ import edu.oregonstate.studentlife.ihcv2.data.IHCDBContract;
 import edu.oregonstate.studentlife.ihcv2.data.IHCDBHelper;
 import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.data.User;
-import edu.oregonstate.studentlife.ihcv2.loaders.LeaderboardLoader;
 
 public class LeaderboardActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        LoaderManager.LoaderCallbacks<String> {
+        implements NavigationView.OnNavigationItemSelectedListener
+        {
 
     private final static String TAG = LeaderboardActivity.class.getSimpleName();
-    private final static int IHC_PASSPORT_LOADER_ID = 0;
-
     private ImageView mProfilePictureIV;
 
     private RecyclerView mLeaderboardRV;
@@ -157,8 +152,6 @@ public class LeaderboardActivity extends AppCompatActivity
 
         mLeaderboardAdapter = new LeaderboardAdapter();
         mLeaderboardRV.setAdapter(mLeaderboardAdapter);
-
-        getSupportLoaderManager().initLoader(IHC_PASSPORT_LOADER_ID, null, this);
 
     }
 
@@ -272,39 +265,7 @@ public class LeaderboardActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public Loader<String> onCreateLoader(int id, Bundle args) {
-        return new LeaderboardLoader(this);
-    }
 
-    @Override
-    public void onLoadFinished(Loader<String> loader, String data) {
-        try {
-            StringTokenizer stUser = new StringTokenizer(data, "\\");
-            while (stUser.hasMoreTokens()) {
-                String leaderboardUserString = stUser.nextToken();
-                JSONObject leaderboardUserJSON = new JSONObject(leaderboardUserString);
-                String userFirstName = leaderboardUserJSON.getString("firstname");
-                String userLastName = leaderboardUserJSON.getString("lastname");
-                String userStampCount = leaderboardUserJSON.getString("stampcount");
-
-                User.LeaderboardUser retrievedUser = new User.LeaderboardUser(userFirstName, userLastName, userStampCount);
-                leaderboardUserList.add(retrievedUser);
-            }
-            sortLeaderboard();
-
-            for (User.LeaderboardUser leaderboardUser : leaderboardUserList) {
-                mLeaderboardAdapter.addUserToLeaderboard(leaderboardUser);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<String> loader) {
-        // Nothing to do...
-    }
 
     public void sortLeaderboard() {
         User.LeaderboardUser holder;

@@ -49,7 +49,6 @@ import edu.oregonstate.studentlife.ihcv2.data.IHCDBHelper;
 import edu.oregonstate.studentlife.ihcv2.data.Resource;
 import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.data.User;
-import edu.oregonstate.studentlife.ihcv2.loaders.ResourceLoader;
 
 /**
  * Created by Omeed on 12/20/17.
@@ -57,8 +56,8 @@ import edu.oregonstate.studentlife.ihcv2.loaders.ResourceLoader;
 
 public class ResourcesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        ResourceAdapter.OnResourceClickListener,
-        LoaderManager.LoaderCallbacks<String> {
+        ResourceAdapter.OnResourceClickListener
+        {
 
     private final static String TAG = ResourcesActivity.class.getSimpleName();
 
@@ -76,7 +75,6 @@ public class ResourcesActivity extends AppCompatActivity
     private User user;
     private SQLiteDatabase mDB;
 
-    private final static int IHC_RESOURCE_LOADER_ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,22 +166,6 @@ public class ResourcesActivity extends AppCompatActivity
 
         mResourceAdapter = new ResourceAdapter(this, this);
         mResourceRV.setAdapter(mResourceAdapter);
-
-        TextView resourceMapBtn = (TextView)findViewById(R.id.mapbtn2);
-        resourceMapBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isNetworkAvailable()) {
-                    Intent intent = new Intent(ResourcesActivity.this, ResourceMapActivity.class);
-                    startActivity(intent);
-                }
-                else {
-                    showNoInternetConnectionMsg();
-                }
-            }
-        });
-
-        getSupportLoaderManager().initLoader(IHC_RESOURCE_LOADER_ID, null, this);
 
     }
 
@@ -314,69 +296,6 @@ public class ResourcesActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public Loader<String> onCreateLoader(int id, Bundle args) {
-        return new ResourceLoader(this);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<String> loader, String data) {
-        Log.d(TAG, "got results from loader");
-        try {
-            StringTokenizer stResources = new StringTokenizer(data, "\\");
-            while (stResources.hasMoreTokens()) {
-                String resourceString = stResources.nextToken();
-                JSONObject resourceJSON = new JSONObject(resourceString);
-                int resourceID = Integer.parseInt(resourceJSON.getString("id"));
-                String resourceTitle = resourceJSON.getString("title");
-                String resourceDescription = resourceJSON.getString("description");
-                String resourceLink = resourceJSON.getString("link");
-                String resourceImageName = resourceJSON.getString("image");
-
-                String resourceImagePath = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/images/resources/" + resourceImageName;
-
-
-                Resource retrievedResource = new Resource(resourceID, resourceTitle, resourceDescription, resourceLink, resourceImagePath);
-                resourceList.add(retrievedResource);
-            }
-            for (Resource resource : resourceList) {
-                mResourceAdapter.addResource(resource);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<String> loader) {
-        // Nothing to do...
-    }
-
-    public boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
-    }
-
-    public void showNoInternetConnectionMsg() {
-        android.app.AlertDialog.Builder builder;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new android.app.AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-        }
-        else {
-            builder = new android.app.AlertDialog.Builder(this);
-        }
-        builder.setTitle("No Internet Connection");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Close alert. User can try action again.
-            }
-        });
-        builder.setMessage(getResources().getString(R.string.no_internet_connection_msg));
-        builder.setIcon(android.R.drawable.ic_dialog_alert);
-        builder.show();
-    }
 
     public void getProfilePicture() {
         Cursor cursor = mDB.query(

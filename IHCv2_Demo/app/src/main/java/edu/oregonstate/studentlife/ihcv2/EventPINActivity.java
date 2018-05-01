@@ -22,9 +22,8 @@ import android.widget.Toast;
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.Event;
 import edu.oregonstate.studentlife.ihcv2.data.User;
-import edu.oregonstate.studentlife.ihcv2.loaders.AddCompletedEventLoader;
 
-public class EventPINActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
+public class EventPINActivity extends AppCompatActivity {
 
     private Event event;
     private User user;
@@ -87,12 +86,7 @@ public class EventPINActivity extends AppCompatActivity implements LoaderManager
                             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                         }
-                            //Thread.sleep(1000);
-                            //getSupportLoaderManager().initLoader(IHC_COMPLETED_EVENTS_ID, null, EventPINActivity.this);
 
-                        /*} catch (Exception e) {
-                            e.printStackTrace();
-                        }*/
                     }
                     else {
                         mPINStatusIV.setImageDrawable(getResources().getDrawable(R.drawable.ic_wrong_pin));
@@ -117,32 +111,12 @@ public class EventPINActivity extends AppCompatActivity implements LoaderManager
                         args.putInt(IHC_COMPLETED_EVENT_EVENTID_KEY, eventid);
                         args.putInt(IHC_COMPLETED_EVENT_RATING_KEY, (int)mEventRatingRB.getRating());
                         args.putString(IHC_COMPLETED_EVENT_COMMENT_KEY, mEventCommentET.getText().toString());
-                        getSupportLoaderManager().initLoader(IHC_COMPLETED_EVENTS_ID, args, EventPINActivity.this);
                     }
                 }
             });
         }
     }
 
-    @Override
-    public Loader<String> onCreateLoader(int id, Bundle args) {
-        return new AddCompletedEventLoader(this, args);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<String> loader, String data) {
-        if (data.equals("COMPLETED EVENT ADDED")) {
-            Toast.makeText(this, "Congratulations! Another event done!", Toast.LENGTH_SHORT).show();
-            Intent returnToDashboardIntent = new Intent(this, DashboardActivity.class);
-            returnToDashboardIntent.putExtra(Constants.EXTRA_CALLING_ACTIVITY_ID, EventPINActivity.class.getSimpleName());
-            startActivity(returnToDashboardIntent);
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<String> loader) {
-        // Nothing to do...
-    }
 
     @Override
     public void onBackPressed() {

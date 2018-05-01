@@ -43,15 +43,14 @@ import edu.oregonstate.studentlife.ihcv2.data.IHCDBContract;
 import edu.oregonstate.studentlife.ihcv2.data.IHCDBHelper;
 import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.data.User;
-import edu.oregonstate.studentlife.ihcv2.loaders.SettingsUpdateLoader;
 
 /**
  * Created by Omeed on 12/20/17.
  */
 
 public class SettingsActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        LoaderManager.LoaderCallbacks<String> {
+        implements NavigationView.OnNavigationItemSelectedListener
+        {
 
     Session session;
 
@@ -60,7 +59,6 @@ public class SettingsActivity extends AppCompatActivity
     DrawerLayout mDrawerLayout;
     ActionBarDrawerToggle mDrawerToggle;
     SettingsFragment fragment;
-    private final static int IHC_SETTINGS_LOADER_ID = 0;
     public final static String IHC_USER_ID_KEY = "IHC_USER_ID";
     public final static String IHC_USER_FIRST_NAME_KEY = "IHC_USER_FIRST_NAME";
     public final static String IHC_USER_LAST_NAME_KEY = "IHC_USER_LAST_NAME";
@@ -259,26 +257,8 @@ public class SettingsActivity extends AppCompatActivity
         args.putInt(IHC_USER_BD_DAY_KEY, day);
         args.putInt(IHC_USER_BD_MONTH_KEY, month);
         args.putInt(IHC_USER_BD_YEAR_KEY, year);*/
-        getSupportLoaderManager().restartLoader(IHC_SETTINGS_LOADER_ID, args, this);
     }
 
-    @Override
-    public Loader<String> onCreateLoader(int id, Bundle args) {
-        return new SettingsUpdateLoader(args, this);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<String> loader, String data) {
-        Log.d(TAG, "got return message from loader: " + data);
-        if (data.equals("UPDATEERROR")) {
-            Toast.makeText(this, "There was an error updating your information.", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<String> loader) {
-        // Nothing to do...
-    }
 
     public void getProfilePicture() {
         Cursor cursor = mDB.query(

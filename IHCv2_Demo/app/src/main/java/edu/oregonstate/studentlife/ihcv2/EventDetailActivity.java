@@ -12,9 +12,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -44,10 +42,9 @@ import java.util.TimeZone;
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.Event;
 import edu.oregonstate.studentlife.ihcv2.data.User;
-import edu.oregonstate.studentlife.ihcv2.loaders.PassportLoader;
 
 public class EventDetailActivity extends AppCompatActivity
-    implements LoaderManager.LoaderCallbacks<String> {
+    {
 
     private ImageView mEventImageIV;
     private TextView mEventNameTV;
@@ -75,7 +72,6 @@ public class EventDetailActivity extends AppCompatActivity
 
     private static final String TAG = EventDetailActivity.class.getSimpleName();
 
-    private final static int IHC_PASSPORT_LOADER_ID = 0;
     private ArrayList<Integer> completedEventIDs;
 
     @Override
@@ -154,8 +150,6 @@ public class EventDetailActivity extends AppCompatActivity
             }
         }
 
-        getSupportLoaderManager().initLoader(IHC_PASSPORT_LOADER_ID, null, this);
-
         mEventCheckInTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,34 +175,6 @@ public class EventDetailActivity extends AppCompatActivity
         });
     }
 
-    @Override
-    public Loader<String> onCreateLoader(int id, Bundle args) {
-        return new PassportLoader(this, String.valueOf(user.getId()));
-    }
-
-    @Override
-    public void onLoadFinished(Loader<String> loader, String data) {
-        Log.d(TAG, "got results from loader");
-        try {
-            StringTokenizer stEvents = new StringTokenizer(data, "\\");
-            completedEventIDs = new ArrayList<Integer>();
-            while (stEvents.hasMoreTokens()) {
-                String eventInfoString = stEvents.nextToken();
-                Log.d(TAG, "eventInfoString: " + eventInfoString);
-                JSONObject passportEventJSON = new JSONObject(eventInfoString);
-                Log.d(TAG, "passportEventJSON: " + passportEventJSON);
-                int eventid = Integer.parseInt(passportEventJSON.getString("eventid"));
-                completedEventIDs.add(eventid);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<String> loader) {
-        // Nothing to do...
-    }
 
     public void onPause() {
         super.onPause();

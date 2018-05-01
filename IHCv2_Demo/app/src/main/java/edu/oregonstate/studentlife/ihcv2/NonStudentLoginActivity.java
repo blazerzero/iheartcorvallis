@@ -9,8 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Build;
@@ -34,13 +32,12 @@ import org.json.JSONObject;
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.PBKDF2;
 import edu.oregonstate.studentlife.ihcv2.data.Session;
-import edu.oregonstate.studentlife.ihcv2.loaders.HashReceiverLoader;
-import edu.oregonstate.studentlife.ihcv2.loaders.NonStudentAuthLoader;
+
 
 /**
  * A login screen that offers login via email/password.
  */
-public class NonStudentLoginActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
+public class NonStudentLoginActivity extends AppCompatActivity{
 
     Session session;
     /**
@@ -125,8 +122,6 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
         mEmailView.startAnimation(myanim);
         mPasswordView.startAnimation(myanim);
 
-        //getSupportLoaderManager().initLoader(NS_LOGIN_LOADER_ID, null, this);
-
     }
 
     public void onPause() {
@@ -188,21 +183,6 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-
-            View view = this.getCurrentFocus();
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            if (isNetworkAvailable()) {
-                //new NonStudentAuthProcess(this).execute(email);
-                //new HashReceiver(this).execute(email, password);
-                getSupportLoaderManager().initLoader(NS_LOGIN_HASH_ID, null, this);
-            }
-            else {
-                showNoInternetConnectionMsg();
-            }
         }
     }
 
@@ -252,117 +232,6 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
         }
     }
 
-    @Override
-    public Loader<String> onCreateLoader(int id, Bundle args) {
-        if (id == NS_LOGIN_HASH_ID) {
-            showProgress(true);
-            return new HashReceiverLoader(this, email);
-        }
-        else if (id == NS_LOGIN_PASS_ID){
-            Log.d(TAG, "Hashed password found! Time to log in.");
-            return new NonStudentAuthLoader(this, email);
-        }
-        else {
-            return null;
-        }
-    }
-
-    @Override
-    public void onLoadFinished(Loader<String> loader, String data) {
-        if (!isAuth) {
-            String resultString = (String) data;
-
-            if (!resultString.equals("NOACCOUNTERROR")) {
-                Log.d(TAG, "Account found!");
-
-                try {
-                    PBKDF2 pHash = new PBKDF2();
-                    pHash.validatePassword(password, resultString);
-                    if (pHash.isMatch) {
-                        Log.d(TAG, "Password matched!");
-                        //new NonStudentAuthProcess(NonStudentLoginActivity.this).execute(email);
-                        isAuth = true;
-                        getSupportLoaderManager().initLoader(NS_LOGIN_PASS_ID, null, this);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            else {
-                mEmailView.setText("");
-                mPasswordView.setText("");
-                showProgress(false);
-                AlertDialog.Builder builder;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    builder = new AlertDialog.Builder(NonStudentLoginActivity.this, android.R.style.Theme_Material_Dialog_Alert);
-                }
-                else {
-                    builder = new AlertDialog.Builder(NonStudentLoginActivity.this);
-                }
-                builder.setTitle("Login Error");
-                builder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Try logging in again
-                    }
-                });
-                builder.setMessage("Incorrect email/password combination.");
-                builder.setIcon(android.R.drawable.ic_dialog_alert);
-                builder.show();
-            }
-        }
-        else {
-            Log.d(TAG, "result: " + data);
-            if (!data.equals("AUTHERROR")) {
-                try {
-                    JSONObject userJSON = new JSONObject(data);
-                    String first = userJSON.getString("firstname");
-                    String last = userJSON.getString("lastname");
-                    String name = first + " " + last;
-                    String email = userJSON.getString("email");
-                    String id = userJSON.getString("id");
-
-                    session = new Session(getApplicationContext());
-                    session.createLoginSession(name, email, id);
-
-                    Intent dashIntent = new Intent(this, DashboardActivity.class);
-                    startActivity(dashIntent);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            else {
-                mEmailView.setText("");
-                mPasswordView.setText("");
-                showProgress(false);
-                AlertDialog.Builder builder;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-                }
-                else {
-                    builder = new AlertDialog.Builder(this);
-                }
-                builder.setTitle("Login Error");
-                builder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Try logging in again
-                    }
-                });
-                builder.setMessage("Unable to authenticate user.");
-                builder.setIcon(android.R.drawable.ic_dialog_alert);
-                builder.show();
-            }
-
-
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<String> loader) {
-        // Nothing to do...
-    }
-
 
     private interface ProfileQuery {
         String[] PROJECTION = {
@@ -374,31 +243,6 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
         int IS_PRIMARY = 1;
     }
 
-    public boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
-    }
-
-    public void showNoInternetConnectionMsg() {
-        android.app.AlertDialog.Builder builder;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new android.app.AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-        }
-        else {
-            builder = new android.app.AlertDialog.Builder(this);
-        }
-        builder.setTitle("No Internet Connection");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Close alert. User can try action again.
-            }
-        });
-        builder.setMessage(getResources().getString(R.string.no_internet_connection_msg));
-        builder.setIcon(android.R.drawable.ic_dialog_alert);
-        builder.show();
-    }
 
 }
 

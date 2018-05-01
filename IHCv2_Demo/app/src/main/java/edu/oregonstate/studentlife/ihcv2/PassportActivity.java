@@ -20,8 +20,6 @@ import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -57,10 +55,9 @@ import edu.oregonstate.studentlife.ihcv2.data.IHCDBContract;
 import edu.oregonstate.studentlife.ihcv2.data.IHCDBHelper;
 import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.data.User;
-import edu.oregonstate.studentlife.ihcv2.loaders.PassportLoader;
 
 public class PassportActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, LoaderManager.LoaderCallbacks<String> {
+        implements NavigationView.OnNavigationItemSelectedListener{
 
     private final static String TAG = PassportActivity.class.getSimpleName();
     //private final static int IHC_GETUSERINFO_ID = 0;
@@ -188,7 +185,6 @@ public class PassportActivity extends AppCompatActivity
         //Bundle args = new Bundle();
         //args.putString(IHC_USER_EMAIL_KEY, email);
         //new CompletedEventReceiver(this).execute(email);
-        getSupportLoaderManager().initLoader(IHC_GETCOMPLETEDEVENTS_ID,null, this);
     }
 
     public void onPause() {
@@ -306,141 +302,6 @@ public class PassportActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public Loader<String> onCreateLoader(int id, Bundle args) {
-        return new PassportLoader(this, String.valueOf(userid));
-    }
-
-    @Override
-    public void onLoadFinished(Loader<String> loader, String data) {
-        if (data != null) {
-            try {
-                StringTokenizer stEvents = new StringTokenizer(data, "\\");
-                while (stEvents.hasMoreTokens()) {
-                    String eventInfoString = stEvents.nextToken();
-                    Log.d(TAG, "eventInfoString: " + eventInfoString);
-                    JSONObject eventJSON = new JSONObject(eventInfoString);
-                    Log.d(TAG, "eventJSON: " + eventJSON);
-                    int eventid = Integer.parseInt(eventJSON.getString("eventid"));
-                    String eventName = eventJSON.getString("name");
-                    String eventLocation = eventJSON.getString("location");
-                    String eventAddress = eventJSON.getString("address");
-                    String eventStartDT = eventJSON.getString("startdt");
-                    String eventEndDT = eventJSON.getString("enddt");
-                    String eventDescription = eventJSON.getString("description");
-                    String eventImageName = eventJSON.getString("image");
-                    String eventLink1 = eventJSON.getString("link1");
-                    String eventLink2 = eventJSON.getString("link2");
-                    String eventLink3 = eventJSON.getString("link3");
-                    int eventPin = Integer.parseInt(eventJSON.getString("pin"));
-
-                    StringTokenizer dateTimeTokenizer = new StringTokenizer(eventStartDT);
-                    String eventStartYear = dateTimeTokenizer.nextToken("-");
-                    String eventStartMonth = dateTimeTokenizer.nextToken("-");
-                    String eventStartDay = dateTimeTokenizer.nextToken(" ");
-                    String eventStartTime = dateTimeTokenizer.nextToken();
-
-                    dateTimeTokenizer = new StringTokenizer(eventEndDT);
-                    String eventEndYear = dateTimeTokenizer.nextToken("-");
-                    String eventEndMonth = dateTimeTokenizer.nextToken("-");
-                    String eventEndDay = dateTimeTokenizer.nextToken(" ");
-                    String eventEndTime = dateTimeTokenizer.nextToken();
-
-                    SimpleDateFormat sdfEvent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-                    Date eventStartDate = sdfEvent.parse(eventStartDT);
-                    Date eventEndDate = sdfEvent.parse(eventEndDT);
-
-                    SimpleDateFormat _24HourFormat = new SimpleDateFormat("HH:mm", Locale.US);
-                    SimpleDateFormat _12HourFormat = new SimpleDateFormat("hh:mm a", Locale.US);
-
-                    Date _24HourEventTime = _24HourFormat.parse(eventStartTime);
-                    eventStartTime = _12HourFormat.format(_24HourEventTime);
-                    if (eventStartTime.charAt(0) == '0') {
-                        eventStartTime = eventStartTime.substring(1);
-                    }
-                    eventStartDay = eventStartDay.substring(1);
-                    if (eventStartDay.charAt(0) == '0') {
-                        eventStartDay = eventStartDay.substring(1);
-                    }
-
-                    if (eventStartMonth.charAt(0) == '0') {
-                        eventStartMonth = eventStartMonth.substring(1);
-                    }
-
-                    /*int monthInt = Integer.parseInt(eventStartMonth);
-                    eventStartMonth = monthShortNames[monthInt - 1];*/
-
-                    _24HourEventTime = _24HourFormat.parse(eventEndTime);
-                    eventEndTime = _12HourFormat.format(_24HourEventTime);
-                    if (eventEndTime.charAt(0) == '0') {
-                        eventEndTime = eventEndTime.substring(1);
-                    }
-                    eventEndDay = eventEndDay.substring(1);
-                    if (eventEndDay.charAt(0) == '0') {
-                        eventEndDay = eventEndDay.substring(1);
-                    }
-
-                    if (eventEndMonth.charAt(0) == '0') {
-                        eventEndMonth = eventEndMonth.substring(1);
-                    }
-
-                    /*monthInt = Integer.parseInt(eventEndMonth);
-                    eventEndMonth = monthShortNames[monthInt - 1];*/
-
-                    String eventImagePath = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/images/events/" + eventImageName;
-
-                    Event retrievedEvent = new Event(eventid, eventName, eventLocation, eventAddress,
-                            eventStartDate, eventEndDate, eventStartTime, eventEndTime,
-                            eventStartMonth, eventStartDay, eventStartYear,
-                            eventEndMonth, eventEndDay, eventEndYear,
-                            eventDescription, eventImagePath, eventLink1, eventLink2, eventLink3, eventPin);
-
-                    completedEventList.add(retrievedEvent);
-
-                    if (isNetworkAvailable()) {
-                        mPassportAdapter.addEventToPassport(retrievedEvent);
-                    } else {
-                        showNoInternetConnectionMsg();
-                    }
-                }
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<String> loader) {
-        // Nothing to do...
-    }
-
-    public boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
-    }
-
-    public void showNoInternetConnectionMsg() {
-        android.app.AlertDialog.Builder builder;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new android.app.AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-        }
-        else {
-            builder = new android.app.AlertDialog.Builder(this);
-        }
-        builder.setTitle("No Internet Connection");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Close alert. User can try action again.
-            }
-        });
-        builder.setMessage(getResources().getString(R.string.no_internet_connection_msg));
-        builder.setIcon(android.R.drawable.ic_dialog_alert);
-        builder.show();
-    }
 
     public void getProfilePicture() {
         Cursor cursor = mDB.query(
