@@ -111,7 +111,7 @@
         }
         \begin{abstract}
         % 6. Fill in your abstract
-        		This document takes a look back at the work have done on the I Heart Corvallis mobile application this past term. It recaps the purposes and goals of the project, explains our current status on the project, and details what we have left to complete. It also describes any problems that we have encountered, how they have impeded our progress, and how we have solved them. The document also showcases some notable pieces of code that we have recently implemented and some updated screenshots of our application and administrative website.
+        		This document takes a look back at the work have done on the I Heart Corvallis mobile application this past term. It recaps the purposes and goals of the project, explains our current status on the project, and details what we have left to complete. It also describes any problems that we have encountered, how they impeded our progress, and how we solved them. The document also showcases some notable pieces of code that we have recently implemented and some updated screenshots of our application and administrative website.
         \end{abstract}
     \end{singlespace}
 \end{titlepage}
@@ -130,16 +130,46 @@
   On top of developing the mobile application, we are creating an administrative website for the CCR office so they can manage in-app content, such as events, prizes, and resources.
 
 \section{Current Status}
-  
+  We are currently all finished with the mobile application and administrative website. Everything we have implemented has been not only to our client's satisfaction, but beyond what she originally conceptualized for the project. We plan on working on the demo version of the application in the coming days in preparation for the Engineering Expo, as we will not be able to rely on an Internet connection at the Expo. This is also why we will create a short video of our website that will be played at the Expo explaining and demonstrating how the interface works with the application.
 
 
 \section{Problems We've Encountered}
-
+  Through out this term we have encountered a few minor issues. The first issue we ran into was figuring out a host to host our database. Currently, we are still hosting our database on our engineering servers but will need to figure out another solution for our client. The second problem we have encountered was intergration CAS login system with in our mobile application. Once we started to implement the login system, we found that it was a lot more complicated to utilize the CAS system from within a mobile application than it was from a website. Lastly, we are still uncertain about the future of this project. Our client's position will be cut at the end of the school year, and she is still trying to figure out if the project can be passed to someone else. Due to this reason we are not able to input real-life data into the application.
 
 \section{Solutions to Problems}
+  Although finding a long-term host for our application is not one of our requirements for this project, we do want to help our client as much as we can before our departure, so we will be looking for specific third-party hosts that our client could use, as well as helping her determine which host would be the best one to utilize. Regarding the implementation of CAS, we reached our to Andrew Morgan of Identity and Access Management at OSU for help. Unfortunately, he was not familiar with the mobile implementation of CAS. We then reached out to Derek Whiteside of Web and Mobile Services for additional guidance, but have yet to hear back from him. We spent a few weeks on this issue and discussed it with out client, who decided that an alternative solution would suffice. Instead of implementing CAS for OSU students and faculty members, we now simply ask new users upon signing up if they are and OSU student or faculty member. If they check this box to indicate a "yes" answer, we ask them for their OSU student ID number and ONID username. This turned out to be sufficient, as it turned out that the only reason our client wanted to utilize CAS was so that they could track user activity and connect it with students' accounts. As far as the future of our project, our client has been meeting with resources and organizations around campus to find someone who is interesting in taking on the project.
+
+\section{Mobile App Progress}
+  \subsection{OSU Branding}
+    \includegraphics[height=8cm]{splashscreen}
+
+  \subsection{Getting More Information from the User Upon Signing Up}
+
+  \subsection{Survey}
+
+  \subsection{Bottom Navigation Bar}
+
+  \subsection{"Anytime" Events}
+
+  \subsection{Event and Resource Pictures}
+
+  \subsection{Profile Picture}
+
+  \subsection{Permissions}
+
+  \subsection{Error Handling}
+
+\section{Administrative Website Progress}
+  \subsection{Making and Updating an “Anytime” Event}
+
+  \subsection{Adding, Modifying, and Deleting Event and Resource Pictures}
+
+  \subsection{Adding, Modifying, and Deleting Survey Questions}
+
+  \subsection{Error Handling}
 
 
 \section{Conclusion}
-	At this point, a large portion of our application is complete. We have implemented nearly all of our in-app pages, we have successfully set up a database connection and consistent database communication with the app, and our administrative website is coming along nicely as well. Our next steps will be to determine if we will be able to implement the CAS ONID login, find a third-party service on which to host our database long-term, and to complete the remaining pieces of our application and administrative website. Our goal is to have a completed beta version of the app and website by the end of this term.
+
 
 \end{document}
