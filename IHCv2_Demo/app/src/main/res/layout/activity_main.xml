@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="edu.oregonstate.studentlife.ihcv2.MainActivity">
+    tools:context="edu.oregonstate.studentlife.ihcv2Demo.MainActivity">
 
     <ImageView
         android:id="@+id/iv_aerial"

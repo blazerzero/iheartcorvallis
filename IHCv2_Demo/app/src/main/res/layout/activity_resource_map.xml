@@ -13,7 +13,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        tools:context="edu.oregonstate.studentlife.ihcv2.ResourceMapActivity"/>
+        tools:context="edu.oregonstate.studentlife.ihcv2Demo.ResourceMapActivity"/>
 
     <LinearLayout
         android:id="@+id/gm_map_legend"

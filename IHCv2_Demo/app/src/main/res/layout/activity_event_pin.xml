@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="edu.oregonstate.studentlife.ihcv2.EventPINActivity">
+    tools:context="edu.oregonstate.studentlife.ihcv2Demo.EventPINActivity">
 
     <TextView
         android:id="@+id/tv_pin_event_name"
