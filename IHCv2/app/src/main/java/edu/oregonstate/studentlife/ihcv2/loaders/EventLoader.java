@@ -24,12 +24,7 @@ public class EventLoader extends AsyncTaskLoader<String> {
 
     @Override
     public void onStartLoading() {
-        if (eventJSON != null) {
-            Log.d(TAG, "loader returning cached events");
-            deliverResult(eventJSON);
-        } else {
-            forceLoad();
-        }
+        forceLoad();
     }
 
     @Override
@@ -59,6 +54,7 @@ public class EventLoader extends AsyncTaskLoader<String> {
     @Override
     public void deliverResult(String data) {
         eventJSON = data;
+        Log.d(TAG, "event data: " + data);
         super.deliverResult(data);
     }
 

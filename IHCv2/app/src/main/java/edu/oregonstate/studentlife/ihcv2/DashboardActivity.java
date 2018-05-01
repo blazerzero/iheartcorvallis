@@ -95,9 +95,9 @@ public class DashboardActivity extends AppCompatActivity
     private ArrayList<Event> completedEventList;
     private PassportAdapter mPassportAdapter;
 
-    boolean gotUser = false;
-    boolean gotPassport = false;
-    boolean gotEvents = false;
+    boolean gotUser;
+    boolean gotPassport;
+    boolean gotEvents;
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -125,6 +125,10 @@ public class DashboardActivity extends AppCompatActivity
         mDB = dbHelper.getWritableDatabase();
 
         overridePendingTransition(0,0);
+
+        gotUser = false;
+        gotPassport = false;
+        gotEvents = false;
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -219,6 +223,7 @@ public class DashboardActivity extends AppCompatActivity
             Log.d(TAG, "User ID: " + user.getId());
             numStamps = user.getStampCount();
             gotUser = true;
+            args.putInt(IHC_USER_ID_KEY, user.getId());
             getSupportLoaderManager().initLoader(IHC_PASSPORT_LOADER_ID, args, this);
         }
         else {
@@ -241,13 +246,17 @@ public class DashboardActivity extends AppCompatActivity
             email = args.getString(IHC_USER_EMAIL_KEY);
             userid = args.getInt(IHC_USER_ID_KEY);
         }
+        Log.e(TAG, "loader id: " + id);
         if (id == IHC_USER_LOADER_ID) {
+            Log.d(TAG, "user loader beginning");
             return new UserInfoLoader(this, email);
         }
         else if (id == IHC_PASSPORT_LOADER_ID) {
+            Log.d(TAG, "passport loader beginning");
             return new PassportLoader(this, String.valueOf(userid));
         }
         else if (id == IHC_EVENT_LOADER_ID){
+            Log.d(TAG, "event loader beginning");
             return new EventLoader(this);
         }
         else
@@ -258,7 +267,11 @@ public class DashboardActivity extends AppCompatActivity
     public void onLoadFinished(Loader<String> loader, String data) {
         Bundle args = new Bundle();
         args.putString(IHC_USER_EMAIL_KEY, email);
+        Log.d(TAG, "gotUser = " + gotUser);
+        Log.d(TAG, "gotPassport = " + gotPassport);
+        Log.d(TAG, "gotEvents = " + gotEvents);
         if (!gotUser && !gotPassport && !gotEvents) {
+            Log.d(TAG, "user data: " + data);
             // user stuff
             if (data != null) {
                 try {
@@ -326,6 +339,7 @@ public class DashboardActivity extends AppCompatActivity
             }
         }
         else if (gotUser && !gotPassport && !gotEvents) {
+            Log.d(TAG, "passport data: " + data);
             // passport stuff
             Log.d(TAG, "got results from loader");
             try {
@@ -429,6 +443,7 @@ public class DashboardActivity extends AppCompatActivity
             }
         }
         else if (gotUser && gotPassport && !gotEvents) {
+            Log.d(TAG, "event data: " + data);
             // passport stuff
             try {
                 StringTokenizer stEvents = new StringTokenizer(data, "\\");
@@ -794,9 +809,14 @@ public class DashboardActivity extends AppCompatActivity
     @Override
     public void onResume() {
         super.onResume();
+        /*Log.e(TAG, "resuming!");
         Bundle args = new Bundle();
         args.putString(IHC_USER_EMAIL_KEY, email);
-        getSupportLoaderManager().initLoader(IHC_USER_LOADER_ID, args, this);
+        args.putInt(IHC_USER_ID_KEY, userid);
+        gotUser = false;
+        gotPassport = false;
+        gotEvents = false;
+        getSupportLoaderManager().initLoader(IHC_USER_LOADER_ID, args, this);*/
     }
 
     @Override

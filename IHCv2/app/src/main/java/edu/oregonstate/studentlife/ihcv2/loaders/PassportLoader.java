@@ -29,12 +29,7 @@ public class PassportLoader extends AsyncTaskLoader<String> {
 
     @Override
     protected void onStartLoading() {
-        if (passportJSON != null) {
-            Log.d(TAG, "getting passport with URL: " + IHC_GET_COMPLETED_EVENTS_URL);
-            deliverResult(passportJSON);
-        } else {
-            forceLoad();
-        }
+        forceLoad();
     }
 
     @Override
@@ -67,6 +62,7 @@ public class PassportLoader extends AsyncTaskLoader<String> {
     @Override
     public void deliverResult(String data) {
         passportJSON = data;
+        Log.d(TAG, "passport data: " + data);
         super.deliverResult(data);
     }
 

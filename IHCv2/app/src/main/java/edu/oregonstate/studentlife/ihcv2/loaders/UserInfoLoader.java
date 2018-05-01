@@ -30,12 +30,7 @@ public class UserInfoLoader extends AsyncTaskLoader<String> {
 
     @Override
     public void onStartLoading() {
-        if (userJSON != null) {
-            Log.d(TAG, "loader returning cached user information");
-            deliverResult(userJSON);
-        } else {
-            forceLoad();
-        }
+        forceLoad();
     }
 
     @Override
@@ -75,6 +70,7 @@ public class UserInfoLoader extends AsyncTaskLoader<String> {
     @Override
     public void deliverResult(String data) {
         userJSON = data;
+        Log.d(TAG, "user data: " + data);
         super.deliverResult(data);
     }
 }
