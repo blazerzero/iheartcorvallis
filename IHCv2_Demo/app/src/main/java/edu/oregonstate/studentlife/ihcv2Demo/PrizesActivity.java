@@ -37,6 +37,7 @@ import java.util.HashMap;
 
 import edu.oregonstate.studentlife.ihcv2Demo.adapters.PrizeAdapter;
 import edu.oregonstate.studentlife.ihcv2Demo.data.Constants;
+import edu.oregonstate.studentlife.ihcv2Demo.data.Event;
 import edu.oregonstate.studentlife.ihcv2Demo.data.IHCDBContract;
 import edu.oregonstate.studentlife.ihcv2Demo.data.IHCDBHelper;
 import edu.oregonstate.studentlife.ihcv2Demo.data.Prize;
@@ -143,6 +144,21 @@ public class PrizesActivity extends AppCompatActivity
             }
         });
 
+        prizeList = new ArrayList<Prize>();
+        try {
+            prizeList.add(
+                    new Prize("10 Dollar Qudoba gift card", "gold")
+            );
+            prizeList.add(
+                    new Prize("5 Dollar Dutch Bro's gift card", "silver")
+            );
+            prizeList.add(
+                    new Prize("10 Dollar Book Store gift card", "bronze")
+            );
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
         goldPrizeRV = (RecyclerView) findViewById(R.id.rv_gold_prizes);
         silverPrizeRV = (RecyclerView) findViewById(R.id.rv_silver_prizes);
         bronzePrizeRV = (RecyclerView) findViewById(R.id.rv_bronze_prizes);
@@ -159,7 +175,17 @@ public class PrizesActivity extends AppCompatActivity
         silverPrizeRV.setAdapter(mSilverPrizeAdapter);
         bronzePrizeRV.setAdapter(mBronzePrizeAdapter);
 
-
+        for (Prize prize : prizeList) {
+            if (prize.getLevel().equals("gold")) {
+                mGoldPrizeAdapter.addPrize(prize);
+            }
+            else if (prize.getLevel().equals("silver")) {
+                mSilverPrizeAdapter.addPrize(prize);
+            }
+            else if (prize.getLevel().equals("bronze")) {
+                mBronzePrizeAdapter.addPrize(prize);
+            }
+        }
         //new PrizeReceiver(this).execute();
     }
 
