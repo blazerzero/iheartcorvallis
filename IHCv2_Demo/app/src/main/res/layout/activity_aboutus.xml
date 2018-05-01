@@ -41,9 +41,8 @@
                         <ImageView
                             android:id="@+id/iv_about_image"
                             android:layout_width="match_parent"
-                            android:layout_height="250dp"
+                            android:layout_height="150dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ihcgroupnew"
                             android:contentDescription="@string/ihc_about_image_description"/>
 
                         <TextView
@@ -54,7 +53,6 @@
                             android:paddingEnd="10dp"
                             android:paddingTop="5dp"
                             android:paddingBottom="5dp"
-                            android:text="@string/hc_about_page_text"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
                             android:gravity="start|center_vertical"/>

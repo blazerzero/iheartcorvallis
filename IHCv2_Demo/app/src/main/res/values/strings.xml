@@ -168,10 +168,4 @@
     <string name="prompt_is_osu">Are you an OSU student or faculty member?</string>
     <string name="extra_info_already_received">Extra user info already received!</string>
 
-    <!-- Hard-coded strings -->
-    <string name="hc_about_page_text">The I Heart Corvallis project is a mobile application we are creating for the Corvallis Community Relations office (also known as the CCR office) and is part of a larger Initiative ran by the office to help students become more involved in the Corvallis community. The application focuses on increasing student awareness of events and service opportunities happening around Corvallis, as well as creating an incentive for students to attend these events.</string>
-    <string name="hc_impact_event_description">A motor skills fitness program for children with special needs.</string>
-    <string name="hc_expo_event_description">Oregon State University students showcasing their engineering projects.</string>
-    <string name="hc_farmers_event_description">Check out what local farms and businesses have to offer! A great way to connect with community members.</string>
-
 </resources>

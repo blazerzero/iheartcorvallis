@@ -10,7 +10,7 @@
     android:layout_below="@+id/appBarLayout"
     android:background="@color/colorPrimary"
     tools:openDrawer="start"
-    tools:context="edu.oregonstate.studentlife.ihcv2Demo.MainActivity">
+    tools:context="edu.oregonstate.studentlife.ihcv2.MainActivity">
 
     <!--<ScrollView
         android:layout_width="match_parent"

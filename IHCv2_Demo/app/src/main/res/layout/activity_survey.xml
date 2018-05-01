@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="edu.oregonstate.studentlife.ihcv2Demo.SurveyActivity">
+    tools:context="edu.oregonstate.studentlife.ihcv2.SurveyActivity">
 
     <TextView
         android:id="@+id/tv_survey_header"

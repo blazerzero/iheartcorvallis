@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="edu.oregonstate.studentlife.ihcv2Demo.LoginPageActivity"
+    tools:context="edu.oregonstate.studentlife.ihcv2.LoginPageActivity"
     android:weightSum="1">
 
     <ImageView
