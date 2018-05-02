@@ -134,10 +134,10 @@
 
 
 \section{Problems We've Encountered}
-  Through out this term we have encountered a few minor issues. The first issue we ran into was figuring out a host to host our database. Currently, we are still hosting our database on our engineering servers but will need to figure out another solution for our client. The second problem we have encountered was intergration CAS login system with in our mobile application. Once we started to implement the login system, we found that it was a lot more complicated to utilize the CAS system from within a mobile application than it was from a website. Lastly, we are still uncertain about the future of this project. Our client's position will be cut at the end of the school year, and she is still trying to figure out if the project can be passed to someone else. Due to this reason we are not able to input real-life data into the application.
+  Throughout this term we have encountered a few minor issues. The first issue we ran into was figuring out a permanent host for our database. Currently, we are still hosting our database on our engineering servers but will need to figure out another solution for our client. The second problem we have encountered was integrating the CAS login system. Once we started to implement the login system, we found that it was a lot more complicated to utilize the CAS system from within a mobile application than it was from a website. Lastly, we are still uncertain about the future of this project. Our client's position will be cut at the end of the school year, and she is still trying to figure out if the project can be passed to someone else. Due to this reason we are not able to input real-life data into the application.
 
 \section{Solutions to Problems}
-  Although finding a long-term host for our application is not one of our requirements for this project, we do want to help our client as much as we can before our departure, so we will be looking for specific third-party hosts that our client could use, as well as helping her determine which host would be the best one to utilize. Regarding the implementation of CAS, we reached our to Andrew Morgan of Identity and Access Management at OSU for help. Unfortunately, he was not familiar with the mobile implementation of CAS. We then reached out to Derek Whiteside of Web and Mobile Services for additional guidance, but have yet to hear back from him. We spent a few weeks on this issue and discussed it with out client, who decided that an alternative solution would suffice. Instead of implementing CAS for OSU students and faculty members, we now simply ask new users upon signing up if they are and OSU student or faculty member. If they check this box to indicate a "yes" answer, we ask them for their OSU student ID number and ONID username. This turned out to be sufficient, as it turned out that the only reason our client wanted to utilize CAS was so that they could track user activity and connect it with students' accounts. As far as the future of our project, our client has been meeting with resources and organizations around campus to find someone who is interesting in taking on the project.
+  Although finding a long-term host for our application is not one of our requirements for this project, we do want to help our client as much as we can before our departure, so we will be looking for specific third-party hosts that our client could use, as well as helping her determine which host would be the best one to utilize. Regarding the implementation of CAS, we reached out to Andrew Morgan of Identity and Access Management at OSU for help. Unfortunately, he was not familiar with the mobile implementation of CAS. We then reached out to Derek Whiteside of Web and Mobile Services for additional guidance, but have yet to hear back from him. We spent a few weeks on this issue and discussed it with our client, who decided that an alternative solution would suffice. Instead of implementing CAS for OSU students and faculty members, we now simply ask new users upon signing up if they are an OSU student or faculty member. If they check this box to indicate a "yes" answer, we ask them for their OSU student ID number and ONID username. This turned out to be sufficient, as the main reason our client wanted to utilize CAS was so that they could track user activity and connect it with students' accounts. As far as the future of our project, our client has been meeting with resources and organizations around campus to find someone who is interested in taking on the project.
 
 \section{Mobile App Progress}
   \subsection{OSU Branding}
@@ -147,7 +147,7 @@
   Upon account creation a user will now be prompted with another set of questions. These questions are mainly for data gathering purposes,
   in order to measure user activity against what type of user they are. This is an interest of our client, who wants to discern who is using this application.
   The questions asked are the user's age, grade, and the type of user (domestic, international, faculty, resident, visitor). The application also prompts
-  the user if they are a student. If so, the application asks the student to input their osu ID and their username.
+  the user if they are a student. If so, the application asks the student to input their OSU ID and username.
 
   \subsection{Survey}
   After filling in the additional information, the user is then prompted with an initial, optional survey. This survey is important in adding a measurable element
@@ -164,7 +164,7 @@
 
   \subsection{Event and Resource Pictures}
   An addition to the application is the ability to display different images for each event and each resource. Initially we had a default image that was used for each one.
-  Through the administrative website an image can be added while creating an event or resource, and this picture will show up on the app with the event.
+  Through the administrative website an image can be added while creating an event or resource, and this picture will show up on the app with its respective event.
 
   \subsection{Profile Picture}
   The user now has the option to add a picture, either from their camera roll or by taking a picture. This option is provided at account creation as well as in the settings
@@ -173,7 +173,7 @@
 
   \subsection{Permissions}
   Certain pages in the application require permission to access data or functionality from the user's device. An example is accessing the event map will ask the user for their
-  permission to use their location information. Another example is clicking on the add profile picture will request access to the users camera and gallery.
+  permission to use their location information. Another example is clicking on the add profile picture will request access to the user's camera and gallery.
 
   \subsection{Error Handling}
   There are plenty of situations that could cause errors in our application. We implemented checks to ensure these errors are handled correctly without crashing
@@ -186,25 +186,23 @@
 \section{Administrative Website Progress}
 
   \subsection{Making and Updating an “Anytime” Event}
-  Reviwing our application we had came accross a small bug that related to events with no time constraint. An example of this would be Bald Hill in which a user can hike Bald Hill
-  anytime they wish. To work around this bug, we have implemented a
+  Reviewing our application we came across a small bug that related to events with no time constraint. An example of this would be Bald Hill in which a user can hike Bald Hill
+  anytime they wish. To work around this bug, we have implemented an extra button that allows the admin to specify that the event they are creating is recurring, this is done in lieu of entering a date.
 
   \subsection{Adding, Modifying, and Deleting Event and Resource Pictures}
-  Last term we had not implemented the functionality for our clients to add, modify or delete a photo from the event and resource pages. They now can successfully complete these actions as we have implemented the code into our web adminstration website. We did run into a couple of problems such as where and how to store the photos into our database. In order to work around this issue, we saved the path to the photo into our database and saved the photo itself in a seprate directory called images, which held subdirectories called "events," "resources" and "about".
+  Last term we had not implemented the functionality for our clients to add, modify or delete a photo from an event or resource. They now can successfully complete these actions as we have implemented the code into our web administration website. We did run into a couple of problems such as where and how to store the photos into our database. In order to work around this issue, we saved the path to the photo into our database and saved the photo itself in a separate directory called images, which held sub-directories called "events," "resources" and "about".
 
   \subsection{Adding, Modifying, and Deleting Survey Questions}
-  Towards the end of Winter term, our client had asked us to implement a survery option for new users when first signing up. We implemented this feature at the beginning of this term, allowing our clients to successfull add, modify and delete survey questions through the website.
+  Towards the end of Winter term, our client asked us to implement a survey option for new users when first signing up. We implemented this feature at the beginning of this term, allowing our clients to successfully add, modify and delete survey questions throughout the website.
 
   \subsection{Form Validation}
-  An error we had found at the beginning of the term was the failure of our form validation function when adding content through the website. The user would be able to miss a field and still be able to add content to the database. To patch this bug, we fixed some syntax errors in our form validation function, and it worked correctly.
+  An error we had found at the beginning of the term was the failure of our form validation function when adding content through the website. The user would be able to leave a required field empty and still be able to add the content to the database. To patch this bug, we fixed some syntax errors in our form validation function, and it worked correctly.
 
   \subsection{Prepared Statements}
 
 \section{Conclusion}
-At this point, we have fully completed the mobile application and administrative website to our clients full satisfaction. Our next steps will be to determine if we will be able to implement the CAS ONID login, find a
-third-party service on which to host our database long-term, and to complete the demo version of the application and record a demo of the administrative website. Our goal is to have this completed a week before expo just in
-case we come accross small changes.
-
-
+At this point, we have fully completed the mobile application and administrative website to our client's full satisfaction. Our next steps will be to determine if we will be able to implement the CAS ONID login, find a
+third-party service on which to host our database long-term, and complete the demo version of the application and record a demo of the administrative website. Our goal is to have this completed a week before expo just in
+case we need to make small changes.
 
 \end{document}
