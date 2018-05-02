@@ -28,6 +28,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -147,13 +148,16 @@ public class PrizesActivity extends AppCompatActivity
         prizeList = new ArrayList<Prize>();
         try {
             prizeList.add(
-                    new Prize("10 Dollar Qudoba gift card", "gold")
+                    new Prize("Free Qdoba Entree for You AND a Friend!", "gold")
             );
             prizeList.add(
-                    new Prize("5 Dollar Dutch Bro's gift card", "silver")
+                    new Prize("$5 Dutch Bros Gift Card", "silver")
             );
             prizeList.add(
-                    new Prize("10 Dollar Book Store gift card", "bronze")
+                    new Prize("$10 OSU Beaver Store Gift Card", "bronze")
+            );
+            prizeList.add(
+                    new Prize("Free Chipotle Entree", "bronze")
             );
         }catch (Exception e) {
             e.printStackTrace();
@@ -191,7 +195,7 @@ public class PrizesActivity extends AppCompatActivity
 
     @Override
     public void onPrizeClick(Prize prize) {
-        // ON PRIZE CLICK CODE
+        Toast.makeText(this, "Come to the Corvallis Community Relations office in Snell 150 to redeem this prize!", Toast.LENGTH_LONG).show();
     }
 
     public void onPause() {

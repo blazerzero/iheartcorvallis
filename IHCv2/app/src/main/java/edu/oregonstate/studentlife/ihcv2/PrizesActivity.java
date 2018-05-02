@@ -30,6 +30,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -185,7 +186,7 @@ public class PrizesActivity extends AppCompatActivity
 
     @Override
     public void onPrizeClick(Prize prize) {
-        // ON PRIZE CLICK CODE
+        Toast.makeText(this, "Come to the Corvallis Community Relations office in Snell 150 to redeem this prize!", Toast.LENGTH_LONG).show();
     }
 
     public void onPause() {

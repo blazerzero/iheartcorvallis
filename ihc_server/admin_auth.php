@@ -19,9 +19,17 @@ else {
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
   </head>
   <body>
+    <div class="siteheader">
+      <br><br>
+      <left class="sitenametop">I HEART CORVALLIS</left>
+      <br><br>
+      <left class="sitenamebottom">Administrative Suite</left>
+      <br><br>
+    </div>
+    <br><br>
     <center>
-      <h2>Login</h2>
-      <p>Please fill in your credentials to login.</p>
+      <h1>Login</h1>
+      <h4>Please fill in your credentials to login.</h4>
       <form action="./admin_server/login.php" method="post">
         <div class="elem">
           Email: <input class="inputbox" type="email" name="email"><br><br>
@@ -29,7 +37,7 @@ else {
         <div class="elem">
           Password: <input class="inputbox" type="password" name="password"><br><br>
         </div>
-        <input class="ui button" type="submit" value="Log In">
+        <input class="ui large button" type="submit" value="Log In">
       </form>
     </center>
   </body>
