@@ -162,20 +162,19 @@ public class EventDetailActivity extends AppCompatActivity
                 // go to check user geolocation and ask for event verification PIN
                 // go to geolocation first, but goes straight to PIN for now
                 Log.d(TAG, "check in button pressed");
-
-                if (!completedEventIDs.contains(event.getEventid())) {
-                    Calendar currentDate = Calendar.getInstance(TimeZone.getTimeZone("America/LosAngeles"), Locale.US);
-                    Log.d(TAG, "current date: " + currentDate.getTime());
-                    Log.d(TAG, "event start dt: " + event.getStartDT());
-                    if (currentDate.getTime().before(event.getStartDT())) {
-                        Toast.makeText(EventDetailActivity.this, "This event hasn't started yet. Try again when the event has started.", Toast.LENGTH_LONG).show();
-                    }
-                    else {
+                
+                Calendar currentDate = Calendar.getInstance(TimeZone.getTimeZone("America/LosAngeles"), Locale.US);
+                Log.d(TAG, "current date: " + currentDate.getTime());
+                Log.d(TAG, "event start dt: " + event.getStartDT());
+                if (currentDate.getTime().before(event.getStartDT())) {
+                    Toast.makeText(EventDetailActivity.this, "This event hasn't started yet. Try again when the event has started.", Toast.LENGTH_LONG).show();
+                } else if (completedEventIDs != null) {
+                    if (!completedEventIDs.contains(event.getEventid())) {
                         verifyLocation();
                     }
-                }
-                else {
-                    Toast.makeText(EventDetailActivity.this, "You have already checked into this event!", Toast.LENGTH_LONG).show();
+                    else {
+                        Toast.makeText(EventDetailActivity.this, "You have already checked into this event!", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
@@ -198,6 +197,7 @@ public class EventDetailActivity extends AppCompatActivity
                 JSONObject passportEventJSON = new JSONObject(eventInfoString);
                 Log.d(TAG, "passportEventJSON: " + passportEventJSON);
                 int eventid = Integer.parseInt(passportEventJSON.getString("eventid"));
+                Log.d(TAG, "completed event id: " + eventid);
                 completedEventIDs.add(eventid);
             }
         } catch (Exception e) {
