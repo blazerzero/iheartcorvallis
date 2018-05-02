@@ -299,7 +299,7 @@ public class DashboardActivity extends AppCompatActivity
                     Log.d(TAG, "onid.length(): " + onid.length());
                     Log.d(TAG, "type: " + type);
 
-                    if (studentid == -1 || onid.length() == 0 || birthDate.toString().equals("Sun Nov 30 00:00:00 PST 2") || grade == 0 || type == -1) {
+                    if (studentid == -1 || birthDate.toString().equals("Sun Nov 30 00:00:00 PST 2") || type == -1) {
                         Log.d(TAG, "about to get information from user");
                         Intent getUserInfoIntent = new Intent(this, GetUserInfoActivity.class);
                         getUserInfoIntent.putExtra(Constants.EXTRA_USER, user);

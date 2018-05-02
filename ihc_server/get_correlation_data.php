@@ -51,6 +51,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $allData = array();
   $startTimes = array();
   $numDataPerUser = array();
+  $choices = array();
+  $newChoices = array();
+  $xValues = array();
 
   if ($stat1 == 1) {      // Second variable being tested against time
     if ($stat2 == 5) {    // Time vs. Number of Completed Events
@@ -74,7 +77,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       for ($i = 1; $i <= count($questions); $i++) {
         if ($stat2 == $i + 5) {
 
-          $choices = array();
           $choicesStr = $questions[$i-1]['choices'];
           $choiceVal = 0;
           $token = strtok($choicesStr, ",");
@@ -82,7 +84,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $choices[] = $token;
             $token = strtok(",");
           }
-          $newChoices = array();
           for ($j = count($choices)-1; $j >= 0; $j--) {
             $newChoices[] = $choices[$j];
           }
@@ -127,6 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $xData[] = array('userid' => $row['id'], 'xval' => $row['grade']);
         }
       }
+      $xValues = array("N/A", "Freshman", "Sophomore", "Junior", "Senior", "Graduate Student", "Doctoral Student", "Faculty");
     }
     else if ($stat1 == 3) {
       $orderByVar = "type";
@@ -138,6 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $xData[] = array('userid' => $row['id'], 'xval' => $row['type']);
         }
       }
+      $xValues = array("Domestic Student", "International Student", "Faculty", "Resident", "Visitor");
     }
     else if ($stat1 == 4) {
       $orderByVar = "stampcount";
@@ -163,7 +166,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     else {
       for ($i = 1; $i <= count($questions); $i++) {
         if ($stat2 == $i + 5) {
-          $choices = array();
           $choicesStr = $questions[$i-1]['choices'];
           $choiceVal = 0;
           $token = strtok($choicesStr, ",");
@@ -171,7 +173,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $choices[] = $token;
             $token = strtok(",");
           }
-          $newChoices = array();
           for ($j = count($choices)-1; $j >= 0; $j--) {
             $newChoices[] = $choices[$j];
           }
@@ -278,6 +279,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div id="regression_analysis_chart" style="width: 100vw; height: 50vw;"></div>
       </h2></center>
+      <?php if (($stat1 == 1 || $stat1 == 4) && $stat2 != 5) { ?>
+        <div><center>
+          <h4>Y-Value Interpretation</h4>
+          <?php for ($i = 0; $i < count($choices); $i++) {
+            echo $i+1 . ": " . $choices[$i] . "<br>";
+          } ?>
+        </center></div>
+      <?php }
+      else if (($stat1 == 2 || $stat1 == 3) && $stat2 != 5) { ?>
+        <center><table>
+          <tr>
+            <td><div><center>
+              <h4>X-Value Interpretation</h4>
+              <?php for ($i = 0; $i < count($xValues); $i++) {
+                echo $i . ": " . $xValues[$i] . "<br>";
+              } ?>
+            </center></div></td>
+            <td><div><center>
+              <h4>Y-Value Interpretation</h4>
+              <?php for ($i = 0; $i < count($choices); $i++) {
+                echo $i+1 . ": " . $choices[$i] . "<br>";
+              } ?>
+            </center></div></td>
+          </tr>
+        </table></center>
+      <?php } ?>
 
       <?php
     }

@@ -205,6 +205,8 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
                         Log.d(TAG, "grade value: " + userGradeValue);
                     }
                     else {
+                        mUserStudentIDET.getText().clear();
+                        mUserONIDET.getText().clear();
                         mUserStudentIDET.setVisibility(View.GONE);
                         mUserONIDET.setVisibility(View.GONE);
                         mUserGradeTV.setVisibility(View.GONE);
@@ -245,12 +247,7 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 userType = mUserTypeSP.getSelectedItem().toString();
-                if (mIsUserOSUCB.isChecked()) {
-                    userTypeValue = Integer.valueOf(typeValueChoices[position]);
-                }
-                else {
-                    userTypeValue = Integer.valueOf(typeValueChoices[position]) + 3;
-                }
+                userTypeValue = Integer.valueOf(typeValueChoices[position]);
             }
 
             @Override
