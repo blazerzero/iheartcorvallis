@@ -14,13 +14,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import edu.oregonstate.studentlife.ihcv2Demo.adapters.SurveyAdapter;
 import edu.oregonstate.studentlife.ihcv2Demo.data.Constants;
+import edu.oregonstate.studentlife.ihcv2Demo.data.Survey;
 
 
 public class SurveyActivity extends AppCompatActivity
-    {
+        implements SurveyAdapter.OnSurveyListingClickListener {
 
     private final static String TAG = SurveyActivity.class.getSimpleName();
 
@@ -35,13 +37,7 @@ public class SurveyActivity extends AppCompatActivity
 
     private byte[] profilePictureByteArray = null;
 
-    private ArrayList<Integer> questionIDs;
-    private ArrayList<String> responses;
-
-    private Boolean gotSurvey = false;
-    private Boolean recordedResponses = false;
-    private Boolean recordedFeedback = false;
-    private Boolean skipSurvey = false;
+    private ArrayList<Survey> surveyListings;
 
     private final static int IHC_SURVEY_LOADER_ID = 0;
     private final static int IHC_RECORD_RESPONSES_LOADER_ID = 1;
@@ -64,10 +60,6 @@ public class SurveyActivity extends AppCompatActivity
         overridePendingTransition(0, 0);
         Intent intent = getIntent();
 
-
-        questionIDs = new ArrayList<Integer>();
-        responses = new ArrayList<String>();
-
         mSurveyHeaderTV = (TextView) findViewById(R.id.tv_survey_header);
 
 
@@ -77,18 +69,8 @@ public class SurveyActivity extends AppCompatActivity
         mSubmitSurveyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (int i = 0; i < mSurveyAdapter.getItemCount(); i++) {
-                    responses.add(mSurveyAdapter.getResponse(i));
-                    questionIDs.add(mSurveyAdapter.getQuestionID(i));
-                }
-                if (responses.contains(" ")) {
-                    Toast.makeText(SurveyActivity.this, "Must respond to every question before continuing!", Toast.LENGTH_LONG).show();
-                }
-                Bundle args = new Bundle();
-                args.putIntegerArrayList(IHC_QUESTIONIDS_KEY, questionIDs);
-                args.putStringArrayList(IHC_RESPONSES_KEY, responses);
-                Log.d(TAG, "before init loader");
-                Log.d(TAG, "after init loader");
+                Intent dashIntent = new Intent(SurveyActivity.this, DashboardActivity.class);
+                startActivity(dashIntent);
             }
         });
 
@@ -96,6 +78,8 @@ public class SurveyActivity extends AppCompatActivity
         mSkipSurveyTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent dashIntent = new Intent(SurveyActivity.this, DashboardActivity.class);
+                startActivity(dashIntent);
             }
         });
 
@@ -103,12 +87,37 @@ public class SurveyActivity extends AppCompatActivity
         mSurveyContentsRV.setLayoutManager(new LinearLayoutManager(this));
         mSurveyContentsRV.setHasFixedSize(true);
 
+        mSurveyAdapter = new SurveyAdapter(this, this);
+        mSurveyContentsRV.setAdapter(mSurveyAdapter);
+
+        surveyListings = new ArrayList<Survey>();
+
+        String[] choices1 = {"10", "9", "8", "7", "6", "5", "4", "3", "2", "1"};
+        surveyListings.add(
+                new Survey(1, "On a scale from 1 to 10, how much do you connect with the greater Corvallis community?", new ArrayList<String>(Arrays.asList(choices1)))
+        );
+        String[] choices2 = {"Once a week or more", "A couple of times a month", "A couple of times a year", "Once a year", "Less than once a year"};
+        surveyListings.add(
+                new Survey(2, "How often do you generally attend community events and activities?", new ArrayList<String>(Arrays.asList(choices2)))
+        );
+        String[] choices3 = {"Absolutely", "Somewhat", "Neutral", "Not much", "Not at all"};
+        surveyListings.add(
+                new Survey(3, "Do you feel like you are a part of the greater Corvallis community?", new ArrayList<String>(Arrays.asList(choices3)))
+        );
+
     }
 
     @Override
     public void onBackPressed() {
         // Do nothing... (user should not be able to go back)
     }
+
+    @Override
+    public void onSurveyListingClick(Survey listing) {
+
+    }
+
+
 
 
 }

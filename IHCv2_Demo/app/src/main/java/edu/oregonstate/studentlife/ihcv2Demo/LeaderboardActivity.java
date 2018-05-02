@@ -145,10 +145,9 @@ public class LeaderboardActivity extends AppCompatActivity
             leaderboardUserList.add(
                     new User.LeaderboardUser("Jake", "Mills", "7")
             );
-
-            for (User.LeaderboardUser leaderboardUser : leaderboardUserList) {
-                mLeaderboardAdapter.addUserToLeaderboard(leaderboardUser);
-            }
+            leaderboardUserList.add(
+                    new User.LeaderboardUser("Test", "User", "1")
+            );
 
         }catch (Exception e) {
             e.printStackTrace();
@@ -160,6 +159,10 @@ public class LeaderboardActivity extends AppCompatActivity
 
         mLeaderboardAdapter = new LeaderboardAdapter();
         mLeaderboardRV.setAdapter(mLeaderboardAdapter);
+
+        for (User.LeaderboardUser leaderboardUser : leaderboardUserList) {
+            mLeaderboardAdapter.addUserToLeaderboard(leaderboardUser);
+        }
 
     }
 

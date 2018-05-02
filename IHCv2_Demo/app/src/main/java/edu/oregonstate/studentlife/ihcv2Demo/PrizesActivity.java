@@ -244,8 +244,10 @@ public class PrizesActivity extends AppCompatActivity
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        String name = "Test User";
-        String email = "testuser@oregonstate.edu";
+        session = new Session(getApplicationContext());
+        HashMap<String, String> user = session.getUserDetails();
+        String name = user.get(Session.KEY_NAME);
+        String email = user.get(Session.KEY_EMAIL);
         mProfilePictureIV = (ImageView) findViewById(R.id.iv_profile_picture);
         getProfilePicture();
         TextView sesName = (TextView) findViewById(R.id.sesName);

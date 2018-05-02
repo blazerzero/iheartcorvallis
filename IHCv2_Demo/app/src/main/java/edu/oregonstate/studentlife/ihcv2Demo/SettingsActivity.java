@@ -69,7 +69,6 @@ public class SettingsActivity extends AppCompatActivity
 
     private final static String TAG = SettingsActivity.class.getSimpleName();
 
-    private User user;
     private String email;
     private SQLiteDatabase mDB;
     private String mCurrentPhotoPath;
@@ -102,27 +101,21 @@ public class SettingsActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        session = new Session(getApplicationContext());
+        /*session = new Session(getApplicationContext());
         HashMap<String, String> userBasics = session.getUserDetails();
-        email = userBasics.get(Session.KEY_EMAIL);
+        email = userBasics.get(Session.KEY_EMAIL);*/
 
-        Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(Constants.EXTRA_USER)) {
-            user = (User) intent.getSerializableExtra(Constants.EXTRA_USER);
-            Log.d(TAG, "User ID: " + user.getId());
-        }
-
-        Date birthDate = user.getBirthDate();
-        int bdDay = Integer.valueOf((String) DateFormat.format("d", birthDate));
-        int bdMonth = Integer.valueOf((String) DateFormat.format("M", birthDate));
-        int bdYear = Integer.valueOf((String) DateFormat.format("yyyy", birthDate));
+        //Date birthDate = user.getBirthDate();
+        int bdDay = 16;
+        int bdMonth = 6;
+        int bdYear = 1996;
 
         Bundle args = new Bundle();
-        args.putString(IHC_USER_FIRST_NAME_KEY, user.getFirstName());
-        args.putString(IHC_USER_LAST_NAME_KEY, user.getLastName());
-        args.putString(IHC_USER_EMAIL_KEY, user.getEmail());
-        args.putInt(IHC_USER_TYPE_KEY, user.getType());
-        args.putInt(IHC_USER_GRADE_KEY, user.getGrade());
+        args.putString(IHC_USER_FIRST_NAME_KEY, "Test");
+        args.putString(IHC_USER_LAST_NAME_KEY, "User");
+        args.putString(IHC_USER_EMAIL_KEY, "testuser@oregonstate.edu");
+        args.putInt(IHC_USER_TYPE_KEY, 0);
+        args.putInt(IHC_USER_GRADE_KEY, 4);
         args.putInt(IHC_USER_BD_DAY_KEY, bdDay);
         args.putInt(IHC_USER_BD_MONTH_KEY, bdMonth);
         args.putInt(IHC_USER_BD_YEAR_KEY, bdYear);
@@ -182,9 +175,7 @@ public class SettingsActivity extends AppCompatActivity
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         session = new Session(getApplicationContext());
-
         HashMap<String, String> user = session.getUserDetails();
-
         String name = user.get(Session.KEY_NAME);
         String email = user.get(Session.KEY_EMAIL);
         mProfilePictureIV = (ImageView) findViewById(R.id.iv_profile_picture);
@@ -203,57 +194,42 @@ public class SettingsActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (user != null) {
-            if (id == R.id.nav_settings) {
-                onBackPressed();
-            } else {
-                if (id == R.id.nav_dash) {
-                    Intent intent = new Intent(this, DashboardActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                } else if (id == R.id.nav_events) {
-                    Intent intent = new Intent(this, EventsActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                } else if (id == R.id.nav_passport) {
-                    Intent intent = new Intent(this, PassportActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                } else if (id == R.id.nav_prizes) {
-                    Intent intent = new Intent(this, PrizesActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                } else if (id == R.id.nav_leaderboard) {
-                    Intent intent = new Intent(this, LeaderboardActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                } else if (id == R.id.nav_resources) {
-                    Intent intent = new Intent(this, ResourcesActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                } else if (id == R.id.nav_aboutus) {
-                    Intent intent = new Intent(this, AboutUsActivity.class);
-                    intent.putExtra(Constants.EXTRA_USER, user);
-                    startActivity(intent);
-                } else if (id == R.id.nav_logout) {
-                    session.logoutUser();
-                }
+        if (id == R.id.nav_settings) {
+            onBackPressed();
+        } else {
+            if (id == R.id.nav_dash) {
+                Intent intent = new Intent(this, DashboardActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.nav_events) {
+                Intent intent = new Intent(this, EventsActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.nav_passport) {
+                Intent intent = new Intent(this, PassportActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.nav_prizes) {
+                Intent intent = new Intent(this, PrizesActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.nav_leaderboard) {
+                Intent intent = new Intent(this, LeaderboardActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.nav_resources) {
+                Intent intent = new Intent(this, ResourcesActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.nav_aboutus) {
+                Intent intent = new Intent(this, AboutUsActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.nav_logout) {
+                session.logoutUser();
             }
-
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
         }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     public void onDataPass(Bundle args) {
-        //Bundle args = new Bundle();
-        args.putString(IHC_USER_ID_KEY, String.valueOf(user.getId()));
-        /*args.putString(IHC_USER_TYPE_KEY, type);
-        args.putString(IHC_USER_GRADE_KEY, grade);
-        args.putInt(IHC_USER_BD_DAY_KEY, day);
-        args.putInt(IHC_USER_BD_MONTH_KEY, month);
-        args.putInt(IHC_USER_BD_YEAR_KEY, year);*/
+
     }
 
 

@@ -67,8 +67,6 @@ public class EventDetailActivity extends AppCompatActivity
 
     private static final String TAG = EventDetailActivity.class.getSimpleName();
 
-    private ArrayList<Integer> completedEventIDs;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,13 +101,8 @@ public class EventDetailActivity extends AppCompatActivity
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(Constants.EXTRA_EVENT) && intent.hasExtra(Constants.EXTRA_USER)) {
+        if (intent != null && intent.hasExtra(Constants.EXTRA_EVENT)) {
             event = (Event) intent.getSerializableExtra(Constants.EXTRA_EVENT);
-            /*if (event.getImagePath().contains(".jpg") || event.getImagePath().contains(".jpeg") || event.getImagePath().contains(".png")) {
-                Picasso.with(this)
-                        .load(event.getImage())
-                        .into(mEventImageIV);
-            }*/
             mEventNameTV.setText(event.getName());
             mEventLocationTV.setText(event.getLocation());
             mEventAddressTV.setText(event.getAddress());
@@ -150,7 +143,7 @@ public class EventDetailActivity extends AppCompatActivity
                 // go to geolocation first, but goes straight to PIN for now
                 Log.d(TAG, "check in button pressed");
 
-                /*if (!completedEventIDs.contains(event.getEventid())) {
+                if (event.getEventid() == 1) {
                     Calendar currentDate = Calendar.getInstance(TimeZone.getTimeZone("America/LosAngeles"), Locale.US);
                     Log.d(TAG, "current date: " + currentDate.getTime());
                     Log.d(TAG, "event start dt: " + event.getStartDT());
@@ -158,12 +151,14 @@ public class EventDetailActivity extends AppCompatActivity
                         Toast.makeText(EventDetailActivity.this, "This event hasn't started yet. Try again when the event has started.", Toast.LENGTH_LONG).show();
                     }
                     else {
-                        verifyLocation();
+                        Intent pinIntent = new Intent(EventDetailActivity.this, EventPINActivity.class);
+                        pinIntent.putExtra(Constants.EXTRA_EVENT, event);
+                        startActivity(pinIntent);
                     }
                 }
                 else {
                     Toast.makeText(EventDetailActivity.this, "You have already checked into this event!", Toast.LENGTH_LONG).show();
-                }*/
+                }
             }
         });
     }
@@ -209,168 +204,4 @@ public class EventDetailActivity extends AppCompatActivity
         super.onBackPressed();
     }
 
-    private void getLocationPermission() {
-        /*
-         * Request location permission, so that we can get the location of the
-         * device. The result of the permission request is handled by a callback,
-         * onRequestPermissionsResult.
-         */
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            Log.d(TAG, "permission has been granted!");
-            mLocationPermissionGranted = true;
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        } else {
-            Log.d(TAG, "permission has NOT been granted!");
-            AlertDialog.Builder builder;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-            }
-            else {
-                builder = new AlertDialog.Builder(this);
-            }
-            builder.setTitle("Use Current Location")
-                    .setMessage("I Heart Corvallis needs your location to verify that you are at this event.")
-                    .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions(EventDetailActivity.this,
-                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-
-                        }
-                    })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Nothing to do...
-                        }
-                    })
-                    .create()
-                    .show();
-            /*ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);*/
-        }
-    }
-
-    /**
-     * Handles the result of the request for location permissions.
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[],
-                                           @NonNull int[] grantResults) {
-        mLocationPermissionGranted = false;
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mLocationPermissionGranted = true;
-                    try {
-                        // TODO: implement location manager to get location updates from user, as getLastLocation can return null
-                        // TODO: Or if getLastLocation return null then exit the verify location function
-                        Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
-                        // locationResult = mFusedLocationProviderClient.requestLocationUpdates();
-                        locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Location> task) {
-                                Location myLocation = task.getResult();
-                                if (distance(myLocation.getLatitude(), myLocation.getLongitude(),
-                                        eventLocation.getLatitude(), eventLocation.getLongitude()) < 0.1) {
-                                    Intent eventPININtent = new Intent(getApplicationContext(), EventPINActivity.class);
-                                    eventPININtent.putExtra(Constants.EXTRA_EVENT_DETAILED, event);
-                                    startActivity(eventPININtent);
-                                } else {
-                                    AlertDialog.Builder builder;
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                        builder = new AlertDialog.Builder(EventDetailActivity.this, android.R.style.Theme_Material_Dialog_Alert);
-                                    } else {
-                                        builder = new AlertDialog.Builder(EventDetailActivity.this);
-                                    }
-                                    builder.setTitle("Not In Range");
-                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            onBackPressed();
-                                        }
-                                    });
-                                    builder.setMessage("You're not close enough to the event.");
-                                    builder.setIcon(android.R.drawable.ic_dialog_alert);
-                                    builder.show();
-                                }
-                            }
-                        });
-                    } catch (SecurityException se) {
-                        //mLocationCheckPB.setVisibility(View.GONE);
-                        AlertDialog.Builder builder;
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-                        } else {
-                            builder = new AlertDialog.Builder(this);
-                        }
-                        builder.setTitle("Location Permission Denied");
-                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                onBackPressed();
-                            }
-                        });
-                        builder.setMessage("I Heart Corvallis needs location permission to verify that you're at this event.");
-                        builder.setIcon(android.R.drawable.ic_dialog_alert);
-                        builder.show();
-                    }
-                }
-                else {
-                    Log.d(TAG, "Location has still NOT been granted!");
-                    // Nothing to do...
-                }
-            }
-        }
-    }
-
-    private void verifyLocation() {
-        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        try {
-            if (lm != null && (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) && !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER))) {
-                Toast.makeText(EventDetailActivity.this, "Location services are not enabled! Please go to settings to enable location services!", Toast.LENGTH_LONG).show();
-            }
-            else if (lm != null) {
-                address = coder.getFromLocationName(event.getAddress(), 5);
-                if (address == null || address.size() == 0) {
-                    Toast.makeText(getApplicationContext(), "Error reading event address.", Toast.LENGTH_LONG).show();
-                } else {
-                    eventLocation = address.get(0);
-                    getLocationPermission();
-
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private double distance(double lat1, double lng1, double lat2, double lng2) {
-
-        double earthRadius = 3958.75; // in miles, change to 6371 for kilometers
-
-        double dLat = Math.toRadians(lat2-lat1);
-        double dLng = Math.toRadians(lng2-lng1);
-
-        double sindLat = Math.sin(dLat / 2);
-        double sindLng = Math.sin(dLng / 2);
-
-        double a = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
-                * Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2));
-
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
-        double dist = earthRadius * c;
-
-        return dist;
-    }
 }
