@@ -184,6 +184,9 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
             cancel = true;
         }
 
+        Log.d(TAG, "email: " + email);
+        Log.d(TAG, "password: " + password);
+        Log.d(TAG, "cancel: " + cancel);
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -196,9 +199,8 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             if (isNetworkAvailable()) {
-                //new NonStudentAuthProcess(this).execute(email);
-                //new HashReceiver(this).execute(email, password);
-                getSupportLoaderManager().initLoader(NS_LOGIN_HASH_ID, null, this);
+
+                getSupportLoaderManager().restartLoader(NS_LOGIN_HASH_ID, null, this);
             }
             else {
                 showNoInternetConnectionMsg();
@@ -254,6 +256,7 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
 
     @Override
     public Loader<String> onCreateLoader(int id, Bundle args) {
+        Log.d(TAG, "loader id: " + id);
         if (id == NS_LOGIN_HASH_ID) {
             showProgress(true);
             return new HashReceiverLoader(this, email);
@@ -269,8 +272,10 @@ public class NonStudentLoginActivity extends AppCompatActivity implements Loader
 
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
+        Log.d(TAG, "isAuth: " + isAuth);
         if (!isAuth) {
             String resultString = (String) data;
+            Log.d(TAG, "hash loader result: " + data);
 
             if (!resultString.equals("NOACCOUNTERROR")) {
                 Log.d(TAG, "Account found!");

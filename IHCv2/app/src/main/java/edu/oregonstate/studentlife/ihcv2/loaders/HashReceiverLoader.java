@@ -37,6 +37,7 @@ public class HashReceiverLoader extends AsyncTaskLoader<String> {
         Log.d(TAG, "authenticating user with URL: " + IHC_PASS_URL);
         try {
             URL url = new URL(IHC_PASS_URL);
+            Log.d(TAG, "email being passed: " + email);
 
             String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
 
