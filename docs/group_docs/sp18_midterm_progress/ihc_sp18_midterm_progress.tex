@@ -144,32 +144,67 @@
     \includegraphics[height=8cm]{splashscreen}
 
   \subsection{Getting More Information from the User Upon Signing Up}
+  Upon account creation a user will now be prompted with another set of questions. These questions are mainly for data gathering purposes,
+  in order to measure user activity against what type of user they are. This is an interest of our client, who wants to discern who is using this application.
+  The questions asked are the user's age, grade, and the type of user (domestic, international, faculty, resident, visitor). The application also prompts
+  the user if they are a student. If so, the application asks the student to input their osu ID and their username.
 
   \subsection{Survey}
+  After filling in the additional information, the user is then prompted with an initial, optional survey. This survey is important in adding a measurable element
+  to the effectiveness of our application. It asks the user three questions regarding their relationship with Oregon State University and Corvallis.
 
   \subsection{Bottom Navigation Bar}
+  In addition to the side navigation menu that the user can open, we now implemented a navigation bar at the bottom of the user's screen. This is to help in directing
+  the user to the main pages of the app with fewer keystrokes. Instead of having to click the side menu button and then clicking the desired page, the user can now
+  get to the desired page in one click.
 
   \subsection{"Anytime" Events}
+  A request from our client was to be able to implement events that are recurring. Such an event will simply state "any time" in place of its date. These events are only
+  able to be completed once for a stamp. Subsequent attempts to check in to the event will be blocked by the application.
 
   \subsection{Event and Resource Pictures}
+  An addition to the application is the ability to display different images for each event and each resource. Initially we had a default image that was used for each one.
+  Through the administrative website an image can be added while creating an event or resource, and this picture will show up on the app with the event.
 
   \subsection{Profile Picture}
+  The user now has the option to add a picture, either from their camera roll or by taking a picture. This option is provided at account creation as well as in the settings
+  page. The latter can be used to change the profile picture. These pictures are stored on the users device, and if another user were to log in to their account on the
+  same device, they would have the same picture. We decided that it was in our best interest to not handle users pictures on our server.
 
   \subsection{Permissions}
+  Certain pages in the application require permission to access data or functionality from the user's device. An example is accessing the event map will ask the user for their
+  permission to use their location information. Another example is clicking on the add profile picture will request access to the users camera and gallery.
 
   \subsection{Error Handling}
+  There are plenty of situations that could cause errors in our application. We implemented checks to ensure these errors are handled correctly without crashing
+  the application. One such situation is if a user decides to check in to the application but their location services are not turned on. Initially the app would crash
+  because there was a NULL value instead of the users location. Now the user is prompted to turn on their location services before being allowed access to the check
+  in page. Another non fatal error was if a user attempted to check in to an event multiple times. Before they would simply earn another stamp, but now the user is
+  barred from the check in page, accompanied with a message that the user has already completed this event.
+
 
 \section{Administrative Website Progress}
+
   \subsection{Making and Updating an “Anytime” Event}
+  Reviwing our application we had came accross a small bug that related to events with no time constraint. An example of this would be Bald Hill in which a user can hike Bald Hill
+  anytime they wish. To work around this bug, we have implemented a
 
   \subsection{Adding, Modifying, and Deleting Event and Resource Pictures}
+  Last term we had not implemented the functionality for our clients to add, modify or delete a photo from the event and resource pages. They now can successfully complete these actions as we have implemented the code into our web adminstration website. We did run into a couple of problems such as where and how to store the photos into our database. In order to work around this issue, we saved the path to the photo into our database and saved the photo itself in a seprate directory called images, which held subdirectories called "events," "resources" and "about".
 
   \subsection{Adding, Modifying, and Deleting Survey Questions}
+  Towards the end of Winter term, our client had asked us to implement a survery option for new users when first signing up. We implemented this feature at the beginning of this term, allowing our clients to successfull add, modify and delete survey questions through the website.
 
-  \subsection{Error Handling}
+  \subsection{Form Validation}
+  An error we had found at the beginning of the term was the failure of our form validation function when adding content through the website. The user would be able to miss a field and still be able to add content to the database. To patch this bug, we fixed some syntax errors in our form validation function, and it worked correctly.
 
+  \subsection{Prepared Statements}
 
 \section{Conclusion}
+At this point, we have fully completed the mobile application and administrative website to our clients full satisfaction. Our next steps will be to determine if we will be able to implement the CAS ONID login, find a
+third-party service on which to host our database long-term, and to complete the demo version of the application and record a demo of the administrative website. Our goal is to have this completed a week before expo just in
+case we come accross small changes.
+
 
 
 \end{document}

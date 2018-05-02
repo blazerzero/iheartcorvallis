@@ -56,7 +56,7 @@ public class EventPINActivity extends AppCompatActivity {
         mSubmitEventPinBtn = (Button) findViewById(R.id.btn_submit_event_pin);
 
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(Constants.EXTRA_EVENT_DETAILED) && intent.hasExtra(Constants.EXTRA_USER)) {
+        if (intent != null && intent.hasExtra(Constants.EXTRA_EVENT_DETAILED)) {
             event = (Event) intent.getSerializableExtra(Constants.EXTRA_EVENT_DETAILED);
             eventid = event.getEventid();
             Log.d(TAG, "event ID: " + String.valueOf(eventid));

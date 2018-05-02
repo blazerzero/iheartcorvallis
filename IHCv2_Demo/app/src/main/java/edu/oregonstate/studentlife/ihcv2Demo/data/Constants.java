@@ -18,17 +18,7 @@ public class Constants extends AppCompatActivity {
     private int bronzeColor = getResources().getColor(R.color.eventBronze);
     public static final String EXTRA_EVENT = "Event";
     public static final String EXTRA_EVENT_DETAILED = "Detailed Event";
-    public static final String EXTRA_USER = "User";
-    public static final String EXTRA_USER_ID = "User ID";
-    public static final String EXTRA_CALLING_ACTIVITY_ID = "Login Activity";
-    public static final String EXTRA_USER_PROFILE_PICTURE = "User Profile Picture";
-    public static final String EXTRA_USER_STATUS = "User Status";
-    public static final String EXTRA_USER_NAME = "User Name";
-    public static final String EXTRA_USER_EMAIL = "User Email";
-    public static final String EXTRA_MSG = "Extra Message";
-    /*public static final String EXTRA_USER_BIRTHDATE = "User Birthdate";
-    public static final String EXTRA_USER_GRADE = "User Grade";
-    public static final String EXTRA_USER_TYPE = "User Type";*/
+    public static final String EXTRA_COMPLETED_EVENTS = "Completed Events";
 
     public int getGoldThreshold() {
         return goldThreshold;
