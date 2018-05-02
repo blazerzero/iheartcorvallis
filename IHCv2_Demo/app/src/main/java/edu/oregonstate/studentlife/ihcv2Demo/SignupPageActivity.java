@@ -3,7 +3,6 @@ package edu.oregonstate.studentlife.ihcv2Demo;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -282,10 +281,6 @@ public class SignupPageActivity extends AppCompatActivity
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
-        }
-        else {
-            Intent getUserInfoIntent = new Intent(this, GetUserInfoActivity.class);
-            startActivity(getUserInfoIntent);
         }
     }
 

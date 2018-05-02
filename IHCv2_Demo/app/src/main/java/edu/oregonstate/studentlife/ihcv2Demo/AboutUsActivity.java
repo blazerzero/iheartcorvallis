@@ -177,10 +177,8 @@ public class AboutUsActivity extends AppCompatActivity
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // session information is retrieved and displayed on nav menu
-        session = new Session(getApplicationContext());
-        HashMap<String, String> user = session.getUserDetails();
-        String name = user.get(Session.KEY_NAME);
-        String email = user.get(Session.KEY_EMAIL);
+        String name = "Test User";
+        String email = "testuser@oregonstate.edu";
         mProfilePictureIV = (ImageView) findViewById(R.id.iv_profile_picture);
         getProfilePicture();
 

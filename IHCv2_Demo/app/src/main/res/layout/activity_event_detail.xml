@@ -8,6 +8,24 @@
     android:orientation="vertical"
     tools:context="edu.oregonstate.studentlife.ihcv2Demo.EventDetailActivity">
 
+    <!--<android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppBarOverlay"
+        android:id="@+id/appBarLayout">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="4dp"
+            android:theme="@style/AppTheme"
+            android:visibility="visible"
+            android:background="@color/colorPrimaryDark"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    </android.support.design.widget.AppBarLayout>-->
+
     <ImageView
         android:id="@+id/iv_event_image_detail"
         android:layout_width="fill_parent"

@@ -145,26 +145,6 @@ public class ResourcesActivity extends AppCompatActivity
         mResourceAdapter = new ResourceAdapter(this, this);
         mResourceRV.setAdapter(mResourceAdapter);
 
-        resourceList.add(
-                new Resource(1, "Come Visit the Corvallis Community Relations Office!",
-                        "You can find us in the Office of Student Life in Snell 150 on campus!",
-                        "http://studentlife.oregonstate.edu/ccr")
-        );
-        resourceList.add(
-                new Resource(2, "Visit Corvallis",
-                        "Come to our office to learn more about our beautiful town has to offer!",
-                        "https://www.visitcorvallis.com")
-        );
-        resourceList.add(
-                new Resource(3, "Oregon State University Program Council",
-                        "We love planning activities and events for students on campus! Follow the link below to learn more about us!",
-                        "http://sli.oregonstate.edu/osupc")
-        );
-
-        for (Resource resource : resourceList) {
-            mResourceAdapter.addResource(resource);
-        }
-
     }
 
     @Override
@@ -229,10 +209,8 @@ public class ResourcesActivity extends AppCompatActivity
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        session = new Session(getApplicationContext());
-        HashMap<String, String> user = session.getUserDetails();
-        String name = user.get(Session.KEY_NAME);
-        String email = user.get(Session.KEY_EMAIL);
+        String name = "Test User";
+        String email = "testuser@oregonstate.edu";
         mProfilePictureIV = (ImageView) findViewById(R.id.iv_profile_picture);
         getProfilePicture();
 

@@ -73,6 +73,9 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
             if (TextUtils.isEmpty(resource.getResourceLink())) {
                 mResourceLinkTV.setVisibility(View.GONE);
             }
+            Picasso.with(context)
+                    .load(resource.getResourceImagePath())
+                    .into(mResourceImageIV);
         }
     }
 

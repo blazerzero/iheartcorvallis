@@ -175,7 +175,6 @@ public class NonStudentLoginActivity extends AppCompatActivity{
             focusView.requestFocus();
         }
         else {
-            session.createLoginSession("Test User", "testuser@oregonstate.edu", "1");
             Intent dashIntent = new Intent(this, DashboardActivity.class);
             startActivity(dashIntent);
         }

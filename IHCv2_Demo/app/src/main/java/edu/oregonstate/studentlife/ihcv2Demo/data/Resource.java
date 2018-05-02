@@ -1,6 +1,5 @@
 package edu.oregonstate.studentlife.ihcv2Demo.data;
 
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 
 import java.io.Serializable;
@@ -15,12 +14,14 @@ public class Resource extends AppCompatActivity implements Serializable {
     private String rTitle;
     private String rDescription;
     private String rLink;
+    private String rImagePath;
 
-    public Resource(int rID, String rTitle, String rDescription, String rLink) {
+    public Resource(int rID, String rTitle, String rDescription, String rLink, String rImagePath) {
         this.rID = rID;
         this.rTitle = rTitle;
         this.rDescription = rDescription;
         this.rLink = rLink;
+        this.rImagePath = rImagePath;
     }
 
     public String getResourceTitle() {
@@ -47,4 +48,11 @@ public class Resource extends AppCompatActivity implements Serializable {
         this.rLink = rLink;
     }
 
+    public String getResourceImagePath() {
+        return rImagePath;
+    }
+
+    public void setResourceImagePath(String rImagePath) {
+        this.rImagePath = rImagePath;
+    }
 }

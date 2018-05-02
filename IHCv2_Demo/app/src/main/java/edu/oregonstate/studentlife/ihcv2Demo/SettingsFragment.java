@@ -48,7 +48,6 @@ public class SettingsFragment extends PreferenceFragment
     public final static String IHC_USER_EMAIL_KEY = "IHC_USER_EMAIL";
     public final static String IHC_USER_TYPE_KEY = "IHC_USER_TYPE";
     public final static String IHC_USER_GRADE_KEY = "IHC_USER_GRADE";
-    public final static String IHC_USER_AGE_KEY = "IHC_USER_AGE";
     public final static String IHC_USER_BD_DAY_KEY = "IHC_USER_BIRTHDATE_DAY";
     public final static String IHC_USER_BD_MONTH_KEY = "IHC_USER_BIRTHDATE_MONTH";
     public final static String IHC_USER_BD_YEAR_KEY = "IHC_USER_BIRTHDATE_YEAR";
@@ -60,14 +59,14 @@ public class SettingsFragment extends PreferenceFragment
     //public final static String IHC_USER_GRADE_KEY = "IHC_USER_GRADE";
     //public final static String IHC_USER_AGE_KEY = "IHC_USER_AGE";
 
-    public static SettingsFragment newInstance() {
+    /*public static SettingsFragment newInstance(User user) {
         SettingsFragment fragment = new SettingsFragment();
         Bundle args = new Bundle();
-        args.putInt(IHC_USER_GRADE_KEY, 4);
-        args.putInt(IHC_USER_AGE_KEY, 21);
+        args.putInt(IHC_USER_GRADE_KEY, user.getGrade());
+        args.putInt(IHC_USER_AGE_KEY, user.getAge());
         fragment.setArguments(args);
         return fragment;
-    }
+    }*/
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
