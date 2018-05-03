@@ -45,10 +45,12 @@ html {
 
 /* Quick Navigation Buttons */
 .quicknav {
-  /*position: fixed;
-  bottom: .5vw;
-  right: .5vw;*/
+  position: fixed;
+  top: 1vw;
+  right: 1vw;
 }
+
+.ui.orange.button.ihc { background-color: #d73f09; }
 
 .navelem {
    color: #fff;

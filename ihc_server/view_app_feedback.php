@@ -8,10 +8,10 @@ require "./admin_server/login.php"; ?>
 
   <?php
   require './admin_server/db.php';
-  $allTuples = $studentTuples = array();
-  $sumAllRatings = $sumStudentRatings = 0;
-  $avgAllRating = $avgStudentRating = 0;
-  $numAllZeroes = $numStudentZeroes = 0;
+  $allTuples = $studentTuples = $nonStudentTuples = array();
+  $sumAllRatings = $sumStudentRatings = $sumNonStudentRatings = 0;
+  $avgAllRating = $avgStudentRating = $avgNonStudentRating = 0;
+  $numAllZeroes = $numStudentZeroes = $numNonStudentZeroes = 0;
 
   $stmt = $mysqli->prepare("SELECT U.*, F.dateandtime, F.rating, F.comment FROM ihc_users U, ihc_feedback F WHERE F.userid=U.id");
   $stmt->execute();
@@ -31,24 +31,35 @@ require "./admin_server/login.php"; ?>
     else if ($row['grade'] == 6) $row['grade'] = "Doctoral Student";
     else if ($row['grade'] == 7) $row['grade'] = "Faculty";
 
-    $allTuples[] = $row;
-    $sumAllRatings += $row['rating'];
-    if ($row['rating'] == 0) $numAllZeroes++;
-    if ($row['type'] == "Domestic Student" || $row['type'] == "International Student" || $row['type'] == "Faculty") {
-      $studentTuples[] = $row;
-      $sumStudentRatings += $row['rating'];
-      if ($row['rating'] == 0) $numStudentZeroes++;
+    if ($row['rating'] != 0 || $row['comment'] != "") {
+      $allTuples[] = $row;
+      $sumAllRatings += $row['rating'];
+      if ($row['rating'] == 0) $numAllZeroes++;
+      if ($row['type'] == "Domestic Student" || $row['type'] == "International Student" || $row['type'] == "Faculty") {
+        $studentTuples[] = $row;
+        $sumStudentRatings += $row['rating'];
+        if ($row['rating'] == 0) $numStudentZeroes++;
+      }
+      else {
+        $nonStudentTuples[] = $row;
+        $sumNonStudentRatings += $row['rating'];
+        if ($row['rating'] == 0) $numNonStudentZeroes++;
+      }
     }
 
-    $avgAllRating = $sumAllRatings/ (count($allTuples) - $numAllZeroes);
-    $avgStudentRating = $sumStudentRatings/ (count($studentTuples) - $numStudentZeroes);
-    $allRatingCounts = array_count_values(array_column($allTuples, 'rating'));
-    $studentRatingCounts = array_count_values(array_column($studentTuples, 'rating'));
-    $allRatings = array_column($allTuples, 'rating');
-    for ($i = 1; $i <= 5; $i++) {
-      if (!array_key_exists("$i", $allRatingCounts)) $allRatingCounts["$i"] = 0;
-      if (!array_key_exists("$i", $studentRatingCounts)) $studentRatingCounts["$i"] = 0;
-    }
+  }
+
+  $avgAllRating = $sumAllRatings / (count($allTuples) - $numAllZeroes);
+  $avgStudentRating = $sumStudentRatings / (count($studentTuples) - $numStudentZeroes);
+  $avgNonStudentRating = $sumNonStudentRatings / (count($nonStudentTuples) - $numNonStudentZeroes);
+  $allRatingCounts = array_count_values(array_column($allTuples, 'rating'));
+  $studentRatingCounts = array_count_values(array_column($studentTuples, 'rating'));
+  $nonStudentRatingCounts = array_count_values(array_column($nonStudentTuples, 'rating'));
+  $allRatings = array_column($allTuples, 'rating');
+  for ($i = 1; $i <= 5; $i++) {
+    if (!array_key_exists("$i", $allRatingCounts)) $allRatingCounts["$i"] = 0;
+    if (!array_key_exists("$i", $studentRatingCounts)) $studentRatingCounts["$i"] = 0;
+    if (!array_key_exists("$i", $nonStudentRatingCounts)) $nonStudentRatingCounts["$i"] = 0;
   }
 
   ?>
@@ -65,6 +76,8 @@ require "./admin_server/login.php"; ?>
     google.charts.load("current", {packages:["corechart"]});
     google.charts.setOnLoadCallback(drawAllRatingsChart);
     google.charts.setOnLoadCallback(drawStudentRatingsChart);
+    google.charts.setOnLoadCallback(drawNonStudentRatingsChart);
+
     function drawAllRatingsChart() {
       var numFive = <?php echo $allRatingCounts['5']; ?>;
       var numFour = <?php echo $allRatingCounts['4']; ?>;
@@ -108,20 +121,56 @@ require "./admin_server/login.php"; ?>
       ]);
 
       var options = {
-        title: 'Students and Faculty Only: App Rating Spread',
+        title: 'Students and Faculty: App Rating Spread',
         bar: {groupWidth: "80%"},
         legend: {position: "none"},
-        colors: ['#003b5c'],
+        colors: ['#d73f09'],
         vAxis: {gridlines: {count: 2}}
       };
 
       var chart = new google.visualization.BarChart(document.getElementById('student_ratings_columnchart'));
       chart.draw(data, options);
     }
+
+    function drawNonStudentRatingsChart() {
+      var numFive = <?php echo $nonStudentRatingCounts['5']; ?>;
+      var numFour = <?php echo $nonStudentRatingCounts['4']; ?>;
+      var numThree = <?php echo $nonStudentRatingCounts['3']; ?>;
+      var numTwo = <?php echo $nonStudentRatingCounts['2']; ?>;
+      var numOne = <?php echo $nonStudentRatingCounts['1']; ?>;
+      var data = new google.visualization.arrayToDataTable([
+        ['Rating', 'Non-Students'],
+        ['5', numFive],
+        ['4', numFour],
+        ['3', numThree],
+        ['2', numTwo],
+        ['1', numOne]
+      ]);
+
+      var options = {
+        title: 'Non-Students: App Rating Spread',
+        bar: {groupWidth: "80%"},
+        legend: {position: "none"},
+        colors: ['#003b5c'],
+        vAxis: {gridlines: {count: 2}}
+      };
+
+      var chart = new google.visualization.BarChart(document.getElementById('nonstudent_ratings_columnchart'));
+      chart.draw(data, options);
+    }
     </script>
     <script>
     $(document).ready(function() {
       $("#siteheader").load("siteheader.html");
+      $("#allusers_btn").click(function() {
+        document.getElementById("allusers").scrollIntoView();
+      });
+      $("#students_faculty_btn").click(function() {
+        document.getElementById("students_faculty").scrollIntoView();
+      });
+      $("#nonstudents_btn").click(function() {
+        document.getElementById("nonstudents").scrollIntoView();
+      });
     });
     </script>
   </head>
@@ -130,28 +179,39 @@ require "./admin_server/login.php"; ?>
 
     <div class="mainbody">
       <left class="sectionheader"><h1>View App Feedback</h1></left></br>
+      <div class="quicknav">
+        <button class="ui orange button ihc" id="allusers_btn">All Feedback</button>
+        <button class="ui orange button ihc" id="students_faculty_btn">Student/Faculty Feedback</button>
+        <button class="ui orange button ihc" id="nonstudents_btn">Non-Student Feedback</button>
+      </div>
+
       <div class="ui divider"></div><br>
 
       <div>
         <h2>App Rating</h2>
-        <h4>All Users: <?php echo $avgAllRating; ?></h4>
+        <h4>Overall Average Ratings: <?php echo $avgAllRating; ?></h4>
         <h4>Total Number of Ratings: <?php echo (count($allTuples) - $numAllZeroes); ?></h4><br>
-        <h4>Students and Faculty Only: <?php echo $avgStudentRating; ?></h4>
-        <h4>Number of Student and Faculty Ratings: <?php echo (count($studentTuples) - $numStudentZeroes); ?></h4>
+        <h4>Average Student/Faculty Rating: <?php echo $avgStudentRating; ?></h4>
+        <h4>Number of Student/Faculty Ratings: <?php echo (count($studentTuples) - $numStudentZeroes); ?></h4><br>
+        <h4>Average Non-Student Rating: <?php echo $avgNonStudentRating; ?></h4>
+        <h4>Number of Non-Student Ratings: <?php echo (count($nonStudentTuples) - $numNonStudentZeroes); ?></h4>
 
         <?php if (count($allTuples) > 0) { ?>
 
           <!-- APP RATING DISTRIBUTION -->
           <table>
             <tr>
-              <td><div id="all_ratings_columnchart" style="width: 40vw; height: 30vw;"></div></td>
-              <td><div id="student_ratings_columnchart" style="width: 40vw; height: 30vw;"></div></td>
+              <td><div id="all_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td>
+            </tr>
+            <tr>
+              <td><div id="student_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td>
+              <td><div id="nonstudent_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td>
             </tr>
           </table><br>
 
           <div class="ui divider"></div><br>
 
-          <div>
+          <div id="allusers">
             <h2>Feedback: All Users</h2>
             <table class="ui celled padded table">
               <thead>
@@ -179,7 +239,7 @@ require "./admin_server/login.php"; ?>
 
           <div class="ui divider"></div><br>
 
-          <div>
+          <div id="students_faculty">
             <h2>Feedback: Students and Faculty</h2>
             <table class="ui celled padded table">
               <thead>
@@ -203,6 +263,32 @@ require "./admin_server/login.php"; ?>
                     <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
                     <td><?php echo $tuple['type']; ?></td>
                     <td><?php echo $tuple['grade']; ?></td>
+                    <td><?php if ($tuple['rating'] != 0) echo $tuple['rating']; ?></td>
+                    <td><?php echo $tuple['comment']; ?></td>
+                  </tr>
+                <?php } ?>
+              </tbody>
+            </table>
+          </div>
+
+          <div id="nonstudents">
+            <h2>Feedback: Non-Students</h2>
+            <table class="ui celled padded table">
+              <thead>
+                <tr>
+                  <th class="single line">Name</th>
+                  <th>Date and Time</th>
+                  <th>User Type</th>
+                  <th>Rating</th>
+                  <th>Comment</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php foreach ($nonStudentTuples as $tuple) { ?>
+                  <tr>
+                    <td><?php echo $tuple['firstname'] . " " . $tuple['lastname']; ?></td>
+                    <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
+                    <td><?php echo $tuple['type']; ?></td>
                     <td><?php if ($tuple['rating'] != 0) echo $tuple['rating']; ?></td>
                     <td><?php echo $tuple['comment']; ?></td>
                   </tr>

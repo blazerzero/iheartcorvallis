@@ -7,7 +7,7 @@
   <?php
   require './admin_server/db.php';
   $id = $_GET['id'];
-  $allTuples = $studentTuples = array();
+  $allTuples = $studentTuples = $nonStudentTuples = array();
   $question = $choicesStr = "";
   $choices = array();
 
@@ -36,31 +36,20 @@
       $dateandtime = $row['dateandtime'];
       $response = $row['response'];
       $name = $row['firstname'] . " " . $row['lastname'];
-      /*$type = "";
-      $grade = "";
-      if ($row['type'] == 0) $type = "Domestic Student";
-      else if ($row['type'] == 1) $type = "International Student";
-      else if ($row['type'] == 2) $type = "Faculty";
-      else if ($row['type'] == 3) $type = "Resident";
-      else if ($row['type'] == 4) $type = "Visitor";
-      if ($row['grade'] == 0) $grade = "N/A";
-      else if ($row['grade'] == 1) $grade = "Freshman";
-      else if ($row['grade'] == 2) $grade = "Sophomore";
-      else if ($row['grade'] == 3) $grade = "Junior";
-      else if ($row['grade'] == 4) $grade = "Senior";
-      else if ($row['grade'] == 5) $grade = "Graduate Student";
-      else if ($row['grade'] == 6) $grade = "Doctoral Student";
-      else if ($row['grade'] == 7) $grade = "Faculty";*/
+
       $types = array('Domestic Student', 'International Student', 'Faculty', 'Resident', 'Visitor');
       $grades = array('N/A', 'Freshman', 'Sophomore', 'Junior', 'Senior', 'Graduate Student', 'Doctoral Student', 'Faculty');
       $type = $types[$row['type']];
-      $grade = $grades[$row['grade']]; 
+      $grade = $grades[$row['grade']];
 
       $allTuples[] = array("userid" => $userid, "dateandtime" => $dateandtime, "name" => $name, "type" => $type, "response" => $response);
-      if ($row['type'] < 2) {
+      if ($row['type'] < 3) {
         $studentid = $row['studentid'];
         $onid = $row['onid'];
         $studentTuples[] = array("userid" => $userid, "dateandtime" => $dateandtime, "name" => $name, "studentid" => $studentid, "onid" => $onid, "grade" => $grade, "type" => $type, "response" => $response);
+      }
+      else {
+        $nonStudentTuples[] = array("userid" => $userid, "dateandtime" => $dateandtime, "name" => $name, "type" => $type, "response" => $response);
       }
     }
   }
@@ -78,6 +67,15 @@
     <script>
     $(document).ready(function() {
       $("#siteheader").load("siteheader.html");
+      $("#allresponses").click(function() {
+        document.getElementById("all_reponsediv").scrollIntoView();
+      });
+      $("#studentresponses").click(function() {
+        document.getElementById("student_responsediv").scrollIntoView();
+      });
+      $("#nonstudentresponses").click(function() {
+        document.getElementById("nonstudent_responsediv").scrollIntoView();
+      });
     });
     </script>
   </head>
@@ -99,11 +97,17 @@
         </h4>
         <h4>Number of Responses: <?php echo count($allTuples); ?></h4>
         <h4>Number of Student/Faculty Responses: <?php echo count($studentTuples); ?></h4>
+        <h4>Number of Non-Student Responses: <?php echo count($nonStudentTuples); ?></h4>
       </div><br>
+      <div class="quicknav">
+        <button class="ui orange button ihc" id="allresponses">All Responses</button>
+        <button class="ui orange button ihc" id="studentresponses">Student/Faculty Responses</button>
+        <button class="ui orange button ihc" id="nonstudentresponses">Non-Student Responses</button>
+      </div>
 
       <div class="ui divider"></div><br>
 
-      <div>
+      <div id="all_reponsediv">
         <h2>All Responses</h2>
         <table class ="ui celled padded table">
           <thead>
@@ -125,11 +129,11 @@
             <?php } ?>
           </tbody>
         </table>
-      </div>
+      </div><br>
 
       <div class="ui divider"></div><br>
 
-      <div>
+      <div id="student_responsediv">
         <h2>Student Responses</h2>
         <table class ="ui celled padded table">
           <thead>
@@ -152,6 +156,32 @@
                 <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
                 <td><?php echo $tuple['type']; ?></td>
                 <td><?php echo $tuple['grade']; ?></td>
+                <td><?php echo $tuple['response']; ?></td>
+              </tr>
+            <?php } ?>
+          </tbody>
+        </table>
+      </div><br>
+
+      <div class="ui divider"></div><br>
+
+      <div id="nonstudent_responsediv">
+        <h2>Non-Student Responses</h2>
+        <table class ="ui celled padded table">
+          <thead>
+            <tr>
+              <th class="single line">Name</th>
+              <th>Date and Time</th>
+              <th>User Type</th>
+              <th>Response</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($nonStudentTuples as $tuple) { ?>
+              <tr>
+                <td><?php echo $tuple['name']; ?></td>
+                <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
+                <td><?php echo $tuple['type']; ?></td>
                 <td><?php echo $tuple['response']; ?></td>
               </tr>
             <?php } ?>

@@ -18,7 +18,7 @@ if ($mysqli->connect_error) {
 }
 
 $keyword = "";
-$allTuples = $studentTuples = array();
+$allTuples = $studentTuples = $nonStudentTuples = array();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $keyword = "%" . $_POST["keyword"] . "%";
@@ -40,33 +40,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       if ($userRes->num_rows > 0) {
         $userRow = $userRes->fetch_assoc();
         $name = $userRow['firstname'] . " " . $userRow['lastname'];
-        /*$type = "";
-        $grade = "";
-        if ($userRow['type'] == 0) $type = "Domestic Student";
-        else if ($userRow['type'] == 1) $type = "International Student";
-        else if ($userRow['type'] == 2) $type = "Faculty";
-        else if ($userRow['type'] == 3) $type = "Resident";
-        else if ($userRow['type'] == 4) $type = "Visitor";
-        if ($userRow['grade'] == 0) $grade = "N/A";
-        else if ($userRow['grade'] == 1) $grade = "Freshman";
-        else if ($userRow['grade'] == 2) $grade = "Sophomore";
-        else if ($userRow['grade'] == 3) $grade = "Junior";
-        else if ($userRow['grade'] == 4) $grade = "Senior";
-        else if ($userRow['grade'] == 5) $grade = "Graduate Student";
-        else if ($userRow['grade'] == 6) $grade = "Doctoral Student";
-        else if ($userRow['grade'] == 7) $grade = "Faculty";*/
+
         $types = array('Domestic Student', 'International Student', 'Faculty', 'Resident', 'Visitor');
         $grades = array('N/A', 'Freshman', 'Sophomore', 'Junior', 'Senior', 'Graduate Student', 'Doctoral Student', 'Faculty');
         $type = $types[$userRow['type']];
         $grade = $grades[$userRow['grade']];
 
         $allTuples[] = array("userid" => $userid, "dateandtime" => $dateandtime, "name" => $name, "type" => $type, "rating" => $rating, "comment" => $comment);
-        if ($userRow['type'] < 2) {
-          $sumStudentRating += $rating;
-          if ($rating == 0) $numStudentZeroes++;
+        if ($userRow['type'] < 3) {
           $studentid = $userRow['studentid'];
           $onid = $userRow['onid'];
           $studentTuples[] = array("userid" => $userid, "dateandtime" => $dateandtime, "name" => $name, "studentid" => $studentid, "onid" => $onid, "type" => $type, "grade" => $grade, "rating" => $rating, "comment" => $comment);
+        }
+        else {
+          $nonStudentTuples[] = array("userid" => $userid, "dateandtime" => $dateandtime, "name" => $name, "type" => $type, "rating" => $rating, "comment" => $comment);
         }
       }
     }
@@ -93,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="mainbody">
       <div>
-        <left class="sectionheader"><h1>Regression Analysis Center</h1></left><br>
+        <left class="sectionheader"><h1>Analysis Center</h1></left><br>
         <form action="./analyze.php">
           <button class="ui red button">
             <i class="arrow left icon"></i>
@@ -132,9 +119,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           </table>
         </div><br>
 
-        <?php if (count($studentTuples) > 0) { ?>
+        <div class="ui divider"></div><br>
 
-          <div class="ui divider"></div><br>
+        <?php if (count($studentTuples) > 0) { ?>
 
           <div>
             <h2>Feedback Search Results: Students and Faculty</h2>
@@ -166,11 +153,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <?php } ?>
               </tbody>
             </table>
-          </div>
+          </div><br>
         <?php } else { ?>
           <h4>No search results from students or faculty.</h4>
         <?php } ?>
-      <?php } else { ?>
+        <div class="ui divider"></div><br>
+
+        <?php if (count($nonStudentTuples) > 0)  { ?>
+
+          <div>
+            <h2>Feedback Search Results: Non-Students</h2>
+            <table class="ui celled padded table">
+              <thead>
+                <tr>
+                  <th class="single line">Name</th>
+                  <th>Date and Time</th>
+                  <th>User Type</th>
+                  <th>Rating</th>
+                  <th>Comment</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php foreach ($nonStudentTuples as $tuple) { ?>
+                  <tr>
+                    <td><?php echo $tuple['name']; ?></td>
+                    <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
+                    <td><?php echo $tuple['type']; ?></td>
+                    <td><?php if ($tuple['rating'] != 0) echo $tuple['rating']; ?></td>
+                    <td><?php echo $tuple['comment']; ?></td>
+                  </tr>
+                <?php } ?>
+              </tbody>
+            </table>
+          </div>
+        <?php } else { ?>
+          <h4>No search results from non-students.</h4>
+        <?php }
+      } else { ?>
         <h4>No search results.</h4>
       <?php } ?>
     </div>

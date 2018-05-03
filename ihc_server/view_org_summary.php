@@ -17,8 +17,8 @@
       $events[] = $event;
     }
   }
-  $attendees = $studentAttendees = array();
-  $allRatings = $studentRatings = array();
+  $attendees = $studentAttendees = $nonStudentAttendees = array();
+  $allRatings = $studentRatings = $nonStudentRatings = array();
   $stmt = $mysqli->prepare("SELECT CE.*, U.type FROM ihc_completed_events CE, ihc_events E, ihc_users U WHERE CE.eventid=E.eventid AND CE.userid=U.id AND E.host=?");
   $stmt->bind_param('s', $host);
   $stmt->execute();
@@ -31,21 +31,12 @@
         $studentAttendees[] = $listing;
         $studentRatings[] = $listing['rating'];
       }
-    }
-  }
-  /*foreach ($events as $event) {
-    $eventid = $event['eventid'];
-    $stmt = $mysqli->prepare("SELECT * FROM ihc_completed_events WHERE eventid=?");
-    $stmt->bind_param('i', $eventid);
-    $stmt->execute();
-    $completedres = $stmt->get_result();
-    if ($completedres->num_rows > 0) {
-      while ($listing = $completedres->fetch_assoc()) {
-        $attendees[] = $listing;
-        $allRatings[] = $listing['rating'];
+      else {
+        $nonStudentAttendees[] = $listing;
+        $nonStudentRatings[] = $listing['rating'];
       }
     }
-  }*/
+  }
 
   $avgAllRating = array_sum($allRatings) / count($allRatings);
   $minAllRating = min($allRatings);
@@ -53,6 +44,9 @@
   $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
   $minStudentRating = min($studentRatings);
   $maxStudentRating = max($studentRatings);
+  $avgNonStudentRating = array_sum($nonStudentRatings) / count($nonStudentRatings);
+  $minNonStudentRating = min($nonStudentRatings);
+  $maxNonStudentRating = max($nonStudentRatings);
 
   ?>
 
@@ -68,6 +62,7 @@
     google.charts.load("current", {packages:["corechart"]});
     google.charts.setOnLoadCallback(drawAllRatingsChart);
     google.charts.setOnLoadCallback(drawStudentRatingsChart);
+    google.charts.setOnLoadCallback(drawNonStudentRatingsChart);
 
     function drawAllRatingsChart() {
       var data = new google.visualization.arrayToDataTable([
@@ -112,6 +107,28 @@
       var chart = new google.visualization.BarChart(document.getElementById('student_ratings_columnchart'));
       chart.draw(data, options);
     }
+
+    function drawNonStudentRatingsChart() {
+      var data = new google.visualization.arrayToDataTable([
+        ['Rating', 'Users'],
+        ['5', <?php echo count(array_keys($nonStudentRatings, 5)); ?>],
+        ['4', <?php echo count(array_keys($nonStudentRatings, 4)); ?>],
+        ['3', <?php echo count(array_keys($nonStudentRatings, 3)); ?>],
+        ['2', <?php echo count(array_keys($nonStudentRatings, 2)); ?>],
+        ['1', <?php echo count(array_keys($nonStudentRatings, 1)); ?>]
+      ]);
+
+      var options = {
+        title: 'Non-Student Rating Spread',
+        bar: {groupWidth: "80%"},
+        legend: {position: "none"},
+        colors: ['#d73f09'],
+        vAxis: {gridlines: {count: 4}}
+      };
+
+      var chart = new google.visualization.BarChart(document.getElementById('nonstudent_ratings_columnchart'));
+      chart.draw(data, options);
+    }
     </script>
 
     <script>
@@ -132,14 +149,23 @@
         <h4>Number of Events: <?php echo count($events); ?></h4>
         <h4>Total Number of Attendees: <?php echo count($attendees); ?></h4>
         <h4>Number of Student/Faculty Attendees: <?php echo count($studentAttendees); ?></h4>
+        <h4>Number of Non-Student Attendees: <?php echo count($nonStudentAttendees); ?></h4>
         <?php if (count($attendees) > 0) { ?>
-          <h4>Average Rating: <?php echo $avgAllRating; ?></h4>
+          <br><h4>Average Rating: <?php echo $avgAllRating; ?></h4>
           <h4>Student/Faculty Rating: <?php echo $avgStudentRating; ?></h4>
+          <h4>Non-Student Rating: <?php echo $avgNonStudentRating; ?></h4>
           <table>
             <tr>
               <td><div id="all_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td>
-              <td><div id="student_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td>
+              <?php if (count($studentAttendees) > 0) { ?>
+                <td><div id="student_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td>
+            <?php } ?>
             </tr>
+            <?php if (count($nonStudentAttendees) > 0) { ?>
+              <tr>
+                <td><div id="nonstudent_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td>
+              </tr>
+            <?php } ?>
           </table><br>
 
           <div class="ui divider"></div><br>

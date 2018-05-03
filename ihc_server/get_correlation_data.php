@@ -264,7 +264,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <div class="siteheader" id="siteheader"></div>
 
       <div class="mainbody">
-        <left class="sectionheader"><h1>View Correlation</h1></left><br>
+        <left class="sectionheader"><h1>Analysis Center</h1></left><br>
         <form action="./analyze.php">
           <button class="ui red button">
             <i class="arrow left icon"></i>
@@ -275,7 +275,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
       <div class="ui divider"></div><br>
       <center><h2>
-        <?php echo $metric1 . " vs. " . $metric2; ?>
+        View Correlation: <?php echo $metric1 . " vs. " . $metric2; ?>
 
         <div id="regression_analysis_chart" style="width: 100vw; height: 50vw;"></div>
       </h2></center>

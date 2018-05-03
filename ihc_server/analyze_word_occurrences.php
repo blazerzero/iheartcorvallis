@@ -10,7 +10,7 @@
   $wordCount = $_GET['count'];
 
   $keyword = "%" . $word . "%";
-  $topFiveRatedAll = $bottomFiveRatedAll = $topFiveRatedStudent = $bottomFiveRatedStudent = array();
+  $topFiveRatedAll = $bottomFiveRatedAll = $topFiveRatedStudent = $bottomFiveRatedStudent = $topFiveRatedNonStudent = $bottomFiveRatedNonStudent = array();
 
   $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND F.comment LIKE ? ORDER BY F.rating DESC");
   $stmt->bind_param('s', $keyword);
@@ -46,8 +46,26 @@
     }
   }
 
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND U.type >= 3 AND F.comment LIKE ? ORDER BY F.rating DESC");
+  $stmt->bind_param('s', $keyword);
+  $stmt->execute();
+  $res = $stmt->get_result();
+  if ($res->num_rows > 0) {
+    $i = 1;
+    while ($row = $res->fetch_assoc()) {
+      if ($i <= 5) {
+        $topFiveRatedNonStudent[] = $row;
+      }
+      if ($res->num_rows - $i < 5) {
+        $bottomFiveRatedNonStudent[] = $row;
+      }
+      $i++;
+    }
+  }
+
   arsort($bottomFiveRatedAll);
   arsort($bottomFiveRatedStudent);
+  arsort($bottomFiveRatedNonStudent);
 
   $types = array('Domestic Student', 'International Student', 'Faculty', 'Resident', 'Visitor');
   $grades = array('N/A', 'Freshman', 'Sophomore', 'Junior', 'Senior', 'Graduate Student', 'Doctoral Student', 'Faculty');
@@ -161,6 +179,78 @@
           <thead>
             <tr>
               <th class="single line">Name</th>
+              <th>Student ID #</th>
+              <th>ONID Username</th>
+              <th>Date and Time</th>
+              <th>User Type</th>
+              <th>Class Standing</th>
+              <th>Rating</th>
+              <th>Comment</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach($topFiveRatedStudent as $tuple) { ?>
+              <tr>
+                <td><?php echo $tuple['firstname'] . ' ' . $tuple['lastname']; ?></td>
+                <td><?php echo $tuple['studentid']; ?></td>
+                <td><?php echo $tuple['onid']; ?></td>
+                <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
+                <td>
+                  <?php
+                  echo $types[$tuple['type']];
+                  ?>
+                </td>
+                <td><?php echo $tuple['grade']; ?></td>
+                <td><?php echo $tuple['rating']; ?></td>
+                <td><?php echo $tuple['comment']; ?></td>
+              </tr>
+            <?php } ?>
+          </tbody>
+        </table>
+
+        <h2>Lowest Rated Comments: Students and Faculty</h2>
+        <table class="ui celled padded table">
+          <thead>
+            <tr>
+              <th class="single line">Name</th>
+              <th>Student ID #</th>
+              <th>ONID Username</th>
+              <th>Date and Time</th>
+              <th>User Type</th>
+              <th>Class Standing</th>
+              <th>Rating</th>
+              <th>Comment</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach($bottomFiveRatedStudent as $tuple) { ?>
+              <tr>
+                <td><?php echo $tuple['firstname'] . ' ' . $tuple['lastname']; ?></td>
+                <td><?php echo $tuple['studentid']; ?></td>
+                <td><?php echo $tuple['onid']; ?></td>
+                <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
+                <td>
+                  <?php
+                  echo $types[$tuple['type']];
+                  ?>
+                </td>
+                <td><?php echo $tuple['grade']; ?></td>
+                <td><?php echo $tuple['rating']; ?></td>
+                <td><?php echo $tuple['comment']; ?></td>
+              </tr>
+            <?php } ?>
+          </tbody>
+        </table>
+      </div><br>
+
+      <div class="ui divider"></div><br>
+
+      <div>
+        <h2>Top Rated Comments: Non-Students</h2>
+        <table class="ui celled padded table">
+          <thead>
+            <tr>
+              <th class="single line">Name</th>
               <th>Date and Time</th>
               <th>User Type</th>
               <th>Rating</th>
@@ -168,7 +258,7 @@
             </tr>
           </thead>
           <tbody>
-            <?php foreach($topFiveRatedStudent as $tuple) { ?>
+            <?php foreach($topFiveRatedNonStudent as $tuple) { ?>
               <tr>
                 <td><?php echo $tuple['firstname'] . ' ' . $tuple['lastname']; ?></td>
                 <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
@@ -184,7 +274,7 @@
           </tbody>
         </table>
 
-        <h2>Lowest Rated Comments: Students and Faculty</h2>
+        <h2>Lowest Rated Comments: Non-Students</h2>
         <table class="ui celled padded table">
           <thead>
             <tr>
@@ -196,7 +286,7 @@
             </tr>
           </thead>
           <tbody>
-            <?php foreach($bottomFiveRatedStudent as $tuple) { ?>
+            <?php foreach($bottomFiveRatedNonStudent as $tuple) { ?>
               <tr>
                 <td><?php echo $tuple['firstname'] . ' ' . $tuple['lastname']; ?></td>
                 <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
@@ -211,7 +301,9 @@
             <?php } ?>
           </tbody>
         </table>
-      </div><br><br>
+      </div><br>
+
+      <div class="ui divider"></div><br>
 
       <form name="keywordForm" onsubmit="return validateKeywordForm()" action="./get_keyword_comments.php" method="post" enctype="multipart/form-data">
         <span style="font-size: 1.25vw; display: none"><strong>Enter Keyword or Phrase: </strong></span>
