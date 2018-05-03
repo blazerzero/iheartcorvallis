@@ -162,7 +162,7 @@ public class EventDetailActivity extends AppCompatActivity
                 // go to check user geolocation and ask for event verification PIN
                 // go to geolocation first, but goes straight to PIN for now
                 Log.d(TAG, "check in button pressed");
-                
+
                 Calendar currentDate = Calendar.getInstance(TimeZone.getTimeZone("America/LosAngeles"), Locale.US);
                 Log.d(TAG, "current date: " + currentDate.getTime());
                 Log.d(TAG, "event start dt: " + event.getStartDT());

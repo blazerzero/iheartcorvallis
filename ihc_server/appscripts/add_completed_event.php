@@ -31,12 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($stmt2->error == "") {
       $result = $stmt2->get_result();
       $stampcount = $result->num_rows;
-      /*if ($result->num_rows == 1) {
-        $stampcount = 1;
-      }
-      else if ($result->num_rows > 1){
-        $stampcount = $result->num_rows;
-      }*/
+      
       $stmt3 = $mysqli->prepare("UPDATE ihc_users SET stampcount=? WHERE id=?");
       $stmt3->bind_param('ii', $stampcount, $userid);
       $stmt3->execute();
