@@ -241,10 +241,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           },
           hAxis: {title: '<?php echo $xAxis; ?>', minValue: 0},
           vAxis: {title: '<?php echo $yAxis; ?>', minValue: 0},
-          legend: 'none',
           trendlines: {
             0: {
               visibleInLegend: true,
+              showR2: true,
               color: '#d73f09'
             }
           }
