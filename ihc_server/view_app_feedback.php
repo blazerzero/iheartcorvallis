@@ -269,7 +269,9 @@ require "./admin_server/login.php"; ?>
                 <?php } ?>
               </tbody>
             </table>
-          </div>
+          </div><br>
+
+          <div class="ui divider"></div><br>
 
           <div id="nonstudents">
             <h2>Feedback: Non-Students</h2>

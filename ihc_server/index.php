@@ -22,7 +22,7 @@
     <div class="siteheader" id="siteheader"></div>
 
     <br><br>
-    <div class="quicknav"><center>
+    <div><center>
       <div>
         <a href="./add_event.php">
           <button class="circular ui icon button">

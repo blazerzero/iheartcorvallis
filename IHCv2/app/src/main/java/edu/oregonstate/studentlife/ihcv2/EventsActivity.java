@@ -567,4 +567,14 @@ public class EventsActivity extends AppCompatActivity
         cursor.close();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        eventList.clear();
+        mEventListAdapter = new EventListAdapter(this);
+        mEventListRV.setAdapter(mEventListAdapter);
+        mEventCardAdapter = new EventCardAdapter(this, this);
+        mEventCardRV.setAdapter(mEventCardAdapter);
+    }
+
 }

@@ -35,9 +35,6 @@
         echo "<script type='text/javascript'>alert('$message');</script>";
       }*/
 
-      $message = "changeimage is " . $changeimage;
-      echo "<script type='text/javascript'>alert('$message');</script>";
-
       if ($changeimage == 0) {
         $stmt = $mysqli->prepare("SELECT image FROM ihc_resource_info WHERE id=?");
         $stmt->bind_param('i', $id);
