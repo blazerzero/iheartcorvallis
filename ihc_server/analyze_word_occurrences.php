@@ -12,7 +12,7 @@
   $keyword = "%" . $word . "%";
   $topFiveRatedAll = $bottomFiveRatedAll = $topFiveRatedStudent = $bottomFiveRatedStudent = $topFiveRatedNonStudent = $bottomFiveRatedNonStudent = array();
 
-  $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND F.comment LIKE ? ORDER BY F.rating DESC");
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND F.comment LIKE ? AND F.rating > 0 ORDER BY F.rating DESC");
   $stmt->bind_param('s', $keyword);
   $stmt->execute();
   $res = $stmt->get_result();
@@ -29,7 +29,7 @@
     }
   }
 
-  $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND U.type < 3 AND F.comment LIKE ? ORDER BY F.rating DESC");
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND U.type < 3 AND F.comment LIKE ? AND F.rating > 0 ORDER BY F.rating DESC");
   $stmt->bind_param('s', $keyword);
   $stmt->execute();
   $res = $stmt->get_result();
@@ -46,7 +46,7 @@
     }
   }
 
-  $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND U.type >= 3 AND F.comment LIKE ? ORDER BY F.rating DESC");
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND U.type >= 3 AND F.comment LIKE ? AND F.rating > 0 ORDER BY F.rating DESC");
   $stmt->bind_param('s', $keyword);
   $stmt->execute();
   $res = $stmt->get_result();

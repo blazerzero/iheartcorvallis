@@ -57,83 +57,272 @@
     <link type="text/css" rel="stylesheet" href="./css/stylesheet.css"/>
     <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-    google.charts.load("current", {packages:["corechart"]});
-    google.charts.setOnLoadCallback(drawAllRatingsChart);
-    google.charts.setOnLoadCallback(drawStudentRatingsChart);
-    google.charts.setOnLoadCallback(drawNonStudentRatingsChart);
-
-    function drawAllRatingsChart() {
-      var data = new google.visualization.arrayToDataTable([
-        ['Rating', 'Users'],
-        ['5', <?php echo count(array_keys($allRatings, 5)); ?>],
-        ['4', <?php echo count(array_keys($allRatings, 4)); ?>],
-        ['3', <?php echo count(array_keys($allRatings, 3)); ?>],
-        ['2', <?php echo count(array_keys($allRatings, 2)); ?>],
-        ['1', <?php echo count(array_keys($allRatings, 1)); ?>]
-      ]);
-
-      var options = {
-        title: 'Overall Rating Spread',
-        bar: {groupWidth: "80%"},
-        legend: {position: "none"},
-        colors: ['#0d5257'],
-        vAxis: {gridlines: {count: 4}}
-      };
-
-      var chart = new google.visualization.BarChart(document.getElementById('all_ratings_columnchart'));
-      chart.draw(data, options);
-    }
-
-    function drawStudentRatingsChart() {
-      var data = new google.visualization.arrayToDataTable([
-        ['Rating', 'Users'],
-        ['5', <?php echo count(array_keys($studentRatings, 5)); ?>],
-        ['4', <?php echo count(array_keys($studentRatings, 4)); ?>],
-        ['3', <?php echo count(array_keys($studentRatings, 3)); ?>],
-        ['2', <?php echo count(array_keys($studentRatings, 2)); ?>],
-        ['1', <?php echo count(array_keys($studentRatings, 1)); ?>]
-      ]);
-
-      var options = {
-        title: 'Student/Faculty Rating Spread',
-        bar: {groupWidth: "80%"},
-        legend: {position: "none"},
-        colors: ['#d73f09'],
-        vAxis: {gridlines: {count: 4}}
-      };
-
-      var chart = new google.visualization.BarChart(document.getElementById('student_ratings_columnchart'));
-      chart.draw(data, options);
-    }
-
-    function drawNonStudentRatingsChart() {
-      var data = new google.visualization.arrayToDataTable([
-        ['Rating', 'Users'],
-        ['5', <?php echo count(array_keys($nonStudentRatings, 5)); ?>],
-        ['4', <?php echo count(array_keys($nonStudentRatings, 4)); ?>],
-        ['3', <?php echo count(array_keys($nonStudentRatings, 3)); ?>],
-        ['2', <?php echo count(array_keys($nonStudentRatings, 2)); ?>],
-        ['1', <?php echo count(array_keys($nonStudentRatings, 1)); ?>]
-      ]);
-
-      var options = {
-        title: 'Non-Student Rating Spread',
-        bar: {groupWidth: "80%"},
-        legend: {position: "none"},
-        colors: ['#d73f09'],
-        vAxis: {gridlines: {count: 4}}
-      };
-
-      var chart = new google.visualization.BarChart(document.getElementById('nonstudent_ratings_columnchart'));
-      chart.draw(data, options);
-    }
+    <script src= "https://cdn.zingchart.com/zingchart.min.js"></script>
+    <script>
+    zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
     </script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script>
     $(document).ready(function() {
       $("#siteheader").load("siteheader.html");
+      var myConfig = {
+        backgroundColor:'transparent',
+        type: "hbar",
+        title: {
+          text: "Overall Rating Spread",
+          fontFamily: 'Lato',
+          fontSize: 18,
+          padding: "15",
+          fontColor: '#000000'
+        },
+        plot: {
+          borderWidth:0,
+          backgroundColor:'transparent',
+          animation:{
+ 	          effect:2,
+ 	          sequence:3
+ 	        }
+        },
+        tooltip:{
+          fontSize:16,
+          anchor:'c',
+          x:'50%',
+          y:'50%',
+          sticky:true,
+          backgroundColor:'none',
+          borderWidth:0,
+          mediaRules:[
+            {
+              maxWidth:500,
+              y:'54%',
+            }
+          ]
+        },
+        plotarea: {
+          backgroundColor: 'transparent',
+        },
+        scaleX:{
+          values: ["1", "2", "3", "4", "5"]
+        },
+        series:[
+            {
+              values: [<?php echo count(array_keys($allRatings, 1)); ?>,
+                <?php echo count(array_keys($allRatings, 2)); ?>,
+                <?php echo count(array_keys($allRatings, 3)); ?>,
+                <?php echo count(array_keys($allRatings, 4)); ?>,
+                <?php echo count(array_keys($allRatings, 5)); ?>],
+              lineColor: "#FF4747",
+              backgroundColor: "#FF4747",
+              lineWidth: 1,
+              marker: {
+                backgroundColor: '#FF4747'
+              }
+            }
+        ]
+      };
+
+      zingchart.render({
+        id : 'all_ratings_columnchart',
+        data: {
+          gui:{
+            contextMenu:{
+              button:{
+                visible: true,
+                lineColor: "#2D66A4",
+                backgroundColor: "#2D66A4"
+              },
+              gear: {
+                alpha: 1,
+                backgroundColor: "#2D66A4"
+              },
+              position: "right",
+              backgroundColor:"#306EAA",
+              docked: true,
+              item:{
+                backgroundColor: "#306EAA",
+                borderColor:"#306EAA",
+                borderWidth: 0,
+                fontFamily: "Lato",
+                color: "#000000"
+              }
+            }
+          },
+          graphset: [myConfig]
+        }
+      });
+
+      myConfig = {
+        backgroundColor:'transparent',
+        type: "hbar",
+        title: {
+          text: "Student/Faculty Rating Spead",
+          fontFamily: 'Lato',
+          fontSize: 18,
+          padding: "15",
+          fontColor: '#000000'
+        },
+        plot: {
+          borderWidth:0,
+          backgroundColor:'transparent',
+          animation:{
+            effect:2,
+            sequence:3
+          }
+        },
+        tooltip:{
+          fontSize:16,
+          anchor:'c',
+          x:'50%',
+          y:'50%',
+          sticky:true,
+          backgroundColor:'none',
+          borderWidth:0,
+          mediaRules:[
+            {
+              maxWidth:500,
+              y:'54%',
+            }
+          ]
+        },
+        plotarea: {
+          backgroundColor: 'transparent',
+        },
+        scaleX:{
+          values: ["1", "2", "3", "4", "5"]
+        },
+        series:[
+            {
+              values: [<?php echo count(array_keys($studentRatings, 1)); ?>,
+                <?php echo count(array_keys($studentRatings, 2)); ?>,
+                <?php echo count(array_keys($studentRatings, 3)); ?>,
+                <?php echo count(array_keys($studentRatings, 4)); ?>,
+                <?php echo count(array_keys($studentRatings, 5)); ?>],
+              lineColor: "#4747FF",
+              backgroundColor: "#4747FF",
+              lineWidth: 1,
+              marker: {
+                backgroundColor: '#4747FF'
+              }
+            }
+        ]
+      };
+
+      zingchart.render({
+        id : 'student_ratings_columnchart',
+        data: {
+          gui:{
+            contextMenu:{
+              button:{
+                visible: true,
+                lineColor: "#2D66A4",
+                backgroundColor: "#2D66A4"
+              },
+              gear: {
+                alpha: 1,
+                backgroundColor: "#2D66A4"
+              },
+              position: "right",
+              backgroundColor:"#306EAA",
+              docked: true,
+              item:{
+                backgroundColor: "#306EAA",
+                borderColor:"#306EAA",
+                borderWidth: 0,
+                fontFamily: "Lato",
+                color: "#000000"
+              }
+            }
+          },
+          graphset: [myConfig]
+        }
+      });
+
+      myConfig = {
+        backgroundColor:'transparent',
+        type: "hbar",
+        title: {
+          text: "Non-Student Rating Spread",
+          fontFamily: 'Lato',
+          fontSize: 18,
+          padding: "15",
+          fontColor: '#000000'
+        },
+        plot: {
+          borderWidth:0,
+          backgroundColor:'transparent',
+          animation:{
+            effect:2,
+            sequence:3
+          }
+        },
+        tooltip:{
+          fontSize:16,
+          anchor:'c',
+          x:'50%',
+          y:'50%',
+          sticky:true,
+          backgroundColor:'none',
+          borderWidth:0,
+          mediaRules:[
+            {
+              maxWidth:500,
+              y:'54%',
+            }
+          ]
+        },
+        plotarea: {
+          backgroundColor: 'transparent',
+        },
+        scaleX:{
+          values: ["1", "2", "3", "4", "5"]
+        },
+        series:[
+            {
+              values: [<?php echo count(array_keys($nonStudentRatings, 1)); ?>,
+                <?php echo count(array_keys($nonStudentRatings, 2)); ?>,
+                <?php echo count(array_keys($nonStudentRatings, 3)); ?>,
+                <?php echo count(array_keys($nonStudentRatings, 4)); ?>,
+                <?php echo count(array_keys($nonStudentRatings, 5)); ?>],
+              lineColor: "#00C62F",
+              backgroundColor: "#00C62F",
+              lineWidth: 1,
+              marker: {
+                backgroundColor: '#00C62F'
+              }
+            }
+        ]
+      };
+
+      zingchart.render({
+        id : 'nonstudent_ratings_columnchart',
+        data: {
+          gui:{
+            contextMenu:{
+              button:{
+                visible: true,
+                lineColor: "#2D66A4",
+                backgroundColor: "#2D66A4"
+              },
+              gear: {
+                alpha: 1,
+                backgroundColor: "#2D66A4"
+              },
+              position: "right",
+              backgroundColor:"#306EAA",
+              docked: true,
+              item:{
+                backgroundColor: "#306EAA",
+                borderColor:"#306EAA",
+                borderWidth: 0,
+                fontFamily: "Lato",
+                color: "#000000"
+              }
+            }
+          },
+          graphset: [myConfig]
+        }
+      });
     });
     </script>
   </head>
@@ -158,12 +347,12 @@
             <tr>
               <td><div id="all_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td>
               <?php if (count($studentAttendees) > 0) { ?>
-                <td><div id="student_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td>
+                <td><div id="student_ratings_columnchart" style="width: 40vw; height: 30vw;"></div></td>
             <?php } ?>
             </tr>
             <?php if (count($nonStudentAttendees) > 0) { ?>
               <tr>
-                <td><div id="nonstudent_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td>
+                <td><div id="nonstudent_ratings_columnchart" style="width: 40vw; height: 30vw;"></div></td>
               </tr>
             <?php } ?>
           </table><br>

@@ -71,94 +71,11 @@ require "./admin_server/login.php"; ?>
     <link type="text/css" rel="stylesheet" href="./css/stylesheet.css"/>
     <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src= "https://cdn.zingchart.com/zingchart.min.js"></script>
     <script>
-    google.charts.load("current", {packages:["corechart"]});
-    google.charts.setOnLoadCallback(drawAllRatingsChart);
-    google.charts.setOnLoadCallback(drawStudentRatingsChart);
-    google.charts.setOnLoadCallback(drawNonStudentRatingsChart);
-
-    function drawAllRatingsChart() {
-      var numFive = <?php echo $allRatingCounts['5']; ?>;
-      var numFour = <?php echo $allRatingCounts['4']; ?>;
-      var numThree = <?php echo $allRatingCounts['3']; ?>;
-      var numTwo = <?php echo $allRatingCounts['2']; ?>;
-      var numOne = <?php echo $allRatingCounts['1']; ?>;
-      var data = new google.visualization.arrayToDataTable([
-        ['Rating', 'Users'],
-        ['5', numFive],
-        ['4', numFour],
-        ['3', numThree],
-        ['2', numTwo],
-        ['1', numOne]
-      ]);
-
-      var options = {
-        title: 'App Rating Spread',
-        bar: {groupWidth: "80%"},
-        legend: {position: "none"},
-        colors: ['#0d5257'],
-        vAxis: {gridlines: {count: 2}}
-      };
-
-      var chart = new google.visualization.BarChart(document.getElementById('all_ratings_columnchart'));
-      chart.draw(data, options);
-    }
-
-    function drawStudentRatingsChart() {
-      var numFive = <?php echo $studentRatingCounts['5']; ?>;
-      var numFour = <?php echo $studentRatingCounts['4']; ?>;
-      var numThree = <?php echo $studentRatingCounts['3']; ?>;
-      var numTwo = <?php echo $studentRatingCounts['2']; ?>;
-      var numOne = <?php echo $studentRatingCounts['1']; ?>;
-      var data = new google.visualization.arrayToDataTable([
-        ['Rating', 'Students and Faculty'],
-        ['5', numFive],
-        ['4', numFour],
-        ['3', numThree],
-        ['2', numTwo],
-        ['1', numOne]
-      ]);
-
-      var options = {
-        title: 'Students and Faculty: App Rating Spread',
-        bar: {groupWidth: "80%"},
-        legend: {position: "none"},
-        colors: ['#d73f09'],
-        vAxis: {gridlines: {count: 2}}
-      };
-
-      var chart = new google.visualization.BarChart(document.getElementById('student_ratings_columnchart'));
-      chart.draw(data, options);
-    }
-
-    function drawNonStudentRatingsChart() {
-      var numFive = <?php echo $nonStudentRatingCounts['5']; ?>;
-      var numFour = <?php echo $nonStudentRatingCounts['4']; ?>;
-      var numThree = <?php echo $nonStudentRatingCounts['3']; ?>;
-      var numTwo = <?php echo $nonStudentRatingCounts['2']; ?>;
-      var numOne = <?php echo $nonStudentRatingCounts['1']; ?>;
-      var data = new google.visualization.arrayToDataTable([
-        ['Rating', 'Non-Students'],
-        ['5', numFive],
-        ['4', numFour],
-        ['3', numThree],
-        ['2', numTwo],
-        ['1', numOne]
-      ]);
-
-      var options = {
-        title: 'Non-Students: App Rating Spread',
-        bar: {groupWidth: "80%"},
-        legend: {position: "none"},
-        colors: ['#003b5c'],
-        vAxis: {gridlines: {count: 2}}
-      };
-
-      var chart = new google.visualization.BarChart(document.getElementById('nonstudent_ratings_columnchart'));
-      chart.draw(data, options);
-    }
+    zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
     </script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
     $(document).ready(function() {
       $("#siteheader").load("siteheader.html");
@@ -170,6 +87,264 @@ require "./admin_server/login.php"; ?>
       });
       $("#nonstudents_btn").click(function() {
         document.getElementById("nonstudents").scrollIntoView();
+      });
+      myConfig = {
+        backgroundColor:'transparent',
+        type: "hbar",
+        title: {
+          text: "App Rating Spread",
+          fontFamily: 'Lato',
+          fontSize: 18,
+          padding: "15",
+          fontColor: '#000000'
+        },
+        plot: {
+          borderWidth:0,
+          backgroundColor:'transparent',
+          animation:{
+ 	          effect:2,
+ 	          sequence:3
+ 	        }
+        },
+        tooltip:{
+          fontSize:16,
+          anchor:'c',
+          x:'50%',
+          y:'50%',
+          sticky:true,
+          backgroundColor:'none',
+          borderWidth:0,
+          mediaRules:[
+            {
+              maxWidth:500,
+              y:'54%',
+            }
+          ]
+        },
+        plotarea: {
+          backgroundColor: 'transparent',
+        },
+        scaleX:{
+          values: ["1", "2", "3", "4", "5"]
+        },
+        series:[
+            {
+              label: "5",
+              values: [<?php echo $allRatingCounts['1']; ?>,
+                <?php echo $allRatingCounts['2']; ?>,
+                <?php echo $allRatingCounts['3']; ?>,
+                <?php echo $allRatingCounts['4']; ?>,
+                <?php echo $allRatingCounts['5']; ?>],
+              lineColor: "#FF4747",
+              backgroundColor: "#FF4747",
+              lineWidth: 1,
+              marker: {
+                backgroundColor: '#FF4747'
+              }
+            }
+        ]
+      };
+
+      zingchart.render({
+        id : 'all_ratings_columnchart',
+        data: {
+          gui:{
+            contextMenu:{
+              button:{
+                visible: true,
+                lineColor: "#2D66A4",
+                backgroundColor: "#2D66A4"
+              },
+              gear: {
+                alpha: 1,
+                backgroundColor: "#2D66A4"
+              },
+              position: "right",
+              backgroundColor:"#306EAA",
+              docked: true,
+              item:{
+                backgroundColor: "#306EAA",
+                borderColor:"#306EAA",
+                borderWidth: 0,
+                fontFamily: "Lato",
+                color: "#000000"
+              }
+            }
+          },
+          graphset: [myConfig]
+        }
+      });
+
+      myConfig = {
+        backgroundColor:'transparent',
+        type: "hbar",
+        title: {
+          text: "Students and Faculty: App Rating Spead",
+          fontFamily: 'Lato',
+          fontSize: 18,
+          padding: "15",
+          fontColor: '#000000'
+        },
+        plot: {
+          borderWidth:0,
+          backgroundColor:'transparent',
+          animation:{
+ 	          effect:2,
+ 	          sequence:3
+ 	        }
+        },
+        tooltip:{
+          fontSize:16,
+          anchor:'c',
+          x:'50%',
+          y:'50%',
+          sticky:true,
+          backgroundColor:'none',
+          borderWidth:0,
+          mediaRules:[
+            {
+              maxWidth:500,
+              y:'54%',
+            }
+          ]
+        },
+        plotarea: {
+          backgroundColor: 'transparent',
+        },
+        scaleX:{
+          values: ["1", "2", "3", "4", "5"]
+        },
+        series:[
+            {
+              values: [<?php echo $studentRatingCounts['1']; ?>,
+                <?php echo $studentRatingCounts['2']; ?>,
+                <?php echo $studentRatingCounts['3']; ?>,
+                <?php echo $studentRatingCounts['4']; ?>,
+                <?php echo $studentRatingCounts['5']; ?>],
+              lineColor: "#4747FF",
+              backgroundColor: "#4747FF",
+              lineWidth: 1,
+              marker: {
+                backgroundColor: '#4747FF'
+              }
+            }
+        ]
+      };
+
+      zingchart.render({
+        id : 'student_ratings_columnchart',
+        data: {
+          gui:{
+            contextMenu:{
+              button:{
+                visible: true,
+                lineColor: "#2D66A4",
+                backgroundColor: "#2D66A4"
+              },
+              gear: {
+                alpha: 1,
+                backgroundColor: "#2D66A4"
+              },
+              position: "right",
+              backgroundColor:"#306EAA",
+              docked: true,
+              item:{
+                backgroundColor: "#306EAA",
+                borderColor:"#306EAA",
+                borderWidth: 0,
+                fontFamily: "Lato",
+                color: "#000000"
+              }
+            }
+          },
+          graphset: [myConfig]
+        }
+      });
+
+      myConfig = {
+        backgroundColor:'transparent',
+        type: "hbar",
+        title: {
+          text: "Non-Students: App Rating Spread",
+          fontFamily: 'Lato',
+          fontSize: 18,
+          padding: "15",
+          fontColor: '#000000'
+        },
+        plot: {
+          borderWidth:0,
+          backgroundColor:'transparent',
+          animation:{
+ 	          effect:2,
+ 	          sequence:3
+ 	        }
+        },
+        tooltip:{
+          fontSize:16,
+          anchor:'c',
+          x:'50%',
+          y:'50%',
+          sticky:true,
+          backgroundColor:'none',
+          borderWidth:0,
+          mediaRules:[
+            {
+              maxWidth:500,
+              y:'54%',
+            }
+          ]
+        },
+        plotarea: {
+          backgroundColor: 'transparent',
+        },
+        scaleX:{
+          values: ["1", "2", "3", "4", "5"]
+        },
+        series:[
+            {
+              values: [<?php echo $nonStudentRatingCounts['1']; ?>,
+                <?php echo $nonStudentRatingCounts['2']; ?>,
+                <?php echo $nonStudentRatingCounts['3']; ?>,
+                <?php echo $nonStudentRatingCounts['4']; ?>,
+                <?php echo $nonStudentRatingCounts['5']; ?>],
+              lineColor: "#00C62F",
+              backgroundColor: "#00C62F",
+              lineWidth: 1,
+              marker: {
+                backgroundColor: '#00C62F'
+              }
+            }
+        ]
+      };
+
+      zingchart.render({
+        id : 'nonstudent_ratings_columnchart',
+        data: {
+          gui:{
+            contextMenu:{
+              button:{
+                visible: true,
+                lineColor: "#2D66A4",
+                backgroundColor: "#2D66A4"
+              },
+              gear: {
+                alpha: 1,
+                backgroundColor: "#2D66A4"
+              },
+              position: "right",
+              backgroundColor:"#306EAA",
+              docked: true,
+              item:{
+                backgroundColor: "#306EAA",
+                borderColor:"#306EAA",
+                borderWidth: 0,
+                fontFamily: "Lato",
+                color: "#000000"
+              }
+            }
+          },
+          graphset: [myConfig]
+        }
       });
     });
     </script>
@@ -204,8 +379,8 @@ require "./admin_server/login.php"; ?>
               <td><div id="all_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td>
             </tr>
             <tr>
-              <td><div id="student_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td>
-              <td><div id="nonstudent_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td>
+              <td><div id="student_ratings_columnchart" style="width: 40vw; height: 30vw;"></div></td>
+              <td><div id="nonstudent_ratings_columnchart" style="width: 40vw; height: 30vw;"></div></td>
             </tr>
           </table><br>
 

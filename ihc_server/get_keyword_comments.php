@@ -72,6 +72,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script>
     $(document).ready(function() {
       $("#siteheader").load("siteheader.html");
+      $("#allusers_btn").click(function() {
+        document.getElementById("all_feedback").scrollIntoView();
+      });
+      $("#students_faculty_btn").click(function() {
+        document.getElementById("student_feedback").scrollIntoView();
+      });
+      $("#nonstudents_btn").click(function() {
+        document.getElementById("nonstudent_feedback").scrollIntoView();
+      });
     });
     </script>
   </head>
@@ -79,6 +88,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="siteheader" id="siteheader"></div>
 
     <div class="mainbody">
+      <div class="quicknav">
+        <button class="ui orange button ihc" id="allusers_btn">All Feedback</button>
+        <button class="ui orange button ihc" id="students_faculty_btn">Student/Faculty Feedback</button>
+        <button class="ui orange button ihc" id="nonstudents_btn">Non-Student Feedback</button>
+      </div>
       <div>
         <left class="sectionheader"><h1>Analysis Center</h1></left><br>
         <form action="./analyze.php">
@@ -89,11 +103,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
       </div>
 
-      <?php if (count($allTuples) > 0) { ?>
+      <div class="ui divider"></div><br>
 
-        <div class="ui divider"></div><br>
-
-        <div>
+      <div id="all_feedback">
+        <?php if (count($allTuples) > 0) { ?>
           <h2>Feedback Search Results: All Users</h2>
           <table class="ui celled padded table">
             <thead>
@@ -121,9 +134,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="ui divider"></div><br>
 
-        <?php if (count($studentTuples) > 0) { ?>
 
-          <div>
+        <div id="student_feedback">
+          <?php if (count($studentTuples) > 0) { ?>
             <h2>Feedback Search Results: Students and Faculty</h2>
             <table class="ui celled padded table">
               <thead>
@@ -159,9 +172,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php } ?>
         <div class="ui divider"></div><br>
 
-        <?php if (count($nonStudentTuples) > 0)  { ?>
+        <div id="nonstudent_feedback">
+          <?php if (count($nonStudentTuples) > 0)  { ?>
 
-          <div>
             <h2>Feedback Search Results: Non-Students</h2>
             <table class="ui celled padded table">
               <thead>

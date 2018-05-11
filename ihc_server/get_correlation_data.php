@@ -102,8 +102,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               $days = $elapsed / 86400;
 
               for ($j = 0; $j < count($choices); $j++) {
-                if ($row['response'] == $choices[$j]) {
+                if (trim($row['response']) == trim($choices[$j])) {
                   $choiceVal = $j+1;
+                  echo $row['response'] . " " . $choices[$j] . " " . $choiceVal . "<br><br>";
+
                   break;
                 }
               }
@@ -178,20 +180,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           }
           $choices = $newChoices;
 
-          $stmt2 = $mysqli->prepare("SELECT DISTINCT userid, response FROM ihc_survey_responses WHERE questionid=? ORDER BY dateandtime ASC");
+          $stmt2 = $mysqli->prepare("SELECT userid, response FROM ihc_survey_responses WHERE questionid=? ORDER BY dateandtime ASC");
           $stmt2->bind_param('i', $i);
           $stmt2->execute();
           $res2 = $stmt2->get_result();
           if ($res2->num_rows > 0) {
+            echo $res2->num_rows . "<br>";
             while ($row = $res2->fetch_assoc()) {
 
               for ($j = 0; $j < count($choices); $j++) {
-                if ($row['response'] == $choices[$j]) {
+                if (trim($row['response']) == trim($choices[$j])) {
                   $choiceVal = $j+1;
                   break;
                 }
               }
 
+              print_r(array('userid' => $row['userid'], 'yval' => $choiceVal));
+              echo "<br>";
               $yData[] = array('userid' => $row['userid'], 'yval' => $choiceVal);
             }
           }
@@ -220,43 +225,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link type="text/css" rel="stylesheet" href="./css/stylesheet.css"/>
     <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script src= "https://cdn.zingchart.com/zingchart.min.js"></script>
+    <script>
+    zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
+    </script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-    google.charts.load("current", {packages:["corechart"]});
-    google.charts.setOnLoadCallback(drawRegressionChart);
-
-    function drawRegressionChart() {
-      var data = new google.visualization.DataTable();
-      data.addColumn('number', '<?php echo $xAxis; ?>');
-      data.addColumn('number', '<?php echo $yAxis; ?>');
-      <?php for ($i = 0; $i < count($allData); $i++) { ?>
-        data.addRows([
-          [<?php echo $allData[$i]['x']; ?>, <?php echo $allData[$i]['y']; ?>]
-        ]);
-        <?php } ?>
-
-        var options = {
-          chart: {
-            title: '<?php echo $metric1; ?> vs. <?php echo $metric2; ?>'
-          },
-          hAxis: {title: '<?php echo $xAxis; ?>', minValue: 0},
-          vAxis: {title: '<?php echo $yAxis; ?>', minValue: 0},
-          trendlines: {
-            0: {
-              visibleInLegend: true,
-              showR2: true,
-              color: '#d73f09'
+    <script>
+    $(document).ready(function() {
+      $("#siteheader").load("siteheader.html");
+      var myConfig = {
+        type: "scatter",
+        series:[
+          {
+            values:[
+              <?php for ($i = 0; $i < count($allData)-1; $i++) { ?>
+                [<?php echo $allData[$i]['x']; ?>, <?php echo $allData[$i]['y']; ?>],
+                <?php } ?>
+                [<?php echo $allData[count($allData)-1]['x']; ?>, <?php echo $allData[count($allData)-1]['y']; ?>]
+              ]
             }
-          }
+          ]
         };
 
-        var chart = new google.visualization.ScatterChart(document.getElementById('regression_analysis_chart'));
-        chart.draw(data, options);
-      }
-      </script>
-      <script>
-      $(document).ready(function() {
-        $("#siteheader").load("siteheader.html");
+        zingchart.render({
+          id:'regression_analysis_chart',
+          data:myConfig
+        });
       });
       </script>
     </head>

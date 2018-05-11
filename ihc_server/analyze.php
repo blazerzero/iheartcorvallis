@@ -33,8 +33,9 @@
       $token = strtok(",. ");
     }
   }
+  arsort($wordCounts);
   $words = array_keys($wordCounts);
-  arsort($words);
+
   ?>
 
   <html>
