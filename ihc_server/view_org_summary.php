@@ -26,14 +26,20 @@
   if ($completedres->num_rows > 0) {
     while ($listing = $completedres->fetch_assoc()) {
       $attendees[] = $listing;
-      $allRatings[] = $listing['rating'];
+      if ($listing['rating'] > 0) {
+        $allRatings[] = $listing['rating'];
+      }
       if ($listing['type'] < 3) {
         $studentAttendees[] = $listing;
-        $studentRatings[] = $listing['rating'];
+        if ($listing['rating'] > 0) {
+          $studentRatings[] = $listing['rating'];
+        }
       }
       else {
         $nonStudentAttendees[] = $listing;
-        $nonStudentRatings[] = $listing['rating'];
+        if ($listing['rating'] > 0) {
+          $nonStudentRatings[] = $listing['rating'];
+        }
       }
     }
   }
@@ -47,6 +53,10 @@
   $avgNonStudentRating = array_sum($nonStudentRatings) / count($nonStudentRatings);
   $minNonStudentRating = min($nonStudentRatings);
   $maxNonStudentRating = max($nonStudentRatings);
+
+  $avgAllRating = number_format($avgAllRating, 2);
+  $avgStudentRating = number_format($avgStudentRating, 2);
+  $avgNonStudentRating = number_format($avgNonStudentRating, 2);
 
   ?>
 
@@ -345,14 +355,14 @@
           <h4>Non-Student Rating: <?php echo $avgNonStudentRating; ?></h4>
           <table>
             <tr>
-              <td><div id="all_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td>
+              <td><div id="all_ratings_columnchart" style="width: 50vw; height: 40vw;"></div></td>
               <?php if (count($studentAttendees) > 0) { ?>
-                <td><div id="student_ratings_columnchart" style="width: 40vw; height: 30vw;"></div></td>
+                <td><div id="student_ratings_columnchart" style="width: 40vw; height: 40vw;"></div></td>
             <?php } ?>
             </tr>
             <?php if (count($nonStudentAttendees) > 0) { ?>
               <tr>
-                <td><div id="nonstudent_ratings_columnchart" style="width: 40vw; height: 30vw;"></div></td>
+                <td><div id="nonstudent_ratings_columnchart" style="width: 40vw; height: 40vw;"></div></td>
               </tr>
             <?php } ?>
           </table><br>

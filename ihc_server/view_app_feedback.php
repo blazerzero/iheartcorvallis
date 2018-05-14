@@ -52,6 +52,9 @@ require "./admin_server/login.php"; ?>
   $avgAllRating = $sumAllRatings / (count($allTuples) - $numAllZeroes);
   $avgStudentRating = $sumStudentRatings / (count($studentTuples) - $numStudentZeroes);
   $avgNonStudentRating = $sumNonStudentRatings / (count($nonStudentTuples) - $numNonStudentZeroes);
+  $avgAllRating = number_format($avgAllRating, 2);
+  $avgStudentRating = number_format($avgStudentRating, 2);
+  $avgNonStudentRating = number_format($avgNonStudentRating, 2);
   $allRatingCounts = array_count_values(array_column($allTuples, 'rating'));
   $studentRatingCounts = array_count_values(array_column($studentTuples, 'rating'));
   $nonStudentRatingCounts = array_count_values(array_column($nonStudentTuples, 'rating'));
@@ -376,11 +379,11 @@ require "./admin_server/login.php"; ?>
           <!-- APP RATING DISTRIBUTION -->
           <table>
             <tr>
-              <td><div id="all_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></td>
+              <td><div id="all_ratings_columnchart" style="width: 50vw; height: 40vw;"></div></td>
             </tr>
             <tr>
-              <td><div id="student_ratings_columnchart" style="width: 40vw; height: 30vw;"></div></td>
-              <td><div id="nonstudent_ratings_columnchart" style="width: 40vw; height: 30vw;"></div></td>
+              <td><div id="student_ratings_columnchart" style="width: 40vw; height: 40vw;"></div></td>
+              <td><div id="nonstudent_ratings_columnchart" style="width: 40vw; height: 40vw;"></div></td>
             </tr>
           </table><br>
 

@@ -54,6 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $choices = array();
   $newChoices = array();
   $xValues = array();
+  $xData = $yData = array();
 
   if ($stat1 == 1) {      // Second variable being tested against time
     if ($stat2 == 5) {    // Time vs. Number of Completed Events
@@ -69,6 +70,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $elapsed = strtotime($row['dateandtime']) - strtotime($startTimes[$row['userid']]);
           $days = $elapsed / 86400;
           $allData[] = array('userid' => $row['userid'], 'x' => $days, 'y' => $numDataPerUser[$row['userid']] + 1);
+          $xData[] = array('userid' => $row['userid'], 'x' => $days);
+          $yData[] = array('userid' => $row['userid'], 'y' => $numDataPerUser[$row['userid']] + 1);
           $numDataPerUser[$row['userid']]++;
         }
       }
@@ -104,13 +107,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               for ($j = 0; $j < count($choices); $j++) {
                 if (trim($row['response']) == trim($choices[$j])) {
                   $choiceVal = $j+1;
-                  echo $row['response'] . " " . $choices[$j] . " " . $choiceVal . "<br><br>";
 
                   break;
                 }
               }
 
               $allData[] = array('userid' => $row['userid'], 'x' => $days, 'y' => $choiceVal, 'response' => $row['response']);
+              $xData[] = array('userid' => $row['userid'], 'x' => $days);
+              $yData[] = array('userid' => $row['userid'], 'y' => $choiceVal);
             }
           }
         }
@@ -118,7 +122,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
   }
   else {
-    $xData = $yData = array();
     $orderByVar = "";
     if ($stat1 == 2) {
       $orderByVar = "grade";
@@ -185,7 +188,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $stmt2->execute();
           $res2 = $stmt2->get_result();
           if ($res2->num_rows > 0) {
-            echo $res2->num_rows . "<br>";
             while ($row = $res2->fetch_assoc()) {
 
               for ($j = 0; $j < count($choices); $j++) {
@@ -195,8 +197,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
               }
 
-              print_r(array('userid' => $row['userid'], 'yval' => $choiceVal));
-              echo "<br>";
               $yData[] = array('userid' => $row['userid'], 'yval' => $choiceVal);
             }
           }
@@ -214,7 +214,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
   }
 
-  //print_r($allData);
+  /* SIMPLE LINEAR REGRESSION ANALYSIS */
+  $arrX = array_column($allData, 'x');
+  $arrY = array_column($allData, 'y');
+  $avgX = array_sum($arrX)/count($arrX);
+  $avgY = array_sum($arrY)/count($arrY);
+
+  $ssXX = $ssYY = $varX2 = $varY2 = $spXY = $covXY = $b0 = $b1 = 0;
+  foreach ($arrX as $x):
+    $ssXX += pow(($x - $avgX), 2);
+  endforeach;
+  $varX = $ssXX / (count($arrX) - 1);
+
+  foreach ($arrY as $y):
+    $ssYY += pow(($y - $avgY), 2);
+  endforeach;
+  $varY = $ssYY / (count($arrY) - 1);
+
+  for ($i = 0; $i < count($arrX); $i++) {
+    $spXY += (($arrX[$i] - $avgX) * ($arrY[$i] - $avgY));
+  }
+  $covXY = $spXY / (count($arrX) - 1);
+  $b1 = $spXY / $ssXX;
+  $projMinY = $avgY - ($b1 * $avgX);
+
+  $minX = min($arrX);
+  $minY = $b0 + ($b1 * $minX);
+  $maxX = max($arrX);
+  $maxY = $b0 + ($b1 * $maxX);
+
+  print_r($arrX);
+  echo "<br>";
+  print_r($arrY);
 
   ?>
 
@@ -230,27 +261,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
     </script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script>
-    $(document).ready(function() {
-      $("#siteheader").load("siteheader.html");
-      var myConfig = {
-        type: "scatter",
-        series:[
-          {
-            values:[
-              <?php for ($i = 0; $i < count($allData)-1; $i++) { ?>
-                [<?php echo $allData[$i]['x']; ?>, <?php echo $allData[$i]['y']; ?>],
-                <?php } ?>
-                [<?php echo $allData[count($allData)-1]['x']; ?>, <?php echo $allData[count($allData)-1]['y']; ?>]
-              ]
+    <script type="text/javascript">
+    google.charts.load("current", {packages:["corechart"]});
+    google.charts.setOnLoadCallback(drawRegressionChart);
+    function drawRegressionChart() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('number', '<?php echo $xAxis; ?>');
+      data.addColumn('number', '<?php echo $yAxis; ?>');
+      <?php for ($i = 0; $i < count($allData); $i++) { ?>
+        data.addRows([
+          [<?php echo $allData[$i]['x']; ?>, <?php echo $allData[$i]['y']; ?>]
+        ]);
+        <?php } ?>
+        var options = {
+          chart: {
+            title: '<?php echo $metric1; ?> vs. <?php echo $metric2; ?>'
+          },
+          hAxis: {title: '<?php echo $xAxis; ?>', minValue: 0},
+          vAxis: {title: '<?php echo $yAxis; ?>', minValue: 0},
+          trendlines: {
+            0: {
+              visibleInLegend: true,
+              showR2: true,
+              color: '#d73f09'
             }
-          ]
+          }
         };
-
-        zingchart.render({
-          id:'regression_analysis_chart',
-          data:myConfig
-        });
+        var chart = new google.visualization.ScatterChart(document.getElementById('regression_analysis_chart'));
+        chart.draw(data, options);
+      }
+      </script>
+      <script>
+      $(document).ready(function() {
+        $("#siteheader").load("siteheader.html");
       });
       </script>
     </head>

@@ -101,25 +101,7 @@
                   "text":"<?php echo $words[count($words)-1]; ?>",
                   "count":"<?php echo $wordCounts[$words[count($words)-1]]; ?>"
                 }
-              ]/*,
-              "series":[
-                {
-                  "values":[
-                    <?php for ($i = 0; $i < count($words) - 1; $i++) { ?>
-                      "<?php echo $wordCounts[$words[$i]]; ?>",
-                    <?php } ?>
-                    <?php echo $wordsCounts[$words[count($words)-1]]; ?>
-                  ],
-                  "data-band":[
-                    <?php for ($i = 0; $i < count($words) - 1; $i++) { ?>
-                      "<?php echo $words[$i]; ?>",
-                    <?php } ?>
-                    <?php echo $words[count($words)-1]; ?>
-                  ],
-                  "url":"./analyze_word_occurrences.php?word=%data-band",
-                  "target":"_blank"
-                }
-              ]*/
+              ]
             }
           }
         ]
@@ -130,6 +112,9 @@
         height: '100%',
         width: '100%'
       });
+      zingchart.node_click = function(p) {
+        zcdocs.demos.dump('node_click', p);
+      }
       zingchart.bind('comment_word_cloud', 'node_click', function(p) {
         alert("node index: " + p.nodeindex);
         switch (p.nodeIndex) {
@@ -180,10 +165,7 @@
         <table>
           <tr>
             <td>
-              <div id="comment_word_cloud" style="width: 50vw; height: 30vw;">
-                <a class="zc-ref" href="https://www.zingchart.com">Powered by ZingChart
-                </a>
-              </div>
+              <div id="comment_word_cloud" style="width: 50vw; height: 50vw;"></div>
             </td>
             <td>
               <table class="ui celled padded table" style="width: 100%; height: 30vw; display: block; overflow-y:auto; overflow-x:hidden">

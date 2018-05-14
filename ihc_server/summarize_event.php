@@ -46,7 +46,9 @@
       $userAge = floor($today - $birthdate);
       //echo $today . "//" . $birthdate . "//" . $userAge . "<br>";
       $ages[] = $userAge;
-      $allRatings[] = $row['rating'];
+      if ($row['rating'] > 0) {
+        $allRatings[] = $row['rating'];
+      }
 
       $usertype = $user['type'];
       $types = array('Domestic Student', 'International Student', 'Faculty', 'Resident', 'Visitor');
@@ -97,6 +99,10 @@
   $avgAllRating = array_sum($allRatings) / count($allRatings);
   $avgStudentRating = array_sum($studentRatings) / count($studentRatings);
   $avgNonStudentRating = array_sum($nonStudentRatings) / count($nonStudentRatings);
+
+  $avgAllRating = number_format($avgAllRating, 2);
+  $avgStudentRating = number_format($avgStudentRating, 2);
+  $avgNonStudentRating = number_format($avgNonStudentRating, 2);
   ?>
 
   <html>
@@ -114,6 +120,18 @@
     <script>
     $(document).ready(function() {
       $("#siteheader").load("siteheader.html");
+      $("#general_btn").click(function() {
+        document.getElementById("general").scrollIntoView();
+      });
+      $("#allusers_btn").click(function() {
+        document.getElementById("allusers").scrollIntoView();
+      });
+      $("#students_faculty_btn").click(function() {
+        document.getElementById("students_faculty").scrollIntoView();
+      });
+      $("#nonstudents_btn").click(function() {
+        document.getElementById("nonstudents").scrollIntoView();
+      });
 
       /* ALL ATTENDEES BY TYPE */
       var myConfig = {
@@ -155,6 +173,7 @@
           sticky:true,
           backgroundColor:'none',
           borderWidth:0,
+          text:'<br><span style="color:black">%v Users</span>',
           mediaRules:[
             {
               maxWidth:500,
@@ -265,6 +284,7 @@
           sticky:true,
           backgroundColor:'none',
           borderWidth:0,
+          text:'<br><span style="color:black">%v Users</span>',
           mediaRules:[
             {
               maxWidth:500,
@@ -385,6 +405,7 @@
           sticky:true,
           backgroundColor:'none',
           borderWidth:0,
+          text:'<br><span style="color:black">%v Users</span>',
           mediaRules:[
             {
               maxWidth:500,
@@ -495,6 +516,7 @@
           sticky:true,
           backgroundColor:'none',
           borderWidth:0,
+          text:'<br><span style="color:black">%v Users</span>',
           mediaRules:[
             {
               maxWidth:500,
@@ -973,6 +995,12 @@
 
     <div class="mainbody">
       <left class="sectionheader"><h1>Event Summary: <?php echo $event['name']; ?></h1></left><br>
+      <div class="quicknav">
+        <button class="ui orange button ihc" id="general_btn">General</button>
+        <button class="ui orange button ihc" id="allusers_btn">All Feedback</button>
+        <button class="ui orange button ihc" id="students_faculty_btn">Student/Faculty Feedback</button>
+        <button class="ui orange button ihc" id="nonstudents_btn">Non-Student Feedback</button>
+      </div>
       <div class="ui divider"></div><br>
 
       <div>
@@ -993,10 +1021,10 @@
       </div><br>
       <div class="ui divider"></div><br>
 
-      <div>
+      <div id="general">
         <h2>General Statistics</h2>
         <h4>Number of Attendees: <?php echo $numAttendees; ?></h4>
-        <h4>Number of Student/Faculty: <?php echo $numStudents; ?></h4>
+        <h4>Number of Students/Faculty: <?php echo $numStudents + $numFaculty; ?></h4>
         <h4>Number of Non-Students: <?php echo $numResidents + $numVisitors; ?></h4>
         <?php if ($numAttendees > 0) { ?>
 
@@ -1006,50 +1034,88 @@
           <h4>Average Non-Student Rating: <?php echo $avgNonStudentRating; ?></h4>
           <table>
             <tr>
-              <td><div id="all_attendees_donutchart" style="width: 50vw; height: 30vw;"></div></td>
-              <td><center style="display: block; overflow-y:auto; overflow-x:hidden">
+              <td><div id="all_attendees_donutchart" style="width: 50vw; height: 50vw;"></div></td>
+              <td>
                 <h4>All Attendees</h4>
-                <?php foreach($allAttendees as $attendee) { ?>
-                  <span><?php echo $attendee['firstname'] . " " . $attendee['lastname'] . "<br>"; ?></span>
-                <?php } ?>
-              </center></td>
+                <table style="width: 30vw; height: 50vw; display: block; overflow-y:auto; overflow-x:hidden">
+                  <tr>
+                    <td>
+                      <?php foreach($allAttendees as $attendee) { ?>
+                        <span><?php echo $attendee['firstname'] . " " . $attendee['lastname'] . "<br>"; ?></span>
+                      <?php } ?>
+                    </td>
+                  </tr>
+                </table>
+              </td>
             </tr>
+          </table><br>
+
+          <div class="ui divider"></div><br>
+
+          <table>
             <tr>
-              <td><div id="student_attendees_donutchart" style="width: 50vw; height: 30vw;"></div></td>
-              <td><center style="display: block; overflow-y:auto; overflow-x:hidden">
+              <td><div id="student_attendees_donutchart" style="width: 50vw; height: 50vw;"></div></td>
+              <td>
                 <h4>Student Attendees</h4>
-                <?php foreach($students as $student) { ?>
-                  <span><?php echo $student['firstname'] . " " . $student['lastname'] . "<br>"; ?></span>
-                <?php } ?>
-              </center></td>
+                <table style="width: 30vw; height: 50vw; display: block; overflow-y:auto; overflow-x:hidden">
+                  <tr>
+                    <td>
+                      <?php foreach($students as $student) { ?>
+                        <span><?php echo $student['firstname'] . " " . $student['lastname'] . "<br>"; ?></span>
+                      <?php } ?>
+                    </td>
+                  </tr>
+                </table>
+              </td>
             </tr>
+          </table><br>
+
+          <div class="ui divider"></div><br>
+
+          <table>
             <tr>
-              <td><div id="nonstudent_attendees_donutchart" style="width: 50vw; height: 30vw;"></div></td>
-              <td><center style="display: block; overflow-y:auto; overflow-x:hidden">
+              <td><div id="nonstudent_attendees_donutchart" style="width: 50vw; height: 50vw;"></div></td>
+              <td>
                 <h4>Non-Student Attendees</h4>
-                <?php foreach($nonStudents as $nonStudent) { ?>
-                  <span><?php echo $nonStudent['firstname'] . " " . $nonStudent['lastname'] . "<br>"; ?></span>
-                <?php } ?>
-              </center></td>
+                <table style="width: 30vw; height: 50vw; display: block; overflow-y:auto; overflow-x:hidden">
+                  <tr>
+                    <td>
+                      <?php foreach($nonStudents as $nonStudent) { ?>
+                        <span><?php echo $nonStudent['firstname'] . " " . $nonStudent['lastname'] . "<br>"; ?></span>
+                      <?php } ?>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table><br>
+
+          <div class="ui divider"></div><br>
+
+          <table>
+            <tr>
+              <td><div id="student_status_donutchart" style="width: 50vw; height: 50vw;">  </div></td>
+            </tr>
+          </table><br>
+
+          <div class="ui divider"></div><br>
+
+          <table>
+            <tr>
+              <td><div id="attendee_age_columnchart" style="width: 40vw; height: 40vw;"></div></td>
+              <td><div id="all_ratings_columnchart" style="width: 40vw; height: 40vw;"></div></td>
             </tr>
             <tr>
-              <td><div id="student_status_donutchart" style="width: 50vw; height: 30vw;">  </div></td>
-            </tr>
-            <tr>
-              <td><div id="attendee_age_columnchart" style="width: 40vw; height: 30em;"></div></td>
-              <td><div id="all_ratings_columnchart" style="width: 40vw; height: 30vw;"></div></td>
-            </tr>
-            <tr>
-              <td><div id="student_ratings_columnchart" style="width: 40vw; height: 30vw;"></div></td>
-              <td><div id="nonstudent_ratings_columnchart" style="width: 40vw; height: 30vw;"></div></td>
+              <td><div id="student_ratings_columnchart" style="width: 40vw; height: 40vw;"></div></td>
+              <td><div id="nonstudent_ratings_columnchart" style="width: 40vw; height: 40vw;"></div></td>
             </tr>
           </table>
 
           <!-- EVENT FEEDBACK -->
-          <?php if (count($comments) > 0) { ?>
             <div class="ui divider"></div><br>
 
-            <div>
+            <div id="allusers">
+              <?php if (count($comments) > 0) { ?>
               <h2>Event Feedback: All Feedback</h2>
               <table class="ui celled padded table">
                 <thead>
@@ -1076,11 +1142,11 @@
             </div><br>
           <?php } ?>
 
-          <?php if (count($studentComments) > 0) { ?>
             <div class="ui divider"></div><br>
 
-            <div>
+            <div id="students_faculty">
               <h2>Event Feedback: Student/Faculty Feedback</h2>
+              <?php if (count($studentComments) > 0) { ?>
               <table class="ui celled padded table">
                 <thead>
                   <tr>
@@ -1112,10 +1178,11 @@
             </div>
           <?php } ?>
 
-          <?php if (count($nonStudentComments) > 0) { ?>
             <div class="ui divider"></div><br>
 
-            <div>
+            <div id="nonstudents">
+              <?php if (count($nonStudentComments) > 0) { ?>
+
               <h2>Event Feedback: Non-Student Feedback</h2>
               <table class="ui celled padded table">
                 <thead>
