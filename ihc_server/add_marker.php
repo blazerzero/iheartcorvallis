@@ -1,6 +1,10 @@
 <!DOCTYPE HTML>
 
-<?php require "./admin_server/login.php"; ?>
+<?php require "./admin_server/login.php";
+ini_set('display_errors', 1);
+error_reporting(E_ERROR);
+ini_set('memory_limit', '1G');
+?>
 
 <?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>
 

@@ -1,4 +1,9 @@
 <?php
+
+ini_set('display_errors', 1);
+error_reporting(E_ERROR);
+ini_set('memory_limit', '1G');
+
 require "./login.php";
 
 //session_start();

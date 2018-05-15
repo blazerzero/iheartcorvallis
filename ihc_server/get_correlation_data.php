@@ -2,6 +2,10 @@
 
 <?php
 
+ini_set('display_errors', 1);
+error_reporting(E_ERROR);
+ini_set('memory_limit', '1G');
+
 $dbhost="oniddb.cws.oregonstate.edu";
 $dbname="habibelo-db";
 $dbuser="habibelo-db";
@@ -243,9 +247,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $maxX = max($arrX);
   $maxY = $b0 + ($b1 * $maxX);
 
-  print_r($arrX);
-  echo "<br>";
-  print_r($arrY);
+  //echo "avgX: " . $avgX . "<br>";
+  //echo "avgY: " . $avgY . "<br>";
+  //echo "b1: " . $b1 . "<br>";
+
+  /* t-Test */
+  $e = 0;
+  for ($i = 0; $i < count($arrY); $i++) {
+    $e += pow(($arrY[$i] - ($b0 + ($b1 * $arrX[$i]))), 2);
+  }
+
+  $se = sqrt(($e / (count($arrY) - 2)) / $ssXX);
+  $t0 = ($b1 - 0) / $se;
+  //echo "T0: " . $t0 . "<br>";
 
   ?>
 
@@ -341,7 +355,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </center></div></td>
           </tr>
         </table></center>
-      <?php } ?>
+      <?php } ?><br>
+
+      <div class="ui divider"></div><br>
+
+      <div><center>
+        <table><tr>
+          <td>
+            <h2>Statistical Analysis: t-Test</h2>
+            <h4>Average X-Value: <?php echo number_format($avgX, 3); ?></h4>
+            <h4>Variance of X: <?php echo number_format($varX, 3); ?></h4>
+            <h4>Average Y-Value: <?php echo number_format($avgY, 3); ?></h4>
+            <h4>Variance of Y: <?php echo number_format($varY, 3); ?></h4>
+            <h4>Sum of Squares for X: <?php echo number_format($ssXX, 3); ?></h4>
+            <h4>Sum of Squares for Y: <?php echo number_format($ssYY, 3); ?></h4>
+            <h4>Sum of Products for X and Y: <?php echo number_format($spXY, 3); ?></h4>
+            <h4>Covariance of X and Y: <?php echo number_format($covXY, 3); ?></h4>
+          </td>
+          <td>
+            <h4>b<sub>1</sub>: <?php echo number_format($b1, 4); ?></h4>
+            <h4>T<sub>0</sub>: <?php echo number_format($t0, 4); ?></h4>
+            <h4>Degrees of Freedom: <?php echo count($arrX) - 2; ?></h4>
+            <h5 style="color:red;">To calculate p-value, go <a href="http://www.socscistatistics.com/pvalues/tdistribution.aspx">here</a></h5>
+          </td>
+        </tr></table>
+      </center></div><br>
 
       <?php
     }

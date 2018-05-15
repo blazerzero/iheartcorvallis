@@ -1,138 +1,142 @@
 <?php
 
-   $dbhost="oniddb.cws.oregonstate.edu";
-   $dbname="habibelo-db";
-   $dbuser="habibelo-db";
-   $dbpass="RcAbWdWDkpj7XNTL";
+ini_set('display_errors', 1);
+error_reporting(E_ERROR);
+ini_set('memory_limit', '1G');
 
-   $alreadyExists = False;
+$dbhost="oniddb.cws.oregonstate.edu";
+$dbname="habibelo-db";
+$dbuser="habibelo-db";
+$dbpass="RcAbWdWDkpj7XNTL";
 
-   $mysqli = new mysqli($dbhost,$dbuser,$dbpass,$dbname);
-   //Output any connection error
-   if ($mysqli->connect_error) {
-       die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
-       echo "Connection failed!<br>";
-   }
+$alreadyExists = False;
 
-   $id = $title = $description = $link = $changeimage = $image = "";
+$mysqli = new mysqli($dbhost,$dbuser,$dbpass,$dbname);
+//Output any connection error
+if ($mysqli->connect_error) {
+  die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
+  echo "Connection failed!<br>";
+}
 
-   if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      $id = $_POST["id"];
-      $title = $_POST["title"];
-      $description = $_POST["description"];
-      $link = $_POST["link"];
-      $changeimage = $_POST["changeimage"];
-      $image = $_POST["image"];
+$id = $title = $description = $link = $changeimage = $image = "";
 
-      $file_name = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $id = $_POST["id"];
+  $title = $_POST["title"];
+  $description = $_POST["description"];
+  $link = $_POST["link"];
+  $changeimage = $_POST["changeimage"];
+  $image = $_POST["image"];
 
-      /*if ($changeimage == 2) {
-        $message = "changeimage is 2";
-        echo "<script type='text/javascript'>alert('$message');</script>";
-      }
-      else if ($changeimage == "2") {
-        $message = "changeimage is \"2\"";
-        echo "<script type='text/javascript'>alert('$message');</script>";
-      }*/
+  $file_name = "";
 
-      if ($changeimage == 0) {
-        $stmt = $mysqli->prepare("SELECT image FROM ihc_resource_info WHERE id=?");
-        $stmt->bind_param('i', $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
+  /*if ($changeimage == 2) {
+  $message = "changeimage is 2";
+  echo "<script type='text/javascript'>alert('$message');</script>";
+}
+else if ($changeimage == "2") {
+$message = "changeimage is \"2\"";
+echo "<script type='text/javascript'>alert('$message');</script>";
+}*/
 
-        if ($result->num_rows > 0) {
-          $row = $result->fetch_assoc();
-          $file_name = $row['image'];
-        }
-        else {
-           $message = "Error updating resource!";
-           $url = "../manage_primary_resources.php";
+if ($changeimage == 0) {
+  $stmt = $mysqli->prepare("SELECT image FROM ihc_resource_info WHERE id=?");
+  $stmt->bind_param('i', $id);
+  $stmt->execute();
+  $result = $stmt->get_result();
 
-           $stmt->close();
-           $mysqli->close();
-           echo "<script type='text/javascript'>alert('$message');</script>";
-           echo "<script type='text/javascript'>document.location.href = '$url';</script>";
-           exit;
-        }
-      }
+  if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $file_name = $row['image'];
+  }
+  else {
+    $message = "Error updating resource!";
+    $url = "../manage_primary_resources.php";
 
-      else if ($changeimage == 1) {
-        $stmt = $mysqli->prepare("SELECT image FROM ihc_resource_info WHERE id=?");
-        $stmt->bind_param('i', $id);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        $row = $res->fetch_assoc();
+    $stmt->close();
+    $mysqli->close();
+    echo "<script type='text/javascript'>alert('$message');</script>";
+    echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+    exit;
+  }
+}
 
-        $picture = $row['image'];
-        $dir = "../images/resources/".$picture;
+else if ($changeimage == 1) {
+  $stmt = $mysqli->prepare("SELECT image FROM ihc_resource_info WHERE id=?");
+  $stmt->bind_param('i', $id);
+  $stmt->execute();
+  $res = $stmt->get_result();
+  $row = $res->fetch_assoc();
 
-        if (!is_writable($dir)) {
-     	   echo $dir . ' is not writeable';
-        }
+  $picture = $row['image'];
+  $dir = "../images/resources/".$picture;
 
-        $stmt = $mysqli->prepare("SELECT id FROM ihc_resource_info WHERE image=?");
-        $stmt->bind_param('s', $picture);
-        $stmt->execute();
-        $res = $stmt->get_result();
+  if (!is_writable($dir)) {
+    echo $dir . ' is not writeable';
+  }
 
-        if ($res->num_rows == 1) {
-          if(!unlink($dir)) {
-            echo 'Error deleting ' . $picture;
-          }
-          else {
-            echo ('Deleted ' . $picture);
-          }
-        }
+  $stmt = $mysqli->prepare("SELECT id FROM ihc_resource_info WHERE image=?");
+  $stmt->bind_param('s', $picture);
+  $stmt->execute();
+  $res = $stmt->get_result();
 
-        $errors= array();
-        $file_name = $_FILES['image']['name'];
-        $file_size = $_FILES['image']['size'];
-        $file_tmp = $_FILES['image']['tmp_name'];
-        $file_type = $_FILES['image']['type'];
-        $file_ext=strtolower(end(explode('.',$_FILES['image']['name'])));
+  if ($res->num_rows == 1) {
+    if(!unlink($dir)) {
+      echo 'Error deleting ' . $picture;
+    }
+    else {
+      echo ('Deleted ' . $picture);
+    }
+  }
 
-        $expensions= array("jpeg","jpg","png");
+  $errors= array();
+  $file_name = $_FILES['image']['name'];
+  $file_size = $_FILES['image']['size'];
+  $file_tmp = $_FILES['image']['tmp_name'];
+  $file_type = $_FILES['image']['type'];
+  $file_ext=strtolower(end(explode('.',$_FILES['image']['name'])));
 
-        $new_dir = "../images/events/".$file_name;
+  $expensions= array("jpeg","jpg","png");
 
-        if(in_array($file_ext,$expensions)=== false){
-          $errors[]="extension not allowed, please choose a JPEG or PNG file.";
-        }
+  $new_dir = "../images/events/".$file_name;
 
-        if($file_size > 2097152) {
-          $errors[]='File size must be excately 2 MB';
-        }
+  if(in_array($file_ext,$expensions)=== false){
+    $errors[]="extension not allowed, please choose a JPEG or PNG file.";
+  }
 
-        if(empty($errors)==true) {
-          if(move_uploaded_file($file_tmp, $new_dir)) {
-            echo "The file HAS BEEN UPLOADED";
-          }
-          //echo "Success";
-        }else{
-          print_r($errors);
-        }
+  if($file_size > 2097152) {
+    $errors[]='File size must be excately 2 MB';
+  }
 
-      }
+  if(empty($errors)==true) {
+    if(move_uploaded_file($file_tmp, $new_dir)) {
+      echo "The file HAS BEEN UPLOADED";
+    }
+    //echo "Success";
+  }else{
+    print_r($errors);
+  }
 
-      $stmt = $mysqli->prepare("UPDATE ihc_resource_info SET title=?, description=?, link=?, image=? WHERE id=?");
-      $stmt->bind_param('ssssi', $title, $description, $link, $file_name, $id);
-      $stmt->execute();
+}
 
-      if ($stmt->error == "") {
-         $message = "Resource has been updated!";
-      }
-      else {
-         $message = "Error updating resource!"; # error updating resource in database
-      }
-      $url = "../manage_primary_resources.php";
+$stmt = $mysqli->prepare("UPDATE ihc_resource_info SET title=?, description=?, link=?, image=? WHERE id=?");
+$stmt->bind_param('ssssi', $title, $description, $link, $file_name, $id);
+$stmt->execute();
 
-      $stmt->close();
-      $mysqli->close();
-      echo "<script type='text/javascript'>alert('$message');</script>";
-      echo "<script type='text/javascript'>document.location.href = '$url';</script>";
-   }
+if ($stmt->error == "") {
+  $message = "Resource has been updated!";
+}
+else {
+  $message = "Error updating resource!"; # error updating resource in database
+}
+$url = "../manage_primary_resources.php";
 
-   $mysqli->close();
+$stmt->close();
+$mysqli->close();
+echo "<script type='text/javascript'>alert('$message');</script>";
+echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+}
+
+$mysqli->close();
 
 ?>

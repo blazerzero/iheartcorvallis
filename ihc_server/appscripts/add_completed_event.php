@@ -1,4 +1,9 @@
 <?php
+
+ini_set('display_errors', 1);
+error_reporting(E_ERROR);
+ini_set('memory_limit', '1G');
+
 $dbhost="oniddb.cws.oregonstate.edu";
 $dbname="habibelo-db";
 $dbuser="habibelo-db";
@@ -31,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($stmt2->error == "") {
       $result = $stmt2->get_result();
       $stampcount = $result->num_rows;
-      
+
       $stmt3 = $mysqli->prepare("UPDATE ihc_users SET stampcount=? WHERE id=?");
       $stmt3->bind_param('ii', $stampcount, $userid);
       $stmt3->execute();

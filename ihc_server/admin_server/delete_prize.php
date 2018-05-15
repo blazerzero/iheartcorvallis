@@ -1,5 +1,9 @@
 <?php
 
+ini_set('display_errors', 1);
+error_reporting(E_ERROR);
+ini_set('memory_limit', '1G');
+
 require 'db.php';
 $prizeid = $_GET['prizeid'];
 $stmt = $mysqli->prepare("DELETE FROM ihc_prizes WHERE prizeid=?");

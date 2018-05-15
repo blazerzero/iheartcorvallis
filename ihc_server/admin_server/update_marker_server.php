@@ -1,45 +1,49 @@
 <?php
 
-   $dbhost="oniddb.cws.oregonstate.edu";
-   $dbname="habibelo-db";
-   $dbuser="habibelo-db";
-   $dbpass="RcAbWdWDkpj7XNTL";
+ini_set('display_errors', 1);
+error_reporting(E_ERROR);
+ini_set('memory_limit', '1G');
 
-   $alreadyExists = False;
+$dbhost="oniddb.cws.oregonstate.edu";
+$dbname="habibelo-db";
+$dbuser="habibelo-db";
+$dbpass="RcAbWdWDkpj7XNTL";
 
-   $mysqli = new mysqli($dbhost,$dbuser,$dbpass,$dbname);
-   //Output any connection error
-   if ($mysqli->connect_error) {
-       die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
-       echo "Connection failed!<br>";
-   }
+$alreadyExists = False;
 
-   $prizeid = $name = $type = "";
+$mysqli = new mysqli($dbhost,$dbuser,$dbpass,$dbname);
+//Output any connection error
+if ($mysqli->connect_error) {
+  die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
+  echo "Connection failed!<br>";
+}
 
-   if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      $id = $_POST["id"];
-      $name = $_POST["name"];
-      $address = $_POST["address"];
-      $type = $_POST["type"];
+$prizeid = $name = $type = "";
 
-      $stmt = $mysqli->prepare("UPDATE ihc_resources SET name=?, address=?, type=? WHERE id=?");
-      $stmt->bind_param('sssi', $name, $address, $type, $id);
-      $stmt->execute();
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $id = $_POST["id"];
+  $name = $_POST["name"];
+  $address = $_POST["address"];
+  $type = $_POST["type"];
 
-      if ($stmt->error == "") {
-         $message = "Resource marker has been updated!";
-      }
-      else {
-         $message = "Error updating resource marker!"; # error updating prize in database
-      }
-      $url = "../manage_resource_map.php";
+  $stmt = $mysqli->prepare("UPDATE ihc_resources SET name=?, address=?, type=? WHERE id=?");
+  $stmt->bind_param('sssi', $name, $address, $type, $id);
+  $stmt->execute();
 
-      $stmt->close();
-      $mysqli->close();
-      echo "<script type='text/javascript'>alert('$message');</script>";
-      echo "<script type='text/javascript'>document.location.href = '$url';</script>";
-   }
+  if ($stmt->error == "") {
+    $message = "Resource marker has been updated!";
+  }
+  else {
+    $message = "Error updating resource marker!"; # error updating prize in database
+  }
+  $url = "../manage_resource_map.php";
 
-   $mysqli->close();
+  $stmt->close();
+  $mysqli->close();
+  echo "<script type='text/javascript'>alert('$message');</script>";
+  echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+}
+
+$mysqli->close();
 
 ?>

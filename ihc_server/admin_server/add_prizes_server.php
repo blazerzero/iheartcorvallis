@@ -1,65 +1,69 @@
 <?php
 
-   $dbhost="oniddb.cws.oregonstate.edu";
-   $dbname="habibelo-db";
-   $dbuser="habibelo-db";
-   $dbpass="RcAbWdWDkpj7XNTL";
+ini_set('display_errors', 1);
+error_reporting(E_ERROR);
+ini_set('memory_limit', '1G');
 
-   $alreadyExists = False;
+$dbhost="oniddb.cws.oregonstate.edu";
+$dbname="habibelo-db";
+$dbuser="habibelo-db";
+$dbpass="RcAbWdWDkpj7XNTL";
 
-   $mysqli = new mysqli($dbhost,$dbuser,$dbpass,$dbname);
-   //Output any connection error
-   if ($mysqli->connect_error) {
-       die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
-       $message = "Unable to connect to the prize database!";
-       echo "<script type='text/javascript'>alert('$message');</script>";
-       $url = "../add_prize.php";
-       echo "<script type='text/javascript'>document.location.href = '$url';</script>";
-       exit;
-   }
+$alreadyExists = False;
 
-   $name = $level = "";
-   $prizeids = array();
+$mysqli = new mysqli($dbhost,$dbuser,$dbpass,$dbname);
+//Output any connection error
+if ($mysqli->connect_error) {
+  die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
+  $message = "Unable to connect to the prize database!";
+  echo "<script type='text/javascript'>alert('$message');</script>";
+  $url = "../add_prize.php";
+  echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+  exit;
+}
 
-   if ($_SERVER["REQUEST_METHOD"] == "POST") {
+$name = $level = "";
+$prizeids = array();
 
-      /* GET VALUES VIA POST */
-      $name = $_POST["name"];
-      $levelVal = $_POST["level"];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-      if ($levelVal == "1") {
-         $level = "gold";
-      }
-      else if ($levelVal == "2") {
-         $level = "silver";
-      }
-      else if ($levelVal == "3") {
-         $level = "bronze";
-      }
+  /* GET VALUES VIA POST */
+  $name = $_POST["name"];
+  $levelVal = $_POST["level"];
 
-      $stmt = $mysqli->prepare("INSERT INTO ihc_prizes (name, level) VALUES (?, ?)");
-      $stmt->bind_param('ss', $name, $level);
-      $stmt->execute();
+  if ($levelVal == "1") {
+    $level = "gold";
+  }
+  else if ($levelVal == "2") {
+    $level = "silver";
+  }
+  else if ($levelVal == "3") {
+    $level = "bronze";
+  }
 
-      $url = "";
+  $stmt = $mysqli->prepare("INSERT INTO ihc_prizes (name, level) VALUES (?, ?)");
+  $stmt->bind_param('ss', $name, $level);
+  $stmt->execute();
 
-      if ($stmt->error == "") {
-         $message = "Prize has been added!";
-         $url = "../index.php";
-      }
-      else {
-         $message = "Error adding prize!"; # error adding prize to database
-         $url = "../add_prize.php";
-      }
+  $url = "";
 
-      $stmt->close();
-      $mysqli->close();
-      echo "<script type='text/javascript'>alert('$message');</script>";
-      echo "<script type='text/javascript'>document.location.href = '$url';</script>";
-      exit;
+  if ($stmt->error == "") {
+    $message = "Prize has been added!";
+    $url = "../index.php";
+  }
+  else {
+    $message = "Error adding prize!"; # error adding prize to database
+    $url = "../add_prize.php";
+  }
 
-   }
+  $stmt->close();
+  $mysqli->close();
+  echo "<script type='text/javascript'>alert('$message');</script>";
+  echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+  exit;
 
-   $mysqli->close();
+}
+
+$mysqli->close();
 
 ?>

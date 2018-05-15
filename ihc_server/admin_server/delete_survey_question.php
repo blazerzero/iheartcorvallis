@@ -1,4 +1,9 @@
 <?php
+
+ini_set('display_errors', 1);
+error_reporting(E_ERROR);
+ini_set('memory_limit', '1G');
+
 require 'db.php';
 $questionid = $_GET['id'];
 $stmt = $mysqli->prepare("DELETE FROM ihc_survey WHERE id=?");
