@@ -28,7 +28,8 @@ function regressionStats($arrX, $arrY) {
   $covXY = $spXY / (count($arrX) - 1);
   $b1 = $spXY / $ssXX;
   $b0 = $avgY - ($b1 * $avgX);
-  return array('avgX' => $avgX, 'ssXX' => $ssXX, 'varX' => $varX, 'avgY' => $avgY, 'ssYY' => $ssYY, 'varY' => $varY, 'spXY' => $spXY, 'covXY' => $covXY, 'b1' => $b1, 'b0' => $b0);
+  $r = $covXY / (sqrt($varX) * sqrt($varY));
+  return array('avgX' => $avgX, 'ssXX' => $ssXX, 'varX' => $varX, 'avgY' => $avgY, 'ssYY' => $ssYY, 'varY' => $varY, 'spXY' => $spXY, 'covXY' => $covXY, 'b1' => $b1, 'b0' => $b0, 'r' => $r);
 }
 
 function tScore($arrX, $arrY, $ssXX, $b0, $b1) {
@@ -661,52 +662,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <?php if ($graphChoice == 1) { ?>
 
         fr_t_pValue = jStat.ttest(<?php echo $frT0; ?>, <?php echo count($frY); ?>);
-        document.getElementById("fr_t-pvalue").innerText = "Two-sided p-value: " + fr_t_pValue;
+        document.getElementById("fr_t-pvalue").innerText = "Two-sided p-value: " + fr_t_pValue.toFixed(4);
         fr_f_pValue = jStat.ftest(<?php echo $frF0; ?>, 1, <?php echo count($frY) - 2; ?>);
-        document.getElementById("fr_f-pvalue").innerText = "p-value: " + fr_f_pValue;
+        document.getElementById("fr_f-pvalue").innerText = "p-value: " + fr_f_pValue.toFixed(4);
         so_t_pValue = jStat.ttest(<?php echo $soT0; ?>, <?php echo count($soY); ?>);
-        document.getElementById("so_t-pvalue").innerText = "Two-sided p-value: " + so_t_pValue;
+        document.getElementById("so_t-pvalue").innerText = "Two-sided p-value: " + so_t_pValue.toFixed(4);
         so_f_pValue = jStat.ftest(<?php echo $soF0; ?>, 1, <?php echo count($soY) - 2; ?>);
-        document.getElementById("so_f-pvalue").innerText = "p-value: " + so_f_pValue;
+        document.getElementById("so_f-pvalue").innerText = "p-value: " + so_f_pValue.toFixed(4);
         jr_t_pValue = jStat.ttest(<?php echo $jrT0; ?>, <?php echo count($jrY); ?>);
-        document.getElementById("jr_t-pvalue").innerText = "Two-sided p-value: " + jr_t_pValue;
+        document.getElementById("jr_t-pvalue").innerText = "Two-sided p-value: " + jr_t_pValue.toFixed(4);
         jr_f_pValue = jStat.ftest(<?php echo $jrF0; ?>, 1, <?php echo count($jrY) - 2; ?>);
-        document.getElementById("jr_f-pvalue").innerText = "p-value: " + jr_f_pValue;
+        document.getElementById("jr_f-pvalue").innerText = "p-value: " + jr_f_pValue.toFixed(4);
         sr_t_pValue = jStat.ttest(<?php echo $srT0; ?>, <?php echo count($srY); ?>);
-        document.getElementById("sr_t-pvalue").innerText = "Two-sided p-value: " + sr_t_pValue;
+        document.getElementById("sr_t-pvalue").innerText = "Two-sided p-value: " + sr_t_pValue.toFixed(4);
         sr_f_pValue = jStat.ftest(<?php echo $srF0; ?>, 1, <?php echo count($srY) - 2; ?>);
-        document.getElementById("sr_f-pvalue").innerText = "p-value: " + sr_f_pValue;
+        document.getElementById("sr_f-pvalue").innerText = "p-value: " + sr_f_pValue.toFixed(4);
         gr_t_pValue = jStat.ttest(<?php echo $grT0; ?>, <?php echo count($grY); ?>);
-        document.getElementById("gr_t-pvalue").innerText = "Two-sided p-value: " + gr_t_pValue;
+        document.getElementById("gr_t-pvalue").innerText = "Two-sided p-value: " + gr_t_pValue.toFixed(4);
         gr_f_pValue = jStat.ftest(<?php echo $grF0; ?>, 1, <?php echo count($grY) - 2; ?>);
-        document.getElementById("gr_f-pvalue").innerText = "p-value: " + gr_f_pValue;
+        document.getElementById("gr_f-pvalue").innerText = "p-value: " + gr_f_pValue.toFixed(4);
         dr_t_pValue = jStat.ttest(<?php echo $drT0; ?>, <?php echo count($drY); ?>);
-        document.getElementById("dr_t-pvalue").innerText = "Two-sided p-value: " + dr_t_pValue;
+        document.getElementById("dr_t-pvalue").innerText = "Two-sided p-value: " + dr_t_pValue.toFixed(4);
         dr_f_pValue = jStat.ftest(<?php echo $drF0; ?>, 1, <?php echo count($drY) - 2; ?>);
-        document.getElementById("dr_f-pvalue").innerText = "p-value: " + dr_f_pValue;
+        document.getElementById("dr_f-pvalue").innerText = "p-value: " + dr_f_pValue.toFixed(4);
 
       <?php } else if ($graphChoice == 2) { ?>
 
         dom_t_pValue = jStat.ttest(<?php echo $domT0; ?>, <?php echo count($domY); ?>);
-        document.getElementById("dom_t-pvalue").innerText = "Two-sided p-value: " + dom_t_pValue;
+        document.getElementById("dom_t-pvalue").innerText = "Two-sided p-value: " + dom_t_pValue.toFixed(4);
         dom_f_pValue = jStat.ftest(<?php echo $domF0; ?>, 1, <?php echo count($domY) - 2; ?>);
-        document.getElementById("dom_f-pvalue").innerText = "p-value: " + dom_f_pValue;
+        document.getElementById("dom_f-pvalue").innerText = "p-value: " + dom_f_pValue.toFixed(4);
         intl_t_pValue = jStat.ttest(<?php echo $intlT0; ?>, <?php echo count($intlY); ?>);
-        document.getElementById("intl_t-pvalue").innerText = "Two-sided p-value: " + intl_t_pValue;
+        document.getElementById("intl_t-pvalue").innerText = "Two-sided p-value: " + intl_t_pValue.toFixed(4);
         intl_f_pValue = jStat.ftest(<?php echo $intlF0; ?>, 1, <?php echo count($intlY) - 2; ?>);
-        document.getElementById("intl_f-pvalue").innerText = "p-value: " + intl_f_pValue;
+        document.getElementById("intl_f-pvalue").innerText = "p-value: " + intl_f_pValue.toFixed(4);
         fac_t_pValue = jStat.ttest(<?php echo $facT0; ?>, <?php echo count($facY); ?>);
-        document.getElementById("fac_t-pvalue").innerText = "Two-sided p-value: " + fac_t_pValue;
+        document.getElementById("fac_t-pvalue").innerText = "Two-sided p-value: " + fac_t_pValue.toFixed(4);
         fac_f_pValue = jStat.ftest(<?php echo $facF0; ?>, 1, <?php echo count($facY) - 2; ?>);
-        document.getElementById("fac_f-pvalue").innerText = "p-value: " + fac_f_pValue;
+        document.getElementById("fac_f-pvalue").innerText = "p-value: " + fac_f_pValue.toFixed(4);
         res_t_pValue = jStat.ttest(<?php echo $resT0; ?>, <?php echo count($resY); ?>);
-        document.getElementById("res_t-pvalue").innerText = "Two-sided p-value: " + res_t_pValue;
+        document.getElementById("res_t-pvalue").innerText = "Two-sided p-value: " + res_t_pValue.toFixed(4);
         res_f_pValue = jStat.ftest(<?php echo $resF0; ?>, 1, <?php echo count($resY) - 2; ?>);
-        document.getElementById("res_f-pvalue").innerText = "p-value: " + res_f_pValue;
+        document.getElementById("res_f-pvalue").innerText = "p-value: " + res_f_pValue.toFixed(4);
         visitor_t_pValue = jStat.ttest(<?php echo $visitorT0; ?>, <?php echo count($visitorY); ?>);
-        document.getElementById("visitor_t-pvalue").innerText = "Two-sided p-value: " + visitor_t_pValue;
+        document.getElementById("visitor_t-pvalue").innerText = "Two-sided p-value: " + visitor_t_pValue.toFixed(4);
         visitor_f_pValue = jStat.ftest(<?php echo $visitorF0; ?>, 1, <?php echo count($visitorY) - 2; ?>);
-        document.getElementById("visitor_f-pvalue").innerText = "p-value: " + visitor_f_pValue;
+        document.getElementById("visitor_f-pvalue").innerText = "p-value: " + visitor_f_pValue.toFixed(4);
 
       <?php } ?>
     });
@@ -786,30 +787,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         hAxis: {title: '<?php echo $xAxis; ?>', minValue: 0},
         vAxis: {title: '<?php echo $yAxis; ?>', minValue: 0},
         trendlines: {
-          0: {
-            visibleInLegend: true,
-            showR2: true
-          },
-          1: {
-            visibleInLegend: true,
-            showR2: true
-          },
-          2: {
-            visibleInLegend: true,
-            showR2: true
-          },
-          3: {
-            visibleInLegend: true,
-            showR2: true
-          },
-          4: {
-            visibleInLegend: true,
-            showR2: true
-          },
-          5: {
-            visibleInLegend: true,
-            showR2: true
-          }
+          0: {},
+          1: {},
+          2: {},
+          3: {},
+          4: {},
+          5: {}
         }
       };
 
@@ -875,26 +858,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         hAxis: {title: '<?php echo $xAxis; ?>', minValue: 0},
         vAxis: {title: '<?php echo $yAxis; ?>', minValue: 0},
         trendlines: {
-          0: {
-            visibleInLegend: true,
-            showR2: true
-          },
-          1: {
-            visibleInLegend: true,
-            showR2: true
-          },
-          2: {
-            visibleInLegend: true,
-            showR2: true
-          },
-          3: {
-            visibleInLegend: true,
-            showR2: true
-          },
-          4: {
-            visibleInLegend: true,
-            showR2: true
-          }
+          0: {},
+          1: {},
+          2: {},
+          3: {},
+          4: {}
         }
       };
 
@@ -952,6 +920,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <td><h3>Freshmen</td>
               <td>
                 <h4 style="color:red">Least Squares Regression Line: y = <?php echo number_format($frStats['b0'], 4); ?> + <?php echo number_format($frStats['b1'], 4); ?>x</h4>
+                <h4 style="color:red">Correlation Coefficient: r = <?php echo number_format($frStats['r'], 4); ?></h4>
                 <h4>Group Size: <?php echo count($frX); ?></h4>
                 <h4>Average X-Value: <?php echo number_format($frStats['avgX'], 3); ?></h4>
                 <h4>Variance of X: <?php echo number_format($frStats['varX'], 3); ?></h4>
@@ -976,6 +945,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <td><h3>Sophomores</td>
               <td>
                 <h4 style="color:red">Least Squares Regression Line: y = <?php echo number_format($soStats['b0'], 4); ?> + <?php echo number_format($soStats['b1'], 4); ?>x</h4>
+                <h4 style="color:red">Correlation Coefficient: r = <?php echo number_format($soStats['r'], 4); ?></h4>
                 <h4>Group Size: <?php echo count($soX); ?></h4>
                 <h4>Average X-Value: <?php echo number_format($soStats['avgX'], 3); ?></h4>
                 <h4>Variance of X: <?php echo number_format($soStats['varX'], 3); ?></h4>
@@ -1000,6 +970,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <td><h3>Juniors</td>
               <td>
                 <h4 style="color:red">Least Squares Regression Line: y = <?php echo number_format($jrStats['b0'], 4); ?> + <?php echo number_format($jrStats['b1'], 4); ?>x</h4>
+                <h4 style="color:red">Correlation Coefficient: r = <?php echo number_format($jrStats['r'], 4); ?></h4>
+                <h4>Correlation Coefficient: <?php echo number_format($jrStats['r'], 6); ?></h4>
                 <h4>Group Size: <?php echo count($jrX); ?></h4>
                 <h4>Average X-Value: <?php echo number_format($jrStats['avgX'], 3); ?></h4>
                 <h4>Variance of X: <?php echo number_format($jrStats['varX'], 3); ?></h4>
@@ -1024,6 +996,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <td><h3>Seniors</td>
               <td>
                 <h4 style="color:red">Least Squares Regression Line: y = <?php echo number_format($srStats['b0'], 4); ?> + <?php echo number_format($srStats['b1'], 4); ?>x</h4>
+                <h4 style="color:red">Correlation Coefficient: r = <?php echo number_format($srStats['r'], 4); ?></h4>
                 <h4>Group Size: <?php echo count($srX); ?></h4>
                 <h4>Average X-Value: <?php echo number_format($srStats['avgX'], 3); ?></h4>
                 <h4>Variance of X: <?php echo number_format($srStats['varX'], 3); ?></h4>
@@ -1048,6 +1021,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <td><h3>Graduate Students</td>
               <td>
                 <h4 style="color:red">Least Squares Regression Line: y = <?php echo number_format($grStats['b0'], 4); ?> + <?php echo number_format($grStats['b1'], 4); ?>x</h4>
+                <h4 style="color:red">Correlation Coefficient: r = <?php echo number_format($grStats['r'], 4); ?></h4>
                 <h4>Group Size: <?php echo count($grX); ?></h4>
                 <h4>Average X-Value: <?php echo number_format($grStats['avgX'], 3); ?></h4>
                 <h4>Variance of X: <?php echo number_format($grStats['varX'], 3); ?></h4>
@@ -1072,6 +1046,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <td><h3>Doctoral Students</td>
               <td>
                 <h4 style="color:red">Least Squares Regression Line: y = <?php echo number_format($drStats['b0'], 4); ?> + <?php echo number_format($drStats['b1'], 4); ?>x</h4>
+                <h4 style="color:red">Correlation Coefficient: r = <?php echo number_format($drStats['r'], 4); ?></h4>
                 <h4>Group Size: <?php echo count($drX); ?></h4>
                 <h4>Average X-Value: <?php echo number_format($drStats['avgX'], 3); ?></h4>
                 <h4>Variance of X: <?php echo number_format($drStats['varX'], 3); ?></h4>
@@ -1127,6 +1102,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <td><h3>Domestic Students</td>
               <td>
                 <h4 style="color:red">Least Squares Regression Line: y = <?php echo number_format($domStats['b0'], 4); ?> + <?php echo number_format($domStats['b1'], 4); ?>x</h4>
+                <h4 style="color:red">Correlation Coefficient: r = <?php echo number_format($domStats['r'], 4); ?></h4>
                 <h4>Group Size: <?php echo count($domX); ?></h4>
                 <h4>Average X-Value: <?php echo number_format($domStats['avgX'], 3); ?></h4>
                 <h4>Variance of X: <?php echo number_format($domStats['varX'], 3); ?></h4>
@@ -1151,6 +1127,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <td><h3>International Students</td>
               <td>
                 <h4 style="color:red">Least Squares Regression Line: y = <?php echo number_format($intlStats['b0'], 4); ?> + <?php echo number_format($intlStats['b1'], 4); ?>x</h4>
+                <h4 style="color:red">Correlation Coefficient: r = <?php echo number_format($intlStats['r'], 4); ?></h4>
                 <h4>Group Size: <?php echo count($intlX); ?></h4>
                 <h4>Average X-Value: <?php echo number_format($intlStats['avgX'], 3); ?></h4>
                 <h4>Variance of X: <?php echo number_format($intlStats['varX'], 3); ?></h4>
@@ -1175,6 +1152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <td><h3>Faculty/Staff</td>
               <td>
                 <h4 style="color:red">Least Squares Regression Line: y = <?php echo number_format($facStats['b0'], 4); ?> + <?php echo number_format($facStats['b1'], 4); ?>x</h4>
+                <h4 style="color:red">Correlation Coefficient: r = <?php echo number_format($facStats['r'], 4); ?></h4>
                 <h4>Population Size: <?php echo count($facX); ?></h4>
                 <h4>Average X-Value: <?php echo number_format($facStats['avgX'], 3); ?></h4>
                 <h4>Variance of X: <?php echo number_format($facStats['varX'], 3); ?></h4>
@@ -1199,6 +1177,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <td><h3>Residents</td>
               <td>
                 <h4 style="color:red">Least Squares Regression Line: y = <?php echo number_format($resStats['b0'], 4); ?> + <?php echo number_format($resStats['b1'], 4); ?>x</h4>
+                <h4 style="color:red">Correlation Coefficient: r = <?php echo number_format($resStats['r'], 4); ?></h4>
                 <h4>Population Size: <?php echo count($resX); ?></h4>
                 <h4>Average X-Value: <?php echo number_format($resStats['avgX'], 3); ?></h4>
                 <h4>Variance of X: <?php echo number_format($resStats['varX'], 3); ?></h4>
@@ -1223,6 +1202,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <td><h3>Visitors</td>
               <td>
                 <h4 style="color:red">Least Squares Regression Line: y = <?php echo number_format($visitorStats['b0'], 4); ?> + <?php echo number_format($visitorStats['b1'], 4); ?>x</h4>
+                <h4 style="color:red">Correlation Coefficient: r = <?php echo number_format($visitorStats['r'], 4); ?></h4>
                 <h4>Population Size: <?php echo count($visitorX); ?></h4>
                 <h4>Average X-Value: <?php echo number_format($visitorStats['avgX'], 3); ?></h4>
                 <h4>Variance of X: <?php echo number_format($visitorStats['varX'], 3); ?></h4>
