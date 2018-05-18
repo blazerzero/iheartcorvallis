@@ -222,8 +222,7 @@ public class AboutUsActivity extends AppCompatActivity
                     Intent intent = new Intent(this, SettingsActivity.class);
                     startActivity(intent);
                 } else if (id == R.id.nav_logout) {
-                    Intent intent = new Intent(this, SplashActivity.class);
-                    startActivity(intent);
+                    session.logoutUser();
                 }
             }
 
