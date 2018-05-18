@@ -22,7 +22,7 @@ ini_set('memory_limit', '2G');
   while ($row = $res->fetch_assoc()) {
     if ($row['type'] == 0) $row['type'] = "Domestic Student";
     else if ($row['type'] == 1) $row['type'] = "International Student";
-    else if ($row['type'] == 2) $row['type'] = "Faculty";
+    else if ($row['type'] == 2) $row['type'] = "Faculty/Staff";
     else if ($row['type'] == 3) $row['type'] = "Resident";
     else if ($row['type'] == 4) $row['type'] = "Visitor";
     if ($row['grade'] == 0) $row['grade'] = "N/A";
@@ -32,13 +32,13 @@ ini_set('memory_limit', '2G');
     else if ($row['grade'] == 4) $row['grade'] = "Senior";
     else if ($row['grade'] == 5) $row['grade'] = "Graduate Student";
     else if ($row['grade'] == 6) $row['grade'] = "Doctoral Student";
-    else if ($row['grade'] == 7) $row['grade'] = "Faculty";
+    else if ($row['grade'] == 7) $row['grade'] = "Faculty/Staff";
 
     if ($row['rating'] != 0 || $row['comment'] != "") {
       $allTuples[] = $row;
       $sumAllRatings += $row['rating'];
       if ($row['rating'] == 0) $numAllZeroes++;
-      if ($row['type'] == "Domestic Student" || $row['type'] == "International Student" || $row['type'] == "Faculty") {
+      if ($row['type'] == "Domestic Student" || $row['type'] == "International Student" || $row['type'] == "Faculty/Staff") {
         $studentTuples[] = $row;
         $sumStudentRatings += $row['rating'];
         if ($row['rating'] == 0) $numStudentZeroes++;
@@ -85,6 +85,9 @@ ini_set('memory_limit', '2G');
     <script>
     $(document).ready(function() {
       $("#siteheader").load("siteheader.html");
+      $("#top_btn").click(function() {
+        document.getElementById("feedbackbody").scrollIntoView();
+      })
       $("#allusers_btn").click(function() {
         document.getElementById("allusers").scrollIntoView();
       });
@@ -105,93 +108,7 @@ ini_set('memory_limit', '2G');
           fontColor: '#000000'
         },
         plot: {
-          borderWidth:0,
-          backgroundColor:'transparent',
-          animation:{
- 	          effect:2,
- 	          sequence:3
- 	        }
-        },
-        tooltip:{
-          fontSize:16,
-          anchor:'c',
-          x:'50%',
-          y:'50%',
-          sticky:true,
-          backgroundColor:'none',
-          borderWidth:0,
-          mediaRules:[
-            {
-              maxWidth:500,
-              y:'54%',
-            }
-          ]
-        },
-        plotarea: {
-          backgroundColor: 'transparent',
-        },
-        scaleX:{
-          values: ["1", "2", "3", "4", "5"]
-        },
-        series:[
-            {
-              label: "5",
-              values: [<?php echo $allRatingCounts['1']; ?>,
-                <?php echo $allRatingCounts['2']; ?>,
-                <?php echo $allRatingCounts['3']; ?>,
-                <?php echo $allRatingCounts['4']; ?>,
-                <?php echo $allRatingCounts['5']; ?>],
-              lineColor: "#FF4747",
-              backgroundColor: "#FF4747",
-              lineWidth: 1,
-              marker: {
-                backgroundColor: '#FF4747'
-              }
-            }
-        ]
-      };
-
-      zingchart.render({
-        id : 'all_ratings_columnchart',
-        data: {
-          gui:{
-            contextMenu:{
-              button:{
-                visible: true,
-                lineColor: "#2D66A4",
-                backgroundColor: "#2D66A4"
-              },
-              gear: {
-                alpha: 1,
-                backgroundColor: "#2D66A4"
-              },
-              position: "right",
-              backgroundColor:"#306EAA",
-              docked: true,
-              item:{
-                backgroundColor: "#306EAA",
-                borderColor:"#306EAA",
-                borderWidth: 0,
-                fontFamily: "Lato",
-                color: "#000000"
-              }
-            }
-          },
-          graphset: [myConfig]
-        }
-      });
-
-      myConfig = {
-        backgroundColor:'transparent',
-        type: "hbar",
-        title: {
-          text: "Students and Faculty: App Rating Spead",
-          fontFamily: 'Lato',
-          fontSize: 18,
-          padding: "15",
-          fontColor: '#000000'
-        },
-        plot: {
+          stacked: true,
           borderWidth:0,
           backgroundColor:'transparent',
           animation:{
@@ -227,86 +144,13 @@ ini_set('memory_limit', '2G');
                 <?php echo $studentRatingCounts['3']; ?>,
                 <?php echo $studentRatingCounts['4']; ?>,
                 <?php echo $studentRatingCounts['5']; ?>],
-              lineColor: "#4747FF",
-              backgroundColor: "#4747FF",
+              lineColor: "#FF4747",
+              backgroundColor: "#FF4747",
               lineWidth: 1,
               marker: {
-                backgroundColor: '#4747FF'
+                backgroundColor: '#FF4747'
               }
-            }
-        ]
-      };
-
-      zingchart.render({
-        id : 'student_ratings_columnchart',
-        data: {
-          gui:{
-            contextMenu:{
-              button:{
-                visible: true,
-                lineColor: "#2D66A4",
-                backgroundColor: "#2D66A4"
-              },
-              gear: {
-                alpha: 1,
-                backgroundColor: "#2D66A4"
-              },
-              position: "right",
-              backgroundColor:"#306EAA",
-              docked: true,
-              item:{
-                backgroundColor: "#306EAA",
-                borderColor:"#306EAA",
-                borderWidth: 0,
-                fontFamily: "Lato",
-                color: "#000000"
-              }
-            }
-          },
-          graphset: [myConfig]
-        }
-      });
-
-      myConfig = {
-        backgroundColor:'transparent',
-        type: "hbar",
-        title: {
-          text: "Non-Students: App Rating Spread",
-          fontFamily: 'Lato',
-          fontSize: 18,
-          padding: "15",
-          fontColor: '#000000'
-        },
-        plot: {
-          borderWidth:0,
-          backgroundColor:'transparent',
-          animation:{
- 	          effect:2,
- 	          sequence:3
- 	        }
-        },
-        tooltip:{
-          fontSize:16,
-          anchor:'c',
-          x:'50%',
-          y:'50%',
-          sticky:true,
-          backgroundColor:'none',
-          borderWidth:0,
-          mediaRules:[
-            {
-              maxWidth:500,
-              y:'54%',
-            }
-          ]
-        },
-        plotarea: {
-          backgroundColor: 'transparent',
-        },
-        scaleX:{
-          values: ["1", "2", "3", "4", "5"]
-        },
-        series:[
+            },
             {
               values: [<?php echo $nonStudentRatingCounts['1']; ?>,
                 <?php echo $nonStudentRatingCounts['2']; ?>,
@@ -324,7 +168,7 @@ ini_set('memory_limit', '2G');
       };
 
       zingchart.render({
-        id : 'nonstudent_ratings_columnchart',
+        id : 'all_ratings_columnchart',
         data: {
           gui:{
             contextMenu:{
@@ -352,18 +196,20 @@ ini_set('memory_limit', '2G');
           graphset: [myConfig]
         }
       });
+
     });
     </script>
   </head>
   <body>
     <div class="siteheader" id="siteheader"></div>
 
-    <div class="mainbody">
+    <div class="mainbody" id="mainbody">
       <left class="sectionheader"><h1>View App Feedback</h1></left></br>
       <div class="quicknav">
+        <button class="ui orange button ihc" id="top_btn">App Rating</button>
         <button class="ui orange button ihc" id="allusers_btn">All Feedback</button>
-        <button class="ui orange button ihc" id="students_faculty_btn">Student/Faculty Feedback</button>
-        <button class="ui orange button ihc" id="nonstudents_btn">Non-Student Feedback</button>
+        <button class="ui orange button ihc" id="students_faculty_btn">OSU-Affiliated Feedback</button>
+        <button class="ui orange button ihc" id="nonstudents_btn">Resident/Visitor Feedback</button>
       </div>
 
       <div class="ui divider"></div><br>
@@ -372,23 +218,15 @@ ini_set('memory_limit', '2G');
         <h2>App Rating</h2>
         <h4>Overall Average Ratings: <?php echo $avgAllRating; ?></h4>
         <h4>Total Number of Ratings: <?php echo (count($allTuples) - $numAllZeroes); ?></h4><br>
-        <h4>Average Student/Faculty Rating: <?php echo $avgStudentRating; ?></h4>
-        <h4>Number of Student/Faculty Ratings: <?php echo (count($studentTuples) - $numStudentZeroes); ?></h4><br>
-        <h4>Average Non-Student Rating: <?php echo $avgNonStudentRating; ?></h4>
-        <h4>Number of Non-Student Ratings: <?php echo (count($nonStudentTuples) - $numNonStudentZeroes); ?></h4>
+        <h4>Average OSU-Affiliated Rating: <?php echo $avgStudentRating; ?></h4>
+        <h4>Number of OSU-Affiliated Ratings: <?php echo (count($studentTuples) - $numStudentZeroes); ?></h4><br>
+        <h4>Average Resident/Visitor Rating: <?php echo $avgNonStudentRating; ?></h4>
+        <h4>Number of Resident/Visitor Ratings: <?php echo (count($nonStudentTuples) - $numNonStudentZeroes); ?></h4>
 
         <?php if (count($allTuples) > 0) { ?>
 
           <!-- APP RATING DISTRIBUTION -->
-          <table>
-            <tr>
-              <td><div id="all_ratings_columnchart" style="width: 50vw; height: 40vw;"></div></td>
-            </tr>
-            <tr>
-              <td><div id="student_ratings_columnchart" style="width: 40vw; height: 40vw;"></div></td>
-              <td><div id="nonstudent_ratings_columnchart" style="width: 40vw; height: 40vw;"></div></td>
-            </tr>
-          </table><br>
+          <center><div id="all_ratings_columnchart" style="width: 50vw; height: 50vw;"></div></center><br>
 
           <div class="ui divider"></div><br>
 
@@ -421,7 +259,7 @@ ini_set('memory_limit', '2G');
           <div class="ui divider"></div><br>
 
           <div id="students_faculty">
-            <h2>Feedback: Students and Faculty</h2>
+            <h2>Feedback: OSU Affiliates</h2>
             <table class="ui celled padded table">
               <thead>
                 <tr>
@@ -455,7 +293,7 @@ ini_set('memory_limit', '2G');
           <div class="ui divider"></div><br>
 
           <div id="nonstudents">
-            <h2>Feedback: Non-Students</h2>
+            <h2>Feedback: Residents/Visitors</h2>
             <table class="ui celled padded table">
               <thead>
                 <tr>

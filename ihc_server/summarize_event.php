@@ -55,8 +55,8 @@ ini_set('memory_limit', '1G');
       }
 
       $usertype = $user['type'];
-      $types = array('Domestic Student', 'International Student', 'Faculty', 'Resident', 'Visitor');
-      $grades = array('N/A', 'Freshman', 'Sophomore', 'Junior', 'Senior', 'Graduate Student', 'Doctoral Student', 'Faculty');
+      $types = array('Domestic Student', 'International Student', 'Faculty/Staff', 'Resident', 'Visitor');
+      $grades = array('N/A', 'Freshman', 'Sophomore', 'Junior', 'Senior', 'Graduate Student', 'Doctoral Student', 'Faculty/Staff');
       $typeString = $types[$usertype];
       $gradeString = $grades[$grade];
 
@@ -125,7 +125,7 @@ ini_set('memory_limit', '1G');
     $(document).ready(function() {
       $("#siteheader").load("siteheader.html");
       $("#general_btn").click(function() {
-        document.getElementById("general").scrollIntoView();
+        document.getElementById("summarybody").scrollIntoView();
       });
       $("#allusers_btn").click(function() {
         document.getElementById("allusers").scrollIntoView();
@@ -142,7 +142,7 @@ ini_set('memory_limit', '1G');
         backgroundColor:'transparent',
         type: "ring",
         title: {
-          text: "Attendees By Type",
+          text: "All Attendees By Type",
           fontFamily: 'Lato',
           fontSize: 18,
           padding: "15",
@@ -196,7 +196,7 @@ ini_set('memory_limit', '1G');
         },
         series:[
           {
-            text:"Students and Faculty",
+            text:"OSU-Affiliated",
             values: [<?php echo $numStudents + $numFaculty; ?>],
             lineColor: "#4747FF",
             backgroundColor: "#4747FF",
@@ -206,7 +206,7 @@ ini_set('memory_limit', '1G');
             }
           },
           {
-            text:"Non-Students",
+            text:"Residents and Visitors",
             values: [<?php echo $numResidents + $numVisitors; ?>],
             lineColor: "#FF4747",
             backgroundColor: "#FF4747",
@@ -253,7 +253,7 @@ ini_set('memory_limit', '1G');
         backgroundColor:'transparent',
         type: "ring",
         title: {
-          text: "Student/Faculty Attendees By Type",
+          text: "OSU-Affiliated Attendees By Type",
           fontFamily: 'Lato',
           fontSize: 18,
           padding: "15",
@@ -327,7 +327,7 @@ ini_set('memory_limit', '1G');
             }
           },
           {
-            text:"Faculty",
+            text:"Faculty/Staff",
             values: [<?php echo $numFaculty; ?>],
             lineColor: "#00C62F",
             backgroundColor: "#00C62F",
@@ -374,7 +374,7 @@ ini_set('memory_limit', '1G');
         backgroundColor:'transparent',
         type: "ring",
         title: {
-          text: "Non-Student Attendees By Type",
+          text: "Non-OSU-Affiliated Attendees By Type",
           fontFamily: 'Lato',
           fontSize: 18,
           padding: "15",
@@ -597,16 +597,6 @@ ini_set('memory_limit', '1G');
             marker: {
               backgroundColor: '#C400A2'
             }
-          },
-          {
-            text:"Faculty",
-            values: [<?php echo $numFaculty; ?>],
-            lineColor: "#00A2C4",
-            backgroundColor: "#00A2C4",
-            lineWidth: 1,
-            marker: {
-              backgroundColor: '#00A2C4'
-            }
           }
         ]
       };
@@ -744,92 +734,7 @@ ini_set('memory_limit', '1G');
           fontColor: '#000000'
         },
         plot: {
-          borderWidth:0,
-          backgroundColor:'transparent',
-          animation:{
- 	          effect:2,
- 	          sequence:3
- 	        }
-        },
-        tooltip:{
-          fontSize:16,
-          anchor:'c',
-          x:'50%',
-          y:'50%',
-          sticky:true,
-          backgroundColor:'none',
-          borderWidth:0,
-          mediaRules:[
-            {
-              maxWidth:500,
-              y:'54%',
-            }
-          ]
-        },
-        plotarea: {
-          backgroundColor: 'transparent',
-        },
-        scaleX:{
-          values: ["1", "2", "3", "4", "5"]
-        },
-        series:[
-            {
-              values: [<?php echo count(array_keys($allRatings, 1)); ?>,
-                <?php echo count(array_keys($allRatings, 2)); ?>,
-                <?php echo count(array_keys($allRatings, 3)); ?>,
-                <?php echo count(array_keys($allRatings, 4)); ?>,
-                <?php echo count(array_keys($allRatings, 5)); ?>],
-              lineColor: "#FF4747",
-              backgroundColor: "#FF4747",
-              lineWidth: 1,
-              marker: {
-                backgroundColor: '#FF4747'
-              }
-            }
-        ]
-      };
-
-      zingchart.render({
-        id : 'all_ratings_columnchart',
-        data: {
-          gui:{
-            contextMenu:{
-              button:{
-                visible: true,
-                lineColor: "#2D66A4",
-                backgroundColor: "#2D66A4"
-              },
-              gear: {
-                alpha: 1,
-                backgroundColor: "#2D66A4"
-              },
-              position: "right",
-              backgroundColor:"#306EAA",
-              docked: true,
-              item:{
-                backgroundColor: "#306EAA",
-                borderColor:"#306EAA",
-                borderWidth: 0,
-                fontFamily: "Lato",
-                color: "#000000"
-              }
-            }
-          },
-          graphset: [myConfig]
-        }
-      });
-
-      myConfig = {
-        backgroundColor:'transparent',
-        type: "hbar",
-        title: {
-          text: "Student/Faculty Rating Spead",
-          fontFamily: 'Lato',
-          fontSize: 18,
-          padding: "15",
-          fontColor: '#000000'
-        },
-        plot: {
+          stacked: true,
           borderWidth:0,
           backgroundColor:'transparent',
           animation:{
@@ -865,86 +770,13 @@ ini_set('memory_limit', '1G');
                 <?php echo count(array_keys($studentRatings, 3)); ?>,
                 <?php echo count(array_keys($studentRatings, 4)); ?>,
                 <?php echo count(array_keys($studentRatings, 5)); ?>],
-              lineColor: "#4747FF",
-              backgroundColor: "#4747FF",
+              lineColor: "#FF4747",
+              backgroundColor: "#FF4747",
               lineWidth: 1,
               marker: {
-                backgroundColor: '#4747FF'
+                backgroundColor: '#FF4747'
               }
-            }
-        ]
-      };
-
-      zingchart.render({
-        id : 'student_ratings_columnchart',
-        data: {
-          gui:{
-            contextMenu:{
-              button:{
-                visible: true,
-                lineColor: "#2D66A4",
-                backgroundColor: "#2D66A4"
-              },
-              gear: {
-                alpha: 1,
-                backgroundColor: "#2D66A4"
-              },
-              position: "right",
-              backgroundColor:"#306EAA",
-              docked: true,
-              item:{
-                backgroundColor: "#306EAA",
-                borderColor:"#306EAA",
-                borderWidth: 0,
-                fontFamily: "Lato",
-                color: "#000000"
-              }
-            }
-          },
-          graphset: [myConfig]
-        }
-      });
-
-      myConfig = {
-        backgroundColor:'transparent',
-        type: "hbar",
-        title: {
-          text: "Non-Student Rating Spread",
-          fontFamily: 'Lato',
-          fontSize: 18,
-          padding: "15",
-          fontColor: '#000000'
-        },
-        plot: {
-          borderWidth:0,
-          backgroundColor:'transparent',
-          animation:{
- 	          effect:2,
- 	          sequence:3
- 	        }
-        },
-        tooltip:{
-          fontSize:16,
-          anchor:'c',
-          x:'50%',
-          y:'50%',
-          sticky:true,
-          backgroundColor:'none',
-          borderWidth:0,
-          mediaRules:[
-            {
-              maxWidth:500,
-              y:'54%',
-            }
-          ]
-        },
-        plotarea: {
-          backgroundColor: 'transparent',
-        },
-        scaleX:{
-          values: ["1", "2", "3", "4", "5"]
-        },
-        series:[
+            },
             {
               values: [<?php echo count(array_keys($nonStudentRatings, 1)); ?>,
                 <?php echo count(array_keys($nonStudentRatings, 2)); ?>,
@@ -962,7 +794,7 @@ ini_set('memory_limit', '1G');
       };
 
       zingchart.render({
-        id : 'nonstudent_ratings_columnchart',
+        id : 'all_ratings_columnchart',
         data: {
           gui:{
             contextMenu:{
@@ -1002,12 +834,12 @@ ini_set('memory_limit', '1G');
       <div class="quicknav">
         <button class="ui orange button ihc" id="general_btn">General</button>
         <button class="ui orange button ihc" id="allusers_btn">All Feedback</button>
-        <button class="ui orange button ihc" id="students_faculty_btn">Student/Faculty Feedback</button>
-        <button class="ui orange button ihc" id="nonstudents_btn">Non-Student Feedback</button>
+        <button class="ui orange button ihc" id="students_faculty_btn">OSU-Affiliated Feedback</button>
+        <button class="ui orange button ihc" id="nonstudents_btn">Resident/Visitor Feedback</button>
       </div>
       <div class="ui divider"></div><br>
 
-      <div>
+      <div id="summarybody">
         <h2>Event Information</h2>
         <h4>Location: <?php echo $event['location']; ?></h4>
         <h4>Date and Time:
@@ -1028,92 +860,139 @@ ini_set('memory_limit', '1G');
       <div id="general">
         <h2>General Statistics</h2>
         <h4>Number of Attendees: <?php echo $numAttendees; ?></h4>
-        <h4>Number of Students/Faculty: <?php echo $numStudents + $numFaculty; ?></h4>
-        <h4>Number of Non-Students: <?php echo $numResidents + $numVisitors; ?></h4>
+        <h4>Number of OSU-Affiliated Attendees: <?php echo $numStudents + $numFaculty; ?></h4>
+        <h4>Number of Resident/Visitor Attendees: <?php echo $numResidents + $numVisitors; ?></h4>
         <?php if ($numAttendees > 0) { ?>
 
           <!-- ALL EVENT AND USER STATS GO IN HERE -->
           <h4>Average Overall Rating: <?php echo $avgAllRating; ?></h4>
-          <h4>Average Student Rating: <?php echo $avgStudentRating; ?></h4>
-          <h4>Average Non-Student Rating: <?php echo $avgNonStudentRating; ?></h4>
-          <table>
+          <h4>Average OSU-Affiliated Rating: <?php echo $avgStudentRating; ?></h4>
+          <h4>Average Resident/Visitor Rating: <?php echo $avgNonStudentRating; ?></h4>
+          <center><table>
             <tr>
               <td><div id="all_attendees_donutchart" style="width: 50vw; height: 50vw;"></div></td>
               <td>
                 <h4>All Attendees</h4>
-                <table style="width: 30vw; height: 50vw; display: block; overflow-y:auto; overflow-x:hidden">
+                <table style="width: 100%; height: 50vw; display: block; overflow-y:auto; overflow-x:auto">
                   <tr>
                     <td>
-                      <?php foreach($allAttendees as $attendee) { ?>
-                        <span><?php echo $attendee['firstname'] . " " . $attendee['lastname'] . "<br>"; ?></span>
-                      <?php } ?>
+                      <table class="ui celled padded table">
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <?php foreach($allAttendees as $attendee) { ?>
+                              <tr>
+                                <td>
+                                  <span><?php echo $attendee['firstname'] . " " . $attendee['lastname']; ?></span>
+                                </td>
+                                <td>
+                                  <span><?php echo $attendee['email']; ?></span>
+                                </tr>
+                              </tr>
+                          <?php } ?>
+                        </tbody>
+                      </table>
                     </td>
                   </tr>
                 </table>
               </td>
             </tr>
-          </table><br>
+          </table></center><br>
 
           <div class="ui divider"></div><br>
 
-          <table>
+          <center><table>
             <tr>
               <td><div id="student_attendees_donutchart" style="width: 50vw; height: 50vw;"></div></td>
               <td>
-                <h4>Student Attendees</h4>
-                <table style="width: 30vw; height: 50vw; display: block; overflow-y:auto; overflow-x:hidden">
+                <h4>OSU-Affiliated Attendees</h4>
+                <table style="width: 100%; height: 50vw; display: block; overflow-y:auto; overflow-x:auto">
                   <tr>
                     <td>
-                      <?php foreach($students as $student) { ?>
-                        <span><?php echo $student['firstname'] . " " . $student['lastname'] . "<br>"; ?></span>
-                      <?php } ?>
+                      <table class="ui celled padded table">
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <?php foreach($students as $student) { ?>
+                            <tr>
+                              <td>
+                                <span><?php echo $student['firstname'] . " " . $student['lastname']; ?></span>
+                              </td>
+                              <td>
+                                <span><?php echo $student['email']; ?></span>
+                              </td>
+                            </tr>
+                          <?php } ?>
+                        </tbody>
+                      </table>
                     </td>
                   </tr>
                 </table>
               </td>
             </tr>
-          </table><br>
+          </table></center><br>
 
           <div class="ui divider"></div><br>
 
-          <table>
+          <center><table>
             <tr>
               <td><div id="nonstudent_attendees_donutchart" style="width: 50vw; height: 50vw;"></div></td>
               <td>
-                <h4>Non-Student Attendees</h4>
-                <table style="width: 30vw; height: 50vw; display: block; overflow-y:auto; overflow-x:hidden">
+                <h4>Resident/Visitor Attendees</h4>
+                <table style="width: 100%; height: 50vw; display: block; overflow-y:auto; overflow-x:auto">
                   <tr>
                     <td>
-                      <?php foreach($nonStudents as $nonStudent) { ?>
-                        <span><?php echo $nonStudent['firstname'] . " " . $nonStudent['lastname'] . "<br>"; ?></span>
-                      <?php } ?>
+                      <table class="ui celled padded table">
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <?php foreach($nonStudents as $nonStudent) { ?>
+                            <tr>
+                              <td>
+                                <span><?php echo $nonStudent['firstname'] . " " . $nonStudent['lastname']; ?></span>
+                              </td>
+                              <td>
+                                <span><?php echo $nonStudent['email']; ?></span>
+                              </td>
+                            </tr>
+                          <?php } ?>
+                        </tbody>
+                      </table>
                     </td>
                   </tr>
                 </table>
               </td>
             </tr>
-          </table><br>
+          </table></center><br>
 
           <div class="ui divider"></div><br>
 
-          <table>
+          <center><table>
             <tr>
               <td><div id="student_status_donutchart" style="width: 50vw; height: 50vw;">  </div></td>
             </tr>
-          </table><br>
+          </table></center><br>
 
           <div class="ui divider"></div><br>
 
-          <table>
+          <center><table>
             <tr>
               <td><div id="attendee_age_columnchart" style="width: 40vw; height: 40vw;"></div></td>
               <td><div id="all_ratings_columnchart" style="width: 40vw; height: 40vw;"></div></td>
             </tr>
-            <tr>
-              <td><div id="student_ratings_columnchart" style="width: 40vw; height: 40vw;"></div></td>
-              <td><div id="nonstudent_ratings_columnchart" style="width: 40vw; height: 40vw;"></div></td>
-            </tr>
-          </table>
+          </table></center>
 
           <!-- EVENT FEEDBACK -->
             <div class="ui divider"></div><br>
@@ -1149,7 +1028,7 @@ ini_set('memory_limit', '1G');
             <div class="ui divider"></div><br>
 
             <div id="students_faculty">
-              <h2>Event Feedback: Student/Faculty Feedback</h2>
+              <h2>Event Feedback: OSU-Affiliated Feedback</h2>
               <?php if (count($studentComments) > 0) { ?>
               <table class="ui celled padded table">
                 <thead>
@@ -1187,7 +1066,7 @@ ini_set('memory_limit', '1G');
             <div id="nonstudents">
               <?php if (count($nonStudentComments) > 0) { ?>
 
-              <h2>Event Feedback: Non-Student Feedback</h2>
+              <h2>Event Feedback: Non-OSU-Affiliated Feedback</h2>
               <table class="ui celled padded table">
                 <thead>
                   <tr>

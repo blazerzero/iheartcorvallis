@@ -58,13 +58,20 @@ ini_set('memory_limit', '1G');
     function validateRegressionForm() {
       var stat1Field = document.forms["regressionForm"]["stat1"].value;
       var stat2Field = document.forms["regressionForm"]["stat2"].value;
+      var graphChoiceField = document.forms["regressionForm"]["graphchoice"].value;
       if (stat1Field == null || stat1Field == "" ||
           stat2Field == null || stat2Field == "") {
         alert("Please choose two statistics to compare!");
         return false;
       }
       else {
-        return true;
+        if (graphChoiceField == null || graphChoiceField == "") {
+          alert("Please choose a graph to view!");
+          return false;
+        }
+        else {
+          return true;
+        }
       }
     }
 
@@ -141,21 +148,26 @@ ini_set('memory_limit', '1G');
         <h2>Find a Correlation</h2>
         <?php $j = 0; ?>
         <form name="regressionForm" onsubmit="return validateRegressionForm()" action="./get_correlation_data.php" method="post" enctype="multipart/form-data">
-          <span style="font-size: 1.25vw"><strong>Compare</strong></span><br><br>
+          <!--<span style="font-size: 1.25vw"><strong>Compare</strong></span><br><br>
           <select class="ui search dropdown" name="stat1" id="stat1">
             <option value="">Choose statistic</option>
             <option value="1">Change in Time</option>
-            <option value="2">Grade</option>
-            <option value="3">User Type</option>
-            <option value="4">Number of Completed Events</option>
+            <option value="2">Number of Completed Events</option>
           </select><br><br>
-          <span style="font-size: 1.25vw"><strong>to</strong></span><br><br>
+          <span style="font-size: 1.25vw"><strong>to</strong></span><br><br>-->
+          <span style="font-size:1.25vw"><strong>View a sampling of</strong></span><br><br>
           <select class="ui search dropdown" name="stat2" id="stat2">
             <option value="">Choose statistic</option>
-            <option value="5">Number of Completed Events</option>
+            <option value="3">Number of Completed Events</option>
             <?php for ($j = 1; $j <= count($questions); $j++) { ?>
-              <option value="<?php echo $j+5; ?>">Responses to Survey Question: <?php echo $questions[$j-1]['question']; ?></option>
+              <option value="<?php echo $j+3; ?>">Responses to Survey Question: <?php echo $questions[$j-1]['question']; ?></option>
             <?php } ?>
+          </select><br><br>
+          <span style="font-size: 1.25vw"><strong>over time and choose a graph to view:</strong></span><br><br>
+          <select class="ui search dropdown" name="graphchoice" id="graphchoice">
+            <option value="">Choose graph</option>
+            <option value="1">Students Only (Organized By Class Standing)</option>
+            <option value="2">All Users (Organizaed By User Type)</option>
           </select><br><br>
           <input class="ui green button" type="submit" value="Create Regression Visual">
         </form><br>

@@ -41,8 +41,8 @@ ini_set('memory_limit', '1G');
       $response = $row['response'];
       $name = $row['firstname'] . " " . $row['lastname'];
 
-      $types = array('Domestic Student', 'International Student', 'Faculty', 'Resident', 'Visitor');
-      $grades = array('N/A', 'Freshman', 'Sophomore', 'Junior', 'Senior', 'Graduate Student', 'Doctoral Student', 'Faculty');
+      $types = array('Domestic Student', 'International Student', 'Faculty/Staff', 'Resident', 'Visitor');
+      $grades = array('N/A', 'Freshman', 'Sophomore', 'Junior', 'Senior', 'Graduate Student', 'Doctoral Student', 'Faculty/Staff');
       $type = $types[$row['type']];
       $grade = $grades[$row['grade']];
 
@@ -71,6 +71,9 @@ ini_set('memory_limit', '1G');
     <script>
     $(document).ready(function() {
       $("#siteheader").load("siteheader.html");
+      $("#generalbtn").click(function() {
+        document.getElementById("general").scrollIntoView();
+      });
       $("#allresponses").click(function() {
         document.getElementById("all_reponsediv").scrollIntoView();
       });
@@ -86,11 +89,11 @@ ini_set('memory_limit', '1G');
   <body>
     <div class="siteheader" id="siteheader"></div>
 
-    <div class="mainbody">
+    <div class="mainbody" id="mainbody">
       <left class="sectionheader"><h1>View Question Responses</h1></left><br>
       <div class="ui divider"></div><br>
 
-      <div>
+      <div id="general">
         <h2>General</h2>
         <h4>Question: <?php echo $question; ?></h4>
         <h4>Choices:
@@ -100,13 +103,14 @@ ini_set('memory_limit', '1G');
           ?>
         </h4>
         <h4>Number of Responses: <?php echo count($allTuples); ?></h4>
-        <h4>Number of Student/Faculty Responses: <?php echo count($studentTuples); ?></h4>
-        <h4>Number of Non-Student Responses: <?php echo count($nonStudentTuples); ?></h4>
+        <h4>Number of OSU-Affiliated Responses: <?php echo count($studentTuples); ?></h4>
+        <h4>Number of Resident/Visitor Responses: <?php echo count($nonStudentTuples); ?></h4>
       </div><br>
       <div class="quicknav">
+        <button class="ui orange button ihc" id="generalbtn">General</button>
         <button class="ui orange button ihc" id="allresponses">All Responses</button>
-        <button class="ui orange button ihc" id="studentresponses">Student/Faculty Responses</button>
-        <button class="ui orange button ihc" id="nonstudentresponses">Non-Student Responses</button>
+        <button class="ui orange button ihc" id="studentresponses">OSU-Affiliated Responses</button>
+        <button class="ui orange button ihc" id="nonstudentresponses">Resident/Visitor Responses</button>
       </div>
 
       <div class="ui divider"></div><br>
@@ -138,7 +142,7 @@ ini_set('memory_limit', '1G');
       <div class="ui divider"></div><br>
 
       <div id="student_responsediv">
-        <h2>Student Responses</h2>
+        <h2>OSU-Affiliated Responses</h2>
         <table class ="ui celled padded table">
           <thead>
             <tr>
@@ -170,7 +174,7 @@ ini_set('memory_limit', '1G');
       <div class="ui divider"></div><br>
 
       <div id="nonstudent_responsediv">
-        <h2>Non-Student Responses</h2>
+        <h2>Resident/Visitor Responses</h2>
         <table class ="ui celled padded table">
           <thead>
             <tr>
