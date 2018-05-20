@@ -11,10 +11,25 @@ ini_set('memory_limit', '1G');
   <?php
   require './admin_server/db.php';
   $word = $_GET['word'];
-  $wordCount = $_GET['count'];
 
+  $wordCount = 0;
   $keyword = "%" . $word . "%";
   $topFiveRatedAll = $bottomFiveRatedAll = $topFiveRatedStudent = $bottomFiveRatedStudent = $topFiveRatedNonStudent = $bottomFiveRatedNonStudent = array();
+
+  $stmt = $mysqli->prepare("SELECT comment FROM ihc_feedback WHERE comment LIKE ?");
+  $stmt->bind_param('s', $keyword);
+  $stmt->execute();
+  $res = $stmt->get_result();
+  while ($row = $res->fetch_assoc()) {
+    $comment = $row['comment'];
+    $token = strtok($comment, ",.;/ ");
+    while ($token !== false) {
+      if ($token == $word) {
+        $wordCount++;
+      }
+      $token = strtok(",. ");
+    }
+  }
 
   $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND F.comment LIKE ? AND F.rating > 0 ORDER BY F.rating DESC");
   $stmt->bind_param('s', $keyword);
@@ -117,203 +132,204 @@ ini_set('memory_limit', '1G');
         <h4>Number of Occurrences: <?php echo $wordCount; ?></h4>
       </div><br><br>
 
-      <div>
-        <h2>Top Rated Comments: All Users</h2>
-        <table class="ui celled padded table">
-          <thead>
-            <tr>
-              <th class="single line">Name</th>
-              <th>Date and Time</th>
-              <th>User Type</th>
-              <th>Rating</th>
-              <th>Comment</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach($topFiveRatedAll as $tuple) { ?>
+      <?php if ($wordCount > 0) { ?>
+        <div>
+          <h2>Top Rated Comments: All Users</h2>
+          <table class="ui celled padded table">
+            <thead>
               <tr>
-                <td><?php echo $tuple['firstname'] . ' ' . $tuple['lastname']; ?></td>
-                <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
-                <td>
-                  <?php
-                  echo $types[$tuple['type']];
-                  ?>
-                </td>
-                <td><?php echo $tuple['rating']; ?></td>
-                <td><?php echo $tuple['comment']; ?></td>
+                <th class="single line">Name</th>
+                <th>Date and Time</th>
+                <th>User Type</th>
+                <th>Rating</th>
+                <th>Comment</th>
               </tr>
-            <?php } ?>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <?php foreach($topFiveRatedAll as $tuple) { ?>
+                <tr>
+                  <td><?php echo $tuple['firstname'] . ' ' . $tuple['lastname']; ?></td>
+                  <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
+                  <td>
+                    <?php
+                    echo $types[$tuple['type']];
+                    ?>
+                  </td>
+                  <td><?php echo $tuple['rating']; ?></td>
+                  <td><?php echo $tuple['comment']; ?></td>
+                </tr>
+              <?php } ?>
+            </tbody>
+          </table>
 
-        <h2>Lowest Rated Comments: All Users</h2>
-        <table class="ui celled padded table">
-          <thead>
-            <tr>
-              <th class="single line">Name</th>
-              <th>Date and Time</th>
-              <th>User Type</th>
-              <th>Rating</th>
-              <th>Comment</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach($bottomFiveRatedAll as $tuple) { ?>
+          <h2>Lowest Rated Comments: All Users</h2>
+          <table class="ui celled padded table">
+            <thead>
               <tr>
-                <td><?php echo $tuple['firstname'] . ' ' . $tuple['lastname']; ?></td>
-                <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
-                <td>
-                  <?php
-                  echo $types[$tuple['type']];
-                  ?>
-                </td>
-                <td><?php echo $tuple['rating']; ?></td>
-                <td><?php echo $tuple['comment']; ?></td>
+                <th class="single line">Name</th>
+                <th>Date and Time</th>
+                <th>User Type</th>
+                <th>Rating</th>
+                <th>Comment</th>
               </tr>
-            <?php } ?>
-          </tbody>
-        </table>
-      </div><br>
+            </thead>
+            <tbody>
+              <?php foreach($bottomFiveRatedAll as $tuple) { ?>
+                <tr>
+                  <td><?php echo $tuple['firstname'] . ' ' . $tuple['lastname']; ?></td>
+                  <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
+                  <td>
+                    <?php
+                    echo $types[$tuple['type']];
+                    ?>
+                  </td>
+                  <td><?php echo $tuple['rating']; ?></td>
+                  <td><?php echo $tuple['comment']; ?></td>
+                </tr>
+              <?php } ?>
+            </tbody>
+          </table>
+        </div><br>
 
-      <div class="ui divider"></div><br>
+        <div class="ui divider"></div><br>
 
-      <div>
-        <h2>Top Rated Comments: Students and Faculty</h2>
-        <table class="ui celled padded table">
-          <thead>
-            <tr>
-              <th class="single line">Name</th>
-              <th>Student ID #</th>
-              <th>ONID Username</th>
-              <th>Date and Time</th>
-              <th>User Type</th>
-              <th>Class Standing</th>
-              <th>Rating</th>
-              <th>Comment</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach($topFiveRatedStudent as $tuple) { ?>
+        <div>
+          <h2>Top Rated Comments: Students and Faculty</h2>
+          <table class="ui celled padded table">
+            <thead>
               <tr>
-                <td><?php echo $tuple['firstname'] . ' ' . $tuple['lastname']; ?></td>
-                <td><?php echo $tuple['studentid']; ?></td>
-                <td><?php echo $tuple['onid']; ?></td>
-                <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
-                <td>
-                  <?php
-                  echo $types[$tuple['type']];
-                  ?>
-                </td>
-                <td><?php echo $tuple['grade']; ?></td>
-                <td><?php echo $tuple['rating']; ?></td>
-                <td><?php echo $tuple['comment']; ?></td>
+                <th class="single line">Name</th>
+                <th>Student ID #</th>
+                <th>ONID Username</th>
+                <th>Date and Time</th>
+                <th>User Type</th>
+                <th>Class Standing</th>
+                <th>Rating</th>
+                <th>Comment</th>
               </tr>
-            <?php } ?>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <?php foreach($topFiveRatedStudent as $tuple) { ?>
+                <tr>
+                  <td><?php echo $tuple['firstname'] . ' ' . $tuple['lastname']; ?></td>
+                  <td><?php echo $tuple['studentid']; ?></td>
+                  <td><?php echo $tuple['onid']; ?></td>
+                  <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
+                  <td>
+                    <?php
+                    echo $types[$tuple['type']];
+                    ?>
+                  </td>
+                  <td><?php echo $tuple['grade']; ?></td>
+                  <td><?php echo $tuple['rating']; ?></td>
+                  <td><?php echo $tuple['comment']; ?></td>
+                </tr>
+              <?php } ?>
+            </tbody>
+          </table>
 
-        <h2>Lowest Rated Comments: Students and Faculty</h2>
-        <table class="ui celled padded table">
-          <thead>
-            <tr>
-              <th class="single line">Name</th>
-              <th>Student ID #</th>
-              <th>ONID Username</th>
-              <th>Date and Time</th>
-              <th>User Type</th>
-              <th>Class Standing</th>
-              <th>Rating</th>
-              <th>Comment</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach($bottomFiveRatedStudent as $tuple) { ?>
+          <h2>Lowest Rated Comments: Students and Faculty</h2>
+          <table class="ui celled padded table">
+            <thead>
               <tr>
-                <td><?php echo $tuple['firstname'] . ' ' . $tuple['lastname']; ?></td>
-                <td><?php echo $tuple['studentid']; ?></td>
-                <td><?php echo $tuple['onid']; ?></td>
-                <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
-                <td>
-                  <?php
-                  echo $types[$tuple['type']];
-                  ?>
-                </td>
-                <td><?php echo $tuple['grade']; ?></td>
-                <td><?php echo $tuple['rating']; ?></td>
-                <td><?php echo $tuple['comment']; ?></td>
+                <th class="single line">Name</th>
+                <th>Student ID #</th>
+                <th>ONID Username</th>
+                <th>Date and Time</th>
+                <th>User Type</th>
+                <th>Class Standing</th>
+                <th>Rating</th>
+                <th>Comment</th>
               </tr>
-            <?php } ?>
-          </tbody>
-        </table>
-      </div><br>
+            </thead>
+            <tbody>
+              <?php foreach($bottomFiveRatedStudent as $tuple) { ?>
+                <tr>
+                  <td><?php echo $tuple['firstname'] . ' ' . $tuple['lastname']; ?></td>
+                  <td><?php echo $tuple['studentid']; ?></td>
+                  <td><?php echo $tuple['onid']; ?></td>
+                  <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
+                  <td>
+                    <?php
+                    echo $types[$tuple['type']];
+                    ?>
+                  </td>
+                  <td><?php echo $tuple['grade']; ?></td>
+                  <td><?php echo $tuple['rating']; ?></td>
+                  <td><?php echo $tuple['comment']; ?></td>
+                </tr>
+              <?php } ?>
+            </tbody>
+          </table>
+        </div><br>
 
-      <div class="ui divider"></div><br>
+        <div class="ui divider"></div><br>
 
-      <div>
-        <h2>Top Rated Comments: Non-Students</h2>
-        <table class="ui celled padded table">
-          <thead>
-            <tr>
-              <th class="single line">Name</th>
-              <th>Date and Time</th>
-              <th>User Type</th>
-              <th>Rating</th>
-              <th>Comment</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach($topFiveRatedNonStudent as $tuple) { ?>
+        <div>
+          <h2>Top Rated Comments: Non-Students</h2>
+          <table class="ui celled padded table">
+            <thead>
               <tr>
-                <td><?php echo $tuple['firstname'] . ' ' . $tuple['lastname']; ?></td>
-                <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
-                <td>
-                  <?php
-                  echo $types[$tuple['type']];
-                  ?>
-                </td>
-                <td><?php echo $tuple['rating']; ?></td>
-                <td><?php echo $tuple['comment']; ?></td>
+                <th class="single line">Name</th>
+                <th>Date and Time</th>
+                <th>User Type</th>
+                <th>Rating</th>
+                <th>Comment</th>
               </tr>
-            <?php } ?>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <?php foreach($topFiveRatedNonStudent as $tuple) { ?>
+                <tr>
+                  <td><?php echo $tuple['firstname'] . ' ' . $tuple['lastname']; ?></td>
+                  <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
+                  <td>
+                    <?php
+                    echo $types[$tuple['type']];
+                    ?>
+                  </td>
+                  <td><?php echo $tuple['rating']; ?></td>
+                  <td><?php echo $tuple['comment']; ?></td>
+                </tr>
+              <?php } ?>
+            </tbody>
+          </table>
 
-        <h2>Lowest Rated Comments: Non-Students</h2>
-        <table class="ui celled padded table">
-          <thead>
-            <tr>
-              <th class="single line">Name</th>
-              <th>Date and Time</th>
-              <th>User Type</th>
-              <th>Rating</th>
-              <th>Comment</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach($bottomFiveRatedNonStudent as $tuple) { ?>
+          <h2>Lowest Rated Comments: Non-Students</h2>
+          <table class="ui celled padded table">
+            <thead>
               <tr>
-                <td><?php echo $tuple['firstname'] . ' ' . $tuple['lastname']; ?></td>
-                <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
-                <td>
-                  <?php
-                  echo $types[$tuple['type']];
-                  ?>
-                </td>
-                <td><?php echo $tuple['rating']; ?></td>
-                <td><?php echo $tuple['comment']; ?></td>
+                <th class="single line">Name</th>
+                <th>Date and Time</th>
+                <th>User Type</th>
+                <th>Rating</th>
+                <th>Comment</th>
               </tr>
-            <?php } ?>
-          </tbody>
-        </table>
-      </div><br>
+            </thead>
+            <tbody>
+              <?php foreach($bottomFiveRatedNonStudent as $tuple) { ?>
+                <tr>
+                  <td><?php echo $tuple['firstname'] . ' ' . $tuple['lastname']; ?></td>
+                  <td><?php echo date('M d, Y g:i A', strtotime($tuple['dateandtime'])); ?></td>
+                  <td>
+                    <?php
+                    echo $types[$tuple['type']];
+                    ?>
+                  </td>
+                  <td><?php echo $tuple['rating']; ?></td>
+                  <td><?php echo $tuple['comment']; ?></td>
+                </tr>
+              <?php } ?>
+            </tbody>
+          </table>
+        </div><br>
 
-      <div class="ui divider"></div><br>
+        <div class="ui divider"></div><br>
 
-      <form name="keywordForm" onsubmit="return validateKeywordForm()" action="./get_keyword_comments.php" method="post" enctype="multipart/form-data">
-        <span style="font-size: 1.25vw; display: none"><strong>Enter Keyword or Phrase: </strong></span>
-        <input class="inputbox" type="text" name="keyword" value="<?php echo $word; ?>" style="display: none">
-        <input class="ui green button" type="submit" value="View All Occurrences">
-      </form>
+        <form name="keywordForm" onsubmit="return validateKeywordForm()" action="./get_keyword_comments.php" method="post" enctype="multipart/form-data">
+          <input class="inputbox" type="text" name="keyword" value="<?php echo $word; ?>" style="display: none">
+          <input class="ui green button" type="submit" value="View All Occurrences">
+        </form>
+      <?php } ?>
 
     </div>
   </body>

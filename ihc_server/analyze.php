@@ -24,7 +24,7 @@ ini_set('memory_limit', '1G');
   $result = $stmt->get_result();
   while ($row = $result->fetch_assoc()) {
     $comment = $row['comment'];
-    $token = strtok($comment, ",. ");
+    $token = strtok($comment, ",.;/ ");
     while ($token !== false) {
       if (strlen($token) > 1) {
         if (!array_key_exists($token, $wordCounts)) {
@@ -148,13 +148,6 @@ ini_set('memory_limit', '1G');
         <h2>Find a Correlation</h2>
         <?php $j = 0; ?>
         <form name="regressionForm" onsubmit="return validateRegressionForm()" action="./get_correlation_data.php" method="post" enctype="multipart/form-data">
-          <!--<span style="font-size: 1.25vw"><strong>Compare</strong></span><br><br>
-          <select class="ui search dropdown" name="stat1" id="stat1">
-            <option value="">Choose statistic</option>
-            <option value="1">Change in Time</option>
-            <option value="2">Number of Completed Events</option>
-          </select><br><br>
-          <span style="font-size: 1.25vw"><strong>to</strong></span><br><br>-->
           <span style="font-size:1.25vw"><strong>View a sampling of</strong></span><br><br>
           <select class="ui search dropdown" name="stat2" id="stat2">
             <option value="">Choose statistic</option>
@@ -197,7 +190,7 @@ ini_set('memory_limit', '1G');
                     <tr>
                       <td><?php echo $words[$i]; ?></td>
                       <td><?php echo $wordCounts[$words[$i]]; ?></td>
-                      <td><a href="./analyze_word_occurrences.php?word=<?php echo $words[$i]; ?>&count=<?php echo $wordCounts[$words[$i]]; ?>" class="ui green button">Analyze Occurences</a></td>
+                      <td><a href="./analyze_word_occurrences.php?word=<?php echo $words[$i]; ?>" class="ui green button">Analyze Occurences</a></td>
                     </tr>
                   <?php } ?>
                 </tbody>
@@ -210,10 +203,10 @@ ini_set('memory_limit', '1G');
       <div class="ui divider"></div><br>
 
       <div>
-        <h2>Keyword Search: App Comments</h2>
-        <form name="keywordForm" onsubmit="return validateKeywordForm()" action="./get_keyword_comments.php" method="post" enctype="multipart/form-data">
-          <span style="font-size: 1.25vw"><strong>Enter Keyword or Phrase: </strong></span>
-          <input class="inputbox" type="text" name="keyword">
+        <h2>App Comments: Keyword Search</h2>
+        <form name="keywordForm" onsubmit="return validateKeywordForm()" action="./analyze_word_occurrences.php" method="get" enctype="multipart/form-data">
+          <span style="font-size: 1.25vw"><strong>Enter Keyword: </strong></span>
+          <input class="inputbox" type="text" name="word">
           <input class="ui green button" type="submit" value="Search">
         </form>
       </div>
