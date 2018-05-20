@@ -196,18 +196,18 @@ ini_set('memory_limit', '1G');
         <h2>General</h2>
         <h4>Number of Events: <?php echo count($events); ?></h4>
         <h4>Total Number of Attendees: <?php echo count($attendees); ?></h4>
-        <h4>Number of Student/Faculty Attendees: <?php echo count($studentAttendees); ?></h4>
-        <h4>Number of Non-Student Attendees: <?php echo count($nonStudentAttendees); ?></h4>
+        <h4>Number of OSU-Affiliated Attendees: <?php echo count($studentAttendees); ?></h4>
+        <h4>Number of Non-OSU-Affiliated Attendees: <?php echo count($nonStudentAttendees); ?></h4>
         <?php if (count($attendees) > 0) { ?>
           <br><h4>Average Rating: <?php echo $avgAllRating; ?></h4>
-          <h4>Student/Faculty Rating: <?php echo $avgStudentRating; ?></h4>
-          <h4>Non-Student Rating: <?php echo $avgNonStudentRating; ?></h4>
+          <h4>OSU-Affiliated Rating: <?php echo $avgStudentRating; ?></h4>
+          <h4>Non-OSU-Affiliated Rating: <?php echo $avgNonStudentRating; ?></h4>
           <center><div id="all_ratings_columnchart" style="width: 50vw; height: 40vw;"></div></center><br>
 
           <div class="ui divider"></div><br>
           <div>
             <h2>Event Summaries</h2>
-            <table class="ui celled padded table">
+            <table class="ui celled padded table" style="width: 60vw">
               <thead>
                 <tr>
                   <th class="single line">Name</th>

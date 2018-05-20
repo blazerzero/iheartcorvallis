@@ -112,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <div id="all_feedback">
         <?php if (count($allTuples) > 0) { ?>
           <h2>Feedback Search Results: All Users</h2>
-          <table class="ui celled padded table">
+          <table class="ui celled padded table" style="width: 80vw; height: 50vw; display: block; overflow-y:auto; overflow-x:auto">
             <thead>
               <tr>
                 <th class="single line">Name</th>
@@ -141,8 +141,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div id="student_feedback">
           <?php if (count($studentTuples) > 0) { ?>
-            <h2>Feedback Search Results: Students and Faculty</h2>
-            <table class="ui celled padded table">
+            <h2>Feedback Search Results: OSU-Affiliated Users</h2>
+            <table class="ui celled padded table" style="width: 80vw; height: 50vw; display: block; overflow-y:auto; overflow-x:auto">
               <thead>
                 <tr>
                   <th class="single line">Name</th>
@@ -179,8 +179,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div id="nonstudent_feedback">
           <?php if (count($nonStudentTuples) > 0)  { ?>
 
-            <h2>Feedback Search Results: Non-Students</h2>
-            <table class="ui celled padded table">
+            <h2>Feedback Search Results: Non-OSU-Affiliated Users</h2>
+            <table class="ui celled padded table" style="width: 80vw; height: 50vw; display: block; overflow-y:auto; overflow-x:auto">
               <thead>
                 <tr>
                   <th class="single line">Name</th>

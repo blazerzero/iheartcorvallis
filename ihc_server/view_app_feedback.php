@@ -235,7 +235,7 @@ ini_set('memory_limit', '2G');
 
           <div id="allusers">
             <h2>Feedback: All Users</h2>
-            <table class="ui celled padded table">
+            <table class="ui celled padded table" style="width: 80vw; height: 50vw; display: block; overflow-y:auto; overflow-x:auto">
               <thead>
                 <tr>
                   <th class="single line">Name</th>
@@ -263,7 +263,7 @@ ini_set('memory_limit', '2G');
 
           <div id="students_faculty">
             <h2>Feedback: OSU Affiliates</h2>
-            <table class="ui celled padded table">
+            <table class="ui celled padded table" style="width: 80vw; height: 50vw; display: block; overflow-y:auto; overflow-x:auto">
               <thead>
                 <tr>
                   <th class="single line">Name</th>
@@ -297,7 +297,7 @@ ini_set('memory_limit', '2G');
 
           <div id="nonstudents">
             <h2>Feedback: Residents/Visitors</h2>
-            <table class="ui celled padded table">
+            <table class="ui celled padded table" style="width: 80vw; height: 50vw; display: block; overflow-y:auto; overflow-x:auto">
               <thead>
                 <tr>
                   <th class="single line">Name</th>

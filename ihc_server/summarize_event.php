@@ -125,7 +125,7 @@ ini_set('memory_limit', '1G');
     $(document).ready(function() {
       $("#siteheader").load("siteheader.html");
       $("#general_btn").click(function() {
-        document.getElementById("summarybody").scrollIntoView();
+        document.getElementById("siteheader").scrollIntoView();
       });
       $("#allusers_btn").click(function() {
         document.getElementById("allusers").scrollIntoView();
@@ -1005,7 +1005,7 @@ ini_set('memory_limit', '1G');
             <div id="allusers">
               <?php if (count($comments) > 0) { ?>
               <h2>Event Feedback: All Feedback</h2>
-              <table class="ui celled padded table">
+              <table class="ui celled padded table" style="width: 80vw; height: 50vw; display: block; overflow-y:auto; overflow-x:auto">
                 <thead>
                   <tr>
                     <th class="single line">Name</th>
@@ -1035,7 +1035,7 @@ ini_set('memory_limit', '1G');
             <div id="students_faculty">
               <h2>Event Feedback: OSU-Affiliated Feedback</h2>
               <?php if (count($studentComments) > 0) { ?>
-              <table class="ui celled padded table">
+              <table class="ui celled padded table" style="width: 80vw; height: 50vw; display: block; overflow-y:auto; overflow-x:auto">
                 <thead>
                   <tr>
                     <th class="single line">Name</th>
@@ -1072,7 +1072,7 @@ ini_set('memory_limit', '1G');
               <?php if (count($nonStudentComments) > 0) { ?>
 
               <h2>Event Feedback: Non-OSU-Affiliated Feedback</h2>
-              <table class="ui celled padded table">
+              <table class="ui celled padded table" style="width: 80vw; height: 50vw; display: block; overflow-y:auto; overflow-x:auto">
                 <thead>
                   <tr>
                     <th class="single line">Name</th>
