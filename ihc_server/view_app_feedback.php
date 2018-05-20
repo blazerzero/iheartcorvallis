@@ -226,7 +226,7 @@ ini_set('memory_limit', '2G');
         <?php if (count($allTuples) > 0) { ?>
 
           <!-- APP RATING DISTRIBUTION -->
-          <center><div id="all_ratings_columnchart" style="width: 50vw; height: 50vw;"></div></center><br>
+          <center><div id="all_ratings_columnchart" style="width: 50vw; height: 30vw;"></div></center><br>
 
           <div class="ui divider"></div><br>
 
