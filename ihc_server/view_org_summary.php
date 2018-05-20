@@ -91,6 +91,7 @@ ini_set('memory_limit', '1G');
           fontColor: '#000000'
         },
         plot: {
+          stacked: true,
           borderWidth:0,
           backgroundColor:'transparent',
           animation:{
@@ -98,92 +99,7 @@ ini_set('memory_limit', '1G');
  	          sequence:3
  	        }
         },
-        tooltip:{
-          fontSize:16,
-          anchor:'c',
-          x:'50%',
-          y:'50%',
-          sticky:true,
-          backgroundColor:'none',
-          borderWidth:0,
-          mediaRules:[
-            {
-              maxWidth:500,
-              y:'54%',
-            }
-          ]
-        },
-        plotarea: {
-          backgroundColor: 'transparent',
-        },
-        scaleX:{
-          values: ["1", "2", "3", "4", "5"]
-        },
-        series:[
-            {
-              values: [<?php echo count(array_keys($allRatings, 1)); ?>,
-                <?php echo count(array_keys($allRatings, 2)); ?>,
-                <?php echo count(array_keys($allRatings, 3)); ?>,
-                <?php echo count(array_keys($allRatings, 4)); ?>,
-                <?php echo count(array_keys($allRatings, 5)); ?>],
-              lineColor: "#FF4747",
-              backgroundColor: "#FF4747",
-              lineWidth: 1,
-              marker: {
-                backgroundColor: '#FF4747'
-              }
-            }
-        ]
-      };
-
-      zingchart.render({
-        id : 'all_ratings_columnchart',
-        data: {
-          gui:{
-            contextMenu:{
-              button:{
-                visible: true,
-                lineColor: "#2D66A4",
-                backgroundColor: "#2D66A4"
-              },
-              gear: {
-                alpha: 1,
-                backgroundColor: "#2D66A4"
-              },
-              position: "right",
-              backgroundColor:"#306EAA",
-              docked: true,
-              item:{
-                backgroundColor: "#306EAA",
-                borderColor:"#306EAA",
-                borderWidth: 0,
-                fontFamily: "Lato",
-                color: "#000000"
-              }
-            }
-          },
-          graphset: [myConfig]
-        }
-      });
-
-      myConfig = {
-        backgroundColor:'transparent',
-        type: "hbar",
-        title: {
-          text: "Student/Faculty Rating Spead",
-          fontFamily: 'Lato',
-          fontSize: 18,
-          padding: "15",
-          fontColor: '#000000'
-        },
-        plot: {
-          borderWidth:0,
-          backgroundColor:'transparent',
-          animation:{
-            effect:2,
-            sequence:3
-          }
-        },
+        legend:{},
         tooltip:{
           fontSize:16,
           anchor:'c',
@@ -212,92 +128,21 @@ ini_set('memory_limit', '1G');
                 <?php echo count(array_keys($studentRatings, 3)); ?>,
                 <?php echo count(array_keys($studentRatings, 4)); ?>,
                 <?php echo count(array_keys($studentRatings, 5)); ?>],
-              lineColor: "#4747FF",
-              backgroundColor: "#4747FF",
+              text: "OSU-Affiliated Ratings",
+              lineColor: "#FF4747",
+              backgroundColor: "#FF4747",
               lineWidth: 1,
               marker: {
-                backgroundColor: '#4747FF'
+                backgroundColor: '#FF4747'
               }
-            }
-        ]
-      };
-
-      zingchart.render({
-        id : 'student_ratings_columnchart',
-        data: {
-          gui:{
-            contextMenu:{
-              button:{
-                visible: true,
-                lineColor: "#2D66A4",
-                backgroundColor: "#2D66A4"
-              },
-              gear: {
-                alpha: 1,
-                backgroundColor: "#2D66A4"
-              },
-              position: "right",
-              backgroundColor:"#306EAA",
-              docked: true,
-              item:{
-                backgroundColor: "#306EAA",
-                borderColor:"#306EAA",
-                borderWidth: 0,
-                fontFamily: "Lato",
-                color: "#000000"
-              }
-            }
-          },
-          graphset: [myConfig]
-        }
-      });
-
-      myConfig = {
-        backgroundColor:'transparent',
-        type: "hbar",
-        title: {
-          text: "Non-Student Rating Spread",
-          fontFamily: 'Lato',
-          fontSize: 18,
-          padding: "15",
-          fontColor: '#000000'
-        },
-        plot: {
-          borderWidth:0,
-          backgroundColor:'transparent',
-          animation:{
-            effect:2,
-            sequence:3
-          }
-        },
-        tooltip:{
-          fontSize:16,
-          anchor:'c',
-          x:'50%',
-          y:'50%',
-          sticky:true,
-          backgroundColor:'none',
-          borderWidth:0,
-          mediaRules:[
-            {
-              maxWidth:500,
-              y:'54%',
-            }
-          ]
-        },
-        plotarea: {
-          backgroundColor: 'transparent',
-        },
-        scaleX:{
-          values: ["1", "2", "3", "4", "5"]
-        },
-        series:[
+            },
             {
               values: [<?php echo count(array_keys($nonStudentRatings, 1)); ?>,
                 <?php echo count(array_keys($nonStudentRatings, 2)); ?>,
                 <?php echo count(array_keys($nonStudentRatings, 3)); ?>,
                 <?php echo count(array_keys($nonStudentRatings, 4)); ?>,
                 <?php echo count(array_keys($nonStudentRatings, 5)); ?>],
+              text: "Non-OSU-Affiliated Ratings",
               lineColor: "#00C62F",
               backgroundColor: "#00C62F",
               lineWidth: 1,
@@ -309,7 +154,7 @@ ini_set('memory_limit', '1G');
       };
 
       zingchart.render({
-        id : 'nonstudent_ratings_columnchart',
+        id : 'all_ratings_columnchart',
         data: {
           gui:{
             contextMenu:{
@@ -357,19 +202,7 @@ ini_set('memory_limit', '1G');
           <br><h4>Average Rating: <?php echo $avgAllRating; ?></h4>
           <h4>Student/Faculty Rating: <?php echo $avgStudentRating; ?></h4>
           <h4>Non-Student Rating: <?php echo $avgNonStudentRating; ?></h4>
-          <table>
-            <tr>
-              <td><div id="all_ratings_columnchart" style="width: 50vw; height: 40vw;"></div></td>
-              <?php if (count($studentAttendees) > 0) { ?>
-                <td><div id="student_ratings_columnchart" style="width: 40vw; height: 40vw;"></div></td>
-            <?php } ?>
-            </tr>
-            <?php if (count($nonStudentAttendees) > 0) { ?>
-              <tr>
-                <td><div id="nonstudent_ratings_columnchart" style="width: 40vw; height: 40vw;"></div></td>
-              </tr>
-            <?php } ?>
-          </table><br>
+          <center><div id="all_ratings_columnchart" style="width: 50vw; height: 40vw;"></div></center><br>
 
           <div class="ui divider"></div><br>
           <div>

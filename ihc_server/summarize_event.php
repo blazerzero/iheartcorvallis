@@ -742,6 +742,7 @@ ini_set('memory_limit', '1G');
  	          sequence:3
  	        }
         },
+        legend: {},
         tooltip:{
           fontSize:16,
           anchor:'c',
@@ -770,6 +771,7 @@ ini_set('memory_limit', '1G');
                 <?php echo count(array_keys($studentRatings, 3)); ?>,
                 <?php echo count(array_keys($studentRatings, 4)); ?>,
                 <?php echo count(array_keys($studentRatings, 5)); ?>],
+              text: "OSU-Affiliated Ratings",
               lineColor: "#FF4747",
               backgroundColor: "#FF4747",
               lineWidth: 1,
@@ -783,6 +785,7 @@ ini_set('memory_limit', '1G');
                 <?php echo count(array_keys($nonStudentRatings, 3)); ?>,
                 <?php echo count(array_keys($nonStudentRatings, 4)); ?>,
                 <?php echo count(array_keys($nonStudentRatings, 5)); ?>],
+              text: "Non-OSU-Affiliated Ratings",
               lineColor: "#00C62F",
               backgroundColor: "#00C62F",
               lineWidth: 1,
@@ -990,7 +993,9 @@ ini_set('memory_limit', '1G');
           <center><table>
             <tr>
               <td><div id="attendee_age_columnchart" style="width: 40vw; height: 40vw;"></div></td>
-              <td><div id="all_ratings_columnchart" style="width: 40vw; height: 40vw;"></div></td>
+              <td>
+                <div id="all_ratings_columnchart" style="width: 40vw; height: 40vw;"></div>
+              </td>
             </tr>
           </table></center>
 

@@ -116,6 +116,7 @@ ini_set('memory_limit', '2G');
  	          sequence:3
  	        }
         },
+        legend:{},
         tooltip:{
           fontSize:16,
           anchor:'c',
@@ -144,6 +145,7 @@ ini_set('memory_limit', '2G');
                 <?php echo $studentRatingCounts['3']; ?>,
                 <?php echo $studentRatingCounts['4']; ?>,
                 <?php echo $studentRatingCounts['5']; ?>],
+              text: "OSU-Affiliated Ratings",
               lineColor: "#FF4747",
               backgroundColor: "#FF4747",
               lineWidth: 1,
@@ -157,6 +159,7 @@ ini_set('memory_limit', '2G');
                 <?php echo $nonStudentRatingCounts['3']; ?>,
                 <?php echo $nonStudentRatingCounts['4']; ?>,
                 <?php echo $nonStudentRatingCounts['5']; ?>],
+              text: "Non-OSU-Affiliated Ratings",
               lineColor: "#00C62F",
               backgroundColor: "#00C62F",
               lineWidth: 1,
