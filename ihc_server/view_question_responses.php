@@ -117,7 +117,7 @@ ini_set('memory_limit', '1G');
 
       <div id="all_reponsediv">
         <h2>All Responses</h2>
-        <table class ="ui celled padded table">
+        <table class ="ui celled padded table" style="width: 30vw; height: 50vw; display: block; overflow-y:auto; overflow-x:auto">
           <thead>
             <tr>
               <th class="single line">Name</th>
@@ -143,7 +143,7 @@ ini_set('memory_limit', '1G');
 
       <div id="student_responsediv">
         <h2>OSU-Affiliated Responses</h2>
-        <table class ="ui celled padded table">
+        <table class ="ui celled padded table" style="width: 50vw; height: 50vw; display: block; overflow-y:auto; overflow-x:auto">
           <thead>
             <tr>
               <th class="single line">Name</th>
@@ -175,7 +175,7 @@ ini_set('memory_limit', '1G');
 
       <div id="nonstudent_responsediv">
         <h2>Resident/Visitor Responses</h2>
-        <table class ="ui celled padded table">
+        <table class ="ui celled padded table" style="width: 25vw; height: 50vw; display: block; overflow-y:auto; overflow-x:auto">
           <thead>
             <tr>
               <th class="single line">Name</th>

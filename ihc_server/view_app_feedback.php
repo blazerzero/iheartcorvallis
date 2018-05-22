@@ -262,7 +262,7 @@ ini_set('memory_limit', '2G');
           <div class="ui divider"></div><br>
 
           <div id="students_faculty">
-            <h2>Feedback: OSU Affiliates</h2>
+            <h2>Feedback: OSU-Affiliated Users</h2>
             <table class="ui celled padded table" style="width: 80vw; height: 50vw; display: block; overflow-y:auto; overflow-x:auto">
               <thead>
                 <tr>

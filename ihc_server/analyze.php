@@ -56,11 +56,9 @@ ini_set('memory_limit', '1G');
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
     function validateRegressionForm() {
-      var stat1Field = document.forms["regressionForm"]["stat1"].value;
       var stat2Field = document.forms["regressionForm"]["stat2"].value;
       var graphChoiceField = document.forms["regressionForm"]["graphchoice"].value;
-      if (stat1Field == null || stat1Field == "" ||
-          stat2Field == null || stat2Field == "") {
+      if (stat2Field == null || stat2Field == "") {
         alert("Please choose two statistics to compare!");
         return false;
       }
@@ -159,8 +157,8 @@ ini_set('memory_limit', '1G');
           <span style="font-size: 1.25vw"><strong>over time and choose a graph to view:</strong></span><br><br>
           <select class="ui search dropdown" name="graphchoice" id="graphchoice">
             <option value="">Choose graph</option>
-            <option value="1">Students Only (Organized By Class Standing)</option>
-            <option value="2">All Users (Organizaed By User Type)</option>
+            <option value="1">Students Only (Grouped By Class Standing)</option>
+            <option value="2">All Users (Grouped By User Type)</option>
           </select><br><br>
           <input class="ui green button" type="submit" value="Create Regression Visual">
         </form><br>

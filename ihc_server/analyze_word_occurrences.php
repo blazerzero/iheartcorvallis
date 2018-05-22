@@ -31,60 +31,65 @@ ini_set('memory_limit', '1G');
     }
   }
 
-  $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND F.comment LIKE ? AND F.rating > 0 ORDER BY F.rating DESC");
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND F.comment LIKE ? AND F.rating > 0 ORDER BY F.rating DESC, F.dateandtime DESC LIMIT 5");
   $stmt->bind_param('s', $keyword);
   $stmt->execute();
   $res = $stmt->get_result();
   if ($res->num_rows > 0) {
-    $i = 1;
     while ($row = $res->fetch_assoc()) {
-      if ($i <= 5) {
-        $topFiveRatedAll[] = $row;
-      }
-      if ($res->num_rows - $i < 5) {
-        $bottomFiveRatedAll[] = $row;
-      }
-      $i++;
+      $topFiveRatedAll[] = $row;
     }
   }
 
-  $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND U.type < 3 AND F.comment LIKE ? AND F.rating > 0 ORDER BY F.rating DESC");
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND F.comment LIKE ? AND F.rating > 0 ORDER BY F.rating ASC, F.dateandtime DESC LIMIT 5");
   $stmt->bind_param('s', $keyword);
   $stmt->execute();
   $res = $stmt->get_result();
   if ($res->num_rows > 0) {
-    $i = 1;
     while ($row = $res->fetch_assoc()) {
-      if ($i <= 5) {
-        $topFiveRatedStudent[] = $row;
-      }
-      if ($res->num_rows - $i < 5) {
-        $bottomFiveRatedStudent[] = $row;
-      }
-      $i++;
+      $bottomFiveRatedAll[] = $row;
     }
   }
 
-  $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND U.type >= 3 AND F.comment LIKE ? AND F.rating > 0 ORDER BY F.rating DESC");
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND U.type < 3 AND F.comment LIKE ? AND F.rating > 0 ORDER BY F.rating DESC, F.dateandtime DESC LIMIT 5");
   $stmt->bind_param('s', $keyword);
   $stmt->execute();
   $res = $stmt->get_result();
   if ($res->num_rows > 0) {
-    $i = 1;
     while ($row = $res->fetch_assoc()) {
-      if ($i <= 5) {
-        $topFiveRatedNonStudent[] = $row;
-      }
-      if ($res->num_rows - $i < 5) {
-        $bottomFiveRatedNonStudent[] = $row;
-      }
-      $i++;
+      $topFiveRatedStudent[] = $row;
     }
   }
 
-  arsort($bottomFiveRatedAll);
-  arsort($bottomFiveRatedStudent);
-  arsort($bottomFiveRatedNonStudent);
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND U.type < 3 AND F.comment LIKE ? AND F.rating > 0 ORDER BY F.rating ASC, F.dateandtime DESC LIMIT 5");
+  $stmt->bind_param('s', $keyword);
+  $stmt->execute();
+  $res = $stmt->get_result();
+  if ($res->num_rows > 0) {
+    while ($row = $res->fetch_assoc()) {
+      $bottomFiveRatedStudent[] = $row;
+    }
+  }
+
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND U.type >= 3 AND F.comment LIKE ? AND F.rating > 0 ORDER BY F.rating DESC, F.dateandtime DESC LIMIT 5");
+  $stmt->bind_param('s', $keyword);
+  $stmt->execute();
+  $res = $stmt->get_result();
+  if ($res->num_rows > 0) {
+    while ($row = $res->fetch_assoc()) {
+      $topFiveRatedNonStudent[] = $row;
+    }
+  }
+
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND U.type >= 3 AND F.comment LIKE ? AND F.rating > 0 ORDER BY F.rating ASC, F.dateandtime DESC LIMIT 5");
+  $stmt->bind_param('s', $keyword);
+  $stmt->execute();
+  $res = $stmt->get_result();
+  if ($res->num_rows > 0) {
+    while ($row = $res->fetch_assoc()) {
+      $bottomFiveRatedNonStudent[] = $row;
+    }
+  }
 
   $types = array('Domestic Student', 'International Student', 'Faculty', 'Resident', 'Visitor');
   $grades = array('N/A', 'Freshman', 'Sophomore', 'Junior', 'Senior', 'Graduate Student', 'Doctoral Student', 'Faculty');

@@ -94,14 +94,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   // SETTING METRICS AND AXES //
-  if ($stat1 == 1) {    // x-Axis: change in time
-    $metric1 = "Change in Time";
-    $xAxis = "Days Since First Completed Event";
-  }
-  else if ($stat1 == 2) {   // x-Axis: number of completed events
-    $metric1 = $xAxis = "Number of Completed Events";
-  }
 
+  $metric1 = "Change in Time";
+  $xAxis = "Numbers of Days Since First Completed Event";
   if ($stat2 == 3) {    // y-Axis: number of completed events
     $metric2 = $yAxis = "Number of Completed Events";
   }
@@ -891,7 +886,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
       <center>
         <h2>View Correlation: <?php echo $metric1; ?> vs. <?php echo $metric2; ?></h2>
-        <h3>Students Only (Sample Organized By Class Standing)</h3>
+        <h3>Students Only (Sample Grouped By Class Standing)</h3>
         <div id="class_standing_regression_chart" style="width: 100%; height: 60vw;"></div>
       </center>
       <?php if ($stat2 != 3) { ?>
@@ -1073,7 +1068,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php } else if ($graphChoice == 2) { ?>
       <center>
         <h2>View Correlation: <?php echo $metric1; ?> vs. <?php echo $metric2; ?></h2>
-        <h3>All Users (Sample Organized By User Type)</h3>
+        <h3>All Users (Sample Grouped By User Type)</h3>
         <div id="type_regression_chart" style="width: 100%; height: 60vw;"></div>
       </center>
       <?php if ($stat2 != 3) { ?>
