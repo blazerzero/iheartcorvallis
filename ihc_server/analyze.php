@@ -24,7 +24,7 @@ ini_set('memory_limit', '1G');
   $result = $stmt->get_result();
   while ($row = $result->fetch_assoc()) {
     $comment = $row['comment'];
-    $token = strtok($comment, ",.;/ ");
+    $token = strtok($comment, ",.;:/ ");
     while ($token !== false) {
       if (strlen($token) > 1) {
         if (!array_key_exists($token, $wordCounts)) {
@@ -34,7 +34,7 @@ ini_set('memory_limit', '1G');
           $wordCounts[$token]++;
         }
       }
-      $token = strtok(",. ");
+      $token = strtok(",.;:/ ");
     }
   }
   arsort($wordCounts);
@@ -204,7 +204,7 @@ ini_set('memory_limit', '1G');
         <h2>App Comments: Keyword Search</h2>
         <form name="keywordForm" onsubmit="return validateKeywordForm()" action="./analyze_word_occurrences.php" method="get" enctype="multipart/form-data">
           <span style="font-size: 1.25vw"><strong>Enter Keyword: </strong></span>
-          <input class="inputbox" type="text" name="word">
+          <input class="inputbox" type="text" name="keyword">
           <input class="ui green button" type="submit" value="Search">
         </form>
       </div>

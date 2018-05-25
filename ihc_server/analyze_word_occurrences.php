@@ -22,12 +22,12 @@ ini_set('memory_limit', '1G');
   $res = $stmt->get_result();
   while ($row = $res->fetch_assoc()) {
     $comment = $row['comment'];
-    $token = strtok($comment, ",.;/ ");
+    $token = strtok($comment, ",.;:/ ");
     while ($token !== false) {
       if ($token == $word) {
         $wordCount++;
       }
-      $token = strtok(",. ");
+      $token = strtok(",.;:/ ");
     }
   }
 

@@ -96,13 +96,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   // SETTING METRICS AND AXES //
 
   $metric1 = "Change in Time";
-  $xAxis = "Numbers of Days Since First Completed Event";
   if ($stat2 == 3) {    // y-Axis: number of completed events
+    $xAxis = "Number of Days Since First Completed Event";
     $metric2 = $yAxis = "Number of Completed Events";
   }
   else {  // y-Axis: responses to survey question
     for ($i = 1; $i <= count($questions); $i++) {
       if ($stat2 == $i + 3) {
+        $xAxis = "Number of Days Since First Survey Response";
         $metric2 = "Responses to Survey Question:<br>" . $questions[$i-1]["question"];
         $yAxis = "Response Value";
       }
