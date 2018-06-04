@@ -13,6 +13,12 @@ TRG 		= $(SRC:%.tex=%.dvi)
 PSF 		= $(SRC:%.tex=%.ps)
 PDF 		= $(SRC:%.tex=%.pdf)
 
+HWNAME = technicalReview
+TAR = $(HWNAME).tar.bz2
+TARFILES = $(HWNAME).tex $(HWNAME).bib $(HWNAME).pdf IEEEtran.cls Makefile
+
+all: pdf clean $(TAR)
+
 pdf: $(PDF)
 
 ps: $(PSF)
@@ -21,15 +27,33 @@ $(TRG): %.dvi: %.tex $(EXAMPLES)
 	#use pygments to include source code
 	#pygmentize -f latex -o __${EXAMPLES}.tex ${EXAMPLES}
 
-	$(BUILDDIR)/$(LATEX) $<
-	$(BUILDDIR)/$(BIBTEX) $(<:%.tex=%)
-	$(BUILDDIR)/$(LATEX) $<
-	$(BUILDDIR)/$(LATEX) $<
+	if [ -d "$(BUILDDIR)" ] ; \
+	then \
+		$(BUILDDIR)/$(LATEX) $< ; \
+		$(BUILDDIR)/$(BIBTEX) $(<:%.tex=%) ; \
+		$(BUILDDIR)/$(LATEX) $< ; \
+		$(BUILDDIR)/$(LATEX) $< ; \
+	fi;
+	if [ ! -d "$(BUILDDIR)" ] ; \
+	then \
+		$(LATEX) $< ; \
+		$(BIBTEX) $(<:%.tex=%) ; \
+		$(LATEX) $< ; \
+		$(LATEX) $< ; \
+	fi;
+
 	#rm __${SRC}.tex
 	#remove pygmentized output to avoid cluttering up directory
 
 $(PSF):%.ps: %.dvi
-	$(BUILDDIR)/$(DVIPS) -R -Poutline -t letter $< -o $@
+	if [ -d "$(BUILDDIR)" ] ; \
+	then \
+		$(BUILDDIR)/$(DVIPS) -R -Poutline -t letter $< -o $@ ; \
+	fi;
+	if [ ! -d "$(BUILDDIR)" ] ; \
+	then \
+		$(DVIPS) -R -Poutline -t letter $< -o $@ ; \
+	fi;
 
 $(PDF): %.pdf: %.ps
 	ps2pdf $<
@@ -40,9 +64,26 @@ show: $(TRG)
 showps: $(PSF)
 	@for i in $(PSF) ; do $(GH) $$i & done
 
-all: pdf
+$(TAR):
+	if [ -f $(HWNAME).tex ] ; \
+	then \
+		tar -cjf $(HWNAME).tar.bz2 $(TARFILES) ; \
+		>&2 echo " " ; \
+		>&2 echo "***************************************" ; \
+		>&2 echo "* Successfully created .tar.bz2 file. *" ; \
+		>&2 echo "***************************************" ; \
+		>&2 echo " " ; \
+	fi ;
+	if [ ! -f $(HWNAME).tex ] ; \
+	then \
+		>&2 echo " " ; \
+		>&2 echo "********************************************************" ; \
+		>&2 echo "* Change value of HWNAME to the name of your TeX file! *" ; \
+		>&2 echo "********************************************************" ; \
+		>&2 echo " " ; \
+	fi ;
 
 clean:
-	rm -f *.ps *.dvi *.out *.log *.aux *.bbl *.blg *.pyg *.synctex.gz
+	rm -f $(HWNAME).ps *.dvi *.out *.log *.aux *.bbl *.blg *.pyg *.synctex.gz *.toc *.bz2
 
 .PHONY: all show clean ps pdf showps
