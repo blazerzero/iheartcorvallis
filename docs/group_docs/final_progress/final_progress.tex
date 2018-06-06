@@ -131,7 +131,7 @@
         }
         \begin{abstract}
         % 6. Fill in your abstract
-        		This document takes a look back at the work have done on the I Heart Corvallis mobile application this past term. It recaps the purposes and goals of the project, explains our current status on the project, and details what we have left to complete. It also describes any problems that we have encountered, how they impeded our progress, and how we solved them. The document also showcases some notable pieces of code that we have recently implemented and some updated screenshots of our application and administrative website.
+        		This document acts as the complete notebook for the I Heart Corvallis mobile application project. It details the project requirements and design, technology reviews for various aspects of the project, and our team's weekly blog posts detailing our progress. It also includes documentation on how the project works and how to install and run the application, and it provides some functionality flowcharts. The team also provides conclusions and reflections on the past year, and the appendices provide notable code listings and screenshots from the project.
         \end{abstract}
     \end{singlespace}
 \end{titlepage}
@@ -146,7 +146,7 @@
 % 8. now you write!
 \section{Introduction}
   The "I Heart Corvallis" mobile application was conceptualized by the Corvallis Community Relations office to complement their larger "I Heart Corvallis" initiative. The CCR office noticed that many OSU students do not engage much with the greater community and prefer to interact with the OSU community itself, so they started this initiative to build and promote a strong and cooperative relationship between the OSU community and the greater Corvallis community. The goal of the mobile app is to inform students about the various community events, activities, and service opportunities available to them around the community, as well as to give them an incentive to engage in these activities.
-  Our client was Lyndi-Rae Petty, the Graduate Teaching Assistant at the Corvallis Community Relations office, a subset of the Office of Student Life. The development team consisted of Omeed Habibelahian, Bradley Imai, and Dylan Tomlinson. All three of us were heavily involved in nearly all aspects of the application, and we often helped each other out when one of us was stuck on a particular section of the development. It was not so much that one of us took a particular role; we were all involved in the various aspects of development and implementation, as well as in communicating updates and changes with our client. There were, however, a few aspects of the development that we each took more control of. Omeed handled more of the implementation of the administrative website, Dylan was in charge of user security on both the mobile application and the administrative website, and Bradley put in quite a bit of work on the design of the user interface.
+  Our client was Lyndi-Rae Petty, the Graduate Teaching Assistant at the Corvallis Community Relations office, a subset of the Office of Student Life. The development team consisted of Omeed Habibelahian, Bradley Imai, and Dylan Tomlinson. All three of us were heavily involved in nearly all aspects of the application, and we often helped each other out when one of us was stuck on a particular section of the development. It was not so much that one of us took a particular role; we were all involved in the various aspects of development and implementation, as well as in communicating updates and changes with our client. There were, however, a few aspects of the development that we each took more control of. Omeed handled more of the implementation of the administrative website, Dylan was in charge of user security on both the mobile application and the administrative website, and Bradley put in quite a bit of work on the design of the user interface of the mobile application.
   Our client primarily took the role of supervisor of the project. Every week we would meet with her to discuss the changes we made and new features we implemented, as well as what we had to do next, and she gave input on how she felt about our changes and anything she wanted done differently. When we needed to reach out to another organization or source for guidance or help, we would describe our situation to her, and she would take charge of reaching out to these organizations.
   \newpage
 
@@ -159,7 +159,10 @@
   [page placeholder]\newpage
   [page placeholder]\newpage
   [page placeholder]\newpage
-  \subsection{Modifications}
+  \subsection{Requirement Modifications}
+    The two requirements that were changed were the implementation of the ONID login and the database usage. \\ \\
+    We did not implement the ONID login system, or CAS, into the application, as we were unable to figure out how to implement CAS on a mobile device. The documentation for integrating CAS into a website is fairly straightforward, but this documentation does not translate to mobile applications the same way. We did reach out to some other resources within OSU, like Derek Whiteside (Director of Web and Mobile Services) and Andrew Morgan (Systems Administrator for Identity and Access Management), and we received some valuable information from the latter source, but we were nonetheless unable to complete the requirement. We made sure our client was aware of this, and she gave us the green light to proceed without implementing CAS. Instead, we implemented a universal login system that asks the user if they are a student/faculty member during the signup process. \\ \\
+    We also did not use two databases for the project, as mentioned in the document. We are not exactly sure what our reasoning was behind that idea. It is possible that we meant two tables rather than two databases, but we ended up only needing one table for all of the tables for the application and administrative website. Our MySQL database consisted of 11 tables. \\ \\
   \subsection{Updated Gantt Chart}
     \includegraphics[height=7cm]{ganttchart}
   \newpage
@@ -177,7 +180,11 @@
   [page placeholder]\newpage
   [page placeholder]\newpage
   [page placeholder]\newpage
-  \subsection{Modifications}
+  \subsection{Design Modifications}
+    There were a few design aspects that we changed or removed altogether. \\ \\
+    The plan to integrate a social media API, such as Instagram, was scrapped, as it did not fit into the user interface of our application and was deemed unnecessary. The plan for an in-app administrative interface was also changed to a web-based interface. This change was requested by our client, who told us that it would be easier for her to maintain the content of the application on her computer rather than on her phone in the application. \\ \\
+    We changed the application from an HTML-based application to a stock Android, Java-based application. As a result of this, we also strayed away from using Semantic UI in the application. We made this change because in order to enable PHP on the application, we had to install PHP onto the device, which we were having trouble implementing. Android also has significantly more documentation for these languages, which helped us out quite a bit in the long run. \\ \\
+    We did not focus on scaling the UI of the application. This design decision fell out of our scope as we focused on the main UI and functionality of the app. Our client was satisfied with the condition of the application, prompting us to consider our development of our application finished in early May.
   \newpage
 
 \section{Tech Review}
@@ -464,8 +471,9 @@
 
       \paragraph{Week 10}
         \begin{itemize}
-          \item Completed the admin website
-          \item Continuing to work on the geofencing feature
+          \item Finished geofencing feature for application
+          \item Meet up with another group on wed to do extra credit review session @2
+          \item Begin planning for the final presentation/progress reports
         \end{itemize}
 
     \subsubsection{Spring 2018}
@@ -673,6 +681,9 @@
 
 \section{Project Documentation}
   \includegraphics[height=8cm]{appflow} \\ \\
+  \begin{center}
+    \includegraphics[height=8cm]{scriptflow}
+  \end{center}
   The application provides users with a passport that shows them which events they have completed. Users receive stamps upon completing events, and when a user accumulates a sufficient number of stamps, they can redeem prizes. On the administrative website, the CCR office will be able to add, modify, and delete any content from the application, such as events, prizes, resources, resource map locations, survey questions, and the information displayed on the About Page. The office will also be able to authorize other users to access the administrative website. \\ \\
   The app has not yet been published to the Google Play Store, as the iOS version of the application has not yet been created. Once both versions of the application have been fully developed, the application will be published to both the Google Play Store and the Apple App Store. Once it is available on the Play Store, devices with Android 4.4 "KitKat" or later installed will be able to download the application from the Google Play Store. \\ \\
   In the meantime, in order to run the app, the device you want to run the app on must be connected to a computer that has both Android Studio installed and the full code directory for the app stored on it. To run the program in Android Studio, hit the Run button (the green Play button) at the top of the IDE and you will be able to choose whether you want the app to run on an emulator or on your own connected device. \\ \\
@@ -684,36 +695,381 @@
     \item Derek Whiteside, Director of Web and Mobile Services at OSU
     \item Andrew Morgan, Systems Administrator, Identity and Access Management at OSU
   \end{itemize}
+  \newpage
 
 \section{Conclusions and Reflections}
   \subsection{Omeed}
     \subsubsection{What technical information did you learn?}
+      I learned a lot about the visual design of applications, as well as how interactions between applications and databases are set up. It was really cool learning how each piece of the user interface visually comes together in the code. It took me a while to figure out exactly how applications connect to databases, and even though I would look through code tutorials, I continued to run into walls implementing it myself, but once I figured out an efficient implementation for one page, it was a lot easier to mold the code to fit for other pages of the app as well.
+
     \subsubsection{What non-technical information did you learn?}
+      I learned a lot about how to communicate my creations to other people and how to modify my use of technical jargon to make my explanation as clear as possible to anyone who inquired about the project. This also applies to meeting with our client, as I had to effectively and clearly communicate our progress and next steps to our client, who did not have as much technical experience as us. I also learned how to schedule the completion of each task of a long-term endeavor, as the application and website had a slew of bits and pieces that we needed to make sure got completed in a timely manner.
+
     \subsubsection{What have you learned about project work?}
+      I have learned that it’s important to communicate your progress and planned tasks to your teammates so there is no confusion as far as who is in charge of what tasks. I have also learned that dedicated teammates are crucial to completing everything that needs to get done for the project. This project has also taught me that plans change, and something that you thought would be a huge factor in the development of the project may end up being completely abandoned in the end. As you implement the project, your client may bring up new desires and change their mind on previous design decisions, and it is important to be aware of this when embarking on a time-intensive project.
+
     \subsubsection{What have you learned about project management?}
+      As far as project management, this project taught me that it is incredibly important to plan out each task of the project and to set up a timeline for when to complete each task by. You also need to be clear when communicating your timeline to your teammates and client, as you need to ensure that not only your teammates are on board with your plan in relation to their plans, but also that your client agrees with your timeline. The final product is ultimately for the client, so they need to confirm that your schedule for completing each piece of the project aligns with their plans to deploy or market the final product. It is also very important to keep your progress saved in multiple places so that not only can you continue your work on different machines, but you have a backup of your data if you somehow lose your local files.
+
     \subsubsection{What have you learned about working in teams?}
+      I have learned that each member of your team brings a different perspective to the table, whether it be for a particular piece of the project or for the project design as a whole. It is important to maintain your concept for the final product while simultaneously considering the concepts your teammates have created. They will undoubtedly have some idea for the project that you did not even think of, and the final product will reflect the decisions your team made on which features to implement and which ones to ignore or push to a later time. It is also very important to keep consistent contact with your team so you are not left in the dark about what the rest of your team is implementing.
+
     \subsubsection{\textbf{If you could do it all over, what would you do differently?}}
-  \newpage
+      If I were to do this project over again, I would definitely consider implementing the application with a cross-platform development environment. Our client's original goal was to have both an Android and iOS version of the application developed this year, and since we only had prior experience developing for iOS, we decided to focus on implementing the Android version of the application and making the iOS version a stretch goal. If I were to go back to Fall Term, I would do significantly more research on cross-platform development environments, such as React Native.
 
   \subsection{Bradley}
     \subsubsection{What technical information did you learn?}
+      From the very beginning of the implementation stage of Winter term, every aspect of the programming and research was a new experience for me. My past experience in programming an Android application was the CS496 course at OSU.  We created a simple weather application that displayed weather data from an API. The I Heart Corvallis mobile application was an eye-opener for me in the Android development. Everything from the creation of an animated splash screen, utilizing Google Maps and displaying notable locations, geolocation, and implementing the ability for an Administration website to add, update and delete content that was displayed on the application was all a new experience for me.
+
     \subsubsection{What non-technical information did you learn?}
+      Having the ability to talk nontechnical and technical in a working environment is essential to a successful project. In my past interviews for jobs, I have been asked every time to give an example of a nontechnical and technical experience. Over the course of this year, I had the ability to learn this skill and become proficient in it. Talking to our client whose background is nontechnical versus talking technical with group members was a slight barrier. However, I was able to pick up this skill easily and was able to successfully explain features and progress of our application to our client as well as discussing technical features of the application with group members.
+
     \subsubsection{What have you learned about project work?}
+      This has been bar far the biggest project I have been a part of. Being able to organize and manage time in an efficient manner was a must in developing a successful application. Not only did I have to worry about completing my tasks for this application but I also had to worry about other coursework. The main factor that I took out of this coursework was that features took a lot longer than expected. Some of the smaller features of the application were able to develop in one setting but the majority of the features took at least a few days to program.
+
     \subsubsection{What have you learned about project management?}
+      Reflecting this year, I noticed we took on a waterfall method for project management. This consisted of group members doing research, writing a requirement, design and technical documents in the fall, followed by implementation in the winter and bug fixing the spring. During the implementation phase, I noticed that we had to take a step back and modify our design and requirement decisions. This took us back a few days in which we could have been developing for our application. I have done some research on project management and many companies these days use the agile method. This consists of running through sprints and being able to develop a product in a more timely manner.
+
     \subsubsection{What have you learned about working in teams?}
+      By working with an amazing group of guys, I was able to develop a specific set of experiences and skills that normal coursework could not. An example of this would be that groups make better decisions than individuals. Having multiple opinions of various features of the application gives ideas that may not have come up for an individual. Being able to work in a group environment is a must in the working field. No job, besides freelance will give you the option to work alone.
+
     \subsubsection{\textbf{If you could do it all over, what would you do differently?}}
-  \newpage
+      If I could do this all over again I would take a look at cross-platforming. After doing a few job search within mobile development I have seen a lot of React and React Native developers in need. From my understand React Native is a cross-platform framework that can develop for IOS and Android mobile application with use of javascript. Facebook developers had created this framework and have been widely used in Airbnb, Instagram, Discord and many more.
 
   \subsection{Dylan}
     \subsubsection{What technical information did you learn?}
+      Basically every piece of code I wrote for this project was something new for me. I have only made one program using Java before, and it was extremely simple compared to this project. I also have never had experience working on a mobile application before. In terms of technical information I learned about the components that make up an android application. Such as having a Java class and XML layout for every page. I learned about how an android application uses resources and how to pass variables between classes. I also learned how to work with a hashing algorithm that is not part of a library. I also learned about how an android application communicates with a database. I always assumed that the PHP scripts would simply live with the application. I did not know that most applications simply use SQLite, storing information on the user’s phone instead of in a seperate database.
+
     \subsubsection{What non-technical information did you learn?}
+      For non-technical info I learned how to set up and meet with actual computer scientists. We had a few situations throughout the year that required us to meet with employees of Oregon State. Through these meetings I feel that I learned a bit about the protocol of meeting with people in the field. I also learned about focus groups and getting user data. I had only been in one focus group and attended a few hosted by our client throughout the year. I also learned a bit about selling your work and having to describe it to technical and non technical people. Over the past month we have been trying to find a way for our project to live on after our graduation. We have met with the Visit Corvallis office and the marketing department of OSU in order to build up interest in our app. Nothing has come to fruition yet but it was still a good experience communicating our work and vision.
+
     \subsubsection{What have you learned about project work?}
+      It helps to have others who are interested in working on the project. For my previous senior design project each of us split up the aspects of the project and none of us made much headway in the project. Having my group to work with through these requirements this year helped tremendously in keeping steady progress throughout the year. We have been able to keep each other accountable and motivated to work on the application. I have also learned that it takes a lot of time, between getting approval from our client and the actual time it takes to code in a feature, a lot of time passes. Most of these requirements took several days if not weeks to complete. When creating something new you generally can’t expect to sit down and finish it in one sitting.
+
     \subsubsection{What have you learned about project management?}
+      I have learned the importance of planning for the worst. Leaving extra time later in the development cycle is the main reason why we were able to complete this project. We began development during winter break as we knew this project was going to take a lot of planning. That planning paid out by allowing us to work when we had time instead of having to cram our schedules half way through the term. There were very few times that I was worried about the project as we were generally ahead of where we needed to be in the development cycle.
+
     \subsubsection{What have you learned about working in teams?}
+      Communication has been the most important factor in working as a team. We have several different outlets for communicating that we have been using frequently throughout the year. Finding times to work together was always a challenge but we managed, spending many late nights at the Valley Library over winter term. It is also important to communicate your work to your teammates. If you are having a specific problem, they could usually offer some sort of insight to help out.
+
     \subsubsection{\textbf{If you could do it all over, what would you do differently?}}
+      I would have started the CAS implementation earlier in the development cycle. We did not realize that it would be much more difficult to implement CAS in a mobile application than in a website. If we had started it in the winter, than we might have been able to finish it. I also would have looked further into cross platform development. We did a lot of research on the subject, but we had our worries that it wouldn’t work out well. It would have been great to have an iOS and an Android version of our app.
+
   \newpage
 
 \section{Appendix I: Essential Code Listings}
+  \subsection{EventListAdapter Class}
+    \begin{lstlisting}[style=java]
+package edu.oregonstate.studentlife.ihcv2.adapters;
+
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+import edu.oregonstate.studentlife.ihcv2.R;
+import edu.oregonstate.studentlife.ihcv2.data.Event;
+
+/**
+* Created by Omeed on 1/18/18.
+*/
+
+public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventListViewHolder> {
+
+private ArrayList<Event> mEventList;
+private OnEventClickListener mOnEventClickListener;
+private final static String TAG = EventListAdapter.class.getSimpleName();
+
+public EventListAdapter(OnEventClickListener onEventClickListener) {
+  mEventList = new ArrayList<Event>();
+  mOnEventClickListener = onEventClickListener;
+}
+
+public void addEvent(Event event) {
+  mEventList.add(event);
+  notifyDataSetChanged();
+}
+
+@Override
+public int getItemCount() {
+  return mEventList.size();
+}
+
+public interface OnEventClickListener {
+  void onEventClick(Event event);
+}
+
+@Override
+public EventListViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+  LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+  View view = inflater.inflate(R.layout.event_item_listview, viewGroup, false);
+  EventListViewHolder viewHolder = new EventListViewHolder(view);
+  return viewHolder;
+}
+
+@Override
+public void onBindViewHolder(EventListViewHolder holder, int position) {
+  Event event = mEventList.get(position);
+  holder.bind(event);
+}
+
+class EventListViewHolder extends RecyclerView.ViewHolder {
+
+  private LinearLayout mEventListingLL;
+  private TextView mEventMonthTV;
+  private TextView mEventDayTV;
+  private TextView mEventNameTV;
+  private TextView mEventLocationTV;
+  private TextView mEventTimeTV;
+
+  private String[] monthShortNames = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
+
+  public EventListViewHolder(View itemView) {
+    super(itemView);
+    mEventListingLL = (LinearLayout) itemView.findViewById(R.id.ll_event_listing);
+    mEventMonthTV = (TextView) itemView.findViewById(R.id.tv_event_month);
+    mEventDayTV = (TextView) itemView.findViewById(R.id.tv_event_day);
+    mEventNameTV = (TextView) itemView.findViewById(R.id.tv_event_name);
+    mEventLocationTV = (TextView) itemView.findViewById(R.id.tv_event_location);
+    mEventTimeTV = (TextView) itemView.findViewById(R.id.tv_event_time);
+
+    mEventListingLL.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        mOnEventClickListener.onEventClick(mEventList.get(getAdapterPosition()));
+      }
+      });
+    }
+
+    void bind(Event event) {
+      mEventNameTV.setText(event.getName());
+      mEventLocationTV.setText(event.getLocation());
+      Log.d(TAG, "start dt: " + event.getStartDay() + "-" + event.getStartMonth() + "-" + event.getStartYear() + " " + event.getStartTime());
+      Log.d(TAG, "end dt: " + event.getEndDay() + "-" + event.getEndMonth() + "-" + event.getEndYear() + " " + event.getEndTime());
+      if (event.getStartDay().equals("1") &&      event.getStartMonth().equals("1") && event.getStartYear().equals("1900") && event.getStartTime().equals("12:00 AM")
+      && event.getEndDay().equals("31") && event.getEndMonth().equals("12") && event.getEndYear().equals("2099") && event.getEndTime().equals("11:59 PM")) {
+        mEventMonthTV.setText("ANY");
+        mEventDayTV.setText("TIME");
+        mEventTimeTV.setText("Anytime");
+      }
+      else {
+        int monthInt = Integer.parseInt(event.getStartMonth()) - 1;
+        mEventMonthTV.setText(monthShortNames[monthInt]);
+        mEventDayTV.setText(event.getStartDay());
+        String dtRange = event.getStartTime() + " - " + event.getEndTime();
+        mEventTimeTV.setText(dtRange);
+      }
+    }
+
+  }
+
+}
+
+    \end{lstlisting}
+    \newpage
+
+  \subsection{PassportLoader Class}
+    \begin{lstlisting}[style=java]
+package edu.oregonstate.studentlife.ihcv2.loaders;
+
+import android.content.Context;
+import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+
+/**
+ * Created by Omeed on 2/22/18.
+ */
+
+public class PassportLoader extends AsyncTaskLoader<String> {
+    private final static String TAG = PassportLoader.class.getSimpleName();
+
+    private String userid;
+    private String passportJSON;
+    private final static String IHC_GET_COMPLETED_EVENTS_URL = "http://web.engr.oregonstate.edu/~habibelo/ihc_server/appscripts/get_completed_events.php";
+
+    public PassportLoader(Context context, String userid) {
+        super(context);
+        this.userid = userid;
+    }
+
+    @Override
+    protected void onStartLoading() {
+        forceLoad();
+    }
+
+    @Override
+    public String loadInBackground() {
+        try {
+            URL url = new URL(IHC_GET_COMPLETED_EVENTS_URL);
+            String data = URLEncoder.encode("userid", "UTF-8") + "=" + URLEncoder.encode(userid, "UTF-8");
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+            wr.write( data );
+            wr.flush();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+            StringBuffer sb = new StringBuffer("");
+            String line = null;
+
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+
+            return sb.toString();
+        } catch (Exception e) { e.printStackTrace(); return new String("Exception: " + e.getMessage()); }
+    }
+
+    @Override
+    public void deliverResult(String data) {
+        passportJSON = data;
+        Log.d(TAG, "passport data: " + data);
+        super.deliverResult(data);
+    }
+
+}
+    \end{lstlisting}
+    \newpage
+
+  \subsection{Recording a Completed Event}
+    \begin{lstlisting}[style=php]
+<?php
+
+ini_set('display_errors', 1);
+error_reporting(E_ERROR);
+ini_set('memory_limit', '1G');
+
+$dbhost="oniddb.cws.oregonstate.edu";
+$dbname="habibelo-db";
+$dbuser="habibelo-db";
+$dbpass="RcAbWdWDkpj7XNTL";
+
+$alreadyExists = False;
+
+$mysqli = new mysqli($dbhost,$dbuser,$dbpass,$dbname);
+//Output any connection error
+if ($mysqli->connect_error) {
+  die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
+}
+
+$userid = $eventid = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $userid = $_POST["userid"];
+  $eventid = $_POST["eventid"];
+  $rating = $_POST["rating"];
+  $comment = $_POST["comment"];
+  $dateandtime = date("Y-m-d H:i:s");
+
+  $stmt = $mysqli->prepare("INSERT INTO ihc_completed_events (userid, eventid, dateandtime, rating, comment) VALUES (?, ?, ?, ?, ?)");
+  $stmt->bind_param('iisis', $userid, $eventid, $dateandtime, $rating, $comment);
+  $stmt->execute();
+  if ($stmt->get_error == "") {
+    $stmt2 = $mysqli->prepare("SELECT * FROM ihc_completed_events WHERE userid=?");
+    $stmt2->bind_param('i', $userid);
+    $stmt2->execute();
+    if ($stmt2->error == "") {
+      $result = $stmt2->get_result();
+      $stampcount = $result->num_rows;
+
+      $stmt3 = $mysqli->prepare("UPDATE ihc_users SET stampcount=? WHERE id=?");
+      $stmt3->bind_param('ii', $stampcount, $userid);
+      $stmt3->execute();
+      if ($stmt3->error == "") {
+        echo "COMPLETED EVENT ADDED";
+      }
+      $stmt3->close();
+    }
+    $stmt2->close();
+  }
+  else {
+    echo "ADDERROR";
+  }
+  $stmt->close();
+}
+
+$mysqli->close();
+?>
+    \end{lstlisting}
+    \newpage
+
+  \subsection{Updating a Prize}
+    \begin{lstlisting}[style=php]
+<?php
+
+ini_set('display_errors', 1);
+error_reporting(E_ERROR);
+ini_set('memory_limit', '1G');
+
+$dbhost="oniddb.cws.oregonstate.edu";
+$dbname="habibelo-db";
+$dbuser="habibelo-db";
+$dbpass="RcAbWdWDkpj7XNTL";
+
+$alreadyExists = False;
+
+$mysqli = new mysqli($dbhost,$dbuser,$dbpass,$dbname);
+//Output any connection error
+if ($mysqli->connect_error) {
+  die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
+  echo "Connection failed!<br>";
+}
+
+$prizeid = $name = $level = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $prizeid = $_POST["prizeid"];
+  $name = $_POST["name"];
+  $levelVal = $_POST["level"];
+
+  if ($levelVal == "1") {
+    $level = "gold";
+  }
+  else if ($levelVal == "2") {
+    $level = "silver";
+  }
+  else if ($levelVal == "3") {
+    $level = "bronze";
+  }
+
+  $stmt = $mysqli->prepare("UPDATE ihc_prizes SET name=?, level=? WHERE prizeid=?");
+  $stmt->bind_param('ssi', $name, $level, $prizeid);
+  $stmt->execute();
+
+  if ($stmt->error == "") {
+    $message = "Prize has been updated!";
+  }
+  else {
+    $message = "Error updating prize!"; # error updating prize in database
+  }
+  $url = "../manage_prizes.php";
+
+  $stmt->close();
+  $mysqli->close();
+  echo "<script type='text/javascript'>alert('$message');</script>";
+  echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+}
+$mysqli->close();
+
+?>
+    \end{lstlisting}
   \newpage
 
 \section{Appendix II: Screenshots}
