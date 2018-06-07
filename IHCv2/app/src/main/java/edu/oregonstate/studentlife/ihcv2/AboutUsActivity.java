@@ -43,6 +43,9 @@ import edu.oregonstate.studentlife.ihcv2.loaders.AboutLoader;
 
 /**
  * Created by Omeed on 12/20/17.
+ * About Us page, utilizes AboutLoader to retrieve images and text from table aboutus? in database and displays
+ * them on the page.
+ * Layout: activity_aboutus.xml
  */
 
 public class AboutUsActivity extends AppCompatActivity

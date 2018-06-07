@@ -46,6 +46,10 @@ import edu.oregonstate.studentlife.ihcv2.data.Event;
 import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.PassportLoader;
 
+/**
+ * Uses PassportLoader to populate the Detailed Event Page with more specific information
+ * than the Event Page. This page can be navigated to in the app by clicking on any event on the Event Page
+ */
 public class EventDetailActivity extends AppCompatActivity
     implements LoaderManager.LoaderCallbacks<String> {
 

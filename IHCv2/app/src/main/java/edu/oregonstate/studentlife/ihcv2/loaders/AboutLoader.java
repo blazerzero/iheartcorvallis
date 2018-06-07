@@ -13,6 +13,7 @@ import java.net.URLEncoder;
 
 /**
  * Created by Omeed on 3/6/18.
+ * Uses php script get_about to retrieve data from database to be displayed on the AboutUs page
  */
 
 public class AboutLoader extends AsyncTaskLoader<String> {

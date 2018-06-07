@@ -16,6 +16,8 @@ import edu.oregonstate.studentlife.ihcv2.GetUserInfoActivity;
 
 /**
  * Created by Omeed on 4/17/18.
+ * Calls the add_extra_userinfo php script to input additional user information into the ihc_users table of
+ * the database
  */
 
 public class ExtraUserInfoLoader extends AsyncTaskLoader<String> {

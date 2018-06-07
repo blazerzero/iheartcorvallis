@@ -11,6 +11,7 @@ import java.net.URL;
 
 /**
  * Created by Omeed on 2/22/18.
+ * Calls the getevents php script to load all relevant information for every event in the ihc_events table
  */
 
 public class EventLoader extends AsyncTaskLoader<String> {

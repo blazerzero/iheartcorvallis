@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 
 /**
  * Created by Omeed on 12/20/17.
+ * Not in use, can delete
  */
 
 public class LogoutPageActivity extends AppCompatActivity {

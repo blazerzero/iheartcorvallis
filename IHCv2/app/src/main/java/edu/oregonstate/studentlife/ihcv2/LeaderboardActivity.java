@@ -2,6 +2,11 @@ package edu.oregonstate.studentlife.ihcv2;
 
 /**
  * Created by Omeed on 12/20/17.
+ * This is the Leaderboard page, which acts as a simple leaderboard that displays a list of all of the users
+ * that have at least 1 stamp sorted by their stamp count.
+ *
+ * Uses the LeaderboardLoader to get every user's stampcount, firstname, and lastname from database
+ *
  */
 import android.content.Intent;
 import android.content.res.Configuration;

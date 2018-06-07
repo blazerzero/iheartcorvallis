@@ -24,6 +24,11 @@ import edu.oregonstate.studentlife.ihcv2.data.Event;
 import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.AddCompletedEventLoader;
 
+/**
+ * This page allows the user to input their pin to "complete" an event and earn a stamp. This page
+ * can be navigated to by clicking "check in" on the Detailed Event Page.
+ * Uses the AddCompletedEventLoader to add the chosen event into the users completed event list.
+ */
 public class EventPINActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
 
     private Event event;

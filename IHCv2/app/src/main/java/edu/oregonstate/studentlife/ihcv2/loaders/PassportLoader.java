@@ -13,6 +13,11 @@ import java.net.URLEncoder;
 
 /**
  * Created by Omeed on 2/22/18.
+ * Calls the get_completed_events php script to query the ihc_completed_events and the ihc_events
+ * tables in the database to get the relevant event information from events that the user has completed.
+ *
+ * Two tables must be queried because the ihc_events table has all of the necessary event  information, while the
+ * ihc_completed_events has the id's of a completed event, and the id's of the users that completed each event.
  */
 
 public class PassportLoader extends AsyncTaskLoader<String> {

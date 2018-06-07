@@ -67,6 +67,10 @@ import edu.oregonstate.studentlife.ihcv2.loaders.EventLoader;
 import edu.oregonstate.studentlife.ihcv2.loaders.PassportLoader;
 import edu.oregonstate.studentlife.ihcv2.loaders.UserInfoLoader;
 
+/**
+ * Utilizes EventLoader, UserInfoLoader and PassportLoader to populate the Dashboard Page with information relevant
+ * to the current user.
+ */
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         EventListAdapter.OnEventClickListener,
@@ -263,6 +267,7 @@ public class DashboardActivity extends AppCompatActivity
             return null;
     }
 
+    // After each loader is called, parse data into variables for later use
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
         Bundle args = new Bundle();
@@ -270,9 +275,10 @@ public class DashboardActivity extends AppCompatActivity
         Log.d(TAG, "gotUser = " + gotUser);
         Log.d(TAG, "gotPassport = " + gotPassport);
         Log.d(TAG, "gotEvents = " + gotEvents);
+
+        // First loader is UserInfoLoader, so call that if none of the loaders have been used
         if (!gotUser && !gotPassport && !gotEvents) {
             Log.d(TAG, "user data: " + data);
-            // user stuff
             if (data != null) {
                 try {
                     JSONObject userJSON = new JSONObject(data);
@@ -338,6 +344,7 @@ public class DashboardActivity extends AppCompatActivity
                 builder.show();
             }
         }
+        // Second loader is PassportLoader, so parse through that info next
         else if (gotUser && !gotPassport && !gotEvents) {
             Log.d(TAG, "passport data: " + data);
             // passport stuff
@@ -442,9 +449,10 @@ public class DashboardActivity extends AppCompatActivity
                 e.printStackTrace();
             }
         }
+        // Finally parse through the info gained from the EventsLoader
         else if (gotUser && gotPassport && !gotEvents) {
             Log.d(TAG, "event data: " + data);
-            // passport stuff
+
             try {
                 StringTokenizer stEvents = new StringTokenizer(data, "\\");
                 while (stEvents.hasMoreTokens()) {

@@ -16,6 +16,8 @@ import edu.oregonstate.studentlife.ihcv2.EventPINActivity;
 
 /**
  * Created by Omeed on 2/28/18.
+ * Calls the add_completed_event php script to add relevant info (eventId,userID,etc.) into
+ * the ihc_completed_events table of the database
  */
 
 public class AddCompletedEventLoader extends AsyncTaskLoader<String> {

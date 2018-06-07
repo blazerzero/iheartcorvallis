@@ -11,6 +11,8 @@ import java.net.URL;
 
 /**
  * Created by Omeed on 2/22/18.
+ * Calls the getusers_stampcount php script to query the ihc_users table of the database for every
+ * user's firstname, lastname, and stampcount
  */
 
 public class LeaderboardLoader extends AsyncTaskLoader<String> {

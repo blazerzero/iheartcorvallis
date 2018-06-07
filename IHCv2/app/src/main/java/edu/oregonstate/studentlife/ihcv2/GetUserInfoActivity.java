@@ -54,6 +54,10 @@ import edu.oregonstate.studentlife.ihcv2.data.Session;
 import edu.oregonstate.studentlife.ihcv2.data.User;
 import edu.oregonstate.studentlife.ihcv2.loaders.ExtraUserInfoLoader;
 
+/**
+ * Queries the user for some extra information, such as birth date, and uses ExtraUserInfoLoader to
+ * store that information in the database.
+ */
 public class GetUserInfoActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
 
     private final static String TAG = GetUserInfoActivity.class.getSimpleName();

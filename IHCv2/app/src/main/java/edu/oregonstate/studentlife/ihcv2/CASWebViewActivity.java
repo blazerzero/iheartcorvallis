@@ -6,6 +6,7 @@ import android.webkit.WebView;
 
 /**
  * Created by dylan on 4/10/2018.
+ * Not actually used, can be deleted
  */
 
 public class CASWebViewActivity extends AppCompatActivity {

@@ -20,6 +20,7 @@ import edu.oregonstate.studentlife.ihcv2.data.Session;
 
 /**
  * Created by Omeed on 12/20/17.
+ * Not in use, can delete page
  */
 
 public class LoginPageActivity extends AppCompatActivity {

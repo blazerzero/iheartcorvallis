@@ -18,7 +18,11 @@ import android.widget.TextView;
 
 import edu.oregonstate.studentlife.ihcv2.data.Session;
 
-
+/**
+ * This page is the first page that the user sees upon loading the app, it simply displays a login
+ * button and a signup button to navigate the user to either page
+ *
+ */
 public class MainActivity extends AppCompatActivity {
 
     Session session;

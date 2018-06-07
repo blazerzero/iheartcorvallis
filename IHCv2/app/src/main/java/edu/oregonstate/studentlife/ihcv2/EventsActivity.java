@@ -66,6 +66,8 @@ import edu.oregonstate.studentlife.ihcv2.loaders.EventLoader;
 
 /**
  * Created by Omeed on 12/20/17.
+ * Uses the EventLoader to populate the Event page with a list of events and some basic information
+ * about each event.
  */
 
 public class EventsActivity extends AppCompatActivity
