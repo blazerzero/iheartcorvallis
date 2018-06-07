@@ -6,12 +6,12 @@ error_reporting(E_ERROR);
 ini_set('memory_limit', '1G');
 ?>
 
-<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>
+<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>   <!-- the user is logged in -->
 
   <?php
   require './admin_server/db.php';
   $id = $_GET['id'];
-  $stmt = $mysqli->prepare("SELECT * FROM ihc_about WHERE id=?");
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_about WHERE id=?");   // retrieve the information/contents of the about page
   $stmt->bind_param('i', $id);
   $stmt->execute();
   $result = $stmt->get_result();
@@ -28,24 +28,18 @@ ini_set('memory_limit', '1G');
     <script type="text/javascript" src="./css/Semantic-UI-CSS-master/semantic.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
     <script>
-    $(document).ready(function() {
-      $("#pin_generator").click(function() {
-        $("#pin_holder").val((Math.floor((Math.random() * 9000) + 1000)).toString());
-      });
-    });
-
     function validateForm() {
       var infoField = document.forms["aboutForm"]["info"].value;
       var changeImageField = document.forms["aboutForm"]["changeimage"].value;
       var imageField = document.forms["aboutForm"]["image"].value;
       if (infoField == null || infoField == "" ||
-          changeImageField == null || changeImageField == "")  {
+          changeImageField == null || changeImageField == "")  {    // if any required field in the form is empty
         alert("Please fill all required fields before submitting!");
         return false;
       }
       else {
         if (changeImageField == 1) {
-          if (imageField == null || imageField == "") {
+          if (imageField == null || imageField == "") {   // if the user has not uploaded a new image
             alert("Please choose a new cover image!");
             return false;
           }
@@ -56,7 +50,7 @@ ini_set('memory_limit', '1G');
     </script>
     <script>
     $(document).ready(function() {
-      $("#siteheader").load("siteheader.html");
+      $("#siteheader").load("siteheader.html");   // load the site header and the navigation bar
     });
     </script>
   </head>
@@ -99,8 +93,8 @@ ini_set('memory_limit', '1G');
   $stmt->close();
   $mysqli->close();
 }
-else {
+else {    // the user is not logged in
   $url = "./admin_auth.php";
-  echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+  echo "<script type='text/javascript'>document.location.href = '$url';</script>";    // redirect the user to the login page
 }
 ?>

@@ -6,12 +6,12 @@ error_reporting(E_ERROR);
 ini_set('memory_limit', '1G');
 ?>
 
-<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>
+<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>   <!-- the user is logged in -->
 
 <?php
 require './admin_server/db.php';
 $eventid = $_GET['eventid'];
-$stmt = $mysqli->prepare("SELECT * FROM ihc_events WHERE eventid=?");
+$stmt = $mysqli->prepare("SELECT * FROM ihc_events WHERE eventid=?");   // retrieve the information on the event being edited
 $stmt->bind_param('i', $eventid);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -47,22 +47,22 @@ if ($result->num_rows > 0) {
             fullAddressField == null || fullAddressField == "" ||
             setDateAndTimeField == null || setDateAndTimeField == "" ||
             descriptionField == null || descriptionField == "" ||
-            changeImageField == null || changeImageField == "") {
+            changeImageField == null || changeImageField == "") {   // if any required field in the form is empty
               alert("Please fill all required fields before submitting!");
               return false;
         }
         else {
-          if (setDateAndTimeField == 1) {
+          if (setDateAndTimeField == 1) {   // if the event has a set date and time range
             if (startDateField == null || startDateField == "" ||
             startTimeField == null || startTimeField == "" ||
             endDateField == null || endDateField == "" ||
-            endTimeField == null || endTimeField == "") {
+            endTimeField == null || endTimeField == "") {   // if any of the start and end date and time fields are empty
               alert("Please enter start and end dates and times!");
               return false;
             }
           }
-          if (changeImageField == 1) {
-            if (imageField == null || imageField == "") {
+          if (changeImageField == 1) {    // if the user wants to change the image
+            if (imageField == null || imageField == "") {   // if the user has not provided a new image
               alert("Please choose a new cover image!");
               return false;
             }
@@ -70,20 +70,10 @@ if ($result->num_rows > 0) {
           return true;
         }
       }
-
-      /*function switchCBValue() {
-        if (document.forms["eventForm"]["name"].value == "n") {
-          document.forms["eventForm"]["name"].value = "y";
-        }
-        else if (document.forms["eventForm"]["name"].value == "y") {
-          document.forms["eventForm"]["name"].value = "n";
-        }
-        alert("Checkbox value: " + document.forms["eventForm"]["name"].value);
-      }*/
       </script>
       <script>
       $(document).ready(function() {
-         $("#siteheader").load("siteheader.html");
+         $("#siteheader").load("siteheader.html");    // load the site header and the navigation bar
       });
       </script>
    </head>
@@ -173,8 +163,8 @@ if ($result->num_rows > 0) {
 </html>
 
 <?php }
-else {
+else {    // the user is not logged in
    $url = "./admin_auth.php";
-   echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+   echo "<script type='text/javascript'>document.location.href = '$url';</script>";   // redirect the user to the login page
 }
 ?>

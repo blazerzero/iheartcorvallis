@@ -6,12 +6,12 @@ error_reporting(E_ERROR);
 ini_set('memory_limit', '1G');
 ?>
 
-<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>
+<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>   <!-- the user is logged in -->
 
   <?php
   require './admin_server/db.php';
   $id = $_GET['id'];
-  $stmt = $mysqli->prepare("SELECT * FROM ihc_resource_info WHERE id=?");
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_resource_info WHERE id=?");   /* Retrieve all information for the resource */
   $stmt->bind_param('i', $id);
   $stmt->execute();
   $result = $stmt->get_result();
@@ -35,13 +35,13 @@ ini_set('memory_limit', '1G');
       var imageField = document.forms["resourceForm"]["image"].value;
       if (titleField == null || titleField == "" ||
         descriptionField == null || descriptionField == "" ||
-        changeImageField == null || changeImageField == "") {
+        changeImageField == null || changeImageField == "") {   // if any required field in the form is empty
         alert("Please fill all required fields before submitting!");
         return false;
       }
       else {
-        if (changeImageField == 1) {
-          if (imageField == null || imageField == "") {
+        if (changeImageField == 1) {    // if the user wants to change the image
+          if (imageField == null || imageField == "") {   // if the user has not provided a new image
             alert("Please choose a new cover image!");
             return false;
           }
@@ -52,7 +52,7 @@ ini_set('memory_limit', '1G');
     </script>
     <script>
     $(document).ready(function() {
-      $("#siteheader").load("siteheader.html");
+      $("#siteheader").load("siteheader.html");   // load the site header and navigation bar
     });
     </script>
   </head>
@@ -102,8 +102,8 @@ ini_set('memory_limit', '1G');
   $stmt->close();
   $mysqli->close();
 }
-else {
+else {    // the user is not logged in
   $url = "./admin_auth.php";
-  echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+  echo "<script type='text/javascript'>document.location.href = '$url';</script>";    // redirect the user to the login page
 }
 ?>

@@ -6,10 +6,10 @@ error_reporting(E_ERROR);
 ini_set('memory_limit', '1G');
 ?>
 
-<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>
+<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>   <!-- the user is logged in -->
 
   <?php
-  function generatePIN() {
+  function generatePIN() {    // generate random 4-digit event check-in PIN
     $i = 0;
     $pin = "";
     while ($i < 4) {
@@ -48,16 +48,16 @@ ini_set('memory_limit', '1G');
           setDateAndTimeField == null || setDateAndTimeField == "" ||
           descriptionField == null || descriptionField == "" ||
           imageField == null || imageField == "" ||
-          pinField == null || pinField == "") {
+          pinField == null || pinField == "") {   // if any required field in the form is empty
             alert("Please fill all required fields before submitting!");
             return false;
       }
       else {
-        if (setDateAndTimeField == 1) {
+        if (setDateAndTimeField == 1) {   // if the event has a set date and time range
           if (startDateField == null || startDateField == "" ||
           startTimeField == null || startTimeField == "" ||
           endDateField == null || endDateField == "" ||
-          endTimeField == null || endTimeField == "") {
+          endTimeField == null || endTimeField == "") {   // if any of the start and end date and time fields are empty
             alert("Please enter start and end dates and times!");
             return false;
           }
@@ -68,7 +68,7 @@ ini_set('memory_limit', '1G');
     </script>
     <script>
     $(document).ready(function() {
-      $("#siteheader").load("siteheader.html");
+      $("#siteheader").load("siteheader.html");   // load site header and navigation bar
     });
     </script>
   </head>
@@ -143,7 +143,6 @@ ini_set('memory_limit', '1G');
           <span class="requirednote">*</span>
           Event PIN:
           <input class="inputbox" type="text" name="pin" id="pin_holder" value="<?php echo generatePIN(); ?>" readonly><br><br>
-          <!--<button class="ui button" id="pin_generator" type="button">Generate PIN</button><br><br>-->
         </div>
         <input class="ui green button" type="submit" value="Create Event">
       </form>
@@ -154,8 +153,8 @@ ini_set('memory_limit', '1G');
   <?php
   $mysqli->close();
 }
-else {
+else {    // the user is not logged in
   $url = "./admin_auth.php";
-  echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+  echo "<script type='text/javascript'>document.location.href = '$url';</script>";    // redirect the user to the login page
 }
 ?>

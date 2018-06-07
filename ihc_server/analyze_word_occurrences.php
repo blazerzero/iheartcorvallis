@@ -6,7 +6,7 @@ error_reporting(E_ERROR);
 ini_set('memory_limit', '1G');
 ?>
 
-<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>
+<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>   <!-- the user is logged in -->
 
   <?php
   require './admin_server/db.php';
@@ -16,6 +16,7 @@ ini_set('memory_limit', '1G');
   $keyword = "%" . $word . "%";
   $topFiveRatedAll = $bottomFiveRatedAll = $topFiveRatedStudent = $bottomFiveRatedStudent = $topFiveRatedNonStudent = $bottomFiveRatedNonStudent = array();
 
+  /* Get the number of occurrences of the word */
   $stmt = $mysqli->prepare("SELECT comment FROM ihc_feedback WHERE comment LIKE ?");
   $stmt->bind_param('s', $keyword);
   $stmt->execute();
@@ -31,6 +32,7 @@ ini_set('memory_limit', '1G');
     }
   }
 
+  /* Get the 5 highest-rated comments with this word */
   $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND F.comment LIKE ? AND F.rating > 0 ORDER BY F.rating DESC, F.dateandtime DESC LIMIT 5");
   $stmt->bind_param('s', $keyword);
   $stmt->execute();
@@ -41,6 +43,7 @@ ini_set('memory_limit', '1G');
     }
   }
 
+  /* Get the 5 lowest-rated comments with this word */
   $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND F.comment LIKE ? AND F.rating > 0 ORDER BY F.rating ASC, F.dateandtime DESC LIMIT 5");
   $stmt->bind_param('s', $keyword);
   $stmt->execute();
@@ -51,6 +54,7 @@ ini_set('memory_limit', '1G');
     }
   }
 
+  /* Get the 5 highest-rated OSU-affiliated comments with this word */
   $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND U.type < 3 AND F.comment LIKE ? AND F.rating > 0 ORDER BY F.rating DESC, F.dateandtime DESC LIMIT 5");
   $stmt->bind_param('s', $keyword);
   $stmt->execute();
@@ -61,6 +65,7 @@ ini_set('memory_limit', '1G');
     }
   }
 
+  /* Get the 5 lowest-rated OSU-affiliated comments with this word */
   $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND U.type < 3 AND F.comment LIKE ? AND F.rating > 0 ORDER BY F.rating ASC, F.dateandtime DESC LIMIT 5");
   $stmt->bind_param('s', $keyword);
   $stmt->execute();
@@ -71,6 +76,7 @@ ini_set('memory_limit', '1G');
     }
   }
 
+  /* Get the 5 highest-rated non-OSU-affiliated comments with this word */
   $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND U.type >= 3 AND F.comment LIKE ? AND F.rating > 0 ORDER BY F.rating DESC, F.dateandtime DESC LIMIT 5");
   $stmt->bind_param('s', $keyword);
   $stmt->execute();
@@ -81,6 +87,7 @@ ini_set('memory_limit', '1G');
     }
   }
 
+  /* Get the 5 lowest-rated non-OSU-affiliated comments with this word */
   $stmt = $mysqli->prepare("SELECT * FROM ihc_users U NATURAL JOIN ihc_feedback F WHERE U.id=F.userid AND U.type >= 3 AND F.comment LIKE ? AND F.rating > 0 ORDER BY F.rating ASC, F.dateandtime DESC LIMIT 5");
   $stmt->bind_param('s', $keyword);
   $stmt->execute();
@@ -105,7 +112,7 @@ ini_set('memory_limit', '1G');
     <script>
     function validateKeywordForm() {
       var keywordField = document.forms["keywordForm"]["keyword"].value;
-      if (keywordField == null || keywordField == "") {
+      if (keywordField == null || keywordField == "") {   // if any required field is empty
         alert("Please enter a keyword or phrase!");
         return false;
       }
@@ -116,7 +123,7 @@ ini_set('memory_limit', '1G');
     </script>
     <script>
     $(document).ready(function() {
-      $("#siteheader").load("siteheader.html");
+      $("#siteheader").load("siteheader.html");   // load the site header and the navigation bar
     });
     </script>
   </head>
@@ -137,6 +144,7 @@ ini_set('memory_limit', '1G');
         <h4>Number of Occurrences: <?php echo $wordCount; ?></h4>
       </div><br><br>
 
+      <!-- If this word occurs in the comments at all -->
       <?php if ($wordCount > 0) { ?>
         <div>
           <h2>Top Rated Comments: All Users</h2>
@@ -345,8 +353,8 @@ ini_set('memory_limit', '1G');
   $stmt->close();
   $mysqli->close();
 }
-else {
+else {    // the user is not logged in
   $url = "./admin_auth.php";
-  echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+  echo "<script type='text/javascript'>document.location.href = '$url';</script>";    // redirect the user to the login page
 }
 ?>

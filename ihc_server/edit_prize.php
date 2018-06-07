@@ -6,12 +6,12 @@ error_reporting(E_ERROR);
 ini_set('memory_limit', '1G');
 ?>
 
-<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>
+<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>   <!-- the user is logged in -->
 
   <?php
   require './admin_server/db.php';
   $prizeid = $_GET['prizeid'];
-  $stmt = $mysqli->prepare("SELECT * FROM ihc_prizes WHERE prizeid=?");
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_prizes WHERE prizeid=?");   // Retrieve all information for that prize
   $stmt->bind_param('i', $prizeid);
   $stmt->execute();
   $result = $stmt->get_result();
@@ -32,7 +32,7 @@ ini_set('memory_limit', '1G');
       var nameField = document.forms["prizeForm"]["name"].value;
       var levelField = document.forms["prizeForm"]["level"].value;
       if (nameField == null || nameField == "" ||
-      levelField == null || levelField == "") {
+      levelField == null || levelField == "") {   // if a required field in the form is empty
         alert("Please fill both fields before submitting!");
         return false;
       }
@@ -83,8 +83,8 @@ ini_set('memory_limit', '1G');
   $stmt->close();
   $mysqli->close();
 }
-else {
+else {    // the user is not logged in
   $url = "./admin_auth.php";
-  echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+  echo "<script type='text/javascript'>document.location.href = '$url';</script>";    // redirect the user to the login page
 }
 ?>

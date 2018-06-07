@@ -6,7 +6,7 @@ error_reporting(E_ERROR);
 ini_set('memory_limit', '1G');
 ?>
 
-<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>
+<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>   <!-- the user is logged in -->
 
   <html>
   <head>
@@ -22,7 +22,7 @@ ini_set('memory_limit', '1G');
       var imageField = document.forms["resourceForm"]["image"].value;
       if (titleField == null || titleField == "" ||
         descriptionField == null || descriptionField == "" ||
-        imageField == null || imageField == "") {
+        imageField == null || imageField == "") {   // if any required field in the form is empty
         alert("Please fill all required fields before submitting!");
         return false;
       }
@@ -33,7 +33,7 @@ ini_set('memory_limit', '1G');
     </script>
     <script>
     $(document).ready(function() {
-      $("#siteheader").load("siteheader.html");
+      $("#siteheader").load("siteheader.html");   // load the site header and the navigation bar
     });
     </script>
   </head>
@@ -70,8 +70,8 @@ ini_set('memory_limit', '1G');
   <?php
   $mysqli->close();
 }
-else {
+else {    // the user is not logged in
   $url = "./admin_auth.php";
-  echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+  echo "<script type='text/javascript'>document.location.href = '$url';</script>";    // redirect the user to the login page
 }
 ?>

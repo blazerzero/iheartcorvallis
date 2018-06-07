@@ -6,11 +6,11 @@ error_reporting(E_ERROR);
 ini_set('memory_limit', '1G');
 ?>
 
-<?php if (!isset($_SESSION["id"]) && $_SESSION["id"] != null) {
+<?php if (!isset($_SESSION["id"]) && $_SESSION["id"] != null) {   // the user is logged in
   $url = "./index.php";
-  echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+  echo "<script type='text/javascript'>document.location.href = '$url';</script>";    // redirect the user to the home page
 }
-else { ?>
+else { ?>   <!-- the user is not logged in -->
 
   <html>
   <head>
