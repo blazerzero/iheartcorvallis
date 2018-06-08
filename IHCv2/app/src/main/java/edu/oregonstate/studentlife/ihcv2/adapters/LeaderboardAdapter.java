@@ -14,6 +14,7 @@ import edu.oregonstate.studentlife.ihcv2.data.User;
 
 /**
  * Created by dylan on 1/21/2018.
+ * Manages the creation and setup of each element in the Leaderboard Page's RecyclerView
  */
 
 public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.LeaderboardViewHolder> {
@@ -23,40 +24,40 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
         mLeaderboardUserAccounts = new ArrayList<User.LeaderboardUser>();
     }
 
+    /* ADD A USER TO THE LEADERBOARD */
     public void addUserToLeaderboard(User.LeaderboardUser leaderboardUser) {
         mLeaderboardUserAccounts.add(leaderboardUser);
         notifyDataSetChanged();
     }
 
+    /* GET THE NUMBER OF USERS DISPLAYED ON THE LEADERBOARD */
     @Override
     public int getItemCount() {
         return mLeaderboardUserAccounts.size();
     }
 
+    /* CLASS MANAGING EACH ELEMENT OF THE LEADERBOARD LISTING */
     class LeaderboardViewHolder extends RecyclerView.ViewHolder {
 
-        //private ImageView mLeaderboardStampImageView;
         private TextView mUserNameTextView;
         private TextView mStampCountTextView;
         private Constants constants;
 
         public LeaderboardViewHolder(View itemView) {
             super(itemView);
-            //mPassportStampImageView = (ImageView) itemView.findViewById(R.id.iv_passport_stamp);
             mUserNameTextView = (TextView) itemView.findViewById(R.id.tv_user_name);
             mStampCountTextView = (TextView) itemView.findViewById(R.id.tv_user_stamp_count);
         }
 
+        /* BIND THE USER'S INFORMATION TO A LEADERBOARD LISTING */
         void bind(User.LeaderboardUser leaderboardUser) {
-            // set to grab username?
             mUserNameTextView.setText(leaderboardUser.getFirstName() + " " + leaderboardUser.getLastName());
-            // set way to grab number of stamps
             mStampCountTextView.setText(leaderboardUser.getStampCount());
-
         }
 
     }
 
+    /* CREATE THE LEADERBOARD'S VIEWHOLDER */
     @Override
     public LeaderboardViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
@@ -65,6 +66,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
         return viewHolder;
     }
 
+    /* GET THE USER'S INFORMATION AND BIND IT TO THEIR LEADERBOARD LISTING */
     @Override
     public void onBindViewHolder(LeaderboardViewHolder holder, int position) {
         User.LeaderboardUser leaderboardUser = mLeaderboardUserAccounts.get(position);

@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.Marker;
 
 /**
  * Created by Omeed on 1/25/18.
+ * Holds information on the markers shown on the resource map
  */
 
 public class ResourceMarker {

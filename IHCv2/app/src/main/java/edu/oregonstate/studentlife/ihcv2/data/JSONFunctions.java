@@ -2,6 +2,7 @@ package edu.oregonstate.studentlife.ihcv2.data;
 
 /**
  * Created by Omeed on 1/5/18.
+ * NOTE: Class not used; can be deleted
  */
 
 import android.database.sqlite.*;

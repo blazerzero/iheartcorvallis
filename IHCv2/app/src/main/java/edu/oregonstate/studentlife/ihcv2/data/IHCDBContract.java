@@ -4,6 +4,7 @@ import android.provider.BaseColumns;
 
 /**
  * Created by Omeed on 4/16/18.
+ * Declares the structure of the local table holding the profile pictures
  */
 
 public class IHCDBContract {

@@ -2,6 +2,7 @@ package edu.oregonstate.studentlife.ihcv2.data;
 
 /**
  * Created by beerad on 1/17/18.
+ * NOTE: Class not used; can be deleted
  */
 
 public class Product {

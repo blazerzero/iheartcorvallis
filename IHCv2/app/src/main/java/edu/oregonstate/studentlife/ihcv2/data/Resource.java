@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 /**
  * Created by Omeed on 3/1/18.
+ * Holds information on resources featured on the Resource Page
  */
 
 public class Resource extends AppCompatActivity implements Serializable {

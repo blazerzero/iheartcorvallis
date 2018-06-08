@@ -18,6 +18,7 @@ import edu.oregonstate.studentlife.ihcv2.data.Resource;
 
 /**
  * Created by Omeed on 3/1/18.
+ * Manages the creation and setup of each element in the Resource Page's RecyclerView
  */
 
 public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.ResourceViewHolder> {
@@ -32,20 +33,24 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
         mResourceList = new ArrayList<Resource>();
     }
 
+    /* ADD A RESOURCE TO THE LIST OF DISPLAYED RESOURCES */
     public void addResource(Resource resource) {
         mResourceList.add(resource);
         notifyDataSetChanged();
     }
 
+    /* GET THE NUMBER OF RESOURCES DISPLAYED */
     @Override
     public int getItemCount() {
         return mResourceList.size();
     }
 
+    /* DECLARATION OF THE RESOURCE CLICK LISTENER INTERFACE */
     public interface OnResourceClickListener {
         void onResourceClick(Resource resource);
     }
 
+    /* CLASS MANAGING EACH ELEMENT OF THE RESOURCE LISTING */
     class ResourceViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView mResourceImageIV;
@@ -67,6 +72,7 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
             });
         }
 
+        /* ADD RESOURCE INFORMATION TO THE RESOURCE LISTING */
         void bind(Resource resource) {
             mResourceTitleTV.setText(resource.getResourceTitle());
             mResourceDescriptionTV.setText(resource.getResourceDescription());
@@ -79,6 +85,7 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
         }
     }
 
+    /* CREATE THE RESOURCE LISTING'S VIEWHOLDER */
     @Override
     public ResourceViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
@@ -87,6 +94,7 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
         return viewHolder;
     }
 
+    /* GET THE RESOURCE'S INFORMATION AND BIND IT TO THE RESOURCE LISTING */
     @Override
     public void onBindViewHolder(ResourceViewHolder holder, int position) {
         Resource resource = mResourceList.get(position);

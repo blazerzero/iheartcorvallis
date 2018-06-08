@@ -10,6 +10,7 @@ import edu.oregonstate.studentlife.ihcv2.data.Product;
 
 /**
  * Created by beerad on 1/17/18.
+ * NOTE: Class not used; can be deleted
  */
 
 public class ListViewAdapter extends ArrayAdapter<Product> {

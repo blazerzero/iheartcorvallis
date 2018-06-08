@@ -10,6 +10,7 @@ import javax.crypto.spec.PBEKeySpec;
 
 /**
  * Created by dylan on 2/13/2018.
+ * Contains functions relating to the PBKDF2 hashing algorithm
  */
 
 public class PBKDF2 {
@@ -23,12 +24,14 @@ public class PBKDF2 {
         isMatch = false;
     }
 
+    /* SET THE PBKDF2 HASH */
     public void createPBKDF2hash(String userPassword) throws NoSuchAlgorithmException, InvalidKeySpecException
     {
         String  originalPassword = userPassword;
         hPassword = generateStrongPasswordHash(originalPassword);
     }
 
+    /* CREATE THE PBKDF2 HASH */
     private static String generateStrongPasswordHash(String password) throws NoSuchAlgorithmException, InvalidKeySpecException
     {
         int iterations = 1000;
@@ -41,6 +44,7 @@ public class PBKDF2 {
         return iterations + ":" + toHex(salt) + ":" + toHex(hash);
     }
 
+    /* MAKE THE SALT */
     private static byte[] getSalt() throws NoSuchAlgorithmException
     {
         SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
@@ -62,6 +66,7 @@ public class PBKDF2 {
         }
     }
 
+    /* VALIDATE THE USER'S PASSWORD INPUT BY COMPARING HASHES */
     public boolean validatePassword(String originalPassword, String storedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException
     {
         String[] parts = storedPassword.split(":");
@@ -83,6 +88,7 @@ public class PBKDF2 {
         }
         return diff == 0;
     }
+
     private static byte[] fromHex(String hex) throws NoSuchAlgorithmException
     {
         byte[] bytes = new byte[hex.length() / 2];

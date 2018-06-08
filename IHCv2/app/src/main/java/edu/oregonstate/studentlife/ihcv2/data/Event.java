@@ -7,6 +7,7 @@ import java.util.Date;
 
 /**
  * Created by Omeed on 1/18/18.
+ * Holds the relevant data on each event
  */
 
 public class Event extends AppCompatActivity implements Serializable {

@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 /**
  * Created by Omeed on 4/16/18.
+ * Handles the creation and updating of the local table of profile pictures
  */
 
 public class IHCDBHelper extends SQLiteOpenHelper {

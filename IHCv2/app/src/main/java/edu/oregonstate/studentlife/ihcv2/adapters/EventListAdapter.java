@@ -16,6 +16,7 @@ import edu.oregonstate.studentlife.ihcv2.data.Event;
 
 /**
  * Created by Omeed on 1/18/18.
+ * Manages the creation and setup of each element in the event list RecyclerView
  */
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventListViewHolder> {
@@ -29,20 +30,24 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
        mOnEventClickListener = onEventClickListener;
    }
 
+   /* ADD AN EVENT TO THE LIST OF DISPLAYED EVENTS */
    public void addEvent(Event event) {
        mEventList.add(event);
        notifyDataSetChanged();
    }
 
+   /* GET THE NUMBER OF EVENTS DISPLAYED */
    @Override
    public int getItemCount() {
        return mEventList.size();
    }
 
+   /* DECLARATION OF THE EVENT LISTING CLICK LISTENER */
    public interface OnEventClickListener {
        void onEventClick(Event event);
    }
 
+   /* CREATE THE EVENT LISTING'S VIEWHOLDER */
    @Override
    public EventListViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
@@ -51,12 +56,14 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
        return viewHolder;
    }
 
+   /* GET THE EVENT'S INFORMATION AND BIND IT TO THE EVENT'S LISTING */
    @Override
    public void onBindViewHolder(EventListViewHolder holder, int position) {
        Event event = mEventList.get(position);
        holder.bind(event);
    }
 
+   /* CLASS MANAGING EACH ELEMENT OF THE EVENT LISTING */
    class EventListViewHolder extends RecyclerView.ViewHolder {
 
        private LinearLayout mEventListingLL;
@@ -85,6 +92,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
            });
        }
 
+       /* ADD EVENT INFORMATION TO THE EVENT'S CARD */
        void bind(Event event) {
            mEventNameTV.setText(event.getName());
            mEventLocationTV.setText(event.getLocation());

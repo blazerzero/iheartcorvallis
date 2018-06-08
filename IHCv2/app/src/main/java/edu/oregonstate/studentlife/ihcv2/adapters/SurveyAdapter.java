@@ -19,6 +19,7 @@ import edu.oregonstate.studentlife.ihcv2.data.Survey;
 
 /**
  * Created by Omeed on 4/3/18.
+ * Manages the creation and setup of each element in the survey's RecyclerView
  */
 
 public class SurveyAdapter extends RecyclerView.Adapter<SurveyAdapter.SurveyViewHolder> {
@@ -35,20 +36,24 @@ public class SurveyAdapter extends RecyclerView.Adapter<SurveyAdapter.SurveyView
         mSurveyContents = new ArrayList<Survey>();
     }
 
+    /* ADD A SURVEY QUESTION TO THE LIST OF DISPLAYED SURVEY QUESTIONS */
     public void addSurveyListing(Survey listing) {
         mSurveyContents.add(listing);
         notifyDataSetChanged();
     }
 
+    /* GET THE NUMBER OF SURVEY QUESTIONS DISPLAYED */
     @Override
     public int getItemCount() {
         return mSurveyContents.size();
     }
 
+    /* DECLARATION OF THE SURVEY QUESTION CLICK LISTENER INTERFACE */
     public interface OnSurveyListingClickListener {
         void onSurveyListingClick(Survey listing);
     }
 
+    /* CLASS MANAGING EACH ELEMENT OF THE SURVEY QUESTION LISTING */
     class SurveyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView mSurveyQuestionTV;
@@ -60,6 +65,7 @@ public class SurveyAdapter extends RecyclerView.Adapter<SurveyAdapter.SurveyView
             mSurveyChoicesSP = (Spinner) itemView.findViewById(R.id.sp_survey_choices);
         }
 
+        /* ADD SURVEY QUESTION INFORMATION TO THE SURVEY QUESTION LISTING */
         void bind(final Survey listing) {
             Log.d(TAG, "question: " + listing.getQuestion());
             mSurveyQuestionTV.setText(listing.getQuestion());
@@ -83,6 +89,8 @@ public class SurveyAdapter extends RecyclerView.Adapter<SurveyAdapter.SurveyView
             });
         }
     }
+
+    /* CREATE THE SURVEY QUESTION LISTING'S VIEWHOLDER */
     @Override
     public SurveyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
@@ -91,6 +99,7 @@ public class SurveyAdapter extends RecyclerView.Adapter<SurveyAdapter.SurveyView
         return viewHolder;
     }
 
+    /* GET THE SURVEY QUESTION'S INFORMATION AND BIND IT TO THE SURVEY QUESTION'S LISTING */
     @Override
     public void onBindViewHolder(SurveyViewHolder holder, int position) {
         Survey listing = mSurveyContents.get(position);

@@ -15,6 +15,7 @@ import edu.oregonstate.studentlife.ihcv2.R;
 
 /**
  * Created by Omeed on 1/21/18.
+ * Manages the creation and setup of each element in the Passport Page's RecyclerView
  */
 
 public class PassportAdapter extends RecyclerView.Adapter<PassportAdapter.PassportViewHolder> {
@@ -27,31 +28,33 @@ public class PassportAdapter extends RecyclerView.Adapter<PassportAdapter.Passpo
         mCompletedEvents = new ArrayList<Event>();
     }
 
+    /* ADD A COMPLETED EVENT TO THE PASSPORT */
     public void addEventToPassport(Event event) {
         mCompletedEvents.add(event);
         notifyDataSetChanged();
     }
 
+    /* GET THE NUMBER OF COMPLETED EVENTS DISPLAYED IN THE PASSPORT */
     @Override
     public int getItemCount() {
         return mCompletedEvents.size();
     }
 
+    /* CLASS MANAGING EACH ELEMENT OF A COMPLETED EVENT LISTING */
     class PassportViewHolder extends RecyclerView.ViewHolder {
 
-        //private ImageView mPassportStampImageView;
         private TextView mEventNameTV;
         private TextView mEventInfoTV;
         private LinearLayout mPassportListingLL;
 
         public PassportViewHolder(View itemView) {
             super(itemView);
-            //mPassportStampImageView = (ImageView) itemView.findViewById(R.id.iv_passport_stamp);
             mEventNameTV = (TextView) itemView.findViewById(R.id.tv_event_name);
             mEventInfoTV = (TextView) itemView.findViewById(R.id.tv_passport_event_info);
             mPassportListingLL = (LinearLayout) itemView.findViewById(R.id.ll_passport_listing);
         }
 
+        /* ADD COMPLETED EVENT INFORMATION TO THE PASSPORT */
         void bind(Event event) {
             mEventNameTV.setText(event.getName());
             Log.d(TAG, "start dt: " + event.getStartDay() + "-" + event.getStartMonth() + "-" + event.getStartYear() + " " + event.getStartTime());
@@ -71,6 +74,7 @@ public class PassportAdapter extends RecyclerView.Adapter<PassportAdapter.Passpo
 
     }
 
+    /* CREATE THE PASSPORT LISTING'S VIEWHOLDER */
     @Override
     public PassportViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
@@ -79,6 +83,7 @@ public class PassportAdapter extends RecyclerView.Adapter<PassportAdapter.Passpo
         return viewHolder;
     }
 
+    /* GET THE COMPLETED EVENT'S INFORMATION AND BIND IT TO THE PASSPORT */
     @Override
     public void onBindViewHolder(PassportViewHolder holder, int position) {
         Event event = mCompletedEvents.get(position);

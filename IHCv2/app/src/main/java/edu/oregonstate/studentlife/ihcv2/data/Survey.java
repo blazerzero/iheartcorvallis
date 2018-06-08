@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Omeed on 4/3/18.
+ * Holds information on each survey question presented to the user in the survey
  */
 
 public class Survey extends AppCompatActivity implements Serializable {

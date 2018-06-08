@@ -2,6 +2,7 @@ package edu.oregonstate.studentlife.ihcv2.data;
 
 /**
  * Created by Omeed on 2/12/18.
+ * Holds information on prizes offered in the application
  */
 
 public class Prize {

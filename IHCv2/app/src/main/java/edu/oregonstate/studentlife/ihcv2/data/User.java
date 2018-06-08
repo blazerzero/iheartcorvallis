@@ -8,6 +8,7 @@ import java.util.Date;
 
 /**
  * Created by dylan on 1/21/2018.
+ * Holds the user's account information
  */
 
 public class User extends AppCompatActivity implements Serializable {

@@ -12,6 +12,7 @@ import edu.oregonstate.studentlife.ihcv2.MainActivity;
 
 /**
  * Created by dylan on 2/1/2018.
+ * Manages the app session
  */
 
 

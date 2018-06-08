@@ -6,13 +6,13 @@ import edu.oregonstate.studentlife.ihcv2.R;
 
 /**
  * Created by Omeed on 1/22/18.
+ * Constants and functions that get utilized throughout the app
  */
 
 public class Constants extends AppCompatActivity {
     private int goldThreshold = 15;
     private int silverThreshold = 10;
     private int bronzeThreshold = 7;
-    //public final int GEOFENCE_RADIUS_IN_METERS = 50;
     private int goldColor = getResources().getColor(R.color.eventGold);
     private int silverColor = getResources().getColor(R.color.eventSilver);
     private int bronzeColor = getResources().getColor(R.color.eventBronze);
@@ -26,9 +26,6 @@ public class Constants extends AppCompatActivity {
     public static final String EXTRA_USER_NAME = "User Name";
     public static final String EXTRA_USER_EMAIL = "User Email";
     public static final String EXTRA_MSG = "Extra Message";
-    /*public static final String EXTRA_USER_BIRTHDATE = "User Birthdate";
-    public static final String EXTRA_USER_GRADE = "User Grade";
-    public static final String EXTRA_USER_TYPE = "User Type";*/
 
     public int getGoldThreshold() {
         return goldThreshold;
