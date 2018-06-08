@@ -1,5 +1,9 @@
 <?php
 
+/*********************************/
+/* RETRIEVE THE SURVEY QUESTIONS */
+/*********************************/
+
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 ini_set('memory_limit', '1G');
@@ -18,15 +22,17 @@ if ($mysqli->connect_error) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+  /* GET THE SURVEY QUESTIONS */
   $stmt = $mysqli->prepare("SELECT * FROM ihc_survey");
   $stmt->execute();
   $result = $stmt->get_result();
 
   if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-      $data = json_encode($row);
-      echo $data;
-      echo "\\";
+    while ($row = $result->fetch_assoc()) {   // for each survey question
+      $data = json_encode($row);    // encode the survey question into JSON
+      echo $data;   // send the survey question to the app
+      echo "\\";    // add a delimiter to the survey question
     }
   }
   $stmt->close();

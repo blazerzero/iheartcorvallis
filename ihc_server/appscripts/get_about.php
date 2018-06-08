@@ -1,5 +1,9 @@
 <?php
 
+/************************************/
+/* RETRIEVE THE ABOUT PAGE CONTENTS */
+/************************************/
+
 ini_set('display_errors', 1);
 error_reporting(E_ERROR);
 ini_set('memory_limit', '1G');
@@ -18,11 +22,13 @@ if ($mysqli->connect_error) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+  /* GET ABOUT PAGE INFORMATION */
   $result = $mysqli->query("SELECT * FROM ihc_about");
   if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    $data = json_encode($row);
-    echo $data;
+    $data = json_encode($row);    // format the data as JSON
+    echo $data;   // send data to the app
   }
 }
 

@@ -1,5 +1,9 @@
 <?php
 
+/***********************/
+/* RETRIEVE THE EVENTS */
+/***********************/
+
 ini_set('display_errors', 1);
 error_reporting(E_ERROR);
 ini_set('memory_limit', '1G');
@@ -18,12 +22,12 @@ if ($mysqli->connect_error) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $result = $mysqli->query("SELECT * FROM ihc_events");
+  $result = $mysqli->query("SELECT * FROM ihc_events");   // retrieve all events
   if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-      $data = json_encode($row);
-      echo $data;
-      echo "\\";
+    while ($row = $result->fetch_assoc()) {   // for each event
+      $data = json_encode($row);    // encode the event into JSON
+      echo $data;   // send the event to the app
+      echo "\\";    // add a delimiter to the event
     }
   }
 }
