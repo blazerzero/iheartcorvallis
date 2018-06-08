@@ -11,6 +11,7 @@ import java.net.URL;
 
 /**
  * Created by Omeed on 4/8/18.
+ * Calls the studentsignup php script to input the users given information into the ihc_users table.
  */
 
 public class StudentSignupLoader extends AsyncTaskLoader<String> {

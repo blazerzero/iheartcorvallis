@@ -38,7 +38,8 @@ import edu.oregonstate.studentlife.ihcv2.loaders.HashReceiverLoader;
 import edu.oregonstate.studentlife.ihcv2.loaders.NonStudentAuthLoader;
 
 /**
- * A login screen that offers login via email/password.
+ * Despite the name, this is the login page for every user. Utilizes the StudentSignupLoader or
+ * the SignupLoader depending on if the user says he's a student or not.
  */
 public class NonStudentLoginActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
 

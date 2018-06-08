@@ -39,6 +39,9 @@ import java.util.List;
 import edu.oregonstate.studentlife.ihcv2.data.Constants;
 import edu.oregonstate.studentlife.ihcv2.data.Event;
 
+/**
+ * Uses the Google Maps API to display the location of every active event on a google map.
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final String TAG = MapsActivity.class.getSimpleName();

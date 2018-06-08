@@ -1,8 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 how the leader board is layed out for the various users and their stamp counts
 -->
-
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"

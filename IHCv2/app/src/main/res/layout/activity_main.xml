@@ -1,9 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 When a user first opens the application and after the splash animation, the main page will appear which inclused the
 login and sign up buttons. this is the layout for that page
 -->
-
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

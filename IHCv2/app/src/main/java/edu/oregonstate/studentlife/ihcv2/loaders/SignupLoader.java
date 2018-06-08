@@ -17,6 +17,7 @@ import edu.oregonstate.studentlife.ihcv2.data.PBKDF2;
 
 /**
  * Created by Omeed on 4/5/18.
+ * Calls the signup php script to put the users given information into the ihc_users table.
  */
 
 public class SignupLoader extends AsyncTaskLoader<String> {

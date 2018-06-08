@@ -1,9 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 Layout for the events page in which how all of the events are displayed. We have incorporated two different views for the
 user. A card view and a normal view. also includes the naviations bars
 -->
-
-<?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
