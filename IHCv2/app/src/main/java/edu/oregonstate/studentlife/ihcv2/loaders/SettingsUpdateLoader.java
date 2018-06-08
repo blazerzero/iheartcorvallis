@@ -19,6 +19,8 @@ import edu.oregonstate.studentlife.ihcv2.SettingsFragment;
 
 /**
  * Created by Omeed on 3/13/18.
+ * Calls the update_prefs php script to upload the information the user entered on the settings page,
+ * upon account creation. The information is stored in the ihc_users table in the database.
  */
 
 public class SettingsUpdateLoader extends AsyncTaskLoader<String> {

@@ -11,6 +11,8 @@ import java.net.URL;
 
 /**
  * Created by Omeed on 3/1/18.
+ * Calls the getresources php script to query the ihc_resources_info table for relevant information
+ * on every resource in the database. Used to populate the resources page in the app.
  */
 
 public class ResourceLoader extends AsyncTaskLoader<String> {

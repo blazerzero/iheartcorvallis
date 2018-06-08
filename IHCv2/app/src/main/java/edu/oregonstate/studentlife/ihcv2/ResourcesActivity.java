@@ -53,6 +53,8 @@ import edu.oregonstate.studentlife.ihcv2.loaders.ResourceLoader;
 
 /**
  * Created by Omeed on 12/20/17.
+ * Uses the ResourceLoader to populate the resources page with relevant information for
+ * each resource in our database.
  */
 
 public class ResourcesActivity extends AppCompatActivity

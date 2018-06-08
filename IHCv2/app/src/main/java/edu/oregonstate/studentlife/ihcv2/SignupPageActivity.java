@@ -49,7 +49,9 @@ import edu.oregonstate.studentlife.ihcv2.loaders.StudentSignupLoader;
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
- * A login screen that offers login via email/password.
+ * The signup page for a user to create an account. Uses the SignupLoader or the StudentSignupLoader
+ * depending on if the users claims if they're a student to upload their entered information
+ * into the database.
  */
 public class SignupPageActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<String> {

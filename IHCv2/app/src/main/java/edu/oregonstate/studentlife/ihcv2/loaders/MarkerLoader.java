@@ -11,6 +11,8 @@ import java.net.URL;
 
 /**
  * Created by Omeed on 3/4/18.
+ * Calls the getresource_markers php script to query the ih_resources table for the resource markers
+ * to display on the Resrouce Map
  */
 
 public class MarkerLoader extends AsyncTaskLoader<String> {

@@ -47,6 +47,10 @@ import edu.oregonstate.studentlife.ihcv2.loaders.SettingsUpdateLoader;
 
 /**
  * Created by Omeed on 12/20/17.
+ * Uses the SettingsUpdateLoader to allow the user to upload additional information about themselves,
+ * such as their birthdate, sex, etc.
+ * Also allows the user to take a picture from their profile or use one from their gallery. (These
+ * images are not uploaded to the database and are stored on the user's device).
  */
 
 public class SettingsActivity extends AppCompatActivity

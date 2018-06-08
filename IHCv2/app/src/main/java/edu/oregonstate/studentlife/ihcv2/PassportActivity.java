@@ -2,6 +2,7 @@ package edu.oregonstate.studentlife.ihcv2;
 
 /**
  * Created by Omeed on 12/20/17.
+ * Uses the PassportLoader to populate the passport page with a list of the events the user has completed
  */
 import android.content.Context;
 import android.content.DialogInterface;

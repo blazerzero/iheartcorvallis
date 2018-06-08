@@ -2,6 +2,8 @@ package edu.oregonstate.studentlife.ihcv2;
 
 /**
  * Created by Omeed on 12/25/17.
+ * Uses the PrizeLoader to populate the Prize page with all of the prizes available for the user to
+ * earn.
  */
 
 import android.content.res.Configuration;

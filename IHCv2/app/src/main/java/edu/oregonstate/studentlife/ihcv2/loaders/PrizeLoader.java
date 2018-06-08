@@ -11,6 +11,8 @@ import java.net.URL;
 
 /**
  * Created by Omeed on 2/22/18.
+ * Calls the getprizes php script to query the ihc_prizes table of the database for all of the prizes
+ * available for a user to earn
  */
 
 public class PrizeLoader extends AsyncTaskLoader<String> {

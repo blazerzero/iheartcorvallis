@@ -29,6 +29,11 @@ import java.util.StringTokenizer;
 import edu.oregonstate.studentlife.ihcv2.data.ResourceMarker;
 import edu.oregonstate.studentlife.ihcv2.loaders.MarkerLoader;
 
+/**
+ * Uses the Google Maps API and the MarkerLoader to populate a google map with available notable
+ * resources in Corvallis, such as markets and city centers.
+ */
+
 public class ResourceMapActivity extends FragmentActivity
         implements OnMapReadyCallback, LoaderManager.LoaderCallbacks<String> {
 
