@@ -31,24 +31,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $question = $_POST["question"];
   $choices = $_POST["choices"];
 
+  /* ADD SURVEY question TO DATABASE */
   $stmt = $mysqli->prepare("INSERT INTO ihc_survey (question, choices) VALUES ('$question', '$choices')");
   $stmt->bind_param('ss', $question, $choices);
   $stmt->execute();
 
   $url = "";
 
-  if ($stmt->error == "") {
+  if ($stmt->error == "") {   // successfully added survey question to database
     $message = "Survey question has been added!";
     $url = "../index.php";
   }
-  else {
-    $message = "Error adding survey question!"; # error adding survey to database
+  else {    // error adding survey question to database
+    $message = "Error adding survey question!";
     $url = "../add_survey_question.php";
   }
 
   $mysqli->close();
-  echo "<script type='text/javascript'>alert('$message');</script>";
-  echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+  echo "<script type='text/javascript'>alert('$message');</script>";    // show alert with message
+  echo "<script type='text/javascript'>document.location.href = '$url';</script>";    // redirect user to $url
   exit;
 
 }

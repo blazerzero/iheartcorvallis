@@ -21,35 +21,35 @@ if ($mysqli->connect_error) {
 $prizeid = $name = $level = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+  /* GET VALUES VIA POST */
   $email = $_POST["email"];
   $password = $_POST["password"];
 
+  /* HASH PASSWORD */
   $iterations = 1000;
-
   $salt = openssl_random_pseudo_bytes(16);
-
   $hash = hash_pbkdf2("sha256",$password, $salt, $iterations, 50, false);
+  $hashandSalt = $salt . '|' . $hash;     // store salt with hash
 
-  // store salt with hash
-  $hashandSalt = $salt . '|' . $hash;
-
+  /* ADD ADMIN USER TO DATABASE */
   $stmt = $mysqli->prepare("INSERT INTO ihc_admin_users (email, password) VALUES (?, ?)");
   $stmt->bind_param('ss', $email, $hashandSalt);
   $stmt->execute();
 
-  if ($stmt->error == "") {
-    $message = "New User Created!";
+  if ($stmt->error == "") {   // successfully created administrative user
+    $message = "New user created!";
   }
-  else {
-    $message = "Error Creating User!"; # error updating prize in database
+  else {    // error creating administrative user
+    $message = "Error creating user!";
     echo "<script type='text/javascript'>alert('$message');</script>";
   }
 
   $url = "../index.php";
   $stmt->close();
   $mysqli->close();
-  echo "<script type='text/javascript'>alert('$message');</script>";
-  echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+  echo "<script type='text/javascript'>alert('$message');</script>";    // show alert with message
+  echo "<script type='text/javascript'>document.location.href = '$url';</script>";    // redirect user to $url
   exit;
 
 }

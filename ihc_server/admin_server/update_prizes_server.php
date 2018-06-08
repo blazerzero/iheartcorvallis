@@ -21,36 +21,39 @@ if ($mysqli->connect_error) {
 $prizeid = $name = $level = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+  /* GET VALUES VIA POST */
   $prizeid = $_POST["prizeid"];
   $name = $_POST["name"];
   $levelVal = $_POST["level"];
 
-  if ($levelVal == "1") {
+  if ($levelVal == "1") {   // gold level prize
     $level = "gold";
   }
-  else if ($levelVal == "2") {
+  else if ($levelVal == "2") {    // silver level prize
     $level = "silver";
   }
-  else if ($levelVal == "3") {
+  else if ($levelVal == "3") {    // bronze level prize
     $level = "bronze";
   }
 
+  /* UPDATE THE PRIZE INFORMATION */
   $stmt = $mysqli->prepare("UPDATE ihc_prizes SET name=?, level=? WHERE prizeid=?");
   $stmt->bind_param('ssi', $name, $level, $prizeid);
   $stmt->execute();
 
-  if ($stmt->error == "") {
+  if ($stmt->error == "") {   // successfully updated the prize
     $message = "Prize has been updated!";
   }
-  else {
-    $message = "Error updating prize!"; # error updating prize in database
+  else {    // error updating the prize
+    $message = "Error updating prize!";
   }
   $url = "../manage_prizes.php";
 
   $stmt->close();
   $mysqli->close();
-  echo "<script type='text/javascript'>alert('$message');</script>";
-  echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+  echo "<script type='text/javascript'>alert('$message');</script>";    // show alert with message
+  echo "<script type='text/javascript'>document.location.href = '$url';</script>";    // redirect user to $url
 }
 $mysqli->close();
 

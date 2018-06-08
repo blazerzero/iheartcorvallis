@@ -21,6 +21,8 @@ if ($mysqli->connect_error) {
 $eventid = $name = $host = $location = $fullAddress = $setdateandtime = $startdate = $starttime = $startdt = $enddate = $endtime = $enddt = $description = $changeimage = $image = $link1 = $link2 = $link3 = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+  /* GET VALUES VIA POST */
   $eventid = $_POST["eventid"];
   $name = $_POST["name"];
   $host = $_POST["host"];
@@ -38,47 +40,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $link2 = $_POST["link2"];
   $link3 = $_POST["link3"];
 
-  if ($setdateandtime == 0) {
-    $startdt = "1900-01-01 00:00:00";
-    $enddt = "2099-12-31 23:59:59";
+  if ($setdateandtime == 0) {   // the event is an "Anytime" event
+    $startdt = "1900-01-01 00:00:00";   // arbitrary start date
+    $enddt = "2099-12-31 23:59:59";     // arbitrary end date
   }
-  else {
-    $startdt = $startdate . " " . $starttime . ":00";
-    $enddt = $enddate . " " . $endtime . ":00";
-    if (strlen($startdt) < 19) {
-      $startdt = $startdt . ":00";
+  else {    // the event has a set date/time range
+    $startdt = $startdate . " " . $starttime . ":00";   // add seconds to starting datetime
+    $enddt = $enddate . " " . $endtime . ":00";   // add seconds to ending datetime
+    if (strlen($startdt) < 19) {    // starting datetime not properly formatted
+      $startdt = $startdt . ":00";  // add seconds to starting datetime to make it properly formatted
     }
-    if (strlen($enddt) < 19) {
-      $enddt = $enddt . ":00";
+    if (strlen($enddt) < 19) {    // ending datetime not properly formatted
+      $enddt = $enddt . ":00";    // add seconds to ending datetime to make it properly formatted
     }
   }
 
-  //$file_name = "";
+  if ($changeimage == 0)  {   // the user does not want to change the event image
 
-  if ($changeimage == 0)  {
-    /* KEEP OLD IMAGE IN IMAGES DIRECTORY AND EVENT TABLE */
+    /* UPDATE EVNET INFO */
     $stmt = $mysqli->prepare("UPDATE ihc_events SET name=?, host=?, location=?, address=?, startdt=?, enddt=?, description=?, link1=?, link2=?, link3=? WHERE eventid=?");
     $stmt->bind_param('ssssssssssi', $name, $host, $location, $fullAddress, $startdt, $enddt, $description, $link1, $link2, $link3, $eventid);
     $stmt->execute();
 
-    if ($stmt->error == "") {
+    if ($stmt->error == "") {   // successfully updated event info
       $message = "Event has been updated!";
     }
-    else {
+    else {    // error updating event info
       $message = "Error updating event!";
     }
     $url = "../manage_events.php";
 
     $stmt->close();
     $mysqli->close();
-    echo "<script type='text/javascript'>alert('$message');</script>";
-    echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+    echo "<script type='text/javascript'>alert('$message');</script>";    // show alert with message
+    echo "<script type='text/javascript'>document.location.href = '$url';</script>";    // redirect user to 4url
     exit;
   }
 
-  else if ($changeimage == 1) {
+  else if ($changeimage == 1) {   // the user wants to change the event image
     /* ADD NEW IMAGE TO IMAGES DIRECTORY AND ITS NAME TO THE EVENT TABLE */
 
+    /* GET THE NAME OF THE CURRENT EVENT IMAGE */
     $stmt = $mysqli->prepare("SELECT image FROM ihc_events WHERE eventid=?");
     $stmt->bind_param('i', $eventid);
     $stmt->execute();
@@ -86,26 +88,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $row = $res->fetch_assoc();
 
     $eventpicture = $row['image'];
-    $dir = "../images/events/".$eventpicture;
+    $dir = "../images/events/".$eventpicture;   // build event image path
 
-    if (!is_writable($dir)) {
+    if (!is_writable($dir)) {   // unable to access event image
  	   echo $dir . ' is not writeable';
     }
 
+    /* CHECK IF ANY OTHER EVENTS USE THIS IMAGE */
     $stmt = $mysqli->prepare("SELECT eventid FROM ihc_events WHERE image=?");
     $stmt->bind_param('s', $eventpicture);
     $stmt->execute();
     $res = $stmt->get_result();
 
-    if ($res->num_rows == 1) {
-      if(!unlink($dir)) {
+    if ($res->num_rows == 1) {    // this is the only event using the image
+      if(!unlink($dir)) {   // error deleting the event image
         echo 'Error deleting ' . $eventpicture;
       }
-      else {
+      else {    // successfully deleted the event image
         echo ('Deleted ' . $eventpicture);
       }
     }
 
+    /* STORE THE NEW EVENT IMAGE */
     $errors= array();
     $file_name = $_FILES['image']['name'];
     $file_size = $_FILES['image']['size'];
@@ -134,22 +138,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       print_r($errors);
     }
 
+    /* UPDATE EVENT INFO */
     $stmt = $mysqli->prepare("UPDATE ihc_events SET name=?, host=?, location=?, address=?, startdt=?, enddt=?, description=?, image=?, link1=?, link2=?, link3=? WHERE eventid=?");
     $stmt->bind_param('sssssssssssi', $name, $host, $location, $fullAddress, $startdt, $enddt, $description, $file_name, $link1, $link2, $link3, $eventid);
     $stmt->execute();
 
-    if ($stmt->error == "") {
+    if ($stmt->error == "") {   // successfully updated event info
       $message = "Event has been updated!";
     }
-    else {
+    else {    // error updating event info
       $message = "Error updating event!";
     }
     $url = "../manage_events.php";
 
     $stmt->close();
     $mysqli->close();
-    echo "<script type='text/javascript'>alert('$message');</script>";
-    echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+    echo "<script type='text/javascript'>alert('$message');</script>";    // show alert with message
+    echo "<script type='text/javascript'>document.location.href = '$url';</script>";    // redirect user to $url
     exit;
 
   }

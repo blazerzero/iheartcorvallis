@@ -51,25 +51,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $type = "OSU Campus";
   }
 
+  /* ADD MARKER TO DATABASE */
   $stmt = $mysqli->prepare("INSERT INTO ihc_resources (name, address, type) VALUES (?, ?, ?)");
   $stmt->bind_param('sss', $name, $address, $type);
   $stmt->execute();
 
   $url = "";
 
-  if ($stmt->error == "") {
+  if ($stmt->error == "") {   // successfully added marker to database
     $message = "Resource has been added to the map!";
     $url = "../index.php";
   }
-  else {
-    $message = "Error adding resource to the map!"; # error adding prize to database
+  else {    // error adding marker to database
+    $message = "Error adding resource to the map!";
     $url = "../add_marker.php";
   }
 
   $stmt->close();
   $mysqli->close();
-  echo "<script type='text/javascript'>alert('$message');</script>";
-  echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+  echo "<script type='text/javascript'>alert('$message');</script>";    // show alert with message
+  echo "<script type='text/javascript'>document.location.href = '$url';</script>";    // redirect user to $url
   exit;
 
 }

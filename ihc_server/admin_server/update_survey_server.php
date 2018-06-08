@@ -21,26 +21,29 @@ if ($mysqli->connect_error) {
 $prizeid = $name = $type = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+  /* GET VALUES VIA POST */
   $id = $_POST["id"];
   $question = $_POST["question"];
   $choices = $_POST["choices"];
 
+  /* UPDATE THE SURVEY question */
   $stmt = $mysqli->prepare("UPDATE ihc_survey SET question=?, choices=? WHERE id=?");
   $stmt->bind_param('ssi', $question, $choices, $id);
   $stmt->execute();
 
-  if ($stmt->error == "") {
+  if ($stmt->error == "") {   // successfully updated the survey question
     $message = "Survey question has been updated!";
   }
-  else {
-    $message = "Error updating survey question!"; # error updating survey question in database
+  else {    // error updating the survey question
+    $message = "Error updating survey question!";
   }
   $url = "../manage_survey.php";
 
   $stmt->close();
   $mysqli->close();
-  echo "<script type='text/javascript'>alert('$message');</script>";
-  echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+  echo "<script type='text/javascript'>alert('$message');</script>";    // show alert with message
+  echo "<script type='text/javascript'>document.location.href = '$url';</script>";    // redirect user to $url
 }
 $mysqli->close();
 

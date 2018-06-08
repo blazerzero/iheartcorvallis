@@ -31,35 +31,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $name = $_POST["name"];
   $levelVal = $_POST["level"];
 
-  if ($levelVal == "1") {
+  if ($levelVal == "1") {   // gold prize
     $level = "gold";
   }
-  else if ($levelVal == "2") {
+  else if ($levelVal == "2") {    // silver prize
     $level = "silver";
   }
-  else if ($levelVal == "3") {
+  else if ($levelVal == "3") {    // bronze prize
     $level = "bronze";
   }
 
+  /* ADD PRIZE TO DATABASE */
   $stmt = $mysqli->prepare("INSERT INTO ihc_prizes (name, level) VALUES (?, ?)");
   $stmt->bind_param('ss', $name, $level);
   $stmt->execute();
 
   $url = "";
 
-  if ($stmt->error == "") {
+  if ($stmt->error == "") {   // successfully added prize to database
     $message = "Prize has been added!";
     $url = "../index.php";
   }
-  else {
-    $message = "Error adding prize!"; # error adding prize to database
+  else {    // error adding prize to database
+    $message = "Error adding prize!";
     $url = "../add_prize.php";
   }
 
   $stmt->close();
   $mysqli->close();
-  echo "<script type='text/javascript'>alert('$message');</script>";
-  echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+  echo "<script type='text/javascript'>alert('$message');</script>";    // show alert with message
+  echo "<script type='text/javascript'>document.location.href = '$url';</script>";    // redirect user to $url
   exit;
 
 }

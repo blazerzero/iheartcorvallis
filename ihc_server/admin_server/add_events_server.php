@@ -109,29 +109,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   $url = "";
 
-  if ($stmt->error == "") {
+  if ($stmt->error == "") {   // successfully added event to database
     $message = "Event has been added!";
     $stmt2 = $mysqli->prepare("UPDATE ihc_events SET totalEventCount=?");
     $stmt2->bind_param('i', $totalEventCount);
     $stmt2->execute();
 
-    if ($stmt2->error == "") {
+    if ($stmt2->error == "") {  // successfully updated total event count in database
       $url = "../index.php";
     }
-    else {
-      $message = "Error updating total event count!"; # error adding event to database
+    else {    // error updating total event count in database
+      $message = "Error updating total event count!";
       $url = "../add_event.php";
     }
   }
-  else {
-    $message = "Error adding event!"; # error adding event to database
+  else {    // error adding event to database
+    $message = "Error adding event!";
     $url = "../add_event.php";
   }
 
   $stmt->close();
   $mysqli->close();
-  echo "<script type='text/javascript'>alert('$message');</script>";
-  echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+  echo "<script type='text/javascript'>alert('$message');</script>";    // show alert with message
+  echo "<script type='text/javascript'>document.location.href = '$url';</script>";    // redirect user to $url
   exit;
 
 }
