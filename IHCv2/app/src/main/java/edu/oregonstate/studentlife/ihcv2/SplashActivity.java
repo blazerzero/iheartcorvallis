@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 public class SplashActivity extends AppCompatActivity {
 
-    //private TextView tv;
     private ImageView iv;
 
     @Override
@@ -27,21 +26,20 @@ public class SplashActivity extends AppCompatActivity {
                 0, -1, 0, 0, 255,
                 0, 0, -1, 0, 255,
                 0, 0, 0, 1, 0
-        };
-        image.setColorFilter(new ColorMatrixColorFilter(negative));
+        };      // negative color filter
+        image.setColorFilter(new ColorMatrixColorFilter(negative));     // invert the colors of the heart icon to make it white
         Animation fadeIn = AnimationUtils.loadAnimation(this,R.anim.fade_in);
-        //tv.startAnimation(fadeIn);
-        iv.startAnimation(fadeIn);
+        iv.startAnimation(fadeIn);      // start the fade in animation
         final Intent i = new Intent(this,MainActivity.class);
         Thread timer = new Thread(){
             public void run (){
                 try {
-                    sleep(3000);
+                    sleep(3000);        // wait for 3 seconds
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 finally {
-                    startActivity(i);
+                    startActivity(i);       // auto-move to MainActivity
                     finish();
                 }
             }

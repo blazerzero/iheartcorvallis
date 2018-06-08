@@ -48,7 +48,7 @@ import edu.oregonstate.studentlife.ihcv2.loaders.SettingsUpdateLoader;
 /**
  * Created by Omeed on 12/20/17.
  * Uses the SettingsUpdateLoader to allow the user to upload additional information about themselves,
- * such as their birthdate, sex, etc.
+ * such as their birthdate, user type, etc.
  * Also allows the user to take a picture from their profile or use one from their gallery. (These
  * images are not uploaded to the database and are stored on the user's device).
  */
@@ -166,9 +166,7 @@ public class SettingsActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        //int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -255,14 +253,11 @@ public class SettingsActivity extends AppCompatActivity
         return true;
     }
 
+    /* GET THE USER'S ACCOUNT INFOMRATION FROM THE SETTINGS FRAGMENT AND
+     * UPDATE THE USER'S ACCOUNT INFORMATION
+     */
     public void onDataPass(Bundle args) {
-        //Bundle args = new Bundle();
         args.putString(IHC_USER_ID_KEY, String.valueOf(user.getId()));
-        /*args.putString(IHC_USER_TYPE_KEY, type);
-        args.putString(IHC_USER_GRADE_KEY, grade);
-        args.putInt(IHC_USER_BD_DAY_KEY, day);
-        args.putInt(IHC_USER_BD_MONTH_KEY, month);
-        args.putInt(IHC_USER_BD_YEAR_KEY, year);*/
         getSupportLoaderManager().restartLoader(IHC_SETTINGS_LOADER_ID, args, this);
     }
 
@@ -274,8 +269,8 @@ public class SettingsActivity extends AppCompatActivity
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
         Log.d(TAG, "got return message from loader: " + data);
-        if (data.equals("UPDATEERROR")) {
-            Toast.makeText(this, "There was an error updating your information.", Toast.LENGTH_LONG).show();
+        if (data.equals("UPDATEERROR")) {       // error updating the user's account information
+            Toast.makeText(this, "There was an error updating your information.", Toast.LENGTH_LONG).show();    // show error message
         }
     }
 
@@ -284,6 +279,7 @@ public class SettingsActivity extends AppCompatActivity
         // Nothing to do...
     }
 
+    /* RETRIEVE THE USER'S PROFILE PICTURE */
     public void getProfilePicture() {
         Cursor cursor = mDB.query(
                 IHCDBContract.SavedImages.TABLE_NAME,
@@ -293,25 +289,25 @@ public class SettingsActivity extends AppCompatActivity
                 null,
                 null,
                 IHCDBContract.SavedImages.COLUMN_TIMESTAMP + " DESC"
-        );
+        );      // get all profile pictures saved to the device
 
         Uri fileUri = null;
-        if (cursor.moveToNext()) {
+        if (cursor.moveToNext()) {      // if there are any saved profile pictures
             fileUri = Uri.parse(cursor.getString(
                     cursor.getColumnIndex(IHCDBContract.SavedImages.COLUMN_IMAGE)
-            ));
+            ));     // get the Uri of the latest profile picture
         }
-        if (fileUri != null) {
+        if (fileUri != null) {      // if there is a saved profile picture
             String filePath = fileUri.toString();
             Log.d(TAG, "path of image: " + filePath);
             if (filePath.contains(".jpg") || filePath.contains(".jpeg") || filePath.contains(".png")) {
                 if (!filePath.contains("file://")) {
                     filePath = "file://" + filePath;
-                }
+                }       // get the filepath of the profile picture
                 Log.d(TAG, "updated file path: " + filePath);
                 Picasso.with(this)
                         .load(filePath)
-                        .into(mProfilePictureIV);
+                        .into(mProfilePictureIV);       // load the profile picture into its ImageView
             }
         }
         cursor.close();
@@ -322,34 +318,35 @@ public class SettingsActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         switch(ACTIVITYRESULT_ID) {
-            case 1:
+            case 1:     // the user took a new profile picture
                 if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
                     file = new File(mCurrentPhotoPath);
                     if (file.exists()) {
                         Uri uri;
                         uri = Uri.fromFile(file);
                         String filePath = uri.toString();
-                        if (addImageToDB(filePath) != -1) {
+                        if (addImageToDB(filePath) != -1) {     // save the new profile picture to the device's local database
                             Toast.makeText(this, "Profile picture changed!", Toast.LENGTH_LONG).show();
-                            getProfilePicture();
+                            getProfilePicture();        // retrieve the new profile picture
                         }
-                        else {
-                            Toast.makeText(this, "There was an error saving your profile picture!", Toast.LENGTH_LONG).show();
+                        else {      // error saving the new profile picture to the device's local database
+                            Toast.makeText(this, "There was an error saving your profile picture!", Toast.LENGTH_LONG).show();  // show error message
                         }
                     }
 
                 }
                 break;
 
-            case 2:
+            case 2:     // the user chose a new profile picture
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = data.getData();
                     String filePath = getPath(this, selectedImage);
-                    if (addImageToDB(filePath) != -1) {
+                    if (addImageToDB(filePath) != -1) {     // save the new profile picture to the device's local database
                         Toast.makeText(this, "Profile picture changed!", Toast.LENGTH_LONG).show();
+                        /* TO DO: update ImageView for profile picture to have the new profile picture */
                     }
-                    else {
-                        Toast.makeText(this, "There was an error saving your profile picture!", Toast.LENGTH_LONG).show();
+                    else {      // error saving the new profile picture to the device's local database
+                        Toast.makeText(this, "There was an error saving your profile picture!", Toast.LENGTH_LONG).show();  // show error message
                     }
                 }
                 break;
@@ -403,6 +400,7 @@ public class SettingsActivity extends AppCompatActivity
         return image;
     }
 
+    /* GET THE FILEPATH OF THE PROFILE PICTURE */
     public static String getPath(Context context, Uri uri) {
         String result = null;
         String[] proj = { MediaStore.Images.Media.DATA };
@@ -420,12 +418,14 @@ public class SettingsActivity extends AppCompatActivity
         return result;
     }
 
+    /* ADD THE NEW PROFILE PICTURE TO THE DATABASE */
     private long addImageToDB(String url) {
         ContentValues row = new ContentValues();
         row.put(IHCDBContract.SavedImages.COLUMN_IMAGE, url);
         return mDB.insert(IHCDBContract.SavedImages.TABLE_NAME, null, row);
     }
 
+    /* WHAT TO DO WHEN THE USER PRESSES ON AN OPTION IN THE PROFILE PICTURE OPTION MENU */
     public void onProfilePictureMenuItemClick(int id) {
         ACTIVITYRESULT_ID = id;
         if (id == 1) {

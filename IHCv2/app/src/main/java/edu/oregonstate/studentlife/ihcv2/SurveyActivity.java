@@ -38,13 +38,18 @@ import edu.oregonstate.studentlife.ihcv2.loaders.SkipSurveyLoader;
 import edu.oregonstate.studentlife.ihcv2.loaders.SurveyLoader;
 import edu.oregonstate.studentlife.ihcv2.loaders.RecordSurveyResponseLoader;
 
+/**
+ * Retrieves the survey questions that get shown to the user.
+ * Once the user submits their responses to the questions, RecordFeedbackLoader is given the responses to record.
+ * The user can also choose to skip the survey.
+ */
+
 public class SurveyActivity extends AppCompatActivity
     implements SurveyAdapter.OnSurveyListingClickListener,
         LoaderManager.LoaderCallbacks<String> {
 
     private final static String TAG = SurveyActivity.class.getSimpleName();
 
-    //Session session;
     private TextView mSurveyHeaderTV;
     private RatingBar mAppRatingRB;
     private EditText mAppCommentET;
@@ -54,16 +59,6 @@ public class SurveyActivity extends AppCompatActivity
     private TextView mSkipSurveyTV;
 
     private byte[] profilePictureByteArray = null;
-
-    /*private TextView mUserBirthDateTV;
-    private TextView mUserTypeTV;
-    private Spinner mUserTypeSP;
-    private TextView mUserGradeTV;
-    private DatePicker mUserBirthDateDPListener;*/
-
-    /*private int userBdDay = 1;
-    private int userBdMonth = 1;
-    private int userBdYear = 2000;*/
 
     private User user;
     private int userid;
@@ -75,35 +70,18 @@ public class SurveyActivity extends AppCompatActivity
     private Boolean recordedFeedback = false;
     private Boolean skipSurvey = false;
 
+    /* LOADER IDs */
     private final static int IHC_SURVEY_LOADER_ID = 0;
     private final static int IHC_RECORD_RESPONSES_LOADER_ID = 1;
     private final static int IHC_RECORD_FEEDBACK_LOADER_ID = 2;
     private final static int IHC_SKIP_SURVEY_LOADER_ID = 3;
 
+    /* BUNDLE KEYS */
     public final static String IHC_USERID_KEY = "userid";
     public final static String IHC_QUESTIONIDS_KEY = "questionids";
     public final static String IHC_RESPONSES_KEY = "responses";
     public final static String IHC_APPRATING_KEY = "app rating";
     public final static String IHC_APPCOMMENT_KEY = "app comment";
-
-    /*private DatePickerDialog.OnDateSetListener birthDateListener = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            mUserBirthDateTV.setText(createDate(year, month, dayOfMonth));
-        }
-    };*/
-
-    /*public String createDate(int year, int month, int dayOfMonth) {
-        Calendar cal = Calendar.getInstance();
-        userBdDay = dayOfMonth;
-        userBdMonth = month;
-        userBdYear = year;
-        cal.set(Calendar.YEAR, year);
-        cal.set(Calendar.MONTH, month);
-        cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        SimpleDateFormat sdfBirthDate = new SimpleDateFormat("MM/dd/yy");
-        return "Birthdate: " + sdfBirthDate.format(cal.getTime());
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,9 +100,6 @@ public class SurveyActivity extends AppCompatActivity
             userid = (int) intent.getSerializableExtra(Constants.EXTRA_USER_ID);
             user = null;
         }
-        /*if (intent != null && intent.hasExtra(Constants.EXTRA_USER_PROFILE_PICTURE)) {
-            profilePictureByteArray = intent.getByteArrayExtra(Constants.EXTRA_USER_PROFILE_PICTURE);
-        }*/
 
         questionIDs = new ArrayList<Integer>();
         responses = new ArrayList<String>();
@@ -135,18 +110,6 @@ public class SurveyActivity extends AppCompatActivity
                 || user.getStampCount() == getResources().getInteger(R.integer.goldThreshold))) {
             mSurveyHeaderTV.setText(getString(R.string.survey_update_msg));
         }
-
-        /*mUserBirthDateTV = (TextView) findViewById(R.id.tv_user_age);
-        mUserTypeTV = (TextView) findViewById(R.id.tv_user_type);
-        mUserTypeSP = (Spinner) findViewById(R.id.sp_user_type);
-        mUserGradeTV = (TextView) findViewById(R.id.tv_user_grade);
-
-        mUserBirthDateTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new DatePickerDialog(SurveyActivity.this, R.style.DialogTheme, birthDateListener, userBdYear, userBdMonth, userBdDay).show();
-            }
-        });*/
 
         mAppRatingRB = (RatingBar) findViewById(R.id.rb_app_rating);
         mAppCommentET = (EditText) findViewById(R.id.et_app_comment);
@@ -209,9 +172,14 @@ public class SurveyActivity extends AppCompatActivity
         }
     }
 
+    /* Runs when the loader calls onDeliverResult() */
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
+
+        /* IF THE USER IS NOT SKIPPING THE SURVEY */
         if (!skipSurvey) {
+
+            /* IF THE SURVEY HAS NOT YET BEEN RETRIEVED */
             if (!gotSurvey && !recordedResponses && !recordedFeedback) {
                 Log.d(TAG, "got survey questions from loader");
                 Log.d(TAG, "data: " + data);
@@ -238,9 +206,11 @@ public class SurveyActivity extends AppCompatActivity
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                gotSurvey = true;
-            } else if (gotSurvey && !recordedResponses && !recordedFeedback) {
-                // check return message from update survey loader
+                gotSurvey = true;       // set the flag for receiving the survey questions to "true"
+            }
+
+            /* IF THE USER'S SURVEY RESPONSES HAVE NOT YET BEEN RECORDED */
+            else if (gotSurvey && !recordedResponses && !recordedFeedback) {
                 AlertDialog.Builder builder;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
@@ -256,24 +226,24 @@ public class SurveyActivity extends AppCompatActivity
                 });
                 builder.setIcon(android.R.drawable.ic_dialog_alert);
 
-                if (data.equals("ADDERROR")) {
+                if (data.equals("ADDERROR")) {      // error saving survey responses
                     builder.setMessage(getResources().getString(R.string.add_survey_responses_error));
                     builder.show();
-                } else if (data.equals("TRACKERROR")) {
+                } else if (data.equals("TRACKERROR")) {     // error saving response status (whether or not the user did the survey)
                     builder.setMessage(getResources().getString(R.string.track_survey_status_error));
-                } else if (data.equals("ADDSUCCESS")) {
-                /*Intent dashIntent = new Intent(this, DashboardActivity.class);
-                startActivityForResult(dashIntent, 1);*/
-                    recordedResponses = true;
+                } else if (data.equals("ADDSUCCESS")) {     // successfully saved survey response and recorded that the user did the survey
+                    recordedResponses = true;       // set the flag for responses having been recorded to "true"
                     Bundle args = new Bundle();
                     args.putInt(IHC_USERID_KEY, user.getId());
                     args.putInt(IHC_APPRATING_KEY, (int) mAppRatingRB.getRating());
                     args.putString(IHC_APPCOMMENT_KEY, mAppCommentET.getText().toString());
-                    getSupportLoaderManager().initLoader(IHC_RECORD_FEEDBACK_LOADER_ID, args, this);
+                    getSupportLoaderManager().initLoader(IHC_RECORD_FEEDBACK_LOADER_ID, args, this);    // start RecordFeedbackLoader to record feedback
 
                 }
-            } else if (gotSurvey && recordedResponses && !recordedFeedback) {
-                // check return message from update survey loader
+            }
+
+            /* IF THE USER'S APP FEEDBACK HAS NOT YET BEEN RECORDED */
+            else if (gotSurvey && recordedResponses && !recordedFeedback) {
                 AlertDialog.Builder builder;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
@@ -289,29 +259,27 @@ public class SurveyActivity extends AppCompatActivity
                 });
                 builder.setIcon(android.R.drawable.ic_dialog_alert);
 
-                if (data.equals("ADDERROR")) {
+                if (data.equals("ADDERROR")) {      // error saving the user's app feedback
                     builder.setMessage(getResources().getString(R.string.add_survey_responses_error));
                     builder.show();
                 } else if (data.equals("TRACKERROR")) {
                     builder.setMessage(getResources().getString(R.string.track_survey_status_error));
-                } else if (data.equals("ADDSUCCESS")) {
-                    recordedFeedback = true;
-                    Intent dashIntent = new Intent(this, DashboardActivity.class);
-                    /*if (profilePictureByteArray != null) {
-                        dashIntent.putExtra(Constants.EXTRA_USER_PROFILE_PICTURE, profilePictureByteArray);
-                    }*/
-                    //startActivityForResult(dashIntent, 1);
+                } else if (data.equals("ADDSUCCESS")) {     // successfully saved the user's app feedback
+                    recordedFeedback = true;        // set the flag for feedback having bene recorded to "true"
+                    Intent dashIntent = new Intent(this, DashboardActivity.class);      // go to Dashboard
                     startActivity(dashIntent);
                 }
             }
         }
+
+        /* THE USER IS SKIPPING THE SURVEY */
         else {
-            if (data.equals("SKIPSUCCESS")) {
-                Intent dashIntent = new Intent(this, DashboardActivity.class);
+            if (data.equals("SKIPSUCCESS")) {       // successfully recorded that the user is skipping the survey
+                Intent dashIntent = new Intent(this, DashboardActivity.class);      // go Dashboard
                 startActivity(dashIntent);
             }
-            else {
-                Toast.makeText(this, "Error skipping survey!", Toast.LENGTH_LONG).show();
+            else {      // error recording that the user is skipping the survey
+                Toast.makeText(this, "Error skipping survey!", Toast.LENGTH_LONG).show();       // show error message
             }
         }
     }
