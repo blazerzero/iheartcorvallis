@@ -1,3 +1,8 @@
+<!--
+this lay consists of the layout for the event details. When a user clicks on the an event they will be re-directed to the
+events detailed paged.
+-->
+
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

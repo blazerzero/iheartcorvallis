@@ -1,3 +1,7 @@
+<!--
+aboutus.xml - layout of the about us page. this includes the side drop down menu, tool bar at the bottom
+and the content on the page. (photo of the group and a short description of the initiative)
+-->
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

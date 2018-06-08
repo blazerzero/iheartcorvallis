@@ -1,3 +1,7 @@
+<!--
+when a user checks into an event, the event pin page will appear. This is the layout for that section.
+-->
+
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

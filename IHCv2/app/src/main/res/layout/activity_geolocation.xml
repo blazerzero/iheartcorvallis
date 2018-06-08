@@ -1,3 +1,8 @@
+<!--
+When the application requests for users location, this layout will appear asking the user for permmissions for
+location settings
+-->
+
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
