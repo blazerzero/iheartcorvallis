@@ -17,6 +17,8 @@ import edu.oregonstate.studentlife.ihcv2.SurveyActivity;
 
 /**
  * Created by Omeed on 4/3/18.
+ * Calls add_survey_response script to input the user's response to the survey
+ * into the ihc_survey_responses table
  */
 
 public class RecordSurveyResponseLoader extends AsyncTaskLoader<String> {

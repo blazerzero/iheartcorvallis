@@ -16,6 +16,8 @@ import edu.oregonstate.studentlife.ihcv2.SurveyActivity;
 
 /**
  * Created by Omeed on 4/6/18.
+ * Calls add_app_feedback script to input the users feedback of a completed event
+ * into the ihc_feedback table.
  */
 
 public class RecordFeedbackLoader extends AsyncTaskLoader<String> {

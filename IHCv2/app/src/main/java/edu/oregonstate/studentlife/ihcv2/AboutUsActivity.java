@@ -43,7 +43,7 @@ import edu.oregonstate.studentlife.ihcv2.loaders.AboutLoader;
 
 /**
  * Created by Omeed on 12/20/17.
- * About Us page, utilizes AboutLoader to retrieve images and text from table aboutus? in database and displays
+ * About Us page, utilizes AboutLoader to retrieve images and text from database and displays
  * them on the page.
  * Layout: activity_aboutus.xml
  */
@@ -62,6 +62,7 @@ public class AboutUsActivity extends AppCompatActivity
     DrawerLayout mDrawerLayout;
     ActionBarDrawerToggle mDrawerToggle;
     private SQLiteDatabase mDB;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -198,6 +199,7 @@ public class AboutUsActivity extends AppCompatActivity
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // session information is retrieved and displayed on nav menu
@@ -215,6 +217,7 @@ public class AboutUsActivity extends AppCompatActivity
         return super.onPrepareOptionsMenu(menu);
     }
 
+    //Navigation menu
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -270,6 +273,7 @@ public class AboutUsActivity extends AppCompatActivity
         return new AboutLoader(this);
     }
 
+    // Once loader is done, retrieve relevant data to display on the page
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
         Log.d(TAG, "received data: " + data);

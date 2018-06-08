@@ -400,6 +400,8 @@ public class EventsActivity extends AppCompatActivity
         return new EventLoader(this);
     }
 
+    // Once loader is finished, parse data into variables to be used to populate the page with event
+    // info.
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
         Log.d(TAG, "got results from loader");

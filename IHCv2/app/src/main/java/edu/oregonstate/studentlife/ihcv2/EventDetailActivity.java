@@ -189,6 +189,7 @@ public class EventDetailActivity extends AppCompatActivity
         return new PassportLoader(this, String.valueOf(user.getId()));
     }
 
+    // Once loader is finished, load data into variables for later use
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
         Log.d(TAG, "got results from loader");
@@ -317,8 +318,7 @@ public class EventDetailActivity extends AppCompatActivity
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mLocationPermissionGranted = true;
                     try {
-                        // TODO: implement location manager to get location updates from user, as getLastLocation can return null
-                        // TODO: Or if getLastLocation return null then exit the verify location function
+
                         Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
                         // locationResult = mFusedLocationProviderClient.requestLocationUpdates();
                         locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {

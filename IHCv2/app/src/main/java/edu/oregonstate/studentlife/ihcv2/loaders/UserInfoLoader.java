@@ -13,6 +13,7 @@ import java.net.URLEncoder;
 
 /**
  * Created by Omeed on 2/22/18.
+ * Calls the getuserinfo php script to get all of the user information from the ihc_users table
  */
 
 public class UserInfoLoader extends AsyncTaskLoader<String> {

@@ -13,6 +13,8 @@ import java.net.URLEncoder;
 
 /**
  * Created by Omeed on 4/3/18.
+ * Calls the getsurvey php script to query the ihc_survey table for the survey questions and the
+ * possible responses to each question
  */
 
 public class SurveyLoader extends AsyncTaskLoader<String> {

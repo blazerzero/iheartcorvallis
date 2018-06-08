@@ -276,7 +276,8 @@ public class DashboardActivity extends AppCompatActivity
         Log.d(TAG, "gotPassport = " + gotPassport);
         Log.d(TAG, "gotEvents = " + gotEvents);
 
-        // First loader is UserInfoLoader, so call that if none of the loaders have been used
+        // First loader to run is UserInfoLoader, once ran, parse through retrieved info into
+        // variables to populate the page
         if (!gotUser && !gotPassport && !gotEvents) {
             Log.d(TAG, "user data: " + data);
             if (data != null) {

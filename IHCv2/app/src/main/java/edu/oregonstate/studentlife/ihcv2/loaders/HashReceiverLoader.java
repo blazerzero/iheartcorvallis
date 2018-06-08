@@ -13,6 +13,9 @@ import java.net.URLEncoder;
 
 /**
  * Created by Omeed on 2/28/18.
+ * Calls the gethash php script to query the database for the user's hashed password. This is used
+ * to check against the inputted passwords hash to see if the user inputted the correct password
+ * for their account
  */
 
 public class HashReceiverLoader extends AsyncTaskLoader<String> {

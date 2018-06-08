@@ -115,6 +115,7 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
     private String[] gradeChoices;
     private String[] gradeValueChoices;
 
+    // Listener that puts user input into variables
     private DatePickerDialog.OnDateSetListener birthDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -135,6 +136,7 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
             //} catch (Exception e) { e.printStackTrace(); }
         }
     };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -194,6 +196,7 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
         initializeUserTypeSpinner();
         mUserTypeTV.setText(getResources().getString(R.string.nonstudent_choose_type));
 
+        // Adds extra fields for users who are students to fill
         mIsUserOSUCB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -414,6 +417,7 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
         popupMenu.show();
     }
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[],
@@ -445,6 +449,7 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
 
     }
 
+    // Takes action depending on if user allowed permissions
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -532,6 +537,7 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
         return image;
     }
 
+    // gets filepath for profile picture
     public static String getPath(Context context, Uri uri) {
         String result = null;
         String[] proj = { MediaStore.Images.Media.DATA };
@@ -549,6 +555,7 @@ public class GetUserInfoActivity extends AppCompatActivity implements LoaderMana
         return result;
     }
 
+    // puts users image in SQLight database on phone
     private long addImageToDB(String url) {
         ContentValues row = new ContentValues();
         row.put(IHCDBContract.SavedImages.COLUMN_IMAGE, url);

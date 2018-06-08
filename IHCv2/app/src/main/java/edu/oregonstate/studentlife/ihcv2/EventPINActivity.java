@@ -82,6 +82,7 @@ public class EventPINActivity extends AppCompatActivity implements LoaderManager
 
                 }
 
+                // Check users input to see if they entered the correct pin
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     if (s.toString().equals(String.valueOf(event.getPin()))) {
@@ -134,6 +135,7 @@ public class EventPINActivity extends AppCompatActivity implements LoaderManager
         return new AddCompletedEventLoader(this, args);
     }
 
+    // After loader is finished, return user to dashboard
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
         if (data.equals("COMPLETED EVENT ADDED")) {

@@ -13,6 +13,8 @@ import java.net.URLEncoder;
 
 /**
  * Created by Omeed on 2/28/18.
+ * Calls the non_student_login script query the ihc_users table for a user who matches the given
+ * email, if successful the user's information is passed back to the app.
  */
 
 public class NonStudentAuthLoader extends AsyncTaskLoader<String> {

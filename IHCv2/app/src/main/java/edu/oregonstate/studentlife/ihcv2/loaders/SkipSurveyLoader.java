@@ -13,6 +13,8 @@ import java.net.URLEncoder;
 
 /**
  * Created by Omeed on 4/20/18.
+ * Calls skip_survey php script to update ihc_users to say this user skipped the survey, so that they
+ * will not get prompted with the survey again
  */
 
 public class SkipSurveyLoader extends AsyncTaskLoader<String> {
