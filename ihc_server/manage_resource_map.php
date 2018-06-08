@@ -6,11 +6,11 @@ error_reporting(E_ERROR);
 ini_set('memory_limit', '1G');
 ?>
 
-<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>
+<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>   <!-- the user is logged in -->
 
   <?php
   require './admin_server/db.php';
-  $stmt = $mysqli->prepare("SELECT * FROM ihc_resources");
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_resources");    // retrieve the information on every resource map marker
   $stmt->execute();
   $result = $stmt->get_result();
   $marker = array();
@@ -81,10 +81,10 @@ ini_set('memory_limit', '1G');
       <table class="ui celled padded table">
         <thead>
           <tr>
-            <th class="single line">Name</th>
-            <th>Address</th>
-            <th>Type</th>
-            <th>Action</th>
+            <th class="single line">Name</th>   <!-- Resource name -->
+            <th>Address</th>    <!-- Resource address -->
+            <th>Type</th>   <!-- Resource type -->
+            <th>Action</th>   <!-- Edit or delete the resource -->
           </tr>
         </thead>
         <tbody>
@@ -108,8 +108,8 @@ ini_set('memory_limit', '1G');
   <?php
   $mysqli->close();
 }
-else {
+else {    // the user is not logged in
   $url = "./admin_auth.php";
-  echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+  echo "<script type='text/javascript'>document.location.href = '$url';</script>";    // redirect the user to the login page
 }
 ?>

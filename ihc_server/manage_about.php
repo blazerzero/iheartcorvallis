@@ -6,11 +6,11 @@ error_reporting(E_ERROR);
 ini_set('memory_limit', '1G');
 ?>
 
-<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>
+<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>   <!-- the user is logged in -->
 
   <?php
   require './admin_server/db.php';
-  $stmt = $mysqli->prepare("SELECT * FROM ihc_about");
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_about");    // retrieve information about the About Page
   $stmt->execute();
   $result = $stmt->get_result();
   $ihc_about = array();
@@ -28,7 +28,7 @@ ini_set('memory_limit', '1G');
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
     <script>
     $(document).ready(function() {
-      $("#siteheader").load("siteheader.html");
+      $("#siteheader").load("siteheader.html");   // load the site header and navigation bar
     });
     </script>
   </head>
@@ -43,7 +43,7 @@ ini_set('memory_limit', '1G');
         <thead>
           <tr>
             <th class="single line">About Page</th>
-            <th>Action</th>
+            <th>Action</th>   <!-- edit the About Page contents -->
           </tr>
         </thead>
         <tbody>
@@ -64,8 +64,8 @@ ini_set('memory_limit', '1G');
   <?php
   $mysqli->close();
 }
-else {
+else {    // the user is not logged in
   $url = "./admin_auth.php";
-  echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+  echo "<script type='text/javascript'>document.location.href = '$url';</script>";    // redirect the user to the login page
 }
 ?>

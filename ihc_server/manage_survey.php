@@ -6,11 +6,11 @@ error_reporting(E_ERROR);
 ini_set('memory_limit', '1G');
 ?>
 
-<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>
+<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>   <!-- the user is logged in -->
 
   <?php
   require './admin_server/db.php';
-  $stmt = $mysqli->prepare("SELECT * FROM ihc_survey");
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_survey");   // retrieve the information on every survey question
   $stmt->execute();
   $result = $stmt->get_result();
   $ihc_questions = array();
@@ -42,8 +42,8 @@ ini_set('memory_limit', '1G');
       <table class="ui celled padded table">
         <thead>
           <tr>
-            <th class="single line">Question</th>
-            <th>Action</th>
+            <th class="single line">Question</th>   <!-- Survey question -->
+            <th>Action</th>   <!-- View question responses, edit the question, or delete the question -->
           </tr>
         </thead>
         <tbody>
@@ -66,8 +66,8 @@ ini_set('memory_limit', '1G');
   <?php
   $mysqli->close();
 }
-else {
+else {    // the user is not logged in
   $url = "./admin_auth.php";
-  echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+  echo "<script type='text/javascript'>document.location.href = '$url';</script>";    // redirect the user to the login page
 }
 ?>

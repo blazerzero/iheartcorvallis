@@ -6,11 +6,11 @@ error_reporting(E_ERROR);
 ini_set('memory_limit', '1G');
 ?>
 
-<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>
+<?php if (isset($_SESSION["id"]) && $_SESSION["id"] != null) { ?>   <!-- the user is logged in -->
 
   <?php
   require './admin_server/db.php';
-  $stmt = $mysqli->prepare("SELECT * FROM ihc_events");
+  $stmt = $mysqli->prepare("SELECT * FROM ihc_events");   // retrieve the information on every event
   $stmt->execute();
   $result = $stmt->get_result();
   $ihc_events = array();
@@ -42,12 +42,12 @@ ini_set('memory_limit', '1G');
       <table class="ui celled padded table">
         <thead>
           <tr>
-            <th class="single line">Name</th>
-            <th>Host</th>
-            <th>Location</th>
-            <th>Date and Time</th>
-            <th>Event PIN</th>
-            <th>Action</th>
+            <th class="single line">Name</th>   <!-- Event name -->
+            <th>Host</th>   <!-- Event host -->
+            <th>Location</th>   <!-- Event location -->
+            <th>Date and Time</th>    <!-- Event Date/Time range -->
+            <th>Event PIN</th>    <!-- Event Check-In PIN -->
+            <th>Action</th>   <!-- View Event Summary, edit the event, or delete the event -->
           </tr>
         </thead>
         <tbody>
@@ -85,8 +85,8 @@ ini_set('memory_limit', '1G');
   <?php
   $mysqli->close();
 }
-else {
+else {    // the user is not logged in
   $url = "./admin_auth.php";
-  echo "<script type='text/javascript'>document.location.href = '$url';</script>";
+  echo "<script type='text/javascript'>document.location.href = '$url';</script>";    // redirect the user to the login page
 }
 ?>

@@ -8,27 +8,27 @@ ini_set('memory_limit', '4G');
 ini_set('max_execution_time', 300);
 
 function regressionStats($arrX, $arrY) {
-  $avgX = array_sum($arrX)/count($arrX);
-  $avgY = array_sum($arrY)/count($arrY);
+  $avgX = array_sum($arrX)/count($arrX);  // average X-value
+  $avgY = array_sum($arrY)/count($arrY);  // average Y-value
 
   $ssXX = $ssYY = $varX2 = $varY2 = $spXY = $covXY = $b0 = $b1 = 0;
   foreach ($arrX as $x):
     $ssXX += pow(($x - $avgX), 2);
   endforeach;
-  $varX = $ssXX / (count($arrX) - 1);
+  $varX = $ssXX / (count($arrX) - 1);   // x variance
 
   foreach ($arrY as $y):
     $ssYY += pow(($y - $avgY), 2);
   endforeach;
-  $varY = $ssYY / (count($arrY) - 1);
+  $varY = $ssYY / (count($arrY) - 1);   // y variance
 
   for ($i = 0; $i < count($arrX); $i++) {
-    $spXY += (($arrX[$i] - $avgX) * ($arrY[$i] - $avgY));
+    $spXY += (($arrX[$i] - $avgX) * ($arrY[$i] - $avgY));   // sum of products of X and Y
   }
-  $covXY = $spXY / (count($arrX) - 1);
-  $b1 = $spXY / $ssXX;
-  $b0 = $avgY - ($b1 * $avgX);
-  $r = $covXY / (sqrt($varX) * sqrt($varY));
+  $covXY = $spXY / (count($arrX) - 1);    // covariance of X and Y
+  $b1 = $spXY / $ssXX;    // beta1
+  $b0 = $avgY - ($b1 * $avgX);    // beta0
+  $r = $covXY / (sqrt($varX) * sqrt($varY));    // correlation coefficient
   return array('avgX' => $avgX, 'ssXX' => $ssXX, 'varX' => $varX, 'avgY' => $avgY, 'ssYY' => $ssYY, 'varY' => $varY, 'spXY' => $spXY, 'covXY' => $covXY, 'b1' => $b1, 'b0' => $b0, 'r' => $r);
 }
 
@@ -39,7 +39,7 @@ function tScore($arrX, $arrY, $ssXX, $b0, $b1) {
   }
 
   $se = sqrt(($ssE/ (count($arrY) - 2)) / $ssXX);
-  $t0 = ($b1 - 0) / $se;
+  $t0 = ($b1 - 0) / $se;    // t-score
   return $t0;
 }
 
@@ -60,7 +60,7 @@ function fScore($arrX, $arrY, $avgY, $ssYY, $b0, $b1) {
   $msR = $ssR / 1;
 
   $f0 = $msR / $msE;
-  return $f0;
+  return $f0;   // F-statistic
 }
 
 $dbhost="oniddb.cws.oregonstate.edu";
@@ -218,163 +218,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       }
     }
   }
-  //}
-  /*else if ($stat1 == 2) {
-    if ($stat2 == 3) {
-      $stmt = $mysqli->prepare("SELECT CE.*, U.grade, U.type FROM ihc_completed_events CE, ihc_users U WHERE CE.userid=U.id ORDER BY U.type ASC, U.grade ASC, CE.userid ASC, CE.dateandtime ASC");
-      $stmt->execute();
-      $res = $stmt->get_result();
-      if ($res->num_rows > 0) {
-        while ($row = $res->fetch_assoc()) {
-          if (!array_key_exists($row['userid'], $startTimes)) {
-            $startTimes[$row['userid']] = $row['dateandtime'];
-            $numDataPerUser[$row['userid']] = 0;
-          }
-
-          $numDataPerUser[$row['userid']]++;
-          $newListing = array('userid' => $row['userid'], 'x' => $numDataPerUser[$row['userid']], 'y' => $numDataPerUser[$row['userid']], 'grade' => $row['grade'], 'type' => $row['type']);
-
-          if ($row['grade'] == 1) $frData[] = $newListing;
-          else if ($row['grade'] == 2) $soData[] = $newListing;
-          else if ($row['grade'] == 3) $jrData[] = $newListing;
-          else if ($row['grade'] == 4) $srData[] = $newListing;
-          else if ($row['grade'] == 5) $grData[] = $newListing;
-          else if ($row['grade'] == 6) $drData[] = $newListing;
-
-          if ($row['type'] == 0) $domData[] = $newListing;
-          else if ($row['type'] == 1) $intlData[] = $newListing;
-          else if ($row['type'] == 2) $facData[] = $newListing;
-          else if ($row['type'] == 3) $resData[] = $newListing;
-          else if ($row['type'] == 4) $visitorData[] = $newListing;
-        }
-      }
-    }
-    else {
-      for ($i = 1; $i <= count($questions); $i++) {
-        if ($stat2 == $i + 3) {
-
-          $choicesStr = $questions[$i-1]['choices'];
-          $choiceVal = 0;
-          $token = strtok($choicesStr, ",");
-          while ($token !== false) {
-            $choices[] = $token;
-            $token = strtok(",");
-          }
-          for ($j = count($choices)-1; $j >= 0; $j--) {
-            $newChoices[] = $choices[$j];
-          }
-          $choices = $newChoices;
-
-          $allXData = $allYData = array();
-          $stmt = $mysqli->prepare("SELECT CE.*, U.grade, U.type FROM ihc_completed_events CE, ihc_users U WHERE CE.userid=U.id ORDER BY U.type ASC, U.grade ASC, CE.userid ASC, CE.dateandtime ASC");
-          $stmt->execute();
-          $res = $stmt->get_result();
-          if ($res->num_rows > 0) {
-            while ($row = $res->fetch_assoc()) {
-              if (!array_key_exists($row['userid'], $startTimes)) {
-                $startTimes[$row['userid']] = $row['dateandtime'];
-                $numDataPerUser[$row['userid']] = 0;
-              }
-
-              $numDataPerUser[$row['userid']]++;
-              $allXData[] = array('userid' => $row['userid'], 'dateandtime' => $row['dateandtime'], 'x' => $numDataPerUser[$row['userid']], 'grade' => $row['grade'], 'type' => $row['type']);
-            }
-          }
-
-          $stmt2 = $mysqli->prepare("SELECT SR.*, U.grade, U.type FROM ihc_survey_responses SR, ihc_users U WHERE SR.userid=U.id AND SR.questionid=? ORDER BY U.type ASC, U.grade ASC, SR.userid ASC, SR.dateandtime ASC");
-          $stmt2->bind_param('i', $questions[$i-1]['id']);
-          $stmt2->execute();
-          $res2 = $stmt2->get_result();
-          if ($res2->num_rows > 0) {
-            while ($row = $res2->fetch_assoc()) {
-
-              for ($j = 0; $j < count($choices); $j++) {
-                if (trim($row['response']) == trim($choices[$j])) {
-                  $choiceVal = $j+1;
-                  break;
-                }
-              }
-
-              $newYListing = array('userid' => $row['userid'], 'dateandtime' => $row['dateandtime'], 'y' => $choiceVal, 'grade' => $row['grade'], 'type' => $row['type']);
-              $allYData[] = $newYListing;
-            }
-          }
-
-          $j = 0;
-          $userid = "";
-          $userCEList = array();
-          $newListing = array();
-          while ($j < count($allYData)) {
-            if ($userid != $allYData[$j]['userid']) {
-              $userid = $allYData[$j]['userid'];
-              $userCEList = array();
-            }
-            echo "userid: " . $userid . "<br>";
-            echo "allYData[$j][userid]: " . $allYData[$j]['userid'] . "<br>";
-            echo "allXData[0][userid]: " . $allXData[0]['userid'] . "<br>";
-            if (in_array($allYData[$j]['userid'], array_column($allXData, "userid"))) {
-              while ($userid != $allXData[0]['userid']) {
-                $removedCE = array_shift($allXData);
-              }
-              while ($userid == $allXData[0]['userid']) {
-                echo "allXData[0]: "; print_r($allXData[0]); echo "<br>";
-                $userCEList[] = $allXData[0];
-                $removedCE = array_shift($allXData);
-              }
-              print_r($userCEList); echo "<br>";
-              if (count($userCEList) > 0 && strtotime($allYData[$j]['dateandtime']) - strtotime($userCEList[0]['dateandtime']) < 0) {
-                $newListing = array('userid' => $allYData[$j]['userid'], 'x' => 0, 'y' => $allYData[$j]['y']);
-                if ($allYData[$j]['grade'] == 1) $frData[] = $newListing;
-                else if ($allYData[$j]['grade'] == 2) $soData[] = $newListing;
-                else if ($allYData[$j]['grade'] == 3) $jrData[] = $newListing;
-                else if ($allYData[$j]['grade'] == 4) $srData[] = $newListing;
-                else if ($allYData[$j]['grade'] == 5) $grData[] = $newListing;
-                else if ($allYData[$j]['grade'] == 6) $drData[] = $newListing;
-
-                if ($allYData[$j]['type'] == 0) $domData[] = $newListing;
-                else if ($allYData[$j]['type'] == 1) $intlData[] = $newListing;
-                else if ($allYData[$j]['type'] == 2) $facData[] = $newListing;
-                else if ($allYData[$j]['type'] == 3) $resData[] = $newListing;
-                else if ($allYData[$j]['type'] == 4) $visitorData[] = $newListing;
-                $j++;
-              }
-              else {
-                for ($k = 0; $k < count($userCEList); $k++) {
-                  if (strtotime($allYData[$j]['dateandtime']) - strtotime($userCEList[$k]['dateandtime']) >= 0) {
-                    $newListing = array('userid' => $allYData[$j]['userid'], 'x' => k+1, 'y' => $allYData[$j]['y']);
-                    if ($allYData[$j]['grade'] == 1) $frData[] = $newListing;
-                    else if ($allYData[$j]['grade'] == 2) $soData[] = $newListing;
-                    else if ($allYData[$j]['grade'] == 3) $jrData[] = $newListing;
-                    else if ($allYData[$j]['grade'] == 4) $srData[] = $newListing;
-                    else if ($allYData[$j]['grade'] == 5) $grData[] = $newListing;
-                    else if ($allYData[$j]['grade'] == 6) $drData[] = $newListing;
-
-                    if ($allYData[$j]['type'] == 0) $domData[] = $newListing;
-                    else if ($allYData[$j]['type'] == 1) $intlData[] = $newListing;
-                    else if ($allYData[$j]['type'] == 2) $facData[] = $newListing;
-                    else if ($allYData[$j]['type'] == 3) $resData[] = $newListing;
-                    else if ($allYData[$j]['type'] == 4) $visitorData[] = $newListing;
-                    $j++;
-                  }
-                }
-              }
-            }
-            else {
-              while ($userid == $allYData[$j]['userid']) {
-                $removedY = array_shift($allYData);
-                $j++;
-              }
-            }
-
-          }
-
-          break;
-        }
-      }
-
-    }
-
-  }*/
 
   /* SIMPLE LINEAR REGRESSION */
   $frX = array_column($frData, 'x');
@@ -443,196 +286,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $visitorStats = regressionStats($visitorX, $visitorY);
   $visitorT0 = tScore($visitorX, $visitorY, $visitorStats['ssXX'], $visitorStats['b0'], $visitorStats['b1']);
   $visitorF0 = fScore($visitorX, $visitorY, $visitorStats['avgY'], $visitorStats['ssYY'], $visitorStats['b0'], $visitorStats['b1']);
-
-  /*
-  $allData = array();
-  $startTimes = array();
-  $numDataPerUser = array();
-  $choices = array();
-  $newChoices = array();
-  $xValues = array();
-  $xData = $yData = array();
-
-  if ($stat1 == 1) {      // Second variable being tested against time
-    if ($stat2 == 3) {    // Time vs. Number of Completed Events
-      $stmt = $mysqli->prepare("SELECT * FROM ihc_completed_events ORDER BY userid ASC, dateandtime ASC");
-      $stmt->execute();
-      $res = $stmt->get_result();
-      if ($res->num_rows > 0) {
-        while ($row = $res->fetch_assoc()) {
-          if (!array_key_exists($row['userid'], $startTimes)) {
-            $startTimes[$row['userid']] = $row['dateandtime'];
-            $numDataPerUser[$row['userid']] = 0;
-          }
-          $elapsed = strtotime($row['dateandtime']) - strtotime($startTimes[$row['userid']]);
-          $days = $elapsed / 86400;
-          $allData[] = array('userid' => $row['userid'], 'x' => $days, 'y' => $numDataPerUser[$row['userid']] + 1);
-          $xData[] = array('userid' => $row['userid'], 'x' => $days);
-          $yData[] = array('userid' => $row['userid'], 'y' => $numDataPerUser[$row['userid']] + 1);
-          $numDataPerUser[$row['userid']]++;
-        }
-      }
-    }
-    else {
-      for ($i = 1; $i <= count($questions); $i++) {
-        if ($stat2 == $i + 3) {
-
-          $choicesStr = $questions[$i-1]['choices'];
-          $choiceVal = 0;
-          $token = strtok($choicesStr, ",");
-          while ($token !== false) {
-            $choices[] = $token;
-            $token = strtok(",");
-          }
-          for ($j = count($choices)-1; $j >= 0; $j--) {
-            $newChoices[] = $choices[$j];
-          }
-          $choices = $newChoices;
-
-          $stmt = $mysqli->prepare("SELECT * FROM ihc_survey_responses WHERE questionid=? ORDER BY userid ASC, dateandtime ASC");
-          $stmt->bind_param('i', $questions[$i-1]['id']);
-          $stmt->execute();
-          $res = $stmt->get_result();
-          if ($res->num_rows > 0) {
-            while ($row = $res->fetch_assoc()) {
-              if (!array_key_exists($row['userid'], $startTimes)) {
-                $startTimes[$row['userid']] = $row['dateandtime'];
-              }
-              $elapsed = strtotime($row['dateandtime']) - strtotime($startTimes[$row['userid']]);
-              $days = $elapsed / 86400;
-
-              for ($j = 0; $j < count($choices); $j++) {
-                if (trim($row['response']) == trim($choices[$j])) {
-                  $choiceVal = $j+1;
-
-                  break;
-                }
-              }
-
-              $allData[] = array('userid' => $row['userid'], 'x' => $days, 'y' => $choiceVal, 'response' => $row['response']);
-              $xData[] = array('userid' => $row['userid'], 'x' => $days);
-              $yData[] = array('userid' => $row['userid'], 'y' => $choiceVal);
-            }
-          }
-        }
-      }
-    }
-  }
-  else {
-    $stmt1 = $mysqli->prepare("SELECT id, stampcount FROM ihc_users ORDER BY stampcount ASC");
-    $stmt1->execute();
-    $res1 = $stmt1->get_result();
-    if ($res1->num_rows > 0) {
-      while ($row = $res1->fetch_assoc()) {
-        $xData[] = array('userid' => $row['id'], 'xval' => $row['stampcount']);
-      }
-    }
-    if ($stat2 == 3) {
-      $stmt2 = $mysqli->prepare("SELECT id, stampcount FROM ihc_users ORDER BY stampcount ASC");
-      $stmt2->execute();
-      $res2 = $stmt2->get_result();
-      if ($res2->num_rows > 0) {
-        while ($row = $res2->fetch_assoc()) {
-          $yData[] = array('userid' => $row['id'], 'yval' => $row['stampcount']);
-        }
-      }
-    }
-    else {
-      for ($i = 1; $i <= count($questions); $i++) {
-        if ($stat2 == $i + 3) {
-          $choicesStr = $questions[$i-1]['choices'];
-          $choiceVal = 0;
-          $token = strtok($choicesStr, ",");
-          while ($token !== false) {
-            $choices[] = $token;
-            $token = strtok(",");
-          }
-          for ($j = count($choices)-1; $j >= 0; $j--) {
-            $newChoices[] = $choices[$j];
-          }
-          $choices = $newChoices;
-
-          $stmt2 = $mysqli->prepare("SELECT userid, response FROM ihc_survey_responses WHERE questionid=? ORDER BY dateandtime ASC");
-          $stmt2->bind_param('i', $i);
-          $stmt2->execute();
-          $res2 = $stmt2->get_result();
-          if ($res2->num_rows > 0) {
-            while ($row = $res2->fetch_assoc()) {
-
-              for ($j = 0; $j < count($choices); $j++) {
-                if (trim($row['response']) == trim($choices[$j])) {
-                  $choiceVal = $j+1;
-                  break;
-                }
-              }
-
-              $yData[] = array('userid' => $row['userid'], 'yval' => $choiceVal);
-            }
-          }
-          break;
-        }
-      }
-    }
-    for ($i = 0; $i < count($xData); $i++) {
-      for ($j = 0; $j < count($yData); $j++) {
-        if ($xData[$i]['userid'] == $yData[$j]['userid']) {
-          $allData[] = array('x' => $xData[$i]['xval'], 'y' => $yData[$j]['yval']);
-          break;
-        }
-      }
-    }
-  }*/
-
-  /* SIMPLE LINEAR REGRESSION ANALYSIS */
-  /*$arrX = array_column($allData, 'x');
-  $arrY = array_column($allData, 'y');
-  $avgX = array_sum($arrX)/count($arrX);
-  $avgY = array_sum($arrY)/count($arrY);
-
-  $ssXX = $ssYY = $varX2 = $varY2 = $spXY = $covXY = $b0 = $b1 = 0;
-  foreach ($arrX as $x):
-    $ssXX += pow(($x - $avgX), 2);
-  endforeach;
-  $varX = $ssXX / (count($arrX) - 1);
-
-  foreach ($arrY as $y):
-    $ssYY += pow(($y - $avgY), 2);
-  endforeach;
-  $varY = $ssYY / (count($arrY) - 1);
-
-  for ($i = 0; $i < count($arrX); $i++) {
-    $spXY += (($arrX[$i] - $avgX) * ($arrY[$i] - $avgY));
-  }
-  $covXY = $spXY / (count($arrX) - 1);
-  $b1 = $spXY / $ssXX;
-  $b0 = $avgY - ($b1 * $avgX);
-
-  $minX = min($arrX);
-  $minY = $b0 + ($b1 * $minX);
-  $maxX = max($arrX);
-  $maxY = $b0 + ($b1 * $maxX);*/
-
-  /* t-Test */
-  /*$ssE = 0;
-  for ($i = 0; $i < count($arrY); $i++) {
-    $ssE += pow(($arrY[$i] - ($b0 + ($b1 * $arrX[$i]))), 2);
-  }
-
-  $se = sqrt(($ssE/ (count($arrY) - 2)) / $ssXX);
-  $t0 = ($b1 - 0) / $se;*/
-
-  /* ANOVA Test */
-  /*$ssT = $ssYY;
-  $msT = $ssT / (count($arrY) - 1);
-  $ssR = 0;
-  for ($i = 0; $i < count($arrX); $i++) {
-    $ssR += pow((($b0 + ($b1 * $arrX[$i])) - $avgY), 2);
-  }
-  $f_ssT = $ssR + $ssE;
-  $msE = $ssE / (count($arrY) - 2);
-  $msR = $ssR / 1;
-
-  $f0 = $msR / $msE;*/
 
   ?>
 
